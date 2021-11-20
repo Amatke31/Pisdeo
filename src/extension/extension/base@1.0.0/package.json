@@ -1,0 +1,19 @@
+{
+  "name": "nexwebeditor-extension-base",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "rimraf ./build && mkdirp build && rimraf ./dist && mkdirp dist && webpack --bail",
+    "build:dist": "NODE_ENV=production yarn run build"
+  },
+  "dependencies": {
+    "copy-webpack-plugin": "^9.0.1",
+    "mkdirp": "^1.0.4",
+    "rimraf": "^3.0.2",
+    "webpack": "^5.55.1"
+  },
+  "devDependencies": {
+    "webpack-cli": "^4.8.0"
+  }
+}

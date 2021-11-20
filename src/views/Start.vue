@@ -1,0 +1,497 @@
+<template>
+  <div class="start">
+    <div class="nav">
+      <div class="nav-left">
+        <h1>{{ $t("start.title") }}</h1>
+        <div v-if="isInit" class="btn" @click="openStore">
+          {{ $t("start.extensions") }}
+        </div>
+      </div>
+      <div class="about btn">
+        <a @click="openAboutWindow">{{ $t("start.about") }}</a>
+      </div>
+    </div>
+    <div class="main">
+      <div v-if="isInit" class="newProject">
+        <h2 class="npt">{{ $t("start.page.newproject") }}</h2>
+        <div class="npc">
+          <div
+            @click="newProject(item)"
+            v-for="item in project"
+            v-bind:key="item.name"
+            class="card"
+          >
+            <div
+              v-if="item.extension.author == 'NexWebEditor'"
+              class="img"
+              :style="cardImg(item.extension.icon)"
+            ></div>
+            <div
+              v-else
+              class="img"
+              :style="cardImg(item.extension.path + '/' + item.extension.icon)"
+            ></div>
+            <div class="title">{{ $t(item.name) }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <msg :isShow="msgIsShow" :html="msgHTML" @close="close"></msg>
+    <div id="newProject" :class="newProjectWCss">
+      <div class="window">
+        <div class="title">
+          <h1>
+            {{
+              $t("start.newproject.title", {
+                framework: templateInfo.framework,
+                template: templateInfo.name,
+              })
+            }}
+          </h1>
+          <h5 style="color: #aaa">
+            {{
+              $t("start.newproject.madeby", {
+                author: templateInfo.extension.author,
+              })
+            }}
+          </h5>
+        </div>
+        <div class="form">
+          <div class="name">
+            <div>{{ $t("start.newproject.projectname") }}:</div>
+            <div>{{ $t("start.newproject.projectlocation") }}:</div>
+            <div
+              v-for="templateRequire in templateRequire[
+                templateInfo.extension.id
+              ]"
+              :key="templateRequire.name"
+            >
+              {{ $t(templateRequire.name) }}:
+            </div>
+          </div>
+          <div class="input">
+            <input spellcheck="false" v-model="ProjectForm.name" />
+            <input
+              spellcheck="false"
+              v-model="ProjectForm.path"
+              @click="changePath"
+            />
+            <input
+              spellcheck="false"
+              v-for="templateRequire in templateRequire[
+                templateInfo.extension.id
+              ]"
+              :key="templateRequire.name"
+              v-model="ProjectForm[templateRequire.name]"
+            />
+          </div>
+        </div>
+        <button class="create nex-btn btn-1" @click="createProject">
+          {{ $t("start.newproject.create") }}
+        </button>
+      </div>
+      <div class="mask" @click="closeNPW"></div>
+    </div>
+    <div :class="warningCss" id="_warning">
+      <div class="warning" :style="'width:500px;margin-left:-250px;'">
+        <div>
+          The application has crashed and may need to be repaired. If you need
+          help, you can view the
+          <a @click="openDoc(`problem/${errorCode}`)">documentation</a>
+        </div>
+        <div>Error Code: {{ errorCode }}</div>
+      </div>
+    </div>
+  </div>
+</template>
+<style lang="scss" scoped>
+#newProject.hide .mask {
+  opacity: 0;
+}
+
+#newProject.none {
+  display: none;
+}
+
+#newProject {
+  display: unset;
+}
+
+#newProject {
+  .window {
+    transform: scale(1);
+    width: 750px;
+    height: 600px;
+    position: fixed;
+    top: 10%;
+    border-radius: 15px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.05);
+    z-index: 3000;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(50, 50, 50);
+    padding: 36px;
+    left: calc((100vw - 750px) / 2);
+    opacity: 1;
+    transition: 0.3s;
+    .nex-btn {
+      width: 130px;
+      height: 40px;
+      color: rgb(209, 209, 209);
+      border-radius: 5px;
+      font-family: "Lato", sans-serif;
+      font-weight: 500;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: absolute;
+      display: inline-block;
+      outline: none;
+      padding: 0;
+      border: none;
+      bottom: 43px;
+      right: 43px;
+    }
+
+    .nex-btn.btn-1 {
+      background-color: #3a3a3a;
+      line-height: 42px;
+    }
+
+    .nex-btn.btn-1 span {
+      color: #000;
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    .nex-btn.btn-1:hover,
+    .nex-btn.btn-1:focus {
+      background: rgb(59, 59, 59);
+      box-shadow: inset 2px 2px 2px 0px rgba(51, 51, 51, 0.5),
+        7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .form {
+      margin-top: 16px;
+      display: flex;
+      margin-bottom: 16px;
+      overflow-y: auto;
+      height: 360px;
+
+      .name,
+      .input {
+        div,
+        input {
+          padding: 16px;
+          outline: 0;
+          background: unset;
+          width: 100%;
+          border: 0;
+          height: 48px;
+          margin: 0 0 20px;
+          box-sizing: border-box;
+          font-size: 14px;
+          color: #fff;
+          transition: 0.2s;
+        }
+
+        input {
+          border-radius: 12px;
+          background-color: #383838;
+          &:hover {
+            background-color: #3f3f3f;
+          }
+          &:focus {
+            background-color: #454545;
+          }
+        }
+      }
+
+      .name {
+        text-align: right;
+        width: 25%;
+      }
+
+      .input {
+        text-align: left;
+        width: 80%;
+      }
+    }
+  }
+  .mask {
+    transition: 0.3s;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    opacity: 1;
+    overflow: hidden;
+    z-index: 2000;
+    backdrop-filter: blur(2px);
+    background-color: rgba(50, 50, 50, 0.7);
+  }
+}
+
+#newProject.hide .window {
+  transform: scale(0.8);
+  opacity: 0;
+}
+.nav {
+  padding: 12px;
+  background-color: #222;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .nav-left {
+    align-items: center;
+    display: flex;
+    * {
+      display: inline;
+      margin: 0 10px;
+    }
+  }
+  .btn {
+    display: inline-block;
+    width: auto;
+    border-radius: 5px;
+    padding: 6px;
+    transition: 0.5s;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+.main {
+  padding: 24px;
+  .newProject {
+    display: flex;
+    flex-direction: column;
+    .npt {
+      margin: 10px;
+    }
+    .npc {
+      display: inline-flex;
+      overflow-x: auto;
+
+      .card {
+        background-color: #2c2c2c;
+        min-width: 300px;
+        width: 300px;
+        height: 230px;
+        border-radius: 8px;
+        margin: 10px;
+        display: inline-flex;
+        flex-direction: column;
+        transition: 0.5s;
+        border-style: solid;
+        border-color: #2c2c2c;
+        .title {
+          height: 40px;
+          padding: 10px;
+        }
+        .img {
+          width: 100%;
+          height: 100%;
+          background-size: 80%;
+          background-repeat: no-repeat;
+          background-position: center;
+          transition: 0.5s;
+        }
+        &:hover {
+          border-color: #474747;
+          background-color: #242424;
+          .img {
+            transform: scale(1.03);
+          }
+        }
+      }
+    }
+  }
+}
+
+.mask {
+  transition: 0.3s;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  opacity: 1;
+  overflow: hidden;
+  z-index: 2000;
+  backdrop-filter: blur(2px);
+  background-color: rgba(50, 50, 50, 0.7);
+}
+
+#_warning {
+  display: unset;
+
+  .warning {
+    width: 500px;
+    height: auto;
+    min-height: 200px;
+    position: fixed;
+    left: 50%;
+    top: 10%;
+    margin-left: -250px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.05);
+    z-index: 3000;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(50, 50, 50, 0.7);
+    padding: 36px;
+    transition: 0.3s;
+    max-height: 90vh !important;
+    opacity: 1;
+    max-width: 90vw;
+    min-width: 500px;
+
+    a:link {
+      color: rgb(10, 95, 252);
+    }
+
+    a:visited {
+      color: rgb(10, 95, 252);
+    }
+  }
+}
+
+#_warning.hide .warning {
+  transform: scale(0.8);
+  opacity: 0;
+}
+
+#_warning.none {
+  display: none;
+}
+</style>
+<script>
+import { ipcRenderer } from "electron";
+export default {
+  name: "Start",
+  props: {
+    isInit: {
+      type: Boolean,
+    },
+    project: {
+      type: Array,
+    },
+    homePath: {
+      type: String,
+    },
+    documentsPath: {
+      type: String,
+    },
+    errorThrow: {
+      type: Function,
+    },
+    templateRequire: {
+      type: Object,
+    },
+  },
+  data() {
+    return {
+      msgIsShow: false,
+      warningShow: false,
+      errorCode: "",
+      msgHTML: "",
+      newProjectWCss: "hide none",
+      newProjectW: false,
+      consoleText: "<p>loading...</p>",
+      templateInfo: {
+        name: "",
+        framework: "",
+        extension: {
+          author: "",
+          id: "",
+        },
+      },
+      ProjectForm: {
+        name: "WebApp1",
+        framework: "",
+        path: null,
+      },
+      warningCss: "hide none",
+    };
+  },
+  mounted: function () {},
+  watch: {
+    warningShow() {
+      if (this.warningShow == true) {
+        this.warningCss = "hide";
+        setTimeout(function () {
+          this.warningCss = "";
+        }, 50);
+      } else {
+        this.warningCss = "hide";
+        setTimeout(function () {
+          this.warningCss = "hide none";
+        }, 300);
+      }
+    },
+  },
+  methods: {
+    newProject: function (info) {
+      info.require.forEach((parameter) => {
+        this.ProjectForm[parameter.name] = parameter.default;
+      });
+      this.templateInfo = info;
+      this.ProjectForm.path = this.$path.join(this.documentsPath, "WebProject");
+      this.newProjectWCss = "hide";
+      setTimeout(() => {
+        this.newProjectWCss = "window";
+      }, 50);
+    },
+    closeNPW: function () {
+      this.newProjectWCss = "hide";
+      setTimeout(() => {
+        this.newProjectWCss = "hide none";
+      }, 300);
+    },
+    openAboutWindow: function () {
+      this.msgHTML = `
+      <h1>NexWebEditor</h1>
+      <p style="color:#ccc;">${this.$t("about.introduce")}</p>
+      <p style="color:#ccc;font-size:14px">Version: ${this.$version}</p><br>
+      <p style="color:#ccc;">Released under the Apache LICENSE 2.0</p>
+      <p style="color:#ccc;">Copyright © 2021 Amatke31</p>
+      `;
+      this.msgIsShow = true;
+    },
+    close: function () {
+      this.msgIsShow = false;
+    },
+    changePath: function () {
+      ipcRenderer.send("chooseProjectPath");
+      ipcRenderer.on("gotProjectPath", (event, path) => {
+        this.ProjectForm.path = path;
+      });
+    },
+    createProject: function () {
+      this.$emit("goToProjectPage");
+      this.$extension.extensionManager.createProject(
+        this.templateInfo,
+        this.ProjectForm
+      );
+      this.newProjectW = false;
+    },
+    openStore: function () {},
+    openDoc: function (path) {
+      ipcRenderer.send("openDoc", path);
+    },
+    cardImg: function (img) {
+      if (img != undefined) {
+        return `background-image: url(${img})`;
+      } else {
+        return "";
+      }
+    },
+  },
+};
+</script>

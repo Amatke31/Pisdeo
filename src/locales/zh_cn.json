@@ -1,0 +1,12 @@
+{
+    "start.title": "启动",
+    "start.about": "关于",
+    "about.introduce": "易用且强大的图形化网站应用编辑器",
+    "start.page.newproject": "新项目",
+    "start.extensions": "扩展",
+    "start.newproject.madeby": "这个模板由{author}开发",
+    "start.newproject.title": "用模板{template}来创建{framework}项目",
+    "start.newproject.projectname": "项目名称",
+    "start.newproject.projectlocation": "储存路径",
+    "start.newproject.create": "创建"
+}
