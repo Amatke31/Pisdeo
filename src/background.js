@@ -10,7 +10,7 @@ const isMac = process.platform === 'darwin'
 // app.setAsDefaultProtocolClient("nexwebeditor");
 
 protocol.registerSchemesAsPrivileged([
-  { scheme: 'app', privileges: { secure: true, standard: true, corsEnabled: true } }
+  { scheme: 'nexwebeditor', privileges: { secure: true, standard: true, corsEnabled: true } }
 ])
 
 async function createWindow(title, path) {
@@ -19,7 +19,7 @@ async function createWindow(title, path) {
     height: 768,
     minWidth: 1366,
     minHeight: 768,
-    titleBarStyle: 'hiddenInset',
+    titleBarStyle: 'default',
     title,
     webPreferences: {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
@@ -27,6 +27,20 @@ async function createWindow(title, path) {
     }
   })
   const baseMenu = [
+    ...(isMac ? [{
+      label: app.name,
+      submenu: [
+        { role: 'about' },
+        { type: 'separator' },
+        { role: 'services' },
+        { type: 'separator' },
+        { role: 'hide' },
+        { role: 'hideOthers' },
+        { role: 'unhide' },
+        { type: 'separator' },
+        { role: 'quit' }
+      ]
+    }] : []),
     {
       label: 'Help',
       submenu: [
@@ -57,8 +71,8 @@ async function createWindow(title, path) {
   if (isDevelopment) {
     await win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}${path}`)
   } else {
-    createProtocol('app')
-    await win.loadURL(`app://${path}`)
+    createProtocol('nexwebeditor')
+    await win.loadURL(`nexwebeditor://${path}`)
   }
 }
 

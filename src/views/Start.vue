@@ -241,6 +241,7 @@
   opacity: 0;
 }
 .nav {
+  -webkit-app-region: drag;
   padding: 12px;
   background-color: #222;
   display: flex;
