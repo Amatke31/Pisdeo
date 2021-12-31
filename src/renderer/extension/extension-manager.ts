@@ -8,7 +8,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 var NWEExtensionPath = ''
 
 var instance = new Array()
-var idList = new Object()
+var idList: any = new Array()
 var g_extensionInfo = new Array();
 
 class ExtensionManager {
@@ -17,29 +17,29 @@ class ExtensionManager {
      * @param {string} editorPath NexWebEditor data path
      * @method i18n vue-i18n
      */
-    LoadExtensionFromLocal(editorPath, i18n) {
+    LoadExtensionFromLocal(editorPath: string, i18n: { mergeLocaleMessage: (arg0: RegExpMatchArray | null, arg1: any) => void }) {
         NWEExtensionPath = isDevelopment ? './src/extension/extension' : path.join(__dirname, '..', 'extension')
-        const ExtensionInfo = []
+        const ExtensionInfo: any[] = []
         const installedExtensionList = fs.readdirSync(path.join(editorPath, 'extensions'))
         const NWEExtensionList = fs.readdirSync(NWEExtensionPath)
         installedExtensionList.forEach((ExtName) => {
             if (fs.statSync(path.join(editorPath, "extensions", ExtName)).isDirectory()) {
                 const extensionSource = fs.readdirSync(path.join(editorPath, "extensions", ExtName))
                 if (extensionSource.indexOf("info.json") != -1) {
-                    var info = JSON.parse(fs.readFileSync(path.join(editorPath, "extensions", ExtName, "info.json")))
+                    var info = JSON.parse(fs.readFileSync(path.join(editorPath, "extensions", ExtName, "info.json")).toString())
                     info.path = path.join(editorPath, "extensions", ExtName)
                     ExtensionInfo.push(info)
 
                     //load locale
                     if (extensionSource.indexOf("locales") != -1) {
                         const locales = fs.readdirSync(path.join(editorPath, "extensions", ExtName, 'locales'))
-                        const messages = {}
+                        const messages: any = []
                         locales.forEach(key => {
                             var matched = key.match(/[A-Za-z0-9-_,\s]+\.json$/i)
                             if (matched) {
-                                matched = path.basename(key, '.json');
-                                const locale = JSON.parse(fs.readFileSync(path.join(editorPath, "extensions", ExtName, "locales", key)))
-                                messages[matched] = locale
+                                const langClass = path.basename(key, '.json');
+                                const locale = JSON.parse(fs.readFileSync(path.join(editorPath, "extensions", ExtName, "locales", key)).toString())
+                                messages[langClass] = locale
                                 i18n.mergeLocaleMessage(matched, locale)
                             }
                         })
@@ -54,20 +54,20 @@ class ExtensionManager {
             if (fs.statSync(path.join(NWEExtensionPath, ExtName)).isDirectory()) {
                 const extensionSource = fs.readdirSync(path.join(NWEExtensionPath, ExtName, 'build'))
                 if (extensionSource.indexOf("info.json") != -1) {
-                    var info = JSON.parse(fs.readFileSync(path.join(NWEExtensionPath, ExtName, 'build', "info.json")))
+                    var info = JSON.parse(fs.readFileSync(path.join(NWEExtensionPath, ExtName, 'build', "info.json")).toString())
                     info.path = path.join(NWEExtensionPath, ExtName, 'build')
                     ExtensionInfo.push(info)
 
                     //load locale
                     if (extensionSource.indexOf("locales") != -1) {
                         const locales = fs.readdirSync(path.join(NWEExtensionPath, ExtName, 'build', 'locales'))
-                        const messages = {}
+                        const messages: any = []
                         locales.forEach(key => {
                             var matched = key.match(/[A-Za-z0-9-_,\s]+\.json$/i)
                             if (matched) {
-                                matched = path.basename(key, '.json');
-                                const locale = JSON.parse(fs.readFileSync(path.join(NWEExtensionPath, ExtName, 'build', "locales", key)))
-                                messages[matched] = locale
+                                const langClass: string = path.basename(key, '.json');
+                                const locale = JSON.parse(fs.readFileSync(path.join(NWEExtensionPath, ExtName, 'build', "locales", key)).toString())
+                                messages[langClass] = locale
                                 i18n.mergeLocaleMessage(matched, locale)
                             }
                         })
@@ -87,10 +87,10 @@ class ExtensionManager {
      * @param {Object} info Extension info
      * @param {String} sourcePath Extension path
      */
-    runExtension(extensionInfo, sourcePath) {
+    runExtension(extensionInfo: { id: any }, sourcePath: string) {
         const nweExtensionAPI = extensionApi
         const id = extensionInfo.id
-        const script = new vm.Script(fs.readFileSync(path.join(sourcePath, "main.js")));
+        const script = new vm.Script(fs.readFileSync(path.join(sourcePath, "main.js")).toString());
         const context = vm.createContext({ module: { exports: {} }, nweExtensionAPI, extensionInfo, console, path });
         script.runInContext(context);
         const ExtensionPrototype = context.module.exports;
@@ -115,9 +115,9 @@ class ExtensionManager {
     /**
      * Create Project
      */
-    createProject(templateInfo, projectInfo) {
+    createProject(templateInfo: { extension: { id: string | number } }, projectInfo: any) {
         var project = instance[idList[templateInfo.extension.id]]
-        project.useTemplate(projectInfo, templateInfo, (res) => {
+        project.useTemplate(projectInfo, templateInfo, (res: { complete: boolean }) => {
             extEvent.emit('projectLoaded', res.complete === true ? "successed" : "failed")
         })
     }

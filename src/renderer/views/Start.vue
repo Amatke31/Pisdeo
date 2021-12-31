@@ -372,9 +372,17 @@
   display: none;
 }
 </style>
-<script>
+<script lang="ts">
 import { ipcRenderer } from "electron";
-export default {
+import { defineComponent } from 'vue'
+import path from 'path'
+import getVersion from '../utils/getVersion'
+
+interface RequireForm {
+  [ propName : string ] : any
+}
+
+export default defineComponent({
   name: "Start",
   props: {
     isInit: {
@@ -412,13 +420,14 @@ export default {
           author: "",
           id: "",
         },
-      },
+      } as RequireForm,
       ProjectForm: {
         name: "WebApp1",
         framework: "",
-        path: null,
-      },
+        path: "",
+      } as RequireForm,
       warningCss: "hide none",
+      documentsPath: ""
     };
   },
   mounted: function () {},
@@ -426,24 +435,24 @@ export default {
     warningShow() {
       if (this.warningShow == true) {
         this.warningCss = "hide";
-        setTimeout(function () {
+        setTimeout( () => {
           this.warningCss = "";
         }, 50);
       } else {
         this.warningCss = "hide";
-        setTimeout(function () {
+        setTimeout( () => {
           this.warningCss = "hide none";
         }, 300);
       }
     },
   },
   methods: {
-    newProject: function (info) {
-      info.require.forEach((parameter) => {
+    newProject: function (info: { name: string; framework: string; extension: { author: string; id: string; }; require: any}) {
+      info.require.forEach((parameter: { name: string; default: any; }) => {
         this.ProjectForm[parameter.name] = parameter.default;
       });
       this.templateInfo = info;
-      this.ProjectForm.path = this.$path.join(this.documentsPath, "WebProject");
+      this.ProjectForm.path = path.join(this.documentsPath, "WebProject");
       this.newProjectWCss = "hide";
       setTimeout(() => {
         this.newProjectWCss = "window";
@@ -459,7 +468,7 @@ export default {
       this.msgHTML = `
       <h1>NexWebEditor</h1>
       <p style="color:#ccc;">${this.$t("about.introduce")}</p>
-      <p style="color:#ccc;font-size:14px">Version: ${this.$version}</p><br>
+      <p style="color:#ccc;font-size:14px">Version: ${getVersion()}</p><br>
       <p style="color:#ccc;">Released under the Apache LICENSE 2.0</p>
       <p style="color:#ccc;">Copyright © 2021 Amatke31</p>
       `;
@@ -483,10 +492,10 @@ export default {
       this.newProjectW = false;
     },
     openStore: function () {},
-    openDoc: function (path) {
+    openDoc: function (path: string) {
       ipcRenderer.send("openDoc", path);
     },
-    cardImg: function (img) {
+    cardImg: function (img: string) {
       if (img != undefined) {
         return `background-image: url(${img})`;
       } else {
@@ -494,5 +503,5 @@ export default {
       }
     },
   },
-};
+})
 </script>

@@ -24,12 +24,20 @@
   <div v-if="!(startIsInit || projectIsInit)" class="console" v-html="consoleText"></div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import { ipcRenderer } from "electron";
 import extEvent from "./extension/extension-event";
 import Start from '@/views/Start.vue'
 import Project from '@/views/Project.vue'
-export default {
+import path from 'path'
+import fs from 'fs'
+
+interface RequireForm {
+  [ propName : string ] : any
+}
+
+export default defineComponent({
   data() {
     return {
       ExtensionInfo: new Array(),
@@ -39,7 +47,7 @@ export default {
       projectIsInit: false,
       consoleText: "<p>loading...</p>",
       documentsPath: "",
-      templateRequire: new Object(),
+      templateRequire: new Object() as RequireForm,
       page: "Start",
       projectMenu: [
         {
@@ -59,7 +67,9 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      errorCode: "",
+      warningShow: false
     };
   },
   components: {
@@ -71,7 +81,7 @@ export default {
     extEvent.on("addTemplate", (info) => {
       this.project.push(info);
       let require = new Array();
-      info.require.forEach((parameter) => {
+      info.require.forEach((parameter: any) => {
         require.push(
           typeof parameter === "object" ? parameter : { name: parameter }
         );
@@ -88,16 +98,16 @@ export default {
     ipcRenderer.on("Init", (event, appInfo) => {
       this.homePath = appInfo.path.home;
       this.documentsPath = appInfo.path.documents;
-      const editorPath = this.$path.join(this.homePath, ".nexwebeditor");
+      const editorPath = path.join(this.homePath, ".nexwebeditor");
       this.consoleText += "<p>[INFO]Scan data directory</p>";
-      this.$fs.readdir(editorPath, (err, files) => {
+      fs.readdir(editorPath, (err, files) => {
         if (err) {
-          this.$fs.mkdir(editorPath, (err) => {
+          fs.mkdir(editorPath, (err) => {
             if (err) {
               this.errorThrow("io");
             }
             folder.forEach((name) => {
-              this.$fs.mkdir(this.$path.join(editorPath, name), (err) => {
+              fs.mkdir(path.join(editorPath, name), (err) => {
                 this.errorThrow("io");
               });
             });
@@ -105,7 +115,7 @@ export default {
         } else {
           folder.forEach((name) => {
             if (files.indexOf(name) == -1) {
-              this.$fs.mkdir(this.$path.join(editorPath, name), (err) => {
+              fs.mkdir(path.join(editorPath, name), (err) => {
                 this.errorThrow("io");
               });
             }
@@ -128,7 +138,7 @@ export default {
     });
   },
   methods: {
-    errorThrow: function (type) {
+    errorThrow: function (type: any) {
       switch (type) {
         case "io":
           this.errorCode = "1";
@@ -139,7 +149,7 @@ export default {
       }
     },
   },
-};
+})
 </script>
 
 <style>
@@ -176,13 +186,13 @@ a {
 *::-webkit-scrollbar {
   width: auto;
   height: 4px;
-  border-radius: 50%;
+  border-radius: 50px;
 }
 *::-webkit-scrollbar-thumb {
   background-color: rgb(196, 196, 196);
 }
 *::-webkit-scrollbar-track {
   background-color: rgb(68, 67, 67);
-  border-radius: 50%;
+  border-radius: 50px;
 }
 </style>

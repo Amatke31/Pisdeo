@@ -13,7 +13,7 @@ protocol.registerSchemesAsPrivileged([
   { scheme: 'nexwebeditor', privileges: { secure: true, standard: true, corsEnabled: true } }
 ])
 
-async function createWindow(title, path) {
+async function createWindow(title: string, path: string) {
   const win = new BrowserWindow({
     width: 1366,
     height: 768,
@@ -22,11 +22,11 @@ async function createWindow(title, path) {
     titleBarStyle: 'default',
     title,
     webPreferences: {
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
-      contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
+      nodeIntegration: Boolean(process.env.ELECTRON_NODE_INTEGRATION),
+      contextIsolation: Boolean(!process.env.ELECTRON_NODE_INTEGRATION),
     }
   })
-  const baseMenu = [
+  const baseMenu: any = [
     ...(isMac ? [{
       label: app.name,
       submenu: [

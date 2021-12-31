@@ -2,18 +2,18 @@ const sqlite3 = require('sqlite3').verbose()
 var sqlite = new sqlite3.Database(
     '/tmp/nexwebeditor.db', 
     sqlite3.OPEN_READWRITE, 
-    function (err) {
+    function (err: { message: any }) {
         if (err) {
             return console.log(err.message)
         }
         console.log('connect database successfully')
     }
 )
-let db = {}
+let db: any = {}
 
-db.select = function (data, list, where, callback) {
+db.select = function (data: any, list: any, where: any, callback: (msg: any) => void) {
     var sql = `select ${data} from ${list} WHERE ${where}`;
-    sqlite.run(sql, function (error, results, fields) {
+    sqlite.run(sql, function (error: any, results: string, fields: any) {
         if (error) {
             callback('error');
             return false
@@ -22,7 +22,7 @@ db.select = function (data, list, where, callback) {
     });
 }
 
-db.add = function (add, value, listb, callback) {
+db.add = function (add: string[], value: any, listb: string, callback: (msg: any) => void) {
     var addc = '', qc = '';
     for (var i = 0; add[i]; i++) {
         addc += ','
@@ -33,7 +33,7 @@ db.add = function (add, value, listb, callback) {
     addc = addc.substr(1);
     qc = qc.substr(1);
     var sql = 'INSERT INTO ' + listb + '(' + addc + ') VALUES(' + qc + ')';
-    sqlite.run(sql, value, function (error, results, fields) {
+    sqlite.run(sql, value, function (error: any, results: any, fields: any) {
         if (error) {
             callback('error');
             return false;
@@ -42,7 +42,7 @@ db.add = function (add, value, listb, callback) {
     });
 }
 
-db.update = function (update, value, where, listb, callback) {
+db.update = function (update: string[], value: any, where: string, listb: string, callback: (msg: any) => void) {
     var addc = '';
     for (var i = 0; update[i]; i++) {
         addc += ','
@@ -51,15 +51,15 @@ db.update = function (update, value, where, listb, callback) {
     }
     addc = addc.substr(1);
     var sql = 'UPDATE ' + listb + ' SET ' + addc + ' WHERE ' + where;
-    sqlite.run(sql, value, function (error, results, fields) {
-        if (error) return log(sql + ' ' + error), callback({ code: 300, error });
+    sqlite.run(sql, value, function (error: string, results: any, fields: any) {
+        if (error) return callback({ code: 300, error });
         callback('ok');
     });
 }
 
-db.delete = function (list, where, callback) {
+db.delete = function (list: any, where: any, callback: (msg: any) => void) {
     var sql = `DELETE FROM ${list} where ${where}`
-    sqlite.run(sql, function (error, results, fields) {
+    sqlite.run(sql, function (error: any, results: any, fields: any) {
         if (error) {
             callback('error');
             return false

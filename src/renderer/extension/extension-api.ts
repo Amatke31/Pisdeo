@@ -3,15 +3,15 @@ import path from 'path'
 import { ipcRenderer } from "electron";
 import extEvent from './extension-event';
 
-function copyDir(src, dist, callback) {
+function copyDir(src: string, dist: fs.PathLike, callback?: any) {
     fs.access(dist, function (err) {
         if (err) {
             fs.mkdirSync(dist);
         }
-        _copy(null, src, dist);
+        _copy(null, src, dist.toString());
     });
 
-    function _copy(err, src, dist) {
+    function _copy(err: null, src: fs.PathLike, dist: string) {
         if (err) {
             callback(err);
         } else {
@@ -41,7 +41,7 @@ function copyDir(src, dist, callback) {
 }
 
 class ExtensionAPI {
-    copyTemplateToProject(templatePath, extensionInfo, project) {
+    copyTemplateToProject(templatePath: fs.PathLike, extensionInfo: any, project: { path: string; name: string; }) {
         console.log(extensionInfo)
         console.log(fs.readdirSync(templatePath))
         console.log(project)
@@ -54,11 +54,11 @@ class ExtensionAPI {
             })
         }
         finally {
-            copyDir(templatePath, projectPath)
+            copyDir(templatePath.toString(), projectPath)
         }
     }
 
-    registerTemplate(info) {
+    registerTemplate(info: any) {
         extEvent.emit('addTemplate', info)
     }
 }
