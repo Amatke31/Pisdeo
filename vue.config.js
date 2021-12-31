@@ -5,6 +5,11 @@ function resolve(dir) {
 }
 
 module.exports = {
+    pages: {
+        index: {
+            entry: './src/renderer/main.ts'
+        }
+    },
     chainWebpack: (config) => {
         config.resolve.alias
             .set("@", resolve("./renderer/src"))
@@ -20,7 +25,7 @@ module.exports = {
             fullInstall: true
         },
         electronBuilder: {
-            mainProcessFile: 'src/myBackgroundFile.js',
+            mainProcessFile: 'src/main/index.ts',
             nodeIntegration: true,
             builderOptions: {
                 asar: false,

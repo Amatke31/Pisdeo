@@ -12,4 +12,5 @@ app.config.globalProperties.$version = JSON.parse(fs.readFileSync('./package.jso
 app.config.globalProperties.$fs = fs
 app.config.globalProperties.$path = path
 app.config.globalProperties.$axios = axios
-app.use(i18n).use(extension).component('msg', Msg).mount('#_nexwebeditor')
+// app.use(extension)
+app.use(i18n).component('msg', Msg).mount('#_nexwebeditor')
