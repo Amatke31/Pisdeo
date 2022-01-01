@@ -10,6 +10,9 @@ const ipc = {
     async getStorePath(): Promise<string> {
         return await ipcRenderer.invoke('getStorePath')
     },
+    async getConfig(): Promise<string> {
+        return await ipcRenderer.invoke('getConfig')
+    },
     async chooseProjectPath() {
         let cppath: string = ''
         await ipcRenderer.invoke('chooseProjectPath').then((path: any) => {

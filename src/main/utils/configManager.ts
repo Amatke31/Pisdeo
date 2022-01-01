@@ -7,6 +7,7 @@ import WinSize from '../types/WinSize'
 const configFilePath = path.join(app.getPath('userData'), 'config.yaml')
 
 type Config = {
+    configVersion: string
     language: string
     winSize: WinSize
     theme: string
@@ -17,3 +18,34 @@ let config: Config
 
 export const saveConfigFile = () => fs.writeFileSync(configFilePath, yaml.stringify(config), 'utf8')
 export const getConfig = () => config
+
+
+const defaultWinSize: WinSize = {
+    width: 1366,
+    height: 768,
+    max: false
+}
+const defaultConfig: Config = {
+    configVersion: '0.0.1-develop',
+    language: 'en_us',
+    winSize: defaultWinSize,
+    theme: 'auto',
+    updateCheck: 'ask'
+}
+
+if (fs.existsSync(configFilePath)) {
+    config = yaml.parse(fs.readFileSync(configFilePath, 'utf8'))
+    for (const i in defaultConfig) {
+        if (!(i in config)) {
+            config[i as keyof typeof config] = getKey(defaultConfig, i)
+        }
+    }
+    saveConfigFile()
+} else {
+    config = defaultConfig
+    saveConfigFile()
+}
+
+function getKey(obj: any, i: string | number) {
+    return obj[i as keyof typeof obj] || undefined
+}

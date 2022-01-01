@@ -127,3 +127,4 @@ ipcMain.on('exit', function () {
 
 import './ipc/project'
 import './ipc/system'
+import './utils/configManager'
