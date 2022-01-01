@@ -17,9 +17,9 @@ async function createWindow(title: string, path: string) {
   const win = new BrowserWindow({
     width: 1366,
     height: 768,
-    minWidth: 1366,
-    minHeight: 768,
-    titleBarStyle: 'default',
+    // minWidth: 1366,
+    // minHeight: 768,
+    titleBarStyle: 'hidden',
     title,
     webPreferences: {
       nodeIntegration: Boolean(process.env.ELECTRON_NODE_INTEGRATION),
@@ -45,7 +45,7 @@ async function createWindow(title: string, path: string) {
       label: 'Help',
       submenu: [
         {
-          label: 'Learn',
+          label: 'Learn NexWebEditor',
           click: async () => {
             await shell.openExternal('https://nexwebeditor.org/docs')
           }
@@ -57,7 +57,7 @@ async function createWindow(title: string, path: string) {
           }
         },
         {
-          label: 'Open Devtools',
+          label: 'Toggle Developer Tools',
           click: () => {
             win.webContents.openDevTools()
           }
@@ -113,19 +113,6 @@ ipcMain.on('Init', (event, arg) => {
   event.sender.send("Init", appInfo)
 })
 
-ipcMain.on('chooseProjectPath', function (event, p) {
-  dialog.showOpenDialog({
-    defaultPath: path.join(appInfo.path.documents),
-    properties: ['openDirectory']
-  }).then(result => {
-    if (!result.canceled) {
-      event.sender.send('gotProjectPath', result.filePaths[0])
-    }
-  }).catch(err => {
-    console.log(err)
-  })
-});
-
 ipcMain.on('openDoc', function (event, path) {
   createWindow('Document', 'docs/src/.vuepress/dist/index.html')
 })
@@ -137,3 +124,6 @@ ipcMain.on('projectLoadComplete', function (event) {
 ipcMain.on('exit', function () {
   app.quit()
 })
+
+import './ipc/project'
+import './ipc/system'

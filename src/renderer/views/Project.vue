@@ -7,32 +7,6 @@
       </button>
     </div>
     <div v-else>
-      <div class="nav">
-        <div class="menu">
-          <div class="left">
-            <button
-              class="item"
-              v-for="label in menu"
-              :key="label"
-              @focus="menuOnFocus(label)"
-              @blur="menuOnBlur(label)"
-            >
-              <a>{{ $t(label.label) }}</a>
-            </button>
-          </div>
-          <div class="right"></div>
-          <div class="submenu" v-show="submenuShow">
-            <button
-              class="item"
-              v-for="rols in menu[0].submenu"
-              :key="rols"
-              @click="rols.click"
-            >
-              <a>{{ $t(rols.rols) }}</a>
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -91,69 +65,6 @@
       7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
   }
 }
-.nav {
-  height: 28px;
-  background-color: #222;
-
-  .menu {
-    display: flex;
-    height: 100%;
-    width: 100%;
-
-    .left,
-    .right {
-      display: flex;
-
-      .item {
-        border: unset;
-        font-size: 14px;
-        background: rgb(43, 43, 43);
-        padding: 6px;
-        transition: 0.5s;
-        width: 100%;
-        height: 28px;
-        text-align: left;
-      }
-
-      .item:hover {
-        background: rgb(53, 53, 53);
-      }
-
-      .item:focus {
-        background: rgb(63, 63, 63);
-      }
-    }
-
-    .submenu {
-      position: absolute;
-      background: rgb(43, 43, 43);
-      margin-top: 28px;
-      display: flex;
-      flex-direction: column;
-      width: auto;
-      padding: 2px;
-
-      .item {
-        border: unset;
-        font-size: 14px;
-        background: rgb(43, 43, 43);
-        padding: 8px;
-        transition: 0.5s;
-        width: 100%;
-        height: 28px;
-        text-align: left;
-      }
-
-      .item:hover {
-        background: rgb(53, 53, 53);
-      }
-
-      .item:focus {
-        background: rgb(63, 63, 63);
-      }
-    }
-  }
-}
 </style>
 
 <script>
@@ -172,21 +83,6 @@ export default {
   methods: {
     goToStartPage: function () {
       this.$emit("goToStartPage");
-    },
-    menuOnFocus: function (label) {
-      if (this.menuFocus == label.label && this.submenuShow) {
-        this.submenuShow = false;
-      } else {
-        setTimeout(() => {
-          this.submenuShow = true;
-          this.menuFocus = label.label;
-        }, 110);
-      }
-    },
-    menuOnBlur: function (label) {
-      setTimeout(() => {
-        this.submenuShow = false;
-      }, 100);
     },
   },
 };

@@ -1,40 +1,48 @@
 <template>
-  <Start
-    v-if="page === 'Start'"
-    :extension="ExtensionInfo"
-    :isInit="startIsInit"
-    :project="project"
-    :homePath="homePath"
-    :documentsPath="documentsPath"
-    :errorThrow="errorThrow"
-    :templateRequire="templateRequire"
-    @goToProjectPage="page = 'Project'"
-  />
-  <Project
-    v-else-if="page === 'Project'"
-    :extension="ExtensionInfo"
-    :isInit="projectIsInit"
-    :project="project"
-    :homePath="homePath"
-    :documentsPath="documentsPath"
-    :errorThrow="errorThrow"
-    :menu="projectMenu"
-    @goToStartPage="page = 'Start'"
-  />
-  <div v-if="!(startIsInit || projectIsInit)" class="console" v-html="consoleText"></div>
+  <div>
+    <div id="titleBar">{{ title }}</div>
+    <Start
+      v-if="page === 'Start'"
+      :extension="ExtensionInfo"
+      :isInit="startIsInit"
+      :project="project"
+      :homePath="homePath"
+      :documentsPath="documentsPath"
+      :errorThrow="errorThrow"
+      :templateRequire="templateRequire"
+      @goToProjectPage="page = 'Project'"
+    />
+    <Project
+      v-else-if="page === 'Project'"
+      :extension="ExtensionInfo"
+      :isInit="projectIsInit"
+      :project="project"
+      :homePath="homePath"
+      :documentsPath="documentsPath"
+      :errorThrow="errorThrow"
+      :menu="projectMenu"
+      @goToStartPage="page = 'Start'"
+    />
+    <div
+      v-if="!(startIsInit || projectIsInit)"
+      class="console"
+      v-html="consoleText"
+    ></div>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
 import { ipcRenderer } from "electron";
-import extEvent from "./extension/extension-event";
-import Start from '@/views/Start.vue'
-import Project from '@/views/Project.vue'
-import path from 'path'
-import fs from 'fs'
+import extEvent from "../extension/extension-event";
+import Start from "./views/Start.vue";
+import Project from "./views/Project.vue";
+import path from "path";
+import fs from "fs";
+import { extensionManager } from "../extension/extension-manager";
 
 interface RequireForm {
-  [ propName : string ] : any
+  [propName: string]: any;
 }
 
 export default defineComponent({
@@ -49,32 +57,14 @@ export default defineComponent({
       documentsPath: "",
       templateRequire: new Object() as RequireForm,
       page: "Start",
-      projectMenu: [
-        {
-          label: "menu.home",
-          submenu: [
-            {
-              rols: "menu.home.startpage",
-              click: () => {
-                this.page = 'Start'
-              }
-            },
-            {
-              rols: "menu.home.exit",
-              click: () => {
-                ipcRenderer.send('exit')
-              }
-            }
-          ]
-        }
-      ],
       errorCode: "",
-      warningShow: false
+      warningShow: false,
+      title: "NexWebEditor"
     };
   },
   components: {
     Start,
-    Project
+    Project,
   },
   mounted() {
     // event
@@ -88,9 +78,9 @@ export default defineComponent({
       });
       this.templateRequire[info.extension.id] = require;
     });
-    extEvent.on('projectLoaded', () => {
-      this.projectIsInit = true
-    })
+    extEvent.on("projectLoaded", () => {
+      this.projectIsInit = true;
+    });
 
     // scan folder
     const folder = ["extensions", "config", "tmp"];
@@ -108,28 +98,59 @@ export default defineComponent({
             }
             folder.forEach((name) => {
               fs.mkdir(path.join(editorPath, name), (err) => {
-                this.errorThrow("io");
+                if (err)
+                  this.errorThrow("io");
               });
             });
           });
-        } else {
           folder.forEach((name) => {
             if (files.indexOf(name) == -1) {
               fs.mkdir(path.join(editorPath, name), (err) => {
-                this.errorThrow("io");
+                if (err)
+                  this.errorThrow("io");
               });
             }
           });
           this.consoleText += "<p>[INFO]Load extension...</p>";
-          this.ExtensionInfo =
-            this.$extension.extensionManager.LoadExtensionFromLocal(editorPath);
-          this.ExtensionInfo.forEach((ExtInfo) => {
-            this.$extension.extensionManager.runExtension(
-              ExtInfo,
-              ExtInfo.path
-            );
+          (this.ExtensionInfo = extensionManager.LoadExtensionFromLocal(
+            process.env.NODE_ENV !== "development"
+              ? path
+                  .join(__dirname, "/src/extension/extension")
+                  .replace(/\\/g, "\\\\")
+              : path.join(process.cwd(), "/src/extension/extension"),
+            true,
+            this.$i18n
+          )),
+            this.ExtensionInfo.forEach((ExtInfo) => {
+              extensionManager.runExtension(ExtInfo, ExtInfo.path);
+            });
+          extensionManager.InitExt();
+          this.consoleText += `<p>[INFO]${this.ExtensionInfo.length} extension detected</p>`;
+          this.consoleText += `<p>[INFO]Complete</p>`;
+          this.startIsInit = true;
+        } else {
+          folder.forEach((name) => {
+            if (files.indexOf(name) == -1) {
+              fs.mkdir(path.join(editorPath, name), (err) => {
+                if (err)
+                  this.errorThrow("io");
+              });
+            }
           });
-          this.$extension.extensionManager.InitExt();
+          this.consoleText += "<p>[INFO]Load extension...</p>";
+          (this.ExtensionInfo = extensionManager.LoadExtensionFromLocal(
+            process.env.NODE_ENV !== "development"
+              ? path
+                  .join(__dirname, "/src/extension/extension")
+                  .replace(/\\/g, "\\\\")
+              : path.join(process.cwd(), "/src/extension/extension"),
+            true,
+            this.$i18n
+          )),
+            this.ExtensionInfo.forEach((ExtInfo) => {
+              extensionManager.runExtension(ExtInfo, ExtInfo.path);
+            });
+          extensionManager.InitExt();
           this.consoleText += `<p>[INFO]${this.ExtensionInfo.length} extension detected</p>`;
           this.consoleText += `<p>[INFO]Complete</p>`;
           this.startIsInit = true;
@@ -149,7 +170,7 @@ export default defineComponent({
       }
     },
   },
-})
+});
 </script>
 
 <style>
@@ -167,6 +188,21 @@ body {
 
 a {
   text-decoration: none;
+}
+
+#titleBar {
+  width: 100%;
+  height: 26px;
+  text-align: center;
+  padding: 5px;
+  color: #bbb;
+  font-size: 14px;
+  font-weight: 100;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  background-color: #333;
+  -webkit-app-region: drag;
+  user-select: none;
 }
 
 .console {
@@ -190,6 +226,7 @@ a {
 }
 *::-webkit-scrollbar-thumb {
   background-color: rgb(196, 196, 196);
+  border-radius: 50px;
 }
 *::-webkit-scrollbar-track {
   background-color: rgb(68, 67, 67);

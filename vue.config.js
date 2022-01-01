@@ -10,10 +10,6 @@ module.exports = {
             entry: './src/renderer/main.ts'
         }
     },
-    chainWebpack: (config) => {
-        config.resolve.alias
-            .set("@", resolve("./renderer/src"))
-    },
     pluginOptions: {
         i18n: {
             locale: 'zh_cn',

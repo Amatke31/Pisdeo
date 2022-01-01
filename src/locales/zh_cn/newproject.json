@@ -1,0 +1,7 @@
+{
+    "madeby": "这个模板由{author}开发",
+    "title": "用模板{template}来创建{framework}项目",
+    "projectname": "项目名称",
+    "projectlocation": "储存路径",
+    "create": "创建"
+}

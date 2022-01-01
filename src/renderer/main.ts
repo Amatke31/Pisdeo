@@ -5,7 +5,7 @@ import Msg from './components/msg.vue'
 import fs from 'fs'
 import path from 'path'
 import axios from 'axios'
-import extension from './extension/extension-vueplugin'
+import extension from '../extension/extension-vueplugin'
 
 const app = createApp(App)
 app.config.globalProperties.$version = JSON.parse(fs.readFileSync('./package.json').toString()).version

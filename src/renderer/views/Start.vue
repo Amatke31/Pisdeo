@@ -13,7 +13,7 @@
     </div>
     <div class="main">
       <div v-if="isInit" class="newProject">
-        <h2 class="npt">{{ $t("start.page.newproject") }}</h2>
+        <h2 class="npt">{{ $t("start.pageNewproject") }}</h2>
         <div class="npc">
           <div
             @click="newProject(item)"
@@ -42,7 +42,7 @@
         <div class="title">
           <h1>
             {{
-              $t("start.newproject.title", {
+              $t("newproject.title", {
                 framework: templateInfo.framework,
                 template: templateInfo.name,
               })
@@ -50,7 +50,7 @@
           </h1>
           <h5 style="color: #aaa">
             {{
-              $t("start.newproject.madeby", {
+              $t("newproject.madeby", {
                 author: templateInfo.extension.author,
               })
             }}
@@ -58,8 +58,8 @@
         </div>
         <div class="form">
           <div class="name">
-            <div>{{ $t("start.newproject.projectname") }}:</div>
-            <div>{{ $t("start.newproject.projectlocation") }}:</div>
+            <div>{{ $t("newproject.projectname") }}:</div>
+            <div>{{ $t("newproject.projectlocation") }}:</div>
             <div
               v-for="templateRequire in templateRequire[
                 templateInfo.extension.id
@@ -87,7 +87,7 @@
           </div>
         </div>
         <button class="create nex-btn btn-1" @click="createProject">
-          {{ $t("start.newproject.create") }}
+          {{ $t("newproject.create") }}
         </button>
       </div>
       <div class="mask" @click="closeNPW"></div>
@@ -373,13 +373,15 @@
 }
 </style>
 <script lang="ts">
-import { ipcRenderer } from "electron";
-import { defineComponent } from 'vue'
-import path from 'path'
-import getVersion from '../utils/getVersion'
+import { defineComponent } from "vue";
+import path from "path";
+import { extensionManager } from '../../extension/extension-manager'
+import ipc from '../utils/ipc'
+
+let documentsPath: any = ''
 
 interface RequireForm {
-  [ propName : string ] : any
+  [propName: string]: any;
 }
 
 export default defineComponent({
@@ -427,7 +429,7 @@ export default defineComponent({
         path: "",
       } as RequireForm,
       warningCss: "hide none",
-      documentsPath: ""
+      documentsPath: "",
     };
   },
   mounted: function () {},
@@ -435,20 +437,28 @@ export default defineComponent({
     warningShow() {
       if (this.warningShow == true) {
         this.warningCss = "hide";
-        setTimeout( () => {
+        setTimeout(() => {
           this.warningCss = "";
         }, 50);
       } else {
         this.warningCss = "hide";
-        setTimeout( () => {
+        setTimeout(() => {
           this.warningCss = "hide none";
         }, 300);
       }
     },
   },
+  async created() {
+    documentsPath = await ipc.getStorePath()
+  },
   methods: {
-    newProject: function (info: { name: string; framework: string; extension: { author: string; id: string; }; require: any}) {
-      info.require.forEach((parameter: { name: string; default: any; }) => {
+    newProject: function (info: {
+      name: string;
+      framework: string;
+      extension: { author: string; id: string };
+      require: any;
+    }) {
+      info.require.forEach((parameter: { name: string; default: any }) => {
         this.ProjectForm[parameter.name] = parameter.default;
       });
       this.templateInfo = info;
@@ -464,11 +474,12 @@ export default defineComponent({
         this.newProjectWCss = "hide none";
       }, 300);
     },
-    openAboutWindow: function () {
+    openAboutWindow: async function () {
+      const version: any = await ipc.getVersion()
       this.msgHTML = `
       <h1>NexWebEditor</h1>
       <p style="color:#ccc;">${this.$t("about.introduce")}</p>
-      <p style="color:#ccc;font-size:14px">Version: ${getVersion()}</p><br>
+      <p style="color:#ccc;font-size:14px">Version: ${version}</p><br>
       <p style="color:#ccc;">Released under the Apache LICENSE 2.0</p>
       <p style="color:#ccc;">Copyright © 2021 Amatke31</p>
       `;
@@ -478,22 +489,18 @@ export default defineComponent({
       this.msgIsShow = false;
     },
     changePath: function () {
-      ipcRenderer.send("chooseProjectPath");
-      ipcRenderer.on("gotProjectPath", (event, path) => {
-        this.ProjectForm.path = path;
-      });
+      ipc.chooseProjectPath((path) => {
+        this.ProjectForm.path = path
+      })
     },
     createProject: function () {
       this.$emit("goToProjectPage");
-      this.$extension.extensionManager.createProject(
-        this.templateInfo,
-        this.ProjectForm
-      );
+      extensionManager.createProject(this.templateInfo, this.ProjectForm);
       this.newProjectW = false;
     },
     openStore: function () {},
     openDoc: function (path: string) {
-      ipcRenderer.send("openDoc", path);
+      // ipcRenderer.send("openDoc", path);
     },
     cardImg: function (img: string) {
       if (img != undefined) {
@@ -503,5 +510,5 @@ export default defineComponent({
       }
     },
   },
-})
+});
 </script>
