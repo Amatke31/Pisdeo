@@ -480,7 +480,7 @@ export default defineComponent({
       <h1>NexWebEditor</h1>
       <p style="color:#ccc;">${this.$t("about.introduce")}</p>
       <p style="color:#ccc;font-size:14px">Version: ${version}</p><br>
-      <p style="color:#ccc;">Released under the Apache LICENSE 2.0</p>
+      <p style="color:#ccc;">Released under the AGPL-3.0</p>
       <p style="color:#ccc;">Copyright © 2021 Amatke31</p>
       `;
       this.msgIsShow = true;

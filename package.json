@@ -2,6 +2,7 @@
   "name": "nexwebeditor",
   "version": "0.0.5",
   "author": "NexWebEditor",
+  "license": "AGPL-3.0",
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -54,6 +55,5 @@
     "hooks": {
       "post-commit": "exec < /dev/tty && node scripts/check-version.js"
     }
-  },
-  "license": "Apache-2.0"
+  }
 }
