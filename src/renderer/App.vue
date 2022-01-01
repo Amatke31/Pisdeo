@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div id="titleBar">{{ title }}</div>
+    <div class="titleBar">
+      <div class="window-title">
+        {{ title }}
+      </div>
+    </div>
     <Start
       v-if="page === 'Start'"
       :extension="ExtensionInfo"
@@ -59,7 +63,7 @@ export default defineComponent({
       page: "Start",
       errorCode: "",
       warningShow: false,
-      title: "NexWebEditor"
+      title: "NexWebEditor",
     };
   },
   components: {
@@ -98,16 +102,14 @@ export default defineComponent({
             }
             folder.forEach((name) => {
               fs.mkdir(path.join(editorPath, name), (err) => {
-                if (err)
-                  this.errorThrow("io");
+                if (err) this.errorThrow("io");
               });
             });
           });
           folder.forEach((name) => {
             if (files.indexOf(name) == -1) {
               fs.mkdir(path.join(editorPath, name), (err) => {
-                if (err)
-                  this.errorThrow("io");
+                if (err) this.errorThrow("io");
               });
             }
           });
@@ -132,8 +134,7 @@ export default defineComponent({
           folder.forEach((name) => {
             if (files.indexOf(name) == -1) {
               fs.mkdir(path.join(editorPath, name), (err) => {
-                if (err)
-                  this.errorThrow("io");
+                if (err) this.errorThrow("io");
               });
             }
           });
@@ -190,19 +191,39 @@ a {
   text-decoration: none;
 }
 
-#titleBar {
+.titleBar {
   width: 100%;
-  height: 26px;
-  text-align: center;
-  padding: 5px;
-  color: #bbb;
-  font-size: 14px;
-  font-weight: 100;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  background-color: #333;
-  -webkit-app-region: drag;
+  height: 28px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 70px;
+  overflow: hidden;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
   user-select: none;
+  -webkit-user-select: none;
+  zoom: 1;
+  line-height: 22px;
+  display: flex;
+  background-color: rgb(60, 60, 60);
+}
+
+.window-title {
+  color: rgb(204, 204, 204);
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  zoom: 1;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0px);
+  max-width: calc(100vw - 160px);
+  flex: 0 1 auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .console {
@@ -221,12 +242,15 @@ a {
 
 *::-webkit-scrollbar {
   width: auto;
-  height: 4px;
+  height: 5px;
   border-radius: 50px;
 }
 *::-webkit-scrollbar-thumb {
   background-color: rgb(196, 196, 196);
   border-radius: 50px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(151, 151, 151);
 }
 *::-webkit-scrollbar-track {
   background-color: rgb(68, 67, 67);

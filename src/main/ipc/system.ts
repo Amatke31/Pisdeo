@@ -7,3 +7,4 @@ import version from '../utils/version'
 ipcMain.handle('getVersion', () => version.version)
 ipcMain.handle('getConfig', () => getConfig())
 ipcMain.handle('getStorePath', () => app.getPath('userData'))
+ipcMain.handle('getDocumentsPath', () => app.getPath('documents'))

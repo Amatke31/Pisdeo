@@ -7,7 +7,7 @@
           {{ $t("start.extensions") }}
         </div>
       </div>
-      <div class="about btn">
+      <div class="btn">
         <a @click="openAboutWindow">{{ $t("start.about") }}</a>
       </div>
     </div>
@@ -449,7 +449,7 @@ export default defineComponent({
     },
   },
   async created() {
-    documentsPath = await ipc.getStorePath()
+    documentsPath = await ipc.getDocumentsPath()
   },
   methods: {
     newProject: function (info: {
@@ -462,7 +462,7 @@ export default defineComponent({
         this.ProjectForm[parameter.name] = parameter.default;
       });
       this.templateInfo = info;
-      this.ProjectForm.path = path.join(this.documentsPath, "WebProject");
+      this.ProjectForm.path = path.join(documentsPath, "NexWebEditor");
       this.newProjectWCss = "hide";
       setTimeout(() => {
         this.newProjectWCss = "window";
@@ -488,10 +488,11 @@ export default defineComponent({
     close: function () {
       this.msgIsShow = false;
     },
-    changePath: function () {
-      ipc.chooseProjectPath((path) => {
-        this.ProjectForm.path = path
-      })
+    changePath: async function () {
+      const cppath = await ipc.chooseProjectPath()
+      if (cppath != '') {
+        this.ProjectForm.path = cppath
+      }
     },
     createProject: function () {
       this.$emit("goToProjectPage");
