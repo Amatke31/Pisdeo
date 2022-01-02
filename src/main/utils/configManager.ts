@@ -2,7 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import yaml from 'yaml'
 import { app } from 'electron'
-import WinSize from '../types/WinSize'
+import WinSize from '../../types/WinSize'
 
 const configFilePath = path.join(app.getPath('userData'), 'config.yaml')
 
