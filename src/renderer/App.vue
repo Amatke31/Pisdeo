@@ -75,7 +75,7 @@ export default defineComponent({
     },
     async created() {
         userConfig = await ipc.getConfig();
-		this.$i18n.locale = userConfig.language
+        this.$i18n.locale = userConfig.language;
     },
     mounted() {
         // event
@@ -152,7 +152,7 @@ a {
     justify-content: center;
     user-select: none;
     -webkit-user-select: none;
-	-webkit-app-region: drag;
+    -webkit-app-region: drag;
     zoom: 1;
     line-height: 22px;
     display: flex;
