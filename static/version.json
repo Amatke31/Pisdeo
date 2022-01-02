@@ -1,4 +1,7 @@
 {
-    "version": "0.0.1-develop",
-    "release": "develop"
+    "commitId": "Manual Build",
+    "ref": "Manual Build",
+    "isProduction": false,
+    "buildTime": "Manual Build",
+    "version": "Manual Build"
 }
