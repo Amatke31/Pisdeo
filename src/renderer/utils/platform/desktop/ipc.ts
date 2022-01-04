@@ -1,4 +1,15 @@
-import { ipcRenderer } from 'electron'
+// import { ipcRenderer } from 'electron'
+import platform from '../platform'
+
+let ipcRenderer: any = {
+    invoke: async function(msg: string) {
+        return 'Not desktop environment'
+    }
+}
+
+if (platform === 'desktop') {
+    ipcRenderer = require('electron').ipcRenderer
+}
 
 const ipc = {
     async getVersion(): Promise<string> {
@@ -24,3 +35,4 @@ const ipc = {
 }
 
 export default ipc
+export { ipc }

@@ -21,7 +21,7 @@ module.exports = {
             fullInstall: true
         },
         electronBuilder: {
-            mainProcessFile: 'src/main/index.ts',
+            mainProcessFile: 'src/desktop/index.ts',
             nodeIntegration: true,
             builderOptions: {
                 asar: false,

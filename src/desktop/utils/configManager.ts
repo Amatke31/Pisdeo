@@ -7,8 +7,9 @@ import WinSize from '../../types/WinSize'
 const configFilePath = path.join(app.getPath('userData'), 'config.yaml')
 
 type Config = {
+    init: Boolean
     configVersion: string
-    language: string
+    language: 'ask' | string
     winSize: WinSize
     theme: string
     updateCheck: 'ask' | boolean
@@ -25,8 +26,10 @@ const defaultWinSize: WinSize = {
     height: 768,
     max: false
 }
+
 const defaultConfig: Config = {
-    configVersion: '0.0.1-develop',
+    init: false,
+    configVersion: 'Manual Build',
     language: 'en_us',
     winSize: defaultWinSize,
     theme: 'auto',
