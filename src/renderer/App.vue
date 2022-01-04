@@ -1,12 +1,13 @@
 <template>
     <div>
-        <div class="titleBar">
+        <div v-show="platform === 'desktop'" class="titleBar">
             <div class="window-title">
                 {{ title }}
             </div>
         </div>
+        <Welcome v-if="page === 'Welcome'" />
         <Start
-            v-if="page === 'Start'"
+            v-else-if="page === 'Start'"
             :extension="ExtensionInfo"
             :isInit="startIsInit"
             :project="project"
@@ -37,16 +38,18 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { ipcRenderer } from "electron";
 import extEvent from "../extension/extension-event";
 import Start from "./views/Start.vue";
 import Project from "./views/Project.vue";
+import Welcome from "./views/Welcome.vue";
 import path from "path";
-import fs from "fs";
-import ipc from "./utils/ipc";
+import ipc from "./utils/platform/desktop/ipc";
 import { extensionManager } from "../extension/extension-manager";
+import platform from "./utils/platform/platform";
 
-let userConfig: any = {};
+let userConfig: any = {
+    language: "en_us",
+};
 
 interface RequireForm {
     [propName: string]: any;
@@ -67,14 +70,18 @@ export default defineComponent({
             errorCode: "",
             warningShow: false,
             title: "NexWebEditor",
+            platform,
         };
     },
     components: {
         Start,
         Project,
+        Welcome,
     },
     async created() {
-        userConfig = await ipc.getConfig();
+        if (platform === "desktop") {
+            userConfig = await ipc.getConfig();
+        }
         this.$i18n.locale = userConfig.language;
     },
     mounted() {
@@ -94,31 +101,24 @@ export default defineComponent({
         extEvent.on("projectLoaded", () => {
             this.projectIsInit = true;
         });
-
-        // scan folder
-        const folder = ["extensions", "config", "tmp"];
-        ipcRenderer.send("Init", "Start"); //
-        ipcRenderer.on("Init", (event, appInfo) => {
-            this.homePath = appInfo.path.home;
-            this.documentsPath = appInfo.path.documents;
-            this.consoleText += "<p>[INFO]Load extension...</p>";
-            (this.ExtensionInfo = extensionManager.LoadExtensionFromLocal(
-                process.env.NODE_ENV !== "development"
-                    ? path
-                          .join(__dirname, "/src/extension/extension")
-                          .replace(/\\/g, "\\\\")
-                    : path.join(process.cwd(), "/src/extension/extension"),
-                true,
-                this.$i18n
-            )),
-                this.ExtensionInfo.forEach((ExtInfo) => {
-                    extensionManager.runExtension(ExtInfo, ExtInfo.path);
-                });
-            extensionManager.InitExt();
-            this.consoleText += `<p>[INFO]${this.ExtensionInfo.length} extension detected</p>`;
-            this.consoleText += `<p>[INFO]Complete</p>`;
-            this.startIsInit = true;
-        });
+        
+        this.consoleText += "<p>[INFO]Load extension...</p>";
+        (this.ExtensionInfo = extensionManager.LoadExtensionFromLocal(
+            process.env.NODE_ENV !== "development"
+                ? path
+                      .join(__dirname, "/src/extension/extension")
+                      .replace(/\\/g, "\\\\")
+                : path.join(process.cwd(), "/src/extension/extension"),
+            true,
+            this.$i18n
+        )),
+            this.ExtensionInfo.forEach((ExtInfo) => {
+                extensionManager.runExtension(ExtInfo, ExtInfo.path);
+            });
+        extensionManager.InitExt();
+        this.consoleText += `<p>[INFO]${this.ExtensionInfo.length} extension detected</p>`;
+        this.consoleText += `<p>[INFO]Complete</p>`;
+        this.startIsInit = true;
     },
 });
 </script>

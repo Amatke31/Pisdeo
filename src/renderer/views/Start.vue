@@ -385,10 +385,12 @@
 import { defineComponent } from "vue";
 import path from "path";
 import { extensionManager } from "../../extension/extension-manager";
-import ipc from "../utils/ipc";
+import ipc from "../utils/platform/desktop/ipc";
+import { getVersion } from "../utils/env";
+import platform from "../utils/platform/platform";
 
 let documentsPath: string = "";
-let version: string = "";
+let version: any = "Manual Build";
 
 interface RequireForm {
     [propName: string]: any;
@@ -440,6 +442,7 @@ export default defineComponent({
             } as RequireForm,
             warningCss: "hide none",
             documentsPath: "",
+            platform: "web",
         };
     },
     mounted: function () {},
@@ -459,8 +462,10 @@ export default defineComponent({
         },
     },
     async created() {
-        documentsPath = await ipc.getDocumentsPath();
-        version = await ipc.getVersion();
+        if (platform === "desktop") {
+            documentsPath = await ipc.getDocumentsPath();
+        }
+        version = await getVersion();
     },
     methods: {
         newProject: function (info: {
@@ -493,21 +498,24 @@ export default defineComponent({
         },
         openAboutWindow: function () {
             this.msgHTML = `
-      <h1>NexWebEditor</h1>
-      <p style="color:#ccc;">${this.$t("about.introduce")}</p>
-      <p style="color:#ccc;font-size:14px">Version: ${version}</p><br>
-      <p style="color:#ccc;">Released under the AGPL-3.0</p>
-      <p style="color:#ccc;">Copyright © 2021-2022 Amatke31</p>
-      `;
+                <h1>NexWebEditor</h1>
+                <p style="color:#ccc;">${this.$t("about.introduce")}</p>
+                <p style="color:#ccc;font-size:14px">Version: ${version}</p>
+                <p style="color:#ccc;font-size:14px">Environment: ${platform}</p><br>
+                <p style="color:#ccc;">Released under the AGPL-3.0</p>
+                <p style="color:#ccc;">Copyright © 2021-2022 Amatke31</p>
+            `;
             this.msgIsShow = true;
         },
         close: function () {
             this.msgIsShow = false;
         },
         changePath: async function () {
-            const cppath = await ipc.chooseProjectPath();
-            if (cppath != "") {
-                this.ProjectForm.path = cppath;
+            if (platform === "desktop") {
+                const cppath = await ipc.chooseProjectPath();
+                if (cppath != "") {
+                    this.ProjectForm.path = cppath;
+                }
             }
         },
         createProject: function () {

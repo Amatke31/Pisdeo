@@ -4,6 +4,7 @@ import path from 'path'
 import vm from 'vm'
 import { extensionApi } from './extension-api'
 import extEvent from './extension-event'
+import platform from '@/renderer/utils/platform/platform'
 
 var instance = new Array()
 var idList: any = new Array()
@@ -16,38 +17,40 @@ class ExtensionManager {
      * @method i18n vue-i18n
      */
     LoadExtensionFromLocal(extensionPath: string, develop?: boolean, i18n?: any) {
-        const ExtensionInfo: any[] = []
-        const extensionFolderPath = path.join(extensionPath)
-        const extensionFolderList = fs.readdirSync(extensionFolderPath)
-        extensionFolderList.forEach((ExtName) => {
-            if (fs.statSync(path.join(extensionFolderPath, ExtName)).isDirectory()) {
-                const extensionSourcePath = develop? path.join(extensionFolderPath, ExtName, 'build') : path.join(extensionFolderPath, ExtName)
-                const extensionSource = fs.readdirSync(extensionSourcePath)
-                if (extensionSource.indexOf("info.json") != -1) {
-                    var info = JSON.parse(fs.readFileSync(path.join(extensionSourcePath, "info.json")).toString())
-                    info.path = path.join(extensionSourcePath)
-                    g_extensionInfo.push(info)
+        if (platform === "desktop") {
+            const ExtensionInfo: any[] = []
+            const extensionFolderPath = path.join(extensionPath)
+            const extensionFolderList = fs.readdirSync(extensionFolderPath)
+            extensionFolderList.forEach((ExtName) => {
+                if (fs.statSync(path.join(extensionFolderPath, ExtName)).isDirectory()) {
+                    const extensionSourcePath = develop ? path.join(extensionFolderPath, ExtName, 'build') : path.join(extensionFolderPath, ExtName)
+                    const extensionSource = fs.readdirSync(extensionSourcePath)
+                    if (extensionSource.indexOf("info.json") != -1) {
+                        var info = JSON.parse(fs.readFileSync(path.join(extensionSourcePath, "info.json")).toString())
+                        info.path = path.join(extensionSourcePath)
+                        g_extensionInfo.push(info)
 
-                    //load locale
-                    if (Boolean(i18n) && extensionSource.indexOf("locales") != -1) {
-                        const locales = fs.readdirSync(path.join(extensionSourcePath, 'locales'))
-                        const messages: any = []
-                        locales.forEach(key => {
-                            var matched = key.match(/[A-Za-z0-9-_,\s]+\.json$/i)
-                            if (matched) {
-                                const langClass = path.basename(key, '.json');
-                                const locale = JSON.parse(fs.readFileSync(path.join(extensionSourcePath, "locales", key)).toString())
-                                messages[langClass] = locale
-                                i18n.mergeLocaleMessage(matched, locale)
-                            }
-                        })
+                        //load locale
+                        if (Boolean(i18n) && extensionSource.indexOf("locales") != -1) {
+                            const locales = fs.readdirSync(path.join(extensionSourcePath, 'locales'))
+                            const messages: any = []
+                            locales.forEach(key => {
+                                var matched = key.match(/[A-Za-z0-9-_,\s]+\.json$/i)
+                                if (matched) {
+                                    const langClass = path.basename(key, '.json');
+                                    const locale = JSON.parse(fs.readFileSync(path.join(extensionSourcePath, "locales", key)).toString())
+                                    messages[langClass] = locale
+                                    i18n.mergeLocaleMessage(matched, locale)
+                                }
+                            })
+                        }
+                    }
+                    else {
+                        console.log(`Cannot find "info.json" in ${ExtName}`)
                     }
                 }
-                else {
-                    console.log(`Cannot find "info.json" in ${ExtName}`)
-                }
-            }
-        })
+            })
+        }
         return g_extensionInfo
     }
 
