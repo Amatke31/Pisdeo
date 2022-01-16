@@ -2,34 +2,38 @@ import getStaticPath from '../../../utils/getStaticPath'
 import fs from 'fs'
 import path from 'path'
 import vm from 'vm'
-import { extensionApi } from './extension-api'
+import { ExtensionAPI } from './extension-api'
 import extEvent from './extension-event'
 import platform from '@/renderer/utils/platform/platform'
-import module from './module'
+import module from '../platform/desktop/module'
 
-var instance = new Array()
-var idList: any = new Array()
-var g_extensionInfo = new Array();
+let instance = new Array()
+let idList: any = new Array()
 
 class ExtensionManager {
+    allExtension: any
+    constructor() {
+        this.allExtension = []
+    }
+
     /**
      * Load installed extension
      * @param {string} extensionPath NexWebEditor data path
      * @method i18n vue-i18n
      */
-    LoadExtensionFromLocal(extensionPath: string, develop?: boolean, i18n?: any) {
+    LoadExtensionFromLocal(extensionPath: string, i18n?: any) {
         if (platform === "desktop") {
             const ExtensionInfo: any[] = []
             const extensionFolderPath = path.join(extensionPath)
             const extensionFolderList = fs.readdirSync(extensionFolderPath)
             extensionFolderList.forEach((ExtName) => {
                 if (fs.statSync(path.join(extensionFolderPath, ExtName)).isDirectory()) {
-                    const extensionSourcePath = develop ? path.join(extensionFolderPath, ExtName, 'build') : path.join(extensionFolderPath, ExtName)
+                    const extensionSourcePath = path.join(extensionFolderPath, ExtName)
                     const extensionSource = fs.readdirSync(extensionSourcePath)
                     if (extensionSource.indexOf("info.json") != -1) {
                         var info = JSON.parse(fs.readFileSync(path.join(extensionSourcePath, "info.json")).toString())
                         info.path = path.join(extensionSourcePath)
-                        g_extensionInfo.push(info)
+                        this.allExtension.push(info)
 
                         //load locale
                         if (Boolean(i18n) && extensionSource.indexOf("locales") != -1) {
@@ -52,7 +56,7 @@ class ExtensionManager {
                 }
             })
         }
-        return g_extensionInfo
+        return this.allExtension
     }
 
     /**
@@ -61,18 +65,11 @@ class ExtensionManager {
      * @param {String} sourcePath Extension path
      */
     runExtension(extensionInfo: { id: any }, sourcePath: string) {
-        const nweExtensionAPI = extensionApi
         const id = extensionInfo.id
-        // const script = new vm.Script(fs.readFileSync(path.join(sourcePath, "main.js")).toString());
-        // const context = vm.createContext({ module: { exports: {} }, nweExtensionAPI, extensionInfo, console, path });
-        // script.runInContext(context);
-        // const ExtensionPrototype = context.module.exports;
-        // console.log(path.resolve(sourcePath, "main.js"))
-        // const ExtensionPrototype = require(path.resolve(sourcePath, "main.js"));
-        // instance.push(new ExtensionPrototype())
-        // idList[id] = instance.length - 1
         const mod = module.loadModule(path.resolve(sourcePath, "main.js"), sourcePath)
-        console.log(mod)
+        new Function(mod(new ExtensionAPI(extensionInfo)))
+        instance.push(mod)
+        idList[id] = instance.length - 1
     }
 
     /**
@@ -105,8 +102,7 @@ const extensionManager = new ExtensionManager()
 
 export default {
     extensionManager,
-    instance,
-    g_extensionInfo
+    instance
 }
 
-export { extensionManager, g_extensionInfo, instance }
+export { extensionManager, instance }

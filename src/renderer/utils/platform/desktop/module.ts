@@ -1,13 +1,9 @@
 const Module = require('module')
-const path = require('path')
+import path from 'path'
 
-const semver = require('semver')
+import semver from 'semver'
 
-// https://github.com/benmosher/eslint-plugin-import/pull/1591
-// https://github.com/benmosher/eslint-plugin-import/pull/1602
-// Polyfill Node's `Module.createRequireFromPath` if not present (added in Node v10.12.0)
-// Use `Module.createRequire` if available (added in Node v12.2.0)
-// eslint-disable-next-line node/no-deprecated-api
+
 const createRequire = Module.createRequire || Module.createRequireFromPath || function (filename: any) {
   const mod = new Module(filename, null)
   mod.filename = filename
@@ -18,7 +14,7 @@ const createRequire = Module.createRequire || Module.createRequireFromPath || fu
   return mod.exports
 }
 
-function resolveFallback (request: any, options: { paths: string | any[] }) {
+function resolveFallback(request: any, options: { paths: string | any[] }) {
   const isMain = false
   const fakeParent = new Module('', null)
 
@@ -64,7 +60,7 @@ exports.resolveModule = function (request: string, context: string) {
     } catch (e) {
       resolvedPath = resolve(request, { paths: [context] })
     }
-  } catch (e) {}
+  } catch (e) { }
   return resolvedPath
 }
 
@@ -89,7 +85,7 @@ exports.clearModule = function (request: any, context: any) {
   }
 }
 
-function clearRequireCache (id: string, map = new Map()) {
+function clearRequireCache(id: string, map = new Map()) {
   const module = require.cache[id]
   if (module) {
     map.set(id, true)

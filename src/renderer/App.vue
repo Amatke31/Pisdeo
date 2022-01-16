@@ -89,34 +89,34 @@ export default defineComponent({
         extEvent.on("addTemplate", (info) => {
             this.project.push(info);
             let require = new Array();
-            info.require.forEach((parameter: any) => {
-                require.push(
-                    typeof parameter === "object"
-                        ? parameter
-                        : { name: parameter }
-                );
-            });
+            if (info.require) {
+                info.require.forEach((parameter: any) => {
+                    require.push(
+                        typeof parameter === "object"
+                            ? parameter
+                            : { name: parameter }
+                    );
+                });
+            }
             this.templateRequire[info.extension.id] = require;
         });
         extEvent.on("projectLoaded", () => {
             this.projectIsInit = true;
         });
-        
+
         this.consoleText += "<p>[INFO]Load extension...</p>";
-        (this.ExtensionInfo = extensionManager.LoadExtensionFromLocal(
+        let extensioninfo = extensionManager.LoadExtensionFromLocal(
             process.env.NODE_ENV !== "development"
-                ? path
-                      .join(__dirname, "/src/extension/")
-                      .replace(/\\/g, "\\\\")
+                ? path.join(__dirname, "/src/extension/").replace(/\\/g, "\\\\")
                 : path.join(process.cwd(), "/src/extension/"),
-            false,
             this.$i18n
-        )),
-            this.ExtensionInfo.forEach((ExtInfo) => {
-                extensionManager.runExtension(ExtInfo, ExtInfo.path);
-            });
+        );
+        this.ExtensionInfo = extensioninfo;
+        extensioninfo.forEach((ExtInfo: any) => {
+            extensionManager.runExtension(ExtInfo, ExtInfo.path);
+        });
         extensionManager.InitExt();
-        this.consoleText += `<p>[INFO]${this.ExtensionInfo.length} extension detected</p>`;
+        this.consoleText += `<p>[INFO]${extensioninfo.length} extension detected</p>`;
         this.consoleText += `<p>[INFO]Complete</p>`;
         this.startIsInit = true;
     },

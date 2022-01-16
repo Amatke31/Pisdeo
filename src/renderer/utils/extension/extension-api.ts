@@ -41,6 +41,11 @@ function copyDir(src: string, dist: fs.PathLike, callback?: any) {
 }
 
 class ExtensionAPI {
+    extensionInfo: object;
+    constructor(extensionInfo: object) {
+        this.extensionInfo = extensionInfo
+    }
+
     copyTemplateToProject(templatePath: fs.PathLike, extensionInfo: any, project: { path: string; name: string; }) {
         console.log(extensionInfo)
         console.log(fs.readdirSync(templatePath))
@@ -58,13 +63,18 @@ class ExtensionAPI {
         }
     }
 
-    registerTemplate(info: any) {
-        extEvent.emit('addTemplate', info)
+    addTemplate(templateInfo: any) {
+        templateInfo = {
+            name: templateInfo.name,
+            id: templateInfo.id,
+            require: templateInfo.require ? templateInfo.require : [],
+            framework: templateInfo.framework ? templateInfo.framework : "",
+            extension: this.extensionInfo
+        }
+        extEvent.emit('addTemplate', templateInfo)
     }
 }
 
-const extensionApi = new ExtensionAPI()
-
 export {
-    extensionApi
+    ExtensionAPI
 }
