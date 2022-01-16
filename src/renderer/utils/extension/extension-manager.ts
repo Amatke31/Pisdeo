@@ -1,10 +1,11 @@
-import getStaticPath from '../utils/getStaticPath'
+import getStaticPath from '../../../utils/getStaticPath'
 import fs from 'fs'
 import path from 'path'
 import vm from 'vm'
 import { extensionApi } from './extension-api'
 import extEvent from './extension-event'
 import platform from '@/renderer/utils/platform/platform'
+import module from './module'
 
 var instance = new Array()
 var idList: any = new Array()
@@ -62,12 +63,16 @@ class ExtensionManager {
     runExtension(extensionInfo: { id: any }, sourcePath: string) {
         const nweExtensionAPI = extensionApi
         const id = extensionInfo.id
-        const script = new vm.Script(fs.readFileSync(path.join(sourcePath, "main.js")).toString());
-        const context = vm.createContext({ module: { exports: {} }, nweExtensionAPI, extensionInfo, console, path });
-        script.runInContext(context);
-        const ExtensionPrototype = context.module.exports;
-        instance.push(new ExtensionPrototype())
-        idList[id] = instance.length - 1
+        // const script = new vm.Script(fs.readFileSync(path.join(sourcePath, "main.js")).toString());
+        // const context = vm.createContext({ module: { exports: {} }, nweExtensionAPI, extensionInfo, console, path });
+        // script.runInContext(context);
+        // const ExtensionPrototype = context.module.exports;
+        // console.log(path.resolve(sourcePath, "main.js"))
+        // const ExtensionPrototype = require(path.resolve(sourcePath, "main.js"));
+        // instance.push(new ExtensionPrototype())
+        // idList[id] = instance.length - 1
+        const mod = module.loadModule(path.resolve(sourcePath, "main.js"), sourcePath)
+        console.log(mod)
     }
 
     /**

@@ -384,7 +384,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import path from "path";
-import { extensionManager } from "../../extension/extension-manager";
+import { extensionManager } from "../utils/extension/extension-manager";
 import ipc from "../utils/platform/desktop/ipc";
 import { getVersion } from "../utils/env";
 import platform from "../utils/platform/platform";

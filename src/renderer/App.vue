@@ -38,13 +38,13 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import extEvent from "../extension/extension-event";
+import extEvent from "./utils/extension/extension-event";
 import Start from "./views/Start.vue";
 import Project from "./views/Project.vue";
 import Welcome from "./views/Welcome.vue";
 import path from "path";
 import ipc from "./utils/platform/desktop/ipc";
-import { extensionManager } from "../extension/extension-manager";
+import { extensionManager } from "./utils/extension/extension-manager";
 import platform from "./utils/platform/platform";
 
 let userConfig: any = {
@@ -106,10 +106,10 @@ export default defineComponent({
         (this.ExtensionInfo = extensionManager.LoadExtensionFromLocal(
             process.env.NODE_ENV !== "development"
                 ? path
-                      .join(__dirname, "/src/extension/extension")
+                      .join(__dirname, "/src/extension/")
                       .replace(/\\/g, "\\\\")
-                : path.join(process.cwd(), "/src/extension/extension"),
-            true,
+                : path.join(process.cwd(), "/src/extension/"),
+            false,
             this.$i18n
         )),
             this.ExtensionInfo.forEach((ExtInfo) => {

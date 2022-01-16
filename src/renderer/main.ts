@@ -5,7 +5,6 @@ import Msg from './components/msg.vue'
 import fs from 'fs'
 import path from 'path'
 import axios from 'axios'
-import extension from '../extension/extension-vueplugin'
 import platform from './utils/platform/platform'
 
 const app = createApp(App)
@@ -15,5 +14,4 @@ if (platform === "desktop") {
 app.config.globalProperties.$fs = fs
 app.config.globalProperties.$path = path
 app.config.globalProperties.$axios = axios
-// app.use(extension)
 app.use(i18n).component('msg', Msg).mount('#_nexwebeditor')

@@ -27,7 +27,7 @@ module.exports = {
                 asar: false,
                 appId: "org.nexwebeditor.nexwebeditor",
                 extraResources: {
-                    from: "./src/extension/extension/",
+                    from: "./src/extension/",
                     to: "./extension/"
                 }
             }
