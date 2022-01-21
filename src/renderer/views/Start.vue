@@ -22,7 +22,7 @@
                         class="card"
                     >
                         <div
-                            v-if="item.extension.author == 'NexWebEditor'"
+                            v-if="item.extension.author == 'NexWebDesigner'"
                             class="img"
                             :style="cardImg(item.extension.icon)"
                         ></div>
@@ -250,7 +250,6 @@
     opacity: 0;
 }
 .nav {
-    -webkit-app-region: drag;
     padding: 12px;
     background-color: #222;
     display: flex;
@@ -484,7 +483,7 @@ export default defineComponent({
                 }
             );
             this.templateInfo = info;
-            this.ProjectForm.path = path.join(documentsPath, "NexWebEditor");
+            this.ProjectForm.path = path.join(documentsPath, "NexWebDesigner");
             this.newProjectWCss = "hide";
             setTimeout(() => {
                 this.newProjectWCss = "window";
@@ -498,7 +497,7 @@ export default defineComponent({
         },
         openAboutWindow: function () {
             this.msgHTML = `
-                <h1>NexWebEditor</h1>
+                <h1>NexWebDesigner</h1>
                 <p style="color:#ccc;">${this.$t("about.introduce")}</p>
                 <p style="color:#ccc;font-size:14px">Version: ${version}</p>
                 <p style="color:#ccc;font-size:14px">Environment: ${platform}</p><br>
@@ -520,13 +519,9 @@ export default defineComponent({
         },
         createProject: function () {
             this.$emit("goToProjectPage");
-            extensionManager.createProject(this.templateInfo, this.ProjectForm);
             this.newProjectW = false;
         },
         openStore: function () {},
-        openDoc: function (path: string) {
-            // ipcRenderer.send("openDoc", path);
-        },
         cardImg: function (img: string) {
             if (img != undefined) {
                 return `background-image: url(${img})`;

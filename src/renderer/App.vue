@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import extEvent from "./utils/extension/extension-event";
+import event from "./utils/event";
 import Start from "./views/Start.vue";
 import Project from "./views/Project.vue";
 import Welcome from "./views/Welcome.vue";
@@ -69,7 +69,7 @@ export default defineComponent({
             page: "Start",
             errorCode: "",
             warningShow: false,
-            title: "NexWebEditor",
+            title: "NexWebDesigner",
             platform,
         };
     },
@@ -86,7 +86,7 @@ export default defineComponent({
     },
     mounted() {
         // event
-        extEvent.on("addTemplate", (info) => {
+        event.on("addTemplate", (info) => {
             this.project.push(info);
             let require = new Array();
             if (info.require) {
@@ -100,7 +100,7 @@ export default defineComponent({
             }
             this.templateRequire[info.extension.id] = require;
         });
-        extEvent.on("projectLoaded", () => {
+        event.on("projectLoaded", () => {
             this.projectIsInit = true;
         });
 
@@ -115,7 +115,6 @@ export default defineComponent({
         extensioninfo.forEach((ExtInfo: any) => {
             extensionManager.runExtension(ExtInfo, ExtInfo.path);
         });
-        extensionManager.InitExt();
         this.consoleText += `<p>[INFO]${extensioninfo.length} extension detected</p>`;
         this.consoleText += `<p>[INFO]Complete</p>`;
         this.startIsInit = true;

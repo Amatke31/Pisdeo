@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import vm from 'vm'
 import { ExtensionAPI } from './extension-api'
-import extEvent from './extension-event'
+import event from '../event'
 import platform from '@/renderer/utils/platform/platform'
 import module from '../platform/desktop/module'
 
@@ -70,30 +70,6 @@ class ExtensionManager {
         new Function(mod(new ExtensionAPI(extensionInfo)))
         instance.push(mod)
         idList[id] = instance.length - 1
-    }
-
-    /**
-     * InitExt
-     */
-    InitExt() {
-        var project = new Array()
-        instance.forEach(
-            (instance) => {
-                if (instance.onInit) {
-                    project.push(instance.onInit())
-                }
-            }
-        )
-    }
-
-    /**
-     * Create Project
-     */
-    createProject(templateInfo: any, projectInfo: any) {
-        var project = instance[idList[templateInfo.extension.id]]
-        project.useTemplate(projectInfo, templateInfo, (res: { complete: boolean }) => {
-            extEvent.emit('projectLoaded', res.complete === true ? "successed" : "failed")
-        })
     }
 }
 
