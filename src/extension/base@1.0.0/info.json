@@ -1,7 +1,7 @@
 {
-    "id": "org.nexwebeditor.base",
+    "id": "org.nexwebdesigner.base",
     "name": "Base",
-    "author": "NexWebEditor",
+    "author": "NexWebDesigner",
     "version": "1.0.0",
     "icon": "assets/img/staticProject.svg",
     "inset_icon": "assets/img/staticProject.svg"
