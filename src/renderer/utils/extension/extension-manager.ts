@@ -5,7 +5,6 @@ import vm from 'vm'
 import { ExtensionAPI } from './extension-api'
 import event from '../event'
 import platform from '@/renderer/utils/platform/platform'
-import module from '../platform/desktop/module'
 
 let instance = new Array()
 let idList: any = new Array()
@@ -65,10 +64,14 @@ class ExtensionManager {
      * @param {String} sourcePath Extension path
      */
     runExtension(extensionInfo: { id: any }, sourcePath: string) {
+        const nweExtensionAPI = new ExtensionAPI(extensionInfo)
         const id = extensionInfo.id
-        const mod = module.loadModule(path.resolve(sourcePath, "main.js"), sourcePath)
-        new Function(mod(new ExtensionAPI(extensionInfo)))
-        instance.push(mod)
+        const script = new vm.Script(fs.readFileSync(path.join(sourcePath, "main.js")).toString());
+        const context = vm.createContext({ module: { exports: {} }, nweExtensionAPI, extensionInfo, console, path });
+        script.runInContext(context);
+        const ExtensionPrototype = context.module.exports;
+        const ins = new Function(ExtensionPrototype(new ExtensionAPI(extensionInfo)))
+        instance.push(ins)
         idList[id] = instance.length - 1
     }
 }

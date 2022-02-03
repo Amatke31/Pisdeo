@@ -1,8 +1,0 @@
-{
-    "id": "org.nexwebeditor.base",
-    "name": "Base",
-    "author": "NexWebEditor",
-    "version": "1.0.0",
-    "icon": "assets/img/staticProject.svg",
-    "inset_icon": "assets/img/staticProject.svg"
-}
