@@ -132,7 +132,8 @@ export default defineComponent({
 }
 
 body {
-    background-color: rgb(24, 24, 24);
+    background-color: rgb(24, 24, 24) !important;
+    min-height: 100vh;
 }
 
 a {

@@ -1,0 +1,34 @@
+.n-btn {
+    width: 130px;
+    height: 40px;
+    color: rgb(209, 209, 209);
+    border-radius: 5px;
+    font-family: "Lato", sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+    outline: none;
+    padding: 0;
+    border: none;
+    background-color: #3a3a3a;
+    line-height: 42px;
+
+    .n-btn__content {
+        color: #fff;
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+    }
+
+    &:hover,
+    &:focus {
+        background: rgb(59, 59, 59);
+        box-shadow: inset 2px 2px 2px 0px rgba(51, 51, 51, 0.5),
+            7px 7px 20px 0px rgba(0, 0, 0, 0.1),
+            4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+    }
+}

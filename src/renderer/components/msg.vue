@@ -75,7 +75,7 @@ export default {
   z-index: 3000;
   display: flex;
   flex-direction: column;
-  background-color: rgba(50, 50, 50, 0.7);
+  background-color: rgba(50, 50, 50, 0.9);
   padding: 36px;
   transition: .3s;
   max-height: 90vh!important;
@@ -93,9 +93,9 @@ export default {
   transition: .3s;
   position: fixed;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 28px);
   left: 0;
-  top: 0;
+  top: 28px;
   opacity: 1;
   overflow: hidden;
   z-index: 2000;

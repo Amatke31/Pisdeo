@@ -4374,6 +4374,11 @@ element-plus@^1.0.2-beta.28:
     normalize-wheel "^1.0.1"
     resize-observer-polyfill "^1.5.1"
 
+element-theme-dark@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.npmjs.org/element-theme-dark/-/element-theme-dark-1.0.3.tgz#6de433f10f6286ca1576827f0bafee34ce12a2d5"
+  integrity sha512-za/9dIJYEWF8coKbDCF2VWvu9k9xT3UkLDrQdDaY3c6FD24LHxEMM+LHJeRif8nx9eIpLDwOcyOGELZbhw9Q9w==
+
 elliptic@^6.5.3:
   version "6.5.4"
   resolved "https://registry.nlark.com/elliptic/download/elliptic-6.5.4.tgz#da37cebd31e79a1367e941b592ed1fbebd58abbb"
