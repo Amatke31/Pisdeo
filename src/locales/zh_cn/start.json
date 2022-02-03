@@ -1,6 +1,6 @@
 {
-    "title": "启动",
-    "about": "关于",
-    "pageNewproject": "新项目",
-    "extensions": "扩展"
+    "start.title": "启动",
+    "start.about": "关于",
+    "start.pageNewproject": "新项目",
+    "start.extensions": "扩展"
 }

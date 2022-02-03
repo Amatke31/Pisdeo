@@ -1,6 +1,6 @@
 {
-    "title": "Start",
-    "about": "About",
-    "pageNewproject": "New Project",
-    "extensions": "Extensions"
+    "start.title": "Start",
+    "start.about": "About",
+    "start.pageNewproject": "New Project",
+    "start.extensions": "Extensions"
 }

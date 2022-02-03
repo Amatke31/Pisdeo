@@ -11,9 +11,7 @@ function loadLocaleMessages() {
 		const matched = key.match(/([A-Za-z0-9-_]+)\./i)
 		if (langMatched && langMatched.length > 1 && matched) {
 			const locale = langMatched[1]
-			const langClass = matched[1]
-			messages[locale] = messages[locale] ? messages[locale] : {}
-			messages[locale][langClass] = locales(key).default
+			messages[locale] = messages[locale] ? Object.assign(messages[locale], locales(key).default) : locales(key).default
 		}
 	})
 	return messages
