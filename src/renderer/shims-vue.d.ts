@@ -5,4 +5,8 @@ declare module '*.vue' {
   export default component
 }
 
+declare module 'vuetify'
+declare module 'vuetify/lib/components'
+declare module 'vuetify/lib/directives'
+
 declare module "element-plus"
