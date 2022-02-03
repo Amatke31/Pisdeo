@@ -18,4 +18,18 @@ async function getConfig() {
     return version
 }
 
-export { getVersion, getConfig }
+async function setLocale(lang: string) {
+    if (platform === 'desktop') {
+        version = await ipc.setLocale(lang);
+    }
+    return version
+}
+
+async function getLocale() {
+    if (platform === 'desktop') {
+        version = await ipc.getLocale();
+    }
+    return version
+}
+
+export { getVersion, getConfig, getLocale, setLocale }

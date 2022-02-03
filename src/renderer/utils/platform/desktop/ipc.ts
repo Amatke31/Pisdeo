@@ -4,6 +4,9 @@ import platform from '../platform'
 let ipcRenderer: any = {
     invoke: async function(msg: string) {
         return 'Not desktop environment'
+    },
+    send: function(msg: string, msg2: string) {
+        return 'Not desktop environment'
     }
 }
 
@@ -23,6 +26,12 @@ const ipc = {
     },
     async getConfig(): Promise<string> {
         return await ipcRenderer.invoke('getConfig')
+    },
+    async getLocale(): Promise<string> {
+        return await ipcRenderer.invoke('getLocale')
+    },
+    async setLocale(lang: string): Promise<string> {
+        return await ipcRenderer.invoke('setLocale', lang)
     },
     async chooseProjectPath() {
         let cppath: string = ''

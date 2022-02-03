@@ -81,6 +81,7 @@ export default defineComponent({
     async created() {
         if (platform === "desktop") {
             userConfig = await ipc.getConfig();
+            this.page = userConfig.init ? "Start" : "Welcome";
         }
         this.$i18n.locale = userConfig.language;
     },
@@ -129,6 +130,10 @@ export default defineComponent({
     padding: 0;
     color: #eee;
     box-sizing: border-box;
+}
+
+html {
+    overflow-y: hidden!important;
 }
 
 body {

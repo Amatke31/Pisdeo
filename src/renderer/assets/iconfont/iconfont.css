@@ -1,0 +1,25 @@
+@font-face {
+    font-family: "iconfont";
+    src: url('./font/font_3168522_fpjnku0u7ul.woff2') format('woff2'),
+        url('./font/font_3168522_fpjnku0u7ul.woff') format('woff'),
+        url('./font/font_3168522_fpjnku0u7ul.ttf') format('truetype');
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-accountcircle:before {
+    content: "\e671";
+}
+
+.icon-earth:before {
+    content: "\e781";
+}
+
+.icon-node:before {
+    content: "\f1fc";
+}

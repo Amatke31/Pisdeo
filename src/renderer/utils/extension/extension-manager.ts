@@ -64,10 +64,9 @@ class ExtensionManager {
      * @param {String} sourcePath Extension path
      */
     runExtension(extensionInfo: { id: any }, sourcePath: string) {
-        const nweExtensionAPI = new ExtensionAPI(extensionInfo)
         const id = extensionInfo.id
         const script = new vm.Script(fs.readFileSync(path.join(sourcePath, "main.js")).toString());
-        const context = vm.createContext({ module: { exports: {} }, nweExtensionAPI, extensionInfo, console, path });
+        const context = vm.createContext({ module: { exports: {} }, console });
         script.runInContext(context);
         const ExtensionPrototype = context.module.exports;
         const ins = new Function(ExtensionPrototype(new ExtensionAPI(extensionInfo)))

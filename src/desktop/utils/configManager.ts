@@ -37,6 +37,7 @@ const defaultConfig: Config = {
 }
 
 if (fs.existsSync(configFilePath)) {
+    console.log(yaml.parse(fs.readFileSync(configFilePath, 'utf8')))
     config = yaml.parse(fs.readFileSync(configFilePath, 'utf8'))
     for (const i in defaultConfig) {
         if (!(i in config)) {

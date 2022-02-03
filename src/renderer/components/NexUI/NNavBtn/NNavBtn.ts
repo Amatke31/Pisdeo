@@ -3,7 +3,6 @@ import './NNavBtn.scss'
 
 export default defineComponent({
     render() {
-        console.log(this.$slots.default!()[0].children)
         return h('div', { class: 'n-navbtn' }, [
             this.genContent()
         ])
