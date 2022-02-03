@@ -61,6 +61,17 @@ async function createWindow(title: string, path: string) {
           click: () => {
             win.webContents.openDevTools()
           }
+        }, ,
+        {
+          label: 'Refresh Page',
+          click: async () => {
+            if (isDevelopment) {
+              await win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}${path}`)
+            } else {
+              createProtocol('nexwebeditor')
+              await win.loadURL(`nexwebeditor://${path}`)
+            }
+          }
         },
       ]
     }
