@@ -2,7 +2,7 @@
     <div class="window">
         <div v-if="step == 1">
             <i class="img iconfont icon-earth"></i>
-            <div class="title">{{ $t("welcome.lang.choese") }}</div>
+            <div class="title">{{ $t("welcome.lang.choose") }}</div>
             <el-select
                 v-model="lang"
                 class="m-2 select"
@@ -19,8 +19,36 @@
                 </el-option>
             </el-select>
             <n-btn @click="setLanguage()" class="nS">{{
-                $t("welcome.nextstep")
+                $t("common.nextstep")
             }}</n-btn>
+        </div>
+        <div v-else-if="step == 2" style="height: 100%">
+            <div class="title">{{ $t("welcome.legal") }}</div>
+            <Legal style="height: 85%;" />
+            <n-btn @click="step++" class="nS">{{
+                $t("common.agree")
+            }}</n-btn>
+        </div>
+        <div v-else-if="step == 3" style="height: 100%">
+            <div class="title">{{ $t("welcome.complete") }}</div>
+            <n-btn @click="complete()" class="et">{{
+                $t("common.enter")
+            }}</n-btn>
+        </div>
+        <div v-if="false">
+            <i class="img iconfont icon-accountcircle"></i>
+            <div class="title">{{ $t("welcome.account.ask") }}</div>
+            <div
+                style="
+                    width: 60%;
+                    margin: 64px 20%;
+                    display: flex;
+                    justify-content: space-between;
+                "
+            >
+                <n-btn @click="step++">{{ $t("common.refuse") }}</n-btn>
+                <n-btn @click="login()">{{ $t("common.agree") }}</n-btn>
+            </div>
         </div>
     </div>
     <div class="mask"></div>
@@ -28,10 +56,11 @@
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
-import { setLocale } from "../utils/env";
-import { getLocale } from "../utils/env";
+import { setLocale, getLocale, inited } from "../utils/env";
+import Legal from "../components/legal.vue";
 
 export default defineComponent({
+    components: { Legal },
     data() {
         return {
             step: 1,
@@ -63,9 +92,17 @@ export default defineComponent({
             if (setResult == "successful") {
                 this.step++;
             } else {
-                ElMessage.error(this.$t('welcome.setlocaleerror'))
+                ElMessage.error(this.$t("welcome.setlocaleerror"));
             }
         },
+        complete: async function () {
+            const setResult = await inited();
+            if (setResult == "successful") {
+                this.$emit('goStart')
+            } else {
+                ElMessage.error(this.$t("welcome.initerror"));
+            }
+        }
     },
 });
 </script>
@@ -89,7 +126,7 @@ export default defineComponent({
     padding-top: 96px;
 
     .img {
-        font-size: 64px;
+        font-size: 96px;
         text-align: center;
         width: 100%;
         display: block;
@@ -114,6 +151,10 @@ export default defineComponent({
 
     .nS {
         margin: 0 40%;
+    }
+
+    .et {
+        margin: 40%;
     }
 }
 .mask {
