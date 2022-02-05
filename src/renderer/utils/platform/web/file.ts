@@ -8,5 +8,4 @@ function openDB(name: string, db: any) {
     };
 }
 
-
 export { openDB }

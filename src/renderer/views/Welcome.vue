@@ -170,7 +170,7 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     left: 0;
-    top: 28px;
+    top: 0;
     opacity: 1;
     overflow: hidden;
     z-index: 10;
@@ -179,5 +179,6 @@ export default defineComponent({
 }
 .desktop {
     height: calc(100% - 28px);
+    top: 28px;
 }
 </style>
