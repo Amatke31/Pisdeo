@@ -1,9 +1,7 @@
-import getStaticPath from '../../../utils/getStaticPath'
 import fs from 'fs'
 import path from 'path'
 import vm from 'vm'
 import { ExtensionAPI } from './extension-api'
-import event from '../event'
 import platform from '@/renderer/utils/platform/platform'
 
 let instance = new Array()
