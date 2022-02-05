@@ -1,6 +1,9 @@
 <template>
     <div>
-        <div v-show="platform === 'desktop'" class="titleBar">
+        <div
+            v-show="showVirtualTitleBar"
+            :class="showVirtualTitleBar ? 'titleBar desktop' : 'titleBar'"
+        >
             <div class="window-title">
                 {{ title }}
             </div>
@@ -46,6 +49,7 @@ import Start from "./views/Start.vue";
 import Project from "./views/Project.vue";
 import Welcome from "./views/Welcome.vue";
 import path from "path";
+import os from "os";
 import ipc from "./utils/platform/desktop/ipc";
 import { extensionManager } from "./utils/extension/extension-manager";
 import platform from "./utils/platform/platform";
@@ -63,6 +67,10 @@ interface RequireForm {
 export default defineComponent({
     data() {
         return {
+            showVirtualTitleBar:
+                platform === "desktop" &&
+                os &&
+                (os.platform() == "darwin" || os.platform() == "win32"),
             ExtensionInfo: new Array(),
             homePath: "",
             template: new Array(),
@@ -121,9 +129,8 @@ export default defineComponent({
         if (platform === "desktop") {
             userConfig = await ipc.getConfig();
             this.page = userConfig.init ? "Start" : "Welcome";
-        }
-        else {
-            this.page = "Welcome"
+        } else {
+            this.page = "Welcome";
         }
         this.$i18n.locale = userConfig.language;
     },

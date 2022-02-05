@@ -117,6 +117,161 @@
         </div>
     </div>
 </template>
+<script lang="ts">
+import { defineComponent } from "vue";
+import path from "path";
+import ipc from "../utils/platform/desktop/ipc";
+import { getVersion } from "../utils/env";
+import platform from "../utils/platform/platform";
+
+let documentsPath: string = "";
+let version: any = "Manual Build";
+
+interface RequireForm {
+    [propName: string]: any;
+}
+
+export default defineComponent({
+    name: "Start",
+    props: {
+        isInit: {
+            type: Boolean,
+        },
+        template: {
+            type: Array,
+        },
+        homePath: {
+            type: String,
+        },
+        documentsPath: {
+            type: String,
+        },
+        errorThrow: {
+            type: Function,
+        },
+        templateRequire: {
+            type: Object,
+        },
+    },
+    data() {
+        return {
+            msgIsShow: false,
+            warningShow: false,
+            errorCode: "",
+            msgHTML: "",
+            newProjectWCss: "hide none",
+            newProjectW: false,
+            consoleText: "<p>loading...</p>",
+            templateInfo: {
+                name: "",
+                framework: "",
+                extension: {
+                    author: "",
+                    id: "",
+                },
+            } as RequireForm,
+            ProjectForm: {
+                name: "WebApp1",
+                framework: "",
+                path: "",
+            } as RequireForm,
+            warningCss: "hide none",
+            documentsPath: "",
+            platform: "web",
+        };
+    },
+    mounted: function () {},
+    watch: {
+        warningShow() {
+            if (this.warningShow == true) {
+                this.warningCss = "hide";
+                setTimeout(() => {
+                    this.warningCss = "";
+                }, 50);
+            } else {
+                this.warningCss = "hide";
+                setTimeout(() => {
+                    this.warningCss = "hide none";
+                }, 300);
+            }
+        },
+    },
+    async created() {
+        if (platform === "desktop") {
+            documentsPath = await ipc.getDocumentsPath();
+        }
+        version = await getVersion();
+    },
+    methods: {
+        newProject: function (info: {
+            name: string;
+            framework: string;
+            extension: { author: string; id: string };
+            require: any;
+        }) {
+            info.require.forEach(
+                (parameter: {
+                    name: string;
+                    default: any;
+                    [propName: string]: any;
+                }) => {
+                    this.ProjectForm[parameter.name] = parameter.default;
+                }
+            );
+            this.templateInfo = info;
+            this.ProjectForm.path = path.join(documentsPath, "NexWebDesigner");
+            this.newProjectWCss = "hide";
+            setTimeout(() => {
+                this.newProjectWCss = "window";
+            }, 50);
+        },
+        closeNPW: function () {
+            this.newProjectWCss = "hide";
+            setTimeout(() => {
+                this.newProjectWCss = "hide none";
+            }, 300);
+        },
+        openAboutWindow: function () {
+            this.msgHTML = `
+                <h1>NexWebDesigner</h1>
+                <p style="color:#ccc;">${this.$t("about.introduce")}</p>
+                <p style="color:#ccc;font-size:14px">Version: ${version}</p>
+                <p style="color:#ccc;font-size:14px">Environment: ${platform}</p><br>
+                <p style="color:#ccc;">Released under the AGPL-3.0</p>
+                <p style="color:#ccc;">Copyright © 2021-2022 Amatke31</p>
+            `;
+            this.msgIsShow = true;
+        },
+        close: function () {
+            this.msgIsShow = false;
+        },
+        changePath: async function () {
+            if (platform === "desktop") {
+                const cppath = await ipc.chooseProjectPath();
+                if (cppath != "") {
+                    this.ProjectForm.path = cppath;
+                }
+            }
+        },
+        createProject: function () {
+            this.$emit("goToProjectPage");
+            this.newProjectW = false;
+        },
+        openStore: function () {},
+        openSetting: function () {
+            this.$emit("openSetting");
+        },
+        cardImg: function (img: string) {
+            if (img != undefined) {
+                return `background-image: url(${img})`;
+            } else {
+                return "";
+            }
+        },
+    },
+});
+</script>
+
 <style lang="scss" scoped>
 #newProject.hide .mask {
     opacity: 0;
@@ -349,157 +504,3 @@
     display: none;
 }
 </style>
-<script lang="ts">
-import { defineComponent } from "vue";
-import path from "path";
-import ipc from "../utils/platform/desktop/ipc";
-import { getVersion } from "../utils/env";
-import platform from "../utils/platform/platform";
-
-let documentsPath: string = "";
-let version: any = "Manual Build";
-
-interface RequireForm {
-    [propName: string]: any;
-}
-
-export default defineComponent({
-    name: "Start",
-    props: {
-        isInit: {
-            type: Boolean,
-        },
-        template: {
-            type: Array,
-        },
-        homePath: {
-            type: String,
-        },
-        documentsPath: {
-            type: String,
-        },
-        errorThrow: {
-            type: Function,
-        },
-        templateRequire: {
-            type: Object,
-        },
-    },
-    data() {
-        return {
-            msgIsShow: false,
-            warningShow: false,
-            errorCode: "",
-            msgHTML: "",
-            newProjectWCss: "hide none",
-            newProjectW: false,
-            consoleText: "<p>loading...</p>",
-            templateInfo: {
-                name: "",
-                framework: "",
-                extension: {
-                    author: "",
-                    id: "",
-                },
-            } as RequireForm,
-            ProjectForm: {
-                name: "WebApp1",
-                framework: "",
-                path: "",
-            } as RequireForm,
-            warningCss: "hide none",
-            documentsPath: "",
-            platform: "web",
-        };
-    },
-    mounted: function () {},
-    watch: {
-        warningShow() {
-            if (this.warningShow == true) {
-                this.warningCss = "hide";
-                setTimeout(() => {
-                    this.warningCss = "";
-                }, 50);
-            } else {
-                this.warningCss = "hide";
-                setTimeout(() => {
-                    this.warningCss = "hide none";
-                }, 300);
-            }
-        },
-    },
-    async created() {
-        if (platform === "desktop") {
-            documentsPath = await ipc.getDocumentsPath();
-        }
-        version = await getVersion();
-    },
-    methods: {
-        newProject: function (info: {
-            name: string;
-            framework: string;
-            extension: { author: string; id: string };
-            require: any;
-        }) {
-            info.require.forEach(
-                (parameter: {
-                    name: string;
-                    default: any;
-                    [propName: string]: any;
-                }) => {
-                    this.ProjectForm[parameter.name] = parameter.default;
-                }
-            );
-            this.templateInfo = info;
-            this.ProjectForm.path = path.join(documentsPath, "NexWebDesigner");
-            this.newProjectWCss = "hide";
-            setTimeout(() => {
-                this.newProjectWCss = "window";
-            }, 50);
-        },
-        closeNPW: function () {
-            this.newProjectWCss = "hide";
-            setTimeout(() => {
-                this.newProjectWCss = "hide none";
-            }, 300);
-        },
-        openAboutWindow: function () {
-            this.msgHTML = `
-                <h1>NexWebDesigner</h1>
-                <p style="color:#ccc;">${this.$t("about.introduce")}</p>
-                <p style="color:#ccc;font-size:14px">Version: ${version}</p>
-                <p style="color:#ccc;font-size:14px">Environment: ${platform}</p><br>
-                <p style="color:#ccc;">Released under the AGPL-3.0</p>
-                <p style="color:#ccc;">Copyright © 2021-2022 Amatke31</p>
-            `;
-            this.msgIsShow = true;
-        },
-        close: function () {
-            this.msgIsShow = false;
-        },
-        changePath: async function () {
-            if (platform === "desktop") {
-                const cppath = await ipc.chooseProjectPath();
-                if (cppath != "") {
-                    this.ProjectForm.path = cppath;
-                }
-            }
-        },
-        createProject: function () {
-            this.$emit("goToProjectPage");
-            this.newProjectW = false;
-        },
-        openStore: function () {},
-        openSetting: function () {
-            this.$emit('openSetting')
-        },
-        cardImg: function (img: string) {
-            if (img != undefined) {
-                return `background-image: url(${img})`;
-            } else {
-                return "";
-            }
-        },
-    },
-});
-</script>

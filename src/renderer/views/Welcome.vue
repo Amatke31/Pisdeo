@@ -168,7 +168,7 @@ export default defineComponent({
     transition: 0.3s;
     position: fixed;
     width: 100%;
-    height: calc(100% - 28px);
+    height: 100%;
     left: 0;
     top: 28px;
     opacity: 1;
@@ -176,5 +176,8 @@ export default defineComponent({
     z-index: 10;
     backdrop-filter: blur(2px);
     background-color: rgba(50, 50, 50, 0.7);
+}
+.desktop {
+    height: calc(100% - 28px);
 }
 </style>
