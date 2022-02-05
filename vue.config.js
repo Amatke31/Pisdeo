@@ -1,16 +1,11 @@
 const path = require("path");
 
-function resolve(dir) {
-  return path.join(__dirname, dir);
-}
-
 module.exports = {
   pages: {
     index: {
       entry: './src/renderer/main.ts'
     }
   },
-
   pluginOptions: {
     i18n: {
       locale: 'zh_cn',
@@ -27,17 +22,26 @@ module.exports = {
       builderOptions: {
         asar: false,
         appId: 'org.nexwebeditor.nexwebeditor',
-        extraResources: {
-          from: './src/extension/',
-          to: './extension/'
-        }
+        extraResources: [
+          {
+            from: './src/extension/',
+            to: './extension/'
+          },
+          {
+            from: './static/',
+            to: './static/'
+          }
+        ]
       }
     },
-    vuetify: {
-    }
-  },
-
-  transpileDependencies: [
-    'vuetify'
-  ]
+    configureWebpack: {
+      resolve: {
+        fallback: { path: require.resolve("path-browserify") },
+        extensions: ['.md'],
+      },
+    },
+    transpileDependencies: [
+      'vuetify'
+    ]
+  }
 }
