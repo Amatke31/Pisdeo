@@ -5,17 +5,18 @@
                 {{ title }}
             </div>
         </div>
-        <Welcome v-if="page === 'Welcome'" />
+        <Welcome v-if="page === 'Welcome'" @goStart="page = 'Start'" />
         <Start
             v-else-if="page === 'Start'"
             :extension="ExtensionInfo"
             :isInit="startIsInit"
-            :project="project"
+            :template="template"
             :homePath="homePath"
             :documentsPath="documentsPath"
             :errorThrow="errorThrow"
             :templateRequire="templateRequire"
             @goToProjectPage="page = 'Project'"
+            @openSetting="page = 'Setting'"
         />
         <Project
             v-else-if="page === 'Project'"
@@ -28,12 +29,14 @@
             :menu="projectMenu"
             @goToStartPage="page = 'Start'"
         />
+        <Setting v-else-if="page === 'Setting'" />
         <div
             v-if="!(startIsInit || projectIsInit)"
             class="console"
             v-html="consoleText"
         ></div>
     </div>
+    <Tool v-if="isDevelopment" :toolFunction="toolFunction" />
 </template>
 
 <script lang="ts">
@@ -46,6 +49,8 @@ import path from "path";
 import ipc from "./utils/platform/desktop/ipc";
 import { extensionManager } from "./utils/extension/extension-manager";
 import platform from "./utils/platform/platform";
+import Tool from "./components/developtool/tool.vue";
+import Setting from "./views/Setting.vue";
 
 let userConfig: any = {
     language: "en_us",
@@ -60,23 +65,57 @@ export default defineComponent({
         return {
             ExtensionInfo: new Array(),
             homePath: "",
-            project: new Array(),
+            template: new Array(),
             startIsInit: false,
             projectIsInit: false,
             consoleText: "<p>loading...</p>",
             documentsPath: "",
             templateRequire: new Object() as RequireForm,
-            page: "Start",
+            page: "Blank" as string,
             errorCode: "",
             warningShow: false,
             title: "NexWebDesigner",
             platform,
+            isDevelopment:
+                process.env.NODE_ENV === "development" ? true : false,
+            toolFunction: [
+                {
+                    label: "Start Page",
+                    type: "btn",
+                    command: () => {
+                        this.pushPage("Start");
+                    },
+                },
+                {
+                    label: "Setting Page",
+                    type: "btn",
+                    command: () => {
+                        this.pushPage("Setting");
+                    },
+                },
+                {
+                    label: "Welcome Page",
+                    type: "btn",
+                    command: () => {
+                        this.pushPage("Welcome");
+                    },
+                },
+                {
+                    label: "Refresh",
+                    type: "btn",
+                    command: () => {
+                        location.reload();
+                    },
+                },
+            ],
         };
     },
     components: {
         Start,
         Project,
         Welcome,
+        Tool,
+        Setting,
     },
     async created() {
         if (platform === "desktop") {
@@ -88,18 +127,24 @@ export default defineComponent({
     mounted() {
         // event
         event.on("addTemplate", (info) => {
-            this.project.push(info);
-            let require = new Array();
-            if (info.require) {
-                info.require.forEach((parameter: any) => {
-                    require.push(
-                        typeof parameter === "object"
-                            ? parameter
-                            : { name: parameter }
-                    );
-                });
+            let isAdd = false;
+            this.template.forEach((info) => {
+                if (info.id) isAdd = true;
+            });
+            if (!isAdd) {
+                this.template.push(info);
+                let require = new Array();
+                if (info.require) {
+                    info.require.forEach((parameter: any) => {
+                        require.push(
+                            typeof parameter === "object"
+                                ? parameter
+                                : { name: parameter }
+                        );
+                    });
+                }
+                this.templateRequire[info.extension.id] = require;
             }
-            this.templateRequire[info.extension.id] = require;
         });
         event.on("projectLoaded", () => {
             this.projectIsInit = true;
@@ -120,6 +165,11 @@ export default defineComponent({
         this.consoleText += `<p>[INFO]Complete</p>`;
         this.startIsInit = true;
     },
+    methods: {
+        pushPage: function (page: string) {
+            this.page = page;
+        },
+    },
 });
 </script>
 
@@ -133,7 +183,7 @@ export default defineComponent({
 }
 
 html {
-    overflow-y: hidden!important;
+    overflow-y: hidden !important;
 }
 
 body {
@@ -195,20 +245,15 @@ a {
     background-color: rgba(50, 50, 50, 0.7);
 }
 
-*::-webkit-scrollbar {
-    width: auto;
-    height: 5px;
-    border-radius: 50px;
-}
+*::-webkit-scrollbar,
 *::-webkit-scrollbar-thumb {
-    background-color: rgb(196, 196, 196);
-    border-radius: 50px;
+    width: 26px;
+    border-radius: 13px;
+    background-clip: padding-box;
+    border: 10px solid transparent;
 }
-*::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(151, 151, 151);
-}
-*::-webkit-scrollbar-track {
-    background-color: rgb(68, 67, 67);
-    border-radius: 50px;
+
+*::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 0 10px;
 }
 </style>

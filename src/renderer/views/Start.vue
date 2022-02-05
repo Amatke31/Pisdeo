@@ -7,9 +7,14 @@
                     $t("start.extensions")
                 }}</n-navbtn>
             </div>
-            <n-navbtn @click="openAboutWindow" class="n-btn-2">{{
-                $t("start.about")
-            }}</n-navbtn>
+            <div class="nav-right">
+                <n-navbtn @click="openSetting" class="n-btn-2">{{
+                    $t("start.setting")
+                }}</n-navbtn>
+                <!-- <n-navbtn @click="openAboutWindow" class="n-btn-2">{{
+                    $t("start.about")
+                }}</n-navbtn> -->
+            </div>
         </div>
         <div class="main">
             <div v-if="isInit" class="newProject">
@@ -17,7 +22,7 @@
                 <div class="npc">
                     <div
                         @click="newProject(item)"
-                        v-for="item in project"
+                        v-for="item in template"
                         v-bind:key="item.name"
                         class="card"
                     >
@@ -229,6 +234,14 @@
             margin: 0 10px;
         }
     }
+    .nav-right {
+        align-items: center;
+        display: flex;
+        * {
+            display: inline;
+            margin: 0 10px;
+        }
+    }
 }
 .main {
     padding: 24px;
@@ -356,7 +369,7 @@ export default defineComponent({
         isInit: {
             type: Boolean,
         },
-        project: {
+        template: {
             type: Array,
         },
         homePath: {
@@ -477,6 +490,9 @@ export default defineComponent({
             this.newProjectW = false;
         },
         openStore: function () {},
+        openSetting: function () {
+            this.$emit('openSetting')
+        },
         cardImg: function (img: string) {
             if (img != undefined) {
                 return `background-image: url(${img})`;
