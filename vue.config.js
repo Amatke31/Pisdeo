@@ -19,7 +19,7 @@ module.exports = {
 			nodeIntegration: true,
 			builderOptions: {
 				asar: false,
-				appId: 'org.nexwebeditor.nexwebeditor',
+				appId: 'org.nexwebdeisgner.nexwebdeisgner',
 				extraResources: [
 					{
 						from: './src/extension/',
