@@ -32,7 +32,10 @@
             :menu="projectMenu"
             @goToStartPage="page = 'Start'"
         />
-        <Setting v-else-if="page === 'Setting'" />
+        <Setting
+            v-else-if="page === 'Setting'"
+            @goToStartPage="page = 'Start'"
+        />
         <div
             v-if="!(startIsInit || projectIsInit)"
             class="console"
@@ -55,14 +58,19 @@ import { extensionManager } from "./utils/extension/extension-manager";
 import platform from "./utils/platform/platform";
 import Tool from "./components/developtool/tool.vue";
 import Setting from "./views/Setting.vue";
-
-let userConfig: any = {
-    language: "en_us",
-};
+import { getFile, setFile } from "./utils/platform/web/indexddb";
 
 interface RequireForm {
     [propName: string]: any;
 }
+
+let userConfig: any = {
+    init: false,
+    configVersion: "Manual Build",
+    language: "en_us",
+    theme: "auto",
+    updateCheck: "ask",
+};
 
 export default defineComponent({
     data() {
@@ -129,10 +137,19 @@ export default defineComponent({
         if (platform === "desktop") {
             userConfig = await ipc.getConfig();
             this.page = userConfig.init ? "Start" : "Welcome";
+            this.$i18n.locale = userConfig.language;
         } else {
-            this.page = "Welcome";
+            getFile("config", (result: any) => {
+                if (result == undefined) {
+                    setFile("config", userConfig);
+                    this.page = "Welcome";
+                } else {
+                    userConfig = result;
+                    this.page = userConfig.init ? "Start" : "Welcome";
+                    this.$i18n.locale = userConfig.language;
+                }
+            });
         }
-        this.$i18n.locale = userConfig.language;
     },
     mounted() {
         // event

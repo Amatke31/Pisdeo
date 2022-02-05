@@ -57,6 +57,7 @@ import { ElMessage } from "element-plus";
 import { setLocale, getLocale, inited } from "../utils/env";
 import Legal from "../components/legal.vue";
 import platform from "../utils/platform/platform";
+import { setFile, getFile } from "../utils/platform/web/indexddb";
 
 export default defineComponent({
     components: { Legal },
@@ -95,7 +96,11 @@ export default defineComponent({
                     ElMessage.error(this.$t("welcome.setlocaleerror"));
                 }
             } else {
-                this.step++;
+                getFile("config", (result: any) => {
+                    result.language = this.lang;
+                    setFile("config", result);
+                    this.step++;
+                });
             }
         },
         complete: async function () {
@@ -107,7 +112,11 @@ export default defineComponent({
                     ElMessage.error(this.$t("welcome.initerror"));
                 }
             } else {
-                this.$emit("goStart");
+                getFile("config", (result: any) => {
+                    result.init = true;
+                    setFile("config", result);
+                    this.$emit("goStart");
+                });
             }
         },
     },

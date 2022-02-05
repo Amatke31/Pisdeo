@@ -2,6 +2,7 @@
     <div class="start">
         <div class="nav">
             <div class="nav-left">
+                <v-btn @click="$emit('goToStartPage')" variant="text" size="large" icon="mdi-arrow-left" />
                 <h1>{{ $t("setting.title") }}</h1>
             </div>
             <div class="nav-right"></div>
@@ -57,6 +58,7 @@ import { ElMessage } from "element-plus";
 import { defineComponent } from "vue";
 import { getVersion, setLocale } from "../utils/env";
 import platform from "../utils/platform/platform";
+import { setFile, getFile } from "../utils/platform/web/indexddb";
 
 export default defineComponent({
     name: "Setting",
@@ -97,6 +99,11 @@ export default defineComponent({
                     ElMessage.error(this.$t("welcome.setlocaleerror"));
                     this.$i18n.locale = lastLang;
                 }
+            } else {
+                getFile("config", (result: any) => {
+                    result.language = this.lang;
+                    setFile("config", result);
+                });
             }
         },
     },
