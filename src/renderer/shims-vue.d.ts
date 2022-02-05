@@ -10,3 +10,5 @@ declare module 'vuetify/lib/components'
 declare module 'vuetify/lib/directives'
 
 declare module "element-plus"
+
+declare module "vue-markdown"
