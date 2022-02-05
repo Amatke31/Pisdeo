@@ -38,7 +38,7 @@ module.exports = {
 	},
 	configureWebpack: {
 		resolve: {
-			fallback: { path: require.resolve("path-browserify"), vm: require.resolve("vm-browserify") },
+			fallback: { path: require.resolve("path-browserify"), vm: require.resolve("vm-browserify"), fs: false },
 		},
 	},
 	chainWebpack: config => {

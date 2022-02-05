@@ -122,6 +122,9 @@ export default defineComponent({
             userConfig = await ipc.getConfig();
             this.page = userConfig.init ? "Start" : "Welcome";
         }
+        else {
+            this.page = "Welcome"
+        }
         this.$i18n.locale = userConfig.language;
     },
     mounted() {
@@ -166,6 +169,8 @@ export default defineComponent({
             });
             this.consoleText += `<p>[INFO]${extensioninfo.length} extension detected</p>`;
             this.consoleText += `<p>[INFO]Complete</p>`;
+            this.startIsInit = true;
+        } else {
             this.startIsInit = true;
         }
     },

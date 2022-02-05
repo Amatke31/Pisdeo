@@ -43,12 +43,8 @@
             <div v-else-if="option == 'About'" class="right">
                 <h1>NexWebDesigner</h1>
                 <p>{{ $t("about.introduce") }}</p>
-                <p>
-                    Version: {{ version }}
-                </p>
-                <p>
-                    Environment: {{ platform }}
-                </p>
+                <p>Version: {{ version }}</p>
+                <p>Environment: {{ platform }}</p>
                 <br />
                 <p>Released under the AGPL-3.0</p>
                 <p>Copyright © 2021-2022 Amatke31</p>
@@ -94,11 +90,13 @@ export default defineComponent({
         lang: async function (lang) {
             const lastLang = this.$i18n.locale;
             this.$i18n.locale = lang;
-            const setResult = await setLocale(this.lang);
-            if (setResult == "successful") {
-            } else {
-                ElMessage.error(this.$t("welcome.setlocaleerror"));
-                this.$i18n.locale = lastLang;
+            if (platform === "desktop") {
+                const setResult = await setLocale(this.lang);
+                if (setResult == "successful") {
+                } else {
+                    ElMessage.error(this.$t("welcome.setlocaleerror"));
+                    this.$i18n.locale = lastLang;
+                }
             }
         },
     },

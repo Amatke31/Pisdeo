@@ -24,10 +24,8 @@
         </div>
         <div v-else-if="step == 2" style="height: 100%">
             <div class="title">{{ $t("welcome.legal") }}</div>
-            <Legal style="height: 85%;" />
-            <n-btn @click="step++" class="nS">{{
-                $t("common.agree")
-            }}</n-btn>
+            <Legal style="height: 85%" />
+            <n-btn @click="step++" class="nS">{{ $t("common.agree") }}</n-btn>
         </div>
         <div v-else-if="step == 3" style="height: 100%">
             <div class="title">{{ $t("welcome.complete") }}</div>
@@ -58,6 +56,7 @@ import { defineComponent } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 import { setLocale, getLocale, inited } from "../utils/env";
 import Legal from "../components/legal.vue";
+import platform from "../utils/platform/platform";
 
 export default defineComponent({
     components: { Legal },
@@ -88,21 +87,29 @@ export default defineComponent({
     methods: {
         setLanguage: async function () {
             this.$i18n.locale = this.lang;
-            const setResult = await setLocale(this.lang);
-            if (setResult == "successful") {
-                this.step++;
+            if (platform === "desktop") {
+                const setResult = await setLocale(this.lang);
+                if (setResult == "successful") {
+                    this.step++;
+                } else {
+                    ElMessage.error(this.$t("welcome.setlocaleerror"));
+                }
             } else {
-                ElMessage.error(this.$t("welcome.setlocaleerror"));
+                this.step++;
             }
         },
         complete: async function () {
-            const setResult = await inited();
-            if (setResult == "successful") {
-                this.$emit('goStart')
+            if (platform === "desktop") {
+                const setResult = await inited();
+                if (setResult == "successful") {
+                    this.$emit("goStart");
+                } else {
+                    ElMessage.error(this.$t("welcome.initerror"));
+                }
             } else {
-                ElMessage.error(this.$t("welcome.initerror"));
+                this.$emit("goStart");
             }
-        }
+        },
     },
 });
 </script>
@@ -112,7 +119,7 @@ export default defineComponent({
     width: 750px;
     height: 600px;
     position: fixed;
-    top: 10%;
+    top: calc((100vh - 600px) / 2);
     border-radius: 15px;
     box-shadow: 0 5px 8px rgba(0, 0, 0, 0.05);
     z-index: 20;
