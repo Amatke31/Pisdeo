@@ -33,9 +33,6 @@ const ipc = {
     async setLocale(lang: string): Promise<string> {
         return await ipcRenderer.invoke('setLocale', lang)
     },
-    async getLegal(): Promise<string> {
-        return await ipcRenderer.invoke('getLegal')
-    },
     async inited(): Promise<string> {
         return await ipcRenderer.invoke('inited')
     },

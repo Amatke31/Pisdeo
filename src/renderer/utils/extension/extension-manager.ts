@@ -1,5 +1,5 @@
-import fs from 'fs'
 import path from 'path'
+import fs from 'fs'
 import vm from 'vm'
 import { ExtensionAPI } from './extension-api'
 import platform from '@/renderer/utils/platform/platform'
@@ -23,7 +23,7 @@ class ExtensionManager {
             const ExtensionInfo: any[] = []
             const extensionFolderPath = path.join(extensionPath)
             const extensionFolderList = fs.readdirSync(extensionFolderPath)
-            extensionFolderList.forEach((ExtName) => {
+            extensionFolderList.forEach((ExtName: any) => {
                 if (fs.statSync(path.join(extensionFolderPath, ExtName)).isDirectory()) {
                     const extensionSourcePath = path.join(extensionFolderPath, ExtName)
                     const extensionSource = fs.readdirSync(extensionSourcePath)
@@ -36,7 +36,7 @@ class ExtensionManager {
                         if (Boolean(i18n) && extensionSource.indexOf("locales") != -1) {
                             const locales = fs.readdirSync(path.join(extensionSourcePath, 'locales'))
                             const messages: any = []
-                            locales.forEach(key => {
+                            locales.forEach((key: any) => {
                                 var matched = key.match(/[A-Za-z0-9-_,\s]+\.json$/i)
                                 if (matched) {
                                     const langClass = path.basename(key, '.json');

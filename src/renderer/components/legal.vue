@@ -1,26 +1,30 @@
 <template>
-    <div id="legal" v-html="legal" style="overflow-y: scroll;" />
+    <LegalZH v-if="lang == 'zh'" class="legal" style="overflow-y: scroll" />
+    <LegalEN
+        v-else-if="lang == 'en'"
+        class="legal"
+        style="overflow-y: scroll"
+    />
 </template>
 <script>
-import ipc from "../utils/platform/desktop/ipc";
-import platform from "../utils/platform/platform";
-import MarkdownIt from "markdown-it";
+import Legal_zh from "../../legal/legal_zh.md";
+import Legal_en from "../../legal/legal_en.md";
 export default {
+    components: { LegalZH: Legal_zh, LegalEN: Legal_en },
     data() {
         return {
-            legal: "loading...",
+            lang: "en",
         };
     },
-    mounted: async function () {
-        let md = new MarkdownIt();
-        if (platform === "desktop") {
-            this.legal = md.render(await ipc.getLegal());
-        }
+    mounted: function () {
+        let lang = this.$i18n.locale;
+        if (lang.indexOf("zh_") == 0) this.lang = "zh";
+        else this.lang = "en";
     },
 };
 </script>
 <style lang="scss">
-#legal {
+.legal {
     h1 {
         font-size: 22px;
     }
@@ -43,11 +47,11 @@ export default {
         font-size: 15px;
     }
 }
-#legal {
+.legal {
     color: rgba(0, 0, 0, 0);
     transition: color 0.3s ease;
 }
-#legal:hover {
+.legal:hover {
     color: rgba(0, 0, 0, 0.3);
 }
 </style>

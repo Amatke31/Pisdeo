@@ -1,13 +1,11 @@
 import { ipcMain } from 'electron'
 import { app } from 'electron'
 
-import { getConfig, saveConfigFile } from '../utils/configManager'
-import getLegal from '../utils/getLegal'
+import { getConfig, saveConfigFile } from '../utils/configManager
 import version from '../utils/version'
 
 ipcMain.handle('getVersion', () => version.version)
 ipcMain.handle('getConfig', () => getConfig())
-ipcMain.handle('getLegal', () => getLegal())
 ipcMain.handle('inited', async() => {
     try {
         getConfig().init = true

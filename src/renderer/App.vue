@@ -151,19 +151,23 @@ export default defineComponent({
         });
 
         this.consoleText += "<p>[INFO]Load extension...</p>";
-        let extensioninfo = extensionManager.LoadExtensionFromLocal(
-            process.env.NODE_ENV !== "development"
-                ? path.join(__dirname, "/src/extension/").replace(/\\/g, "\\\\")
-                : path.join(process.cwd(), "/src/extension/"),
-            this.$i18n
-        );
-        this.ExtensionInfo = extensioninfo;
-        extensioninfo.forEach((ExtInfo: any) => {
-            extensionManager.runExtension(ExtInfo, ExtInfo.path);
-        });
-        this.consoleText += `<p>[INFO]${extensioninfo.length} extension detected</p>`;
-        this.consoleText += `<p>[INFO]Complete</p>`;
-        this.startIsInit = true;
+        if (platform === "desktop") {
+            let extensioninfo = extensionManager.LoadExtensionFromLocal(
+                process.env.NODE_ENV !== "development"
+                    ? path
+                          .join(__dirname, "/src/extension/")
+                          .replace(/\\/g, "\\\\")
+                    : path.join(process.cwd(), "/src/extension/"),
+                this.$i18n
+            );
+            this.ExtensionInfo = extensioninfo;
+            extensioninfo.forEach((ExtInfo: any) => {
+                extensionManager.runExtension(ExtInfo, ExtInfo.path);
+            });
+            this.consoleText += `<p>[INFO]${extensioninfo.length} extension detected</p>`;
+            this.consoleText += `<p>[INFO]Complete</p>`;
+            this.startIsInit = true;
+        }
     },
     methods: {
         pushPage: function (page: string) {

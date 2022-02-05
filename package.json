@@ -30,6 +30,7 @@
     "sqlite3": "^5.0.2",
     "stylus-loader": "3.0.2",
     "tslib": "^2.3.1",
+    "vm-browserify": "^1.1.2",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
     "vue-i18n": "^9.1.6",
