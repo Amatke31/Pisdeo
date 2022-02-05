@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron'
 import { app } from 'electron'
 
-import { getConfig, saveConfigFile } from '../utils/configManager
+import { getConfig, saveConfigFile } from '../utils/configManager'
 import version from '../utils/version'
 
 ipcMain.handle('getVersion', () => version.version)
