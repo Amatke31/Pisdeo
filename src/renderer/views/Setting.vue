@@ -2,7 +2,12 @@
     <div class="start">
         <div class="nav">
             <div class="nav-left">
-                <v-btn @click="$emit('goToStartPage')" variant="text" size="large" icon="mdi-arrow-left" />
+                <v-btn
+                    @click="$emit('goToStartPage')"
+                    variant="text"
+                    size="large"
+                    icon="mdi-arrow-left"
+                />
                 <h1>{{ $t("setting.title") }}</h1>
             </div>
             <div class="nav-right"></div>
@@ -37,6 +42,11 @@
                         </el-option>
                     </el-select>
                 </div>
+                <div>
+                    <n-btn @click="reset">
+                        {{ $t("setting.reset") }}
+                    </n-btn>
+                </div>
             </div>
             <div v-else-if="option == 'Account'" class="right">
                 <div class="title">{{ $t("setting.account") }}</div>
@@ -54,11 +64,11 @@
     </div>
 </template>
 <script lang="ts">
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import { defineComponent } from "vue";
 import { getVersion, setLocale } from "../utils/env";
 import platform from "../utils/platform/platform";
-import { setFile, getFile } from "../utils/platform/web/indexddb";
+import { setFile, getFile, recovery } from "../utils/platform/web/file";
 
 export default defineComponent({
     name: "Setting",
@@ -74,6 +84,7 @@ export default defineComponent({
             supportLang: [] as any,
             version: "",
             platform,
+            resetDialog: false,
         };
     },
     async created() {
@@ -105,6 +116,50 @@ export default defineComponent({
                     setFile("config", result);
                 });
             }
+        },
+    },
+    methods: {
+        reset: function () {
+            ElMessageBox.confirm(this.$t("setting.reset.warning"), "Warning", {
+                confirmButtonText: this.$t("common.confirm"),
+                cancelButtonText: this.$t("common.cancel"),
+                type: "warning",
+                beforeClose: (action: any, instance: any, done: any) => {
+                    if (action === "confirm") {
+                        instance.confirmButtonLoading = true;
+                        instance.confirmButtonText = "Loading...";
+                        if (platform == "desktop") {
+                        } else {
+                            recovery((success: Boolean) => {
+                                if (success) {
+                                    instance.confirmButtonLoading = true;
+                                    done();
+                                } else {
+                                    ElMessage.error(
+                                        this.$t("setting.reseterror")
+                                    );
+                                    done();
+                                }
+                            });
+                        }
+                    } else {
+                        done();
+                    }
+                },
+            })
+                .then(() => {
+                    ElMessage({
+                        type: "success",
+                        message: "Reset completed",
+                    });
+                    location.reload();
+                })
+                .catch(() => {
+                    ElMessage({
+                        type: "info",
+                        message: "Reset canceled",
+                    });
+                });
         },
     },
 });

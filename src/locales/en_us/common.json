@@ -2,5 +2,7 @@
     "common.agree": "Agree",
     "common.nextstep": "Next",
     "common.refuse": "Refuse",
-    "common.enter": "Enter"
+    "common.enter": "Enter",
+    "common.cancel": "Cancel",
+    "common.confirm": "Confirm"
 }

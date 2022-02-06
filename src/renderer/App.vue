@@ -56,7 +56,7 @@ import { extensionManager } from "./utils/extension/extension-manager";
 import platform from "./utils/platform/platform";
 import Tool from "./components/developtool/tool.vue";
 import Setting from "./views/Setting.vue";
-import { getFile, setFile } from "./utils/platform/web/indexddb";
+import { getFile, setFile } from "./utils/platform/web/file";
 
 interface RequireForm {
     [propName: string]: any;

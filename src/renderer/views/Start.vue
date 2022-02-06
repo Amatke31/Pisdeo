@@ -11,9 +11,6 @@
                 <n-navbtn @click="openSetting" class="n-btn-2">{{
                     $t("start.setting")
                 }}</n-navbtn>
-                <!-- <n-navbtn @click="openAboutWindow" class="n-btn-2">{{
-                    $t("start.about")
-                }}</n-navbtn> -->
             </div>
         </div>
         <div class="main">
@@ -70,7 +67,9 @@
                 <div class="form">
                     <div class="name">
                         <div>{{ $t("newproject.projectname") }}:</div>
-                        <div>{{ $t("newproject.projectlocation") }}:</div>
+                        <div v-if="platform !== 'web'">
+                            {{ $t("newproject.projectlocation") }}:
+                        </div>
                         <div
                             v-for="templateRequire in templateRequire[
                                 templateInfo.extension.id
@@ -86,6 +85,7 @@
                             spellcheck="false"
                             v-model="ProjectForm.path"
                             @click="changePath"
+                            v-if="platform !== 'web'"
                         />
                         <input
                             spellcheck="false"
@@ -177,7 +177,7 @@ export default defineComponent({
                 path: "",
             } as RequireForm,
             warningCss: "hide none",
-            platform: "web",
+            platform,
         };
     },
     mounted: function () {},
@@ -299,6 +299,7 @@ export default defineComponent({
         flex-direction: column;
         background-color: rgb(50, 50, 50);
         padding: 36px;
+        top: calc((100vh - 600px) / 2);
         left: calc((100vw - 750px) / 2);
         opacity: 1;
         transition: 0.3s;
@@ -355,19 +356,6 @@ export default defineComponent({
                 width: 80%;
             }
         }
-    }
-    .mask {
-        transition: 0.3s;
-        position: fixed;
-        width: 100%;
-        height: calc(100% - 28px);
-        left: 0;
-        top: 28px;
-        opacity: 1;
-        overflow: hidden;
-        z-index: 2000;
-        backdrop-filter: blur(2px);
-        background-color: rgba(50, 50, 50, 0.7);
     }
 }
 
@@ -502,5 +490,10 @@ export default defineComponent({
 
 #_warning.none {
     display: none;
+}
+
+.desktop .mask {
+    top: 28px;
+    height: calc(100% - 28px);
 }
 </style>

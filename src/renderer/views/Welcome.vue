@@ -24,7 +24,7 @@
         </div>
         <div v-else-if="step == 2" style="height: 100%">
             <div class="title">{{ $t("welcome.legal") }}</div>
-            <Legal style="height: 85%" />
+            <Legal style="height: 80%" />
             <n-btn @click="step++" class="nS">{{ $t("common.agree") }}</n-btn>
         </div>
         <div v-else-if="step == 3" style="height: 100%">
@@ -57,7 +57,7 @@ import { ElMessage } from "element-plus";
 import { setLocale, getLocale, inited } from "../utils/env";
 import Legal from "../components/legal.vue";
 import platform from "../utils/platform/platform";
-import { setFile, getFile } from "../utils/platform/web/indexddb";
+import { setFile, getFile } from "../utils/platform/web/file";
 
 export default defineComponent({
     emits: ['goStart'],
@@ -171,7 +171,7 @@ export default defineComponent({
     }
 
     .et {
-        margin: 40%;
+        margin: 50% 40%;
     }
 }
 .mask {
