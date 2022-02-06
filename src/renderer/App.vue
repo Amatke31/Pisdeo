@@ -33,6 +33,7 @@
         <Setting
             v-else-if="page === 'Setting'"
             @goToStartPage="page = 'Start'"
+            :menuOption="settingMenuOption"
         />
         <div
             v-if="!(startIsInit || projectIsInit)"
@@ -120,6 +121,10 @@ export default defineComponent({
                     },
                 },
             ],
+            settingMenuOption: [
+                ["setting.common", "mdi-cog", []],
+                ["setting.about", "mdi-information", []],
+            ],
         };
     },
     components: {
@@ -131,7 +136,7 @@ export default defineComponent({
     },
     async created() {
         await getConfig((config: any) => {
-            userConfig = config
+            userConfig = config;
             this.page = userConfig.init ? "Start" : "Welcome";
             this.$i18n.locale = userConfig.language;
         });
@@ -160,6 +165,23 @@ export default defineComponent({
         });
         event.on("projectLoaded", () => {
             this.projectIsInit = true;
+        });
+
+        event.on("addMenu", (data: any) => {
+            this.settingMenuOption.push([data.id, data.icon, []]);
+            console.log(this.settingMenuOption)
+        });
+
+        event.on("addElement", (data: any) => {
+            this.settingMenuOption.forEach((key: any) => {
+                if (key[0] == data.where) {
+                    key[2].push({
+                        type: data.type,
+                        id: data.id,
+                        run: data.run
+                    })
+                }
+            });
         });
 
         this.consoleText += "<p>[INFO]Load extension...</p>";

@@ -1,7 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 import vm from 'vm'
-import { ExtensionAPI } from './extension-api'
+import { CommonApi, UIApi } from './extension-api'
 import platform from '@/renderer/utils/platform/platform'
 import axios from 'axios'
 import JSZip from 'jszip'
@@ -88,6 +88,33 @@ class ExtensionManager {
                         console.log(`Init Error`)
                     }
                 })
+            await axios({
+                method: 'get',
+                url: '/extension/nwdcommunity/dist/org.nexwebdesigner.nwdcommunity@1.0.0.nwdx',
+                responseType: 'arraybuffer'
+            })
+                .then(async (res) => {
+                    const file = res.data
+                    const zipData = await JSZip.loadAsync(file);
+                    if ('info.json' in zipData.files) {
+                        let info: any = JSON.parse(await zipData.files['info.json'].async('text'));
+                        info.url = '/extension/nwdcommunity/dist/org.nexwebdesigner.nwdcommunity@1.0.0.nwdx'
+                        info.content = await zipData.files['main.js'].async('text')
+                        this.allExtension.push(info)
+
+                        //load locale
+                        const locale = {};
+                        for (const fileName in zipData.files) {
+                            const result = fileName.match(/^locales\/([A-Za-z0-9_-]+)\/([A-Za-z0-9_-]+).json$/);
+                            if (result) {
+                                i18n.mergeLocaleMessage(result[1], JSON.parse(await zipData.files[fileName].async('text')))
+                            }
+                        }
+                    }
+                    else {
+                        console.log(`Init Error`)
+                    }
+                })
         }
         return this.allExtension
     }
@@ -145,7 +172,7 @@ class ExtensionManager {
         const context = vm.createContext({ module: { exports: {} }, console });
         script.runInContext(context);
         const ExtensionPrototype = context.module.exports;
-        const ins = new Function(ExtensionPrototype(new ExtensionAPI(extensionInfo)))
+        const ins = new Function(ExtensionPrototype(new CommonApi(extensionInfo), new UIApi(extensionInfo)))
         instance.push(ins)
         idList[id] = instance.length - 1
     }

@@ -18,11 +18,11 @@
                     v-for="([value, icon], i) in menuOption"
                     :key="i"
                     @click="option = value"
-                    :title="$t(`setting.${value.toLowerCase()}`)"
+                    :title="$t(value)"
                     :prepend-icon="icon"
                 ></v-list-item>
             </v-list>
-            <div v-if="option == 'Common'" class="right">
+            <div v-if="option == 'setting.common'" class="right">
                 <div class="title">{{ $t("setting.common") }}</div>
                 <div>
                     <div>{{ $t("setting.language") }}:</div>
@@ -48,10 +48,7 @@
                     </n-btn>
                 </div>
             </div>
-            <div v-else-if="option == 'Account'" class="right">
-                <div class="title">{{ $t("setting.account") }}</div>
-            </div>
-            <div v-else-if="option == 'About'" class="right">
+            <div v-else-if="option == 'setting.about'" class="right">
                 <h1>NexWebDesigner</h1>
                 <p>{{ $t("about.introduce") }}</p>
                 <p>Version: {{ version }}</p>
@@ -59,6 +56,21 @@
                 <br />
                 <p>Released under the AGPL-3.0</p>
                 <p>Copyright © 2021-2022 Amatke31</p>
+            </div>
+            <div
+                v-for="[id, icon, child] in menuOption"
+                :key="id"
+                v-show="
+                    option == id &&
+                    option != 'setting.common' &&
+                    option != 'setting.about'
+                "
+                class="right"
+            >
+                <div style="display: none">{{ `防报错${icon}` }}</div>
+                <div v-for="{ id, type } in child" :key="id">
+                    <h1 v-if="type.type == 'title'">{{ $t(id) }}</h1>
+                </div>
             </div>
         </div>
     </div>
@@ -72,15 +84,11 @@ import { recovery } from "../utils/platform/web/file";
 
 export default defineComponent({
     name: "Setting",
+    props: ["menuOption"],
     data() {
         return {
             lang: "",
-            option: "Common",
-            menuOption: [
-                ["Common", "mdi-cog"],
-                ["Account", "mdi-account"],
-                ["About", "mdi-information"],
-            ],
+            option: "setting.common",
             supportLang: [] as any,
             version: "",
             platform,
@@ -111,10 +119,6 @@ export default defineComponent({
                     this.$i18n.locale = lastLang;
                 }
             } else {
-                // getFile("config", (result: any) => {
-                //     result.language = this.lang;
-                //     setFile("config", result);
-                // });
                 setLocale(this.lang);
             }
         },
@@ -203,7 +207,7 @@ export default defineComponent({
         padding: 8px 16px;
         overflow-y: scroll;
 
-        & > div {
+        & > div > div {
             margin-bottom: 10px;
 
             div {

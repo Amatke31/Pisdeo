@@ -15,7 +15,7 @@
   \*****************/
 /***/ (function(module) {
 
-eval("module.exports = (api) => {\n    api.addTemplate({\n        name: 'My HomePage',\n        id: \"org.nexwebdesigner.template.myhomepage\"\n    })\n}\n\n\n//# sourceURL=webpack://nexwebeditor-extension-base/./main.js?");
+eval("module.exports = (api, ui) => {\n    api.addTemplate({\n        name: 'My HomePage',\n        id: \"org.nexwebdesigner.template.myhomepage\"\n    })\n}\n\n\n//# sourceURL=webpack://nexwebeditor-extension-base/./main.js?");
 
 /***/ })
 

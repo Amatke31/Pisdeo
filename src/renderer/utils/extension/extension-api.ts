@@ -1,6 +1,6 @@
 import event from '../event';
 
-class ExtensionAPI {
+class CommonApi {
     extensionInfo: object;
     constructor(extensionInfo: object) {
         this.extensionInfo = extensionInfo
@@ -18,6 +18,22 @@ class ExtensionAPI {
     }
 }
 
+class UIApi {
+    extensionInfo: object;
+    constructor(extensionInfo: object) {
+        this.extensionInfo = extensionInfo
+    }
+
+    addMenu(where: string, id: string, icon: string) {
+        event.emit('addMenu', { where, id, icon })
+    }
+
+    addElement(where: string, id: string, type: string, run: any) {
+        event.emit('addElement', { where, id, type, run })
+    }
+}
+
 export {
-    ExtensionAPI
+    CommonApi,
+    UIApi,
 }
