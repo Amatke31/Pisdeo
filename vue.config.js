@@ -54,8 +54,8 @@ module.exports = {
 		devServer: {
 			static:
 			{
-				directory: path.join(__dirname, "src/extension"),
-				publicPath: '/extension'
+				directory: path.join(__dirname, "src/extension/base/dist"),
+				publicPath: '/extension/base/dist'
 			}
 		}
 	},
