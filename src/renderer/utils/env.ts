@@ -1,8 +1,17 @@
 import ipc from "./platform/desktop/ipc";
 import platform from "./platform/platform";
+import { getFile, setFile } from "./platform/web/file";
 
 let version: string = 'Manual Build'
 let userConfig: any = {}
+
+const defaultConfig: any = {
+    init: false,
+    configVersion: "Manual Build",
+    language: "en_us",
+    theme: "auto",
+    updateCheck: "ask",
+};
 
 async function getVersion() {
     if (platform === 'desktop') {
@@ -11,32 +20,61 @@ async function getVersion() {
     return version
 }
 
-async function getConfig() {
+async function getConfig(callback: any) {
     if (platform === 'desktop') {
-        version = await ipc.getConfig();
+        userConfig = await ipc.getConfig();
+        callback(userConfig)
     }
-    return version
+    else if (platform === 'web') {
+        getFile('config', (result: any) => {
+            if (result == undefined) {
+                setFile("config", defaultConfig);
+                callback(defaultConfig)
+            } else {
+                userConfig = result;
+                callback(userConfig)
+            }
+        })
+    }
+
 }
 
 async function setLocale(lang: string) {
+    let reback;
     if (platform === 'desktop') {
-        version = await ipc.setLocale(lang);
+        reback = await ipc.setLocale(lang);
     }
-    return version
+    else if (platform === 'web') {
+        userConfig.language = lang
+        setFile("config", userConfig)
+    }
+    return reback
 }
 
 async function inited() {
+    let reback;
     if (platform === 'desktop') {
-        version = await ipc.inited();
+        reback = await ipc.inited();
     }
-    return version
+    else if (platform === 'web') {
+        getFile('config', (result: any) => {
+            result.init = true
+            setFile("config", result);
+        })
+    }
+    return reback
 }
 
-async function getLocale() {
+async function getSystemLocale() {
+    let reback = 'en_us';
     if (platform === 'desktop') {
-        version = await ipc.getLocale();
+        reback = await ipc.getLocale();
     }
-    return version
+    else if (platform === 'web') {
+        reback = navigator.language
+    }
+    reback = reback.replace("-", "_").toLowerCase()
+    return reback
 }
 
-export { getVersion, getConfig, getLocale, setLocale, inited }
+export { getVersion, getConfig, getSystemLocale, setLocale, inited }

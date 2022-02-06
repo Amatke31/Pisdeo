@@ -54,13 +54,12 @@
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
-import { setLocale, getLocale, inited } from "../utils/env";
+import { setLocale, getSystemLocale, inited } from "../utils/env";
 import Legal from "../components/legal.vue";
 import platform from "../utils/platform/platform";
-import { setFile, getFile } from "../utils/platform/web/file";
 
 export default defineComponent({
-    emits: ['goStart'],
+    emits: ["goStart"],
     components: { Legal },
     data() {
         return {
@@ -70,7 +69,7 @@ export default defineComponent({
         };
     },
     mounted: async function () {
-        const systenLang = (await getLocale()).replace("-", "_").toLowerCase();
+        const systenLang = (await getSystemLocale());
         this.lang = this.$i18n.availableLocales.includes(systenLang)
             ? systenLang
             : "en_us";
@@ -97,11 +96,8 @@ export default defineComponent({
                     ElMessage.error(this.$t("welcome.setlocaleerror"));
                 }
             } else {
-                getFile("config", (result: any) => {
-                    result.language = this.lang;
-                    setFile("config", result);
-                    this.step++;
-                });
+                setLocale(this.lang)
+                this.step++
             }
         },
         complete: async function () {
@@ -113,11 +109,8 @@ export default defineComponent({
                     ElMessage.error(this.$t("welcome.initerror"));
                 }
             } else {
-                getFile("config", (result: any) => {
-                    result.init = true;
-                    setFile("config", result);
-                    this.$emit("goStart");
-                });
+                inited()
+                this.$emit("goStart");
             }
         },
     },

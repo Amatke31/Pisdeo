@@ -68,7 +68,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { defineComponent } from "vue";
 import { getVersion, setLocale } from "../utils/env";
 import platform from "../utils/platform/platform";
-import { setFile, getFile, recovery } from "../utils/platform/web/file";
+import { recovery } from "../utils/platform/web/file";
 
 export default defineComponent({
     name: "Setting",
@@ -111,10 +111,11 @@ export default defineComponent({
                     this.$i18n.locale = lastLang;
                 }
             } else {
-                getFile("config", (result: any) => {
-                    result.language = this.lang;
-                    setFile("config", result);
-                });
+                // getFile("config", (result: any) => {
+                //     result.language = this.lang;
+                //     setFile("config", result);
+                // });
+                setLocale(this.lang);
             }
         },
     },
@@ -152,7 +153,9 @@ export default defineComponent({
                         type: "success",
                         message: "Reset completed",
                     });
-                    location.reload();
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
                 })
                 .catch(() => {
                     ElMessage({

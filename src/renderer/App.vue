@@ -49,14 +49,12 @@ import event from "./utils/event";
 import Start from "./views/Start.vue";
 import Project from "./views/Project.vue";
 import Welcome from "./views/Welcome.vue";
-import path from "path";
 import os from "os";
-import ipc from "./utils/platform/desktop/ipc";
 import { extensionManager } from "./utils/extension/extension-manager";
 import platform from "./utils/platform/platform";
 import Tool from "./components/developtool/tool.vue";
 import Setting from "./views/Setting.vue";
-import { getFile, setFile } from "./utils/platform/web/file";
+import { getConfig } from "./utils/env";
 
 interface RequireForm {
     [propName: string]: any;
@@ -132,22 +130,11 @@ export default defineComponent({
         Setting,
     },
     async created() {
-        if (platform === "desktop") {
-            userConfig = await ipc.getConfig();
+        await getConfig((config: any) => {
+            userConfig = config
             this.page = userConfig.init ? "Start" : "Welcome";
             this.$i18n.locale = userConfig.language;
-        } else {
-            getFile("config", (result: any) => {
-                if (result == undefined) {
-                    setFile("config", userConfig);
-                    this.page = "Welcome";
-                } else {
-                    userConfig = result;
-                    this.page = userConfig.init ? "Start" : "Welcome";
-                    this.$i18n.locale = userConfig.language;
-                }
-            });
-        }
+        });
     },
     async mounted() {
         // event
