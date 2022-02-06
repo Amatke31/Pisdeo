@@ -16,7 +16,6 @@
             :template="template"
             :homePath="homePath"
             :documentsPath="documentsPath"
-            :errorThrow="errorThrow"
             :templateRequire="templateRequire"
             @goToProjectPage="page = 'Project'"
             @openSetting="page = 'Setting'"
@@ -28,7 +27,6 @@
             :project="project"
             :homePath="homePath"
             :documentsPath="documentsPath"
-            :errorThrow="errorThrow"
             :menu="projectMenu"
             @goToStartPage="page = 'Start'"
         />
@@ -151,7 +149,7 @@ export default defineComponent({
             });
         }
     },
-    mounted() {
+    async mounted() {
         // event
         event.on("addTemplate", (info) => {
             let isAdd = false;
@@ -178,25 +176,14 @@ export default defineComponent({
         });
 
         this.consoleText += "<p>[INFO]Load extension...</p>";
-        if (platform === "desktop") {
-            let extensioninfo = extensionManager.LoadExtensionFromLocal(
-                process.env.NODE_ENV !== "development"
-                    ? path
-                          .join(__dirname, "/src/extension/")
-                          .replace(/\\/g, "\\\\")
-                    : path.join(process.cwd(), "/src/extension/"),
-                this.$i18n
-            );
-            this.ExtensionInfo = extensioninfo;
-            extensioninfo.forEach((ExtInfo: any) => {
-                extensionManager.runExtension(ExtInfo, ExtInfo.path);
-            });
-            this.consoleText += `<p>[INFO]${extensioninfo.length} extension detected</p>`;
-            this.consoleText += `<p>[INFO]Complete</p>`;
-            this.startIsInit = true;
-        } else {
-            this.startIsInit = true;
-        }
+        let extensioninfo = await extensionManager.LoadNWDExt(this.$i18n);
+        this.ExtensionInfo = extensioninfo;
+        extensioninfo.forEach((ExtInfo: any) => {
+            extensionManager.runExtension(ExtInfo);
+        });
+        this.consoleText += `<p>[INFO]${extensioninfo.length} extension detected</p>`;
+        this.consoleText += `<p>[INFO]Complete</p>`;
+        this.startIsInit = true;
     },
     methods: {
         pushPage: function (page: string) {

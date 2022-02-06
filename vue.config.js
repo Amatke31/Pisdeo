@@ -1,3 +1,6 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const path = require('path')
+
 module.exports = {
 	pages: {
 		index: {
@@ -22,8 +25,8 @@ module.exports = {
 				appId: 'org.nexwebdeisgner.nexwebdeisgner',
 				extraResources: [
 					{
-						from: './src/extension/',
-						to: './extension/'
+						from: './src/extension/base/build/',
+						to: './extension/base/'
 					},
 					{
 						from: './static/',
@@ -40,6 +43,21 @@ module.exports = {
 		resolve: {
 			fallback: { path: require.resolve("path-browserify"), vm: require.resolve("vm-browserify"), fs: false, os: false },
 		},
+		plugins: [
+			new CopyWebpackPlugin({
+				patterns: [{
+					from: 'src/extension/base/dist',
+					to: 'extension/base'
+				}]
+			})
+		],
+		devServer: {
+			static:
+			{
+				directory: path.join(__dirname, "src/extension"),
+				publicPath: '/extension'
+			}
+		}
 	},
 	chainWebpack: config => {
 		config.module.rule('md')
@@ -52,5 +70,6 @@ module.exports = {
 			.options({
 				raw: true
 			})
+		config.resolve.alias.set('vue-i18n', 'vue-i18n/dist/vue-i18n.cjs.js')
 	}
 }

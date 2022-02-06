@@ -60,6 +60,7 @@ import platform from "../utils/platform/platform";
 import { setFile, getFile } from "../utils/platform/web/indexddb";
 
 export default defineComponent({
+    emits: ['goStart'],
     components: { Legal },
     data() {
         return {

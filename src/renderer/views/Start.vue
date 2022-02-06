@@ -132,6 +132,7 @@ interface RequireForm {
 }
 
 export default defineComponent({
+    emits: ["goToProjectPage", "openSetting"],
     name: "Start",
     props: {
         isInit: {
@@ -176,7 +177,6 @@ export default defineComponent({
                 path: "",
             } as RequireForm,
             warningCss: "hide none",
-            documentsPath: "",
             platform: "web",
         };
     },

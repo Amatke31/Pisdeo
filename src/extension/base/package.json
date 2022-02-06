@@ -11,7 +11,8 @@
     "copy-webpack-plugin": "^9.0.1",
     "mkdirp": "^1.0.4",
     "rimraf": "^3.0.2",
-    "webpack": "^5.55.1"
+    "webpack": "^5.55.1",
+    "zip-webpack-plugin": "^4.0.1"
   },
   "devDependencies": {
     "webpack-cli": "^4.8.0"

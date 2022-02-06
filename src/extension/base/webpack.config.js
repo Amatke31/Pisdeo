@@ -1,5 +1,6 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ZipWebpackPlugin = require('zip-webpack-plugin');
 
 const info = require('./info.json');
 
@@ -35,6 +36,11 @@ const config = {
                 },
             ]
         }),
+        new ZipWebpackPlugin({
+            path: path.join(__dirname, 'dist'),
+            filename: `${info.id}@${info.version}`,
+            extension: 'nwdx'
+        })
     ]
 };
 
