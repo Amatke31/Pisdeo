@@ -47,7 +47,10 @@ module.exports = {
 			new CopyWebpackPlugin({
 				patterns: [{
 					from: 'src/extension/base/dist',
-					to: 'extension/base'
+					to: 'extension/base/dist'
+				}, {
+					from: 'src/extension/nwdcommunity/dist',
+					to: 'extension/nwdcommunity/dist'
 				}]
 			})
 		],
