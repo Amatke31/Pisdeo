@@ -68,8 +68,15 @@
                 class="right"
             >
                 <div style="display: none">{{ `防报错${icon}` }}</div>
-                <div v-for="{ id, type } in child" :key="id">
+                <div v-for="({ type, run }, i) in child" :key="i">
                     <h1 v-if="type.type == 'title'">{{ $t(id) }}</h1>
+                    <p v-else-if="type.type == 'text'">{{ type.content }}</p>
+                    <p v-else-if="type.type == 'textAsync'" v-text="run()"></p>
+                    <n-btn v-else-if="type.type == 'btn'" @click="run()">{{
+                        type.text
+                    }}</n-btn>
+                    <br v-else-if="type.type == 'br'" />
+                    <div v-if="type.type == 'select'">{{ type.name }}:</div>
                 </div>
             </div>
         </div>
@@ -155,18 +162,13 @@ export default defineComponent({
                 .then(() => {
                     ElMessage({
                         type: "success",
-                        message: "Reset completed",
+                        message: "Reset Completed",
                     });
                     setTimeout(() => {
                         location.reload();
                     }, 1000);
                 })
-                .catch(() => {
-                    ElMessage({
-                        type: "info",
-                        message: "Reset canceled",
-                    });
-                });
+                .catch(() => {});
         },
     },
 });
@@ -206,6 +208,15 @@ export default defineComponent({
         height: 100%;
         padding: 8px 16px;
         overflow-y: scroll;
+
+        & > div {
+            margin-bottom: 10px;
+
+            div {
+                display: inline-block;
+                margin-right: 10px;
+            }
+        }
 
         & > div > div {
             margin-bottom: 10px;

@@ -55,7 +55,7 @@ import { extensionManager } from "./utils/extension/extension-manager";
 import platform from "./utils/platform/platform";
 import Tool from "./components/developtool/tool.vue";
 import Setting from "./views/Setting.vue";
-import { getConfig } from "./utils/env";
+import { getConfig, getVersion } from "./utils/env";
 
 interface RequireForm {
     [propName: string]: any;
@@ -89,6 +89,7 @@ export default defineComponent({
             warningShow: false,
             title: "NexWebDesigner",
             platform,
+            version: "Manual Build",
             isDevelopment:
                 process.env.NODE_ENV === "development" ? true : false,
             toolFunction: [
@@ -169,7 +170,6 @@ export default defineComponent({
 
         event.on("addMenu", (data: any) => {
             this.settingMenuOption.push([data.id, data.icon, []]);
-            console.log(this.settingMenuOption)
         });
 
         event.on("addElement", (data: any) => {
@@ -178,8 +178,8 @@ export default defineComponent({
                     key[2].push({
                         type: data.type,
                         id: data.id,
-                        run: data.run
-                    })
+                        run: data.run,
+                    });
                 }
             });
         });
