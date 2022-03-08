@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import store from './store/index'
 import App from './App.vue'
 import i18n from './i18n'
 import Msg from './components/msg.vue'
@@ -17,6 +18,7 @@ app.config.globalProperties.$axios = axios
 installElementPlus(app)
 app
     .use(i18n)
+    .use(store)
     .use(component)
     .use(vuetify)
     .component('msg', Msg)
