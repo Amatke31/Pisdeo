@@ -48,6 +48,9 @@
                     </n-btn>
                 </div>
             </div>
+            <div v-else-if="option == 'setting.account'" class="right">
+                <div class="title">{{ $t("setting.account") }}</div>
+            </div>
             <div v-else-if="option == 'setting.about'" class="right">
                 <h1>NexWebDesigner</h1>
                 <p>{{ $t("about.introduce") }}</p>
@@ -63,6 +66,7 @@
                 v-show="
                     option == id &&
                     option != 'setting.common' &&
+                    option != 'setting.account' &&
                     option != 'setting.about'
                 "
                 class="right"
@@ -85,7 +89,7 @@
 <script lang="ts">
 import { ElMessage, ElMessageBox } from "element-plus";
 import { defineComponent } from "vue";
-import { getVersion, setLocale } from "../utils/env";
+import { getVersion, setLocale } from "../utils/common";
 import platform from "../utils/platform/platform";
 import { recovery } from "../utils/platform/web/file";
 

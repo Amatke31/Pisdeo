@@ -55,7 +55,7 @@ import { extensionManager } from "./utils/extension/extension-manager";
 import platform from "./utils/platform/platform";
 import Tool from "./components/developtool/tool.vue";
 import Setting from "./views/Setting.vue";
-import { getConfig, getVersion } from "./utils/env";
+import { getConfig, getVersion } from "./utils/common";
 
 interface RequireForm {
     [propName: string]: any;
@@ -124,6 +124,7 @@ export default defineComponent({
             ],
             settingMenuOption: [
                 ["setting.common", "mdi-cog", []],
+                ["setting.account", "mdi-account-circle", []],
                 ["setting.about", "mdi-information", []],
             ],
         };

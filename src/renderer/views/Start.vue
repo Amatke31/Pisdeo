@@ -121,7 +121,7 @@
 import { defineComponent } from "vue";
 import path from "path";
 import ipc from "../utils/platform/desktop/ipc";
-import { getVersion } from "../utils/env";
+import { getVersion } from "../utils/common";
 import platform from "../utils/platform/platform";
 
 let documentsPath: string = "";
