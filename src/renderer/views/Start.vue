@@ -132,7 +132,7 @@ interface RequireForm {
 }
 
 export default defineComponent({
-    emits: ["goToProjectPage", "openSetting"],
+    emits: ["createProject", "openSetting"],
     name: "Start",
     props: {
         isInit: {
@@ -254,8 +254,12 @@ export default defineComponent({
             }
         },
         createProject: function () {
-            this.$emit("goToProjectPage");
-            this.newProjectW = false;
+            this.closeNPW()
+            this.$store.commit({
+                type: 'beforeCreateProject',
+                name: this.ProjectForm.name
+            })
+            this.$emit('createProject')
         },
         openStore: function () {},
         openSetting: function () {

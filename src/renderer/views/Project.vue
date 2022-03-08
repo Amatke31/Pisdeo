@@ -1,12 +1,6 @@
 <template>
     <div>
-        <div v-if="!isInit" class="mask">
-            {{ $t("project.loading") }}<br />
-            <button @click="goToStartPage" class="cancel btn-1">
-                <span>cancel</span>
-            </button>
-        </div>
-        <div v-else></div>
+        
     </div>
 </template>
 
@@ -77,7 +71,6 @@ export default defineComponent({
         };
     },
     props: {
-        isInit: {},
         menu: {},
     },
     mounted() {},

@@ -17,17 +17,11 @@
             :homePath="homePath"
             :documentsPath="documentsPath"
             :templateRequire="templateRequire"
-            @goToProjectPage="page = 'Project'"
+            @createProject="createProject"
             @openSetting="page = 'Setting'"
         />
         <Project
             v-else-if="page === 'Project'"
-            :extension="ExtensionInfo"
-            :isInit="projectIsInit"
-            :project="project"
-            :homePath="homePath"
-            :documentsPath="documentsPath"
-            :menu="projectMenu"
             @goToStartPage="page = 'Start'"
         />
         <Setting
@@ -56,6 +50,7 @@ import platform from "./utils/platform/platform";
 import Tool from "./components/developtool/tool.vue";
 import Setting from "./views/Setting.vue";
 import { getConfig, getVersion } from "./utils/common";
+import { ElLoading, ElMessage } from "element-plus";
 
 interface RequireForm {
     [propName: string]: any;
@@ -196,8 +191,27 @@ export default defineComponent({
         this.startIsInit = true;
     },
     methods: {
-        pushPage: function (page: string) {
+        pushPage: function(page: string) {
             this.page = page;
+        },
+        createProject: function() {
+            const loading = ElLoading.service({
+                lock: true,
+                text: "Loading",
+                background: "rgba(0, 0, 0, 0.7)",
+            });
+            this.$store.dispatch({ type: "createProject" }).then((result) => {
+                loading.close();
+                if (result == "ok") {
+                    this.page = "Project";
+                } else if (result == "exist") {
+                    ElMessage({
+                        showClose: true,
+                        message: this.$t("project.exist"),
+                        type: "error",
+                    });
+                }
+            });
         },
     },
 });

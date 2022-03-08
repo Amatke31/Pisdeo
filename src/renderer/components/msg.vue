@@ -12,6 +12,7 @@
 
 <script>
 export default {
+  emits: ["close"],
   name: "Window",
   data() {
     return{
@@ -33,7 +34,7 @@ export default {
     }
   },
   methods: {
-    close() {
+    close: function() {
       this.$emit('close')
     },
   },

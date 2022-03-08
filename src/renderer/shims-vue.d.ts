@@ -1,3 +1,11 @@
+import { Store } from 'vuex'
+
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $store: Store;
+  }
+}
+
 /* eslint-disable */
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'

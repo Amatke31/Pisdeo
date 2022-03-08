@@ -1,10 +1,9 @@
 import { createStore } from 'vuex'
+import project from './project'
 
 const store = createStore({
-    state () {
-        return {
-            
-        }
+    modules: {
+        project
     }
 })
 

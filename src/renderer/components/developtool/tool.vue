@@ -35,7 +35,7 @@
         </div>
     </div>
 </template>
-<script>
+<script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
@@ -46,7 +46,7 @@ export default defineComponent({
     },
     props: ["toolFunction"],
     mounted: function () {
-        document.addEventListener("click", (e) => {
+        document.addEventListener("click", (e:any) => {
             if (!e.path.includes(this.$refs.codetool)) {
                 this.showList = false
             }

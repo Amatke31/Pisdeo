@@ -1,3 +1,4 @@
 {
-    "project.loading": "Loading..."
+    "project.loading": "Loading...",
+    "project.exist": "The project already exists"
 }
