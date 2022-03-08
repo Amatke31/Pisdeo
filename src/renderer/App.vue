@@ -36,6 +36,23 @@
         ></div>
     </div>
     <Tool v-if="isDevelopment" :toolFunction="toolFunction" />
+    <el-dialog
+        v-model="dialogVisible"
+        title="Tool"
+        width="30%"
+        :before-close="handleClose"
+    >
+        <span>Load Project</span>
+        <el-input v-model="loadProjectPath" placeholder="Project Path" />
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="dialogVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="loadProjectWithDebug"
+                    >Confirm</el-button
+                >
+            </span>
+        </template>
+    </el-dialog>
 </template>
 
 <script lang="ts">
@@ -110,6 +127,13 @@ export default defineComponent({
                     },
                 },
                 {
+                    label: "Project Page",
+                    type: "btn",
+                    command: () => {
+                        this.openLoadProjectWithDebug();
+                    },
+                },
+                {
                     label: "Refresh",
                     type: "btn",
                     command: () => {
@@ -122,6 +146,8 @@ export default defineComponent({
                 ["setting.account", "mdi-account-circle", []],
                 ["setting.about", "mdi-information", []],
             ],
+            dialogVisible: false,
+            loadProjectPath: "",
         };
     },
     components: {
@@ -213,6 +239,12 @@ export default defineComponent({
                 }
             });
         },
+        openLoadProjectWithDebug: function() {
+            this.dialogVisible = true;
+        },
+        loadProjectWithDebug: function() {
+            this.dialogVisible = false
+        }
     },
 });
 </script>
