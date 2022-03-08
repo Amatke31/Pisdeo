@@ -50,6 +50,9 @@
             </div>
             <div v-else-if="option == 'setting.account'" class="right">
                 <div class="title">{{ $t("setting.account") }}</div>
+                <div>
+                    
+                </div>
             </div>
             <div v-else-if="option == 'setting.about'" class="right">
                 <h1>NexWebDesigner</h1>

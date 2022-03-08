@@ -360,7 +360,7 @@ export default defineComponent({
 }
 
 #newProject.hide .window {
-    transform: scale(0.8);
+    transform: scale(0.9);
     opacity: 0;
 }
 .nav {
