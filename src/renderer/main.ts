@@ -8,7 +8,6 @@ import component from './components/NexUI'
 import vuetify from './plugins/vuetify'
 import loadFonts from './plugins/webfontloader'
 import installElementPlus from './plugins/element'
-import './assets/css/element-plus.css'
 import './assets/iconfont/iconfont.css'
 
 loadFonts()

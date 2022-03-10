@@ -3,6 +3,7 @@ import ElementPlus from 'element-plus'
 import tinycolor from 'tinycolor2'
 import 'element-plus/dist/index.css'
 import 'element-plus-dark/index.scss'
+import './element.css'
 
 export default (app: App<Element>): void => {
     app.use(ElementPlus)
