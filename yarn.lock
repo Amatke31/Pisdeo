@@ -4885,11 +4885,6 @@ element-plus@^2.0.5:
     memoize-one "^6.0.0"
     normalize-wheel-es "^1.1.1"
 
-element-theme-dark@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.npmjs.org/element-theme-dark/-/element-theme-dark-1.0.3.tgz#6de433f10f6286ca1576827f0bafee34ce12a2d5"
-  integrity sha512-za/9dIJYEWF8coKbDCF2VWvu9k9xT3UkLDrQdDaY3c6FD24LHxEMM+LHJeRif8nx9eIpLDwOcyOGELZbhw9Q9w==
-
 elliptic@^6.5.3:
   version "6.5.4"
   resolved "https://registry.nlark.com/elliptic/download/elliptic-6.5.4.tgz#da37cebd31e79a1367e941b592ed1fbebd58abbb"
@@ -10586,6 +10581,11 @@ timsort@^0.3.0:
   version "0.3.0"
   resolved "https://registry.nlark.com/timsort/download/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
+
+tinycolor2@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.npmmirror.com/tinycolor2/-/tinycolor2-1.4.2.tgz#3f6a4d1071ad07676d7fa472e1fac40a719d8803"
+  integrity sha512-vJhccZPs965sV/L2sU4oRQVAos0pQXwsvTLkWYdqJ+a8Q5kPFzJTuOFwy7UniPli44NKQGAglksjvOcpo95aZA==
 
 tmp-promise@^3.0.2:
   version "3.0.2"
