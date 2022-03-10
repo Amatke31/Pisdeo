@@ -8,13 +8,13 @@
 
 :root {
     --el-color-primary: rgb(125, 125, 125);
-    --el-color-primary-light-1: #53a8ff;
-    --el-color-primary-light-2: #66b1ff;
-    --el-color-primary-light-3: #79bbff;
-    --el-color-primary-light-4: #8cc5ff;
-    --el-color-primary-light-5: #a0cfff;
-    --el-color-primary-light-6: #b3d8ff;
-    --el-color-primary-light-7: #c6e2ff;
-    --el-color-primary-light-8: #d9ecff;
-    --el-color-primary-light-9: #ecf5ff;
+    --el-color-primary-light-1: hsl(210, 0%, 66%);
+    --el-color-primary-light-2: hsl(211, 0%, 70%);
+    --el-color-primary-light-3: hsl(210, 0%, 74%);
+    --el-color-primary-light-4: hsl(210, 0%, 77%);
+    --el-color-primary-light-5: hsl(210, 0%, 81%);
+    --el-color-primary-light-6: hsl(211, 0%, 85%);
+    --el-color-primary-light-7: hsl(211, 0%, 89%);
+    --el-color-primary-light-8: hsl(210, 0%, 93%);
+    --el-color-primary-light-9: hsl(212, 0%, 96%);
 }
