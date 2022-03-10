@@ -37,7 +37,7 @@
     </div>
     <Tool v-if="isDevelopment" :toolFunction="toolFunction" />
     <el-dialog
-        v-model="dialogVisible"
+        v-model="loadProjectWithDebugDialog"
         title="Tool"
         width="30%"
         :before-close="handleClose"
@@ -46,7 +46,9 @@
         <el-input v-model="loadProjectPath" placeholder="Project Path" />
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="dialogVisible = false">Cancel</el-button>
+                <el-button @click="loadProjectWithDebugDialog = false"
+                    >Cancel</el-button
+                >
                 <el-button type="primary" @click="loadProjectWithDebug"
                     >Confirm</el-button
                 >
@@ -127,7 +129,7 @@ export default defineComponent({
                     },
                 },
                 {
-                    label: "Project Page",
+                    label: "Load Project",
                     type: "btn",
                     command: () => {
                         this.openLoadProjectWithDebug();
@@ -146,7 +148,7 @@ export default defineComponent({
                 ["setting.account", "mdi-account-circle", []],
                 ["setting.about", "mdi-information", []],
             ],
-            dialogVisible: false,
+            loadProjectWithDebugDialog: false,
             loadProjectPath: "",
         };
     },
@@ -240,11 +242,32 @@ export default defineComponent({
             });
         },
         openLoadProjectWithDebug: function() {
-            this.dialogVisible = true;
+            this.loadProjectWithDebugDialog = true;
         },
         loadProjectWithDebug: function() {
-            this.dialogVisible = false
-        }
+            this.loadProjectWithDebugDialog = false;
+            const loading = ElLoading.service({
+                lock: true,
+                text: "Loading",
+                background: "rgba(0, 0, 0, 0.7)",
+            });
+            this.$store.commit({
+                type: "beforeLoadProjectWithDebug",
+                path: this.loadProjectPath,
+            });
+            this.$store.dispatch({ type: "loadProject" }).then((result) => {
+                loading.close();
+                if (result.code == 200) {
+                    this.page = "Project";
+                } else if (result.code == 300) {
+                    ElMessage({
+                        showClose: true,
+                        message: this.$t("project.cannotfind"),
+                        type: "error",
+                    });
+                }
+            });
+        },
     },
 });
 </script>
