@@ -5,7 +5,7 @@
             :class="showList ? 'suspension listopen' : 'suspension'"
         >
             <svg
-                class="tooolsvg"
+                class="toolsvg"
                 t="1643642583418"
                 viewBox="0 0 1024 1024"
                 version="1.1"
@@ -45,10 +45,10 @@ export default defineComponent({
         };
     },
     props: ["toolFunction"],
-    mounted: function () {
-        document.addEventListener("click", (e:any) => {
+    mounted: function() {
+        document.addEventListener("click", (e: any) => {
             if (!e.path.includes(this.$refs.codetool)) {
-                this.showList = false
+                this.showList = false;
             }
         });
     },
@@ -71,7 +71,7 @@ export default defineComponent({
 }
 
 #codetool .suspension {
-    background-color: #fff;
+    background-color: #222;
     height: 36px;
     width: 36px;
     border-radius: 50%;
@@ -79,12 +79,17 @@ export default defineComponent({
     padding: 9px;
 }
 
+#codetool .suspension .toolsvg {
+    fill: currentColor;
+    color: #fff;
+}
+
 #codetool .suspension.listopen {
     border-radius: 50% 0px 0 50%;
 }
 
 #codetool .list {
-    background-color: #fff;
+    background-color: #222;
     width: auto;
     height: auto;
     padding: 10px;
@@ -93,7 +98,7 @@ export default defineComponent({
 }
 
 #codetool .list p {
-    color: #000;
+    color: #fff;
     margin-bottom: 10px;
 }
 
@@ -102,6 +107,7 @@ export default defineComponent({
 }
 
 #codetool .list .n-btn {
-    margin: 1px 0;
+    margin: 5px 0;
+    background-color: #555;
 }
 </style>
