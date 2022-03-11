@@ -3,15 +3,17 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-
+import { mapState } from "vuex";
 export default defineComponent({
-    data(){
+    data() {
         return {
-            html: {}
-        }
+            html: {},
+        };
     },
-    mounted: function() {
+    computed:{
+        ...mapState(["program"])
     },
+    mounted: function() {},
 });
 </script>
 <style lang="scss" scoped>

@@ -136,6 +136,13 @@ export default defineComponent({
                     },
                 },
                 {
+                    label: "Load Test Project",
+                    type: "btn",
+                    command: () => {
+                        this.loadTestProject();
+                    },
+                },
+                {
                     label: "Refresh",
                     type: "btn",
                     command: () => {
@@ -256,6 +263,29 @@ export default defineComponent({
                 path: this.loadProjectPath,
             });
             this.$store.dispatch({ type: "loadProject" }).then((result) => {
+                loading.close();
+                if (result.code == 200) {
+                    this.page = "Project";
+                } else if (result.code == 300) {
+                    ElMessage({
+                        showClose: true,
+                        message: this.$t("project.cannotfind"),
+                        type: "error",
+                    });
+                }
+            });
+        },
+        loadTestProject: function() {
+            this.loadProjectWithDebugDialog = false;
+            const loading = ElLoading.service({
+                lock: true,
+                text: "Loading",
+                background: "rgba(0, 0, 0, 0.7)",
+            });
+            this.$store.commit({
+                type: "beforeLoadTestProject",
+            });
+            this.$store.dispatch({ type: "loadTestProject" }).then((result) => {
                 loading.close();
                 if (result.code == 200) {
                     this.page = "Project";

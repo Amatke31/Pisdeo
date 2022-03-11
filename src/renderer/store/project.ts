@@ -8,8 +8,49 @@ const project = {
             program: {},
             buffer: {
                 openFile: [],
-                current: ""
-            }
+                currentFile: "",
+            },
+            testProgram: {
+                name: "Test",
+                author: "Amatke31",
+                file: {
+                    "index.html": {
+                        element: "html",
+                        children: [
+                            {
+                                element: "head",
+                                children: [
+                                    {
+                                        element: "style",
+                                        css: [
+                                            {
+                                                class: "menu-bar",
+                                                width: "100%",
+                                                height: "32px",
+                                                "background-color": "#222",
+                                            },
+                                        ],
+                                    },
+                                    {
+                                        element: "script",
+                                        script: [],
+                                    },
+                                ],
+                            },
+                            {
+                                element: "body",
+                                class: "dark",
+                                children: [
+                                    {
+                                        element: "div",
+                                        class: "menu-bar",
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                },
+            },
         };
     },
     mutations: {
@@ -20,9 +61,10 @@ const project = {
         beforeLoadProjectWithDebug(state: any, info: any) {
             state.path = info.path;
         },
-        openFile(state: any, page: string) {
-
-        }
+        beforeLoadTestProject(state: any, info: any) {
+            state.program = state.testProgram;
+        },
+        openFile(state: any, page: string) {},
     },
     actions: {
         createProject({ state, commit }) {
@@ -37,6 +79,11 @@ const project = {
                 loadProject(state, (result: any) => {
                     resolve(result);
                 });
+            });
+        },
+        loadTestProject({ state, commit }) {
+            return new Promise((resolve) => {
+                resolve({ code: 200 });
             });
         },
     },
