@@ -6,6 +6,10 @@ const project = {
         return {
             name: "",
             program: {},
+            buffer: {
+                openFile: [],
+                current: ""
+            }
         };
     },
     mutations: {
@@ -16,6 +20,9 @@ const project = {
         beforeLoadProjectWithDebug(state: any, info: any) {
             state.path = info.path;
         },
+        openFile(state: any, page: string) {
+
+        }
     },
     actions: {
         createProject({ state, commit }) {

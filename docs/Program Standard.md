@@ -3,7 +3,7 @@
 ```javascript
 let program = {
     name: "WebApp", //项目名
-    author: "Amatke31", //项目所有人/组织
+    author: "Amatke31", //项目所有人/组织,
     file: {
         "index.html": //文件名
         {
@@ -15,14 +15,14 @@ let program = {
                     element: "div",
                     class: "menu-bar",
                     children: [
-
+                        ...
                     ]
                 }
             ]
         },
         "other/work.html": //保留路径
         {
-
+            ...
         }
     }
 }
