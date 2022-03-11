@@ -3,17 +3,24 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { mapState } from "vuex";
+import { ObjToHTML } from "../../../utils/exchange/html";
 export default defineComponent({
     data() {
         return {
-            html: {},
+            html: [],
         };
     },
-    computed:{
-        ...mapState(["program"])
+    watch: {
+        html: function(e) {
+            console.log(e);
+            console.log(ObjToHTML(e))
+        },
     },
-    mounted: function() {},
+    mounted: function() {
+        this.html = this.$store.state.project.program.file[
+            this.$store.state.project.buffer.currentFile
+        ];
+    },
 });
 </script>
 <style lang="scss" scoped>

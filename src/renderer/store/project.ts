@@ -5,7 +5,11 @@ const project = {
     state() {
         return {
             name: "",
-            program: {},
+            program: {
+                name: "",
+                author: "",
+                file: {}
+            },
             buffer: {
                 openFile: [],
                 currentFile: "",
@@ -63,6 +67,7 @@ const project = {
         },
         beforeLoadTestProject(state: any, info: any) {
             state.program = state.testProgram;
+            state.buffer.currentFile = "index.html"
         },
         openFile(state: any, page: string) {},
     },
