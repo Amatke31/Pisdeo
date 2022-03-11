@@ -10,15 +10,6 @@ import menuBar from "./Project/menu-bar.vue";
 import workspace from "./Project/workspace.vue";
 export default defineComponent({
   components: { menuBar, workspace },
-    data() {
-        return {
-            menuFocus: "",
-            submenuShow: false,
-        };
-    },
-    props: {
-        menu: {},
-    },
     mounted() {},
     methods: {
         goToStartPage: function () {
