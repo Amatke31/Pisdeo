@@ -1,8 +1,32 @@
 <template>
     <div>
-        
+        <menuBar/>
+        <workspace/>
     </div>
 </template>
+<script lang="ts">
+import { defineComponent } from "vue";
+import menuBar from "./Project/menu-bar.vue";
+import workspace from "./Project/workspace.vue";
+export default defineComponent({
+  components: { menuBar, workspace },
+    data() {
+        return {
+            menuFocus: "",
+            submenuShow: false,
+        };
+    },
+    props: {
+        menu: {},
+    },
+    mounted() {},
+    methods: {
+        goToStartPage: function () {
+            this.$emit("goToStartPage");
+        },
+    },
+});
+</script>
 
 <style lang="scss" scoped>
 .mask {
@@ -60,24 +84,3 @@
     }
 }
 </style>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-export default defineComponent({
-    data() {
-        return {
-            menuFocus: "",
-            submenuShow: false,
-        };
-    },
-    props: {
-        menu: {},
-    },
-    mounted() {},
-    methods: {
-        goToStartPage: function () {
-            this.$emit("goToStartPage");
-        },
-    },
-});
-</script>
