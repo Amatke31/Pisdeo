@@ -65,7 +65,7 @@ const project = {
         beforeLoadProjectWithDebug(state: any, info: any) {
             state.path = info.path;
         },
-        beforeLoadTestProject(state: any, info: any) {
+        beforeLoadTestProject(state: any) {
             state.program = state.testProgram;
             state.buffer.currentFile = "index.html"
         },

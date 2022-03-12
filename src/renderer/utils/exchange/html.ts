@@ -20,4 +20,20 @@ function analysisObj(obj: any): string {
     return out;
 }
 
-export { ObjToHTML, analysisObj };
+function ObjToElement(obj: any) {
+    let out: Element = analysisObjWithElement(obj);
+    return out;
+}
+
+function analysisObjWithElement(obj: any): Element {
+    let out: Element = document.createElement(obj.element);
+    for (let ref in obj) {
+        if (noChange.indexOf(ref) == -1) out.setAttribute(ref, obj[ref]);
+    }
+    for (let child in obj.children) {
+        out.appendChild(analysisObjWithElement(obj.children[child]));
+    }
+    return out;
+}
+
+export { ObjToHTML, analysisObj, ObjToElement, analysisObjWithElement };
