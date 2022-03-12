@@ -1,5 +1,8 @@
+import { ObjToElement, ObjToHTML } from "../utils/exchange/html";
 import { createProject } from "../utils/project/createProject";
 import { loadProject } from "../utils/project/loadProject";
+
+let supportExt = ["html", "htm", "css", "js"];
 
 const project = {
     state() {
@@ -8,11 +11,13 @@ const project = {
             program: {
                 name: "",
                 author: "",
-                file: {}
+                file: {},
             },
-            buffer: {
+            workspace: {
                 openFile: [],
                 currentFile: "",
+                htmlChooser: "",
+                viewer: null,
             },
             testProgram: {
                 name: "Test",
@@ -48,6 +53,7 @@ const project = {
                                     {
                                         element: "div",
                                         class: "menu-bar",
+                                        text: "Test"
                                     },
                                 ],
                             },
@@ -67,9 +73,29 @@ const project = {
         },
         beforeLoadTestProject(state: any) {
             state.program = state.testProgram;
-            state.buffer.currentFile = "index.html"
+            state.workspace.currentFile = "index.html";
         },
-        openFile(state: any, page: string) {},
+        openFile(state: any, filePath: string) {
+            state.workspace.currentFile = filePath;
+            if (!state.workspace.openFile.includes(filePath)) {
+                state.workspace.openFile.push(filePath);
+            }
+            if (
+                supportExt.includes(
+                    state.workspace.currentFile.split(".").pop()
+                )
+            ) {
+                switch (state.workspace.currentFile.split(".").pop()) {
+                    case "html":
+                        state.workspace.viewer = ObjToHTML(
+                            state.program.file[
+                                state.workspace.currentFile
+                            ]
+                        );
+                        break;
+                }
+            }
+        },
     },
     actions: {
         createProject({ state, commit }) {
@@ -87,6 +113,7 @@ const project = {
             });
         },
         loadTestProject({ state, commit }) {
+            commit('openFile', "index.html")
             return new Promise((resolve) => {
                 resolve({ code: 200 });
             });

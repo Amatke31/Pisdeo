@@ -1,4 +1,4 @@
-let noChange = ["element", "children", "css", "script"];
+let noChange = ["element", "children", "css", "script", "text"];
 
 function ObjToHTML(obj: any) {
     let out: string = "";
@@ -10,9 +10,18 @@ function analysisObj(obj: any): string {
     let out: string = "";
     out += `<${obj.element}`;
     for (let ref in obj) {
-        if (noChange.indexOf(ref) == -1) out += ` ${ref}="${obj[ref]}"`;
+        if (!noChange.includes(ref)) out += ` ${ref}="${obj[ref]}"`;
     }
     out += `>`;
+    for (let ref in obj) {
+        if (noChange.includes(ref)) {
+            switch (ref) {
+                case "text":
+                    out += obj[ref];
+                    break;
+            }
+        }
+    }
     for (let child in obj.children) {
         out += analysisObj(obj.children[child]);
     }
@@ -25,10 +34,18 @@ function ObjToElement(obj: any) {
     return out;
 }
 
-function analysisObjWithElement(obj: any): Element {
-    let out: Element = document.createElement(obj.element);
+function analysisObjWithElement(obj: any): HTMLElement {
+    let out: HTMLElement = document.createElement(obj.element);
     for (let ref in obj) {
-        if (noChange.indexOf(ref) == -1) out.setAttribute(ref, obj[ref]);
+        if (!noChange.includes(ref)) out.setAttribute(ref, obj[ref]);
+    }
+    for (let ref in obj) {
+        if (noChange.includes(ref)) {
+            switch (ref) {
+                case "text":
+                    out.innerText = obj[ref]
+            }
+        }
     }
     for (let child in obj.children) {
         out.appendChild(analysisObjWithElement(obj.children[child]));

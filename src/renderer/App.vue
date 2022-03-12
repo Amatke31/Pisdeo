@@ -40,7 +40,6 @@
         v-model="loadProjectWithDebugDialog"
         title="Tool"
         width="30%"
-        :before-close="handleClose"
     >
         <span>Load Project</span>
         <el-input v-model="loadProjectPath" placeholder="Project Path" />
