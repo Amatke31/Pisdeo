@@ -151,6 +151,13 @@ export default defineComponent({
                         location.reload();
                     },
                 },
+                {
+                    label: "Close DevTool",
+                    type: "btn",
+                    command: () => {
+                        this.closeDevToolOneTime();
+                    },
+                },
             ],
             settingMenuOption: [
                 ["setting.common", "mdi-cog", []],
@@ -178,6 +185,7 @@ export default defineComponent({
         });
     },
     async mounted() {
+        this.openNWDDevTool = localStorage.getItem("nwddevtool") as string;
         // event
         event.on("addTemplate", (info) => {
             let isAdd = false;
@@ -304,6 +312,9 @@ export default defineComponent({
         },
         refreshToolStatus: function() {
             this.openNWDDevTool = localStorage.getItem("nwddevtool") as string;
+        },
+        closeDevToolOneTime: function() {
+            this.openNWDDevTool = "az";
         },
     },
 });

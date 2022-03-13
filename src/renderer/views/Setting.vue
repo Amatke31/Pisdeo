@@ -209,6 +209,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.n-btn {
+    margin: 4px;
+}
 .nav {
     padding: 12px;
     background-color: #222;
