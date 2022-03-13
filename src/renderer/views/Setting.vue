@@ -73,19 +73,19 @@
                 <p>Channel: {{ version.channel }}</p>
                 <p>Environment: {{ platform }}</p>
                 <br />
+                <p>Copyright © 2021-2022 Amatke31. All rights reserved.</p>
                 <p>
                     Released under the
                     <a
-                        style="color:rgb(57 116 255)"
+                        style="color:#58a6ff"
                         href="https://www.gnu.org/licenses/agpl-3.0.txt"
                         target="_blank"
                         >AGPL-3.0</a
                     >
                 </p>
-                <p>Copyright © 2021-2022 Amatke31</p>
                 <div>
                     <a
-                        style="color:rgb(57 116 255)"
+                        style="color:#58a6ff"
                         href="https://gitee.com/amatke31-work/nexwebdesigner"
                         target="_blank"
                     >
