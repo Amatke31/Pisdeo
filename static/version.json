@@ -1,7 +1,1 @@
-{
-    "commitId": "Manual Build",
-    "ref": "Manual Build",
-    "isProduction": false,
-    "buildTime": "Manual Build",
-    "version": "Manual Build"
-}
+{"isProduction":false,"buildTime":"Manual Build","version":"Manual Build","channel":"Develop"}

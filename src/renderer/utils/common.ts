@@ -2,8 +2,8 @@ import ipc from "./platform/desktop/ipc";
 import platform from "./platform/platform";
 import { getFile, setFile } from "./platform/web/file";
 
-let version: string = 'Manual Build'
-let userConfig: any = {}
+let version: string = "Manual Build";
+let userConfig: any = {};
 
 const defaultConfig: any = {
     init: false,
@@ -14,67 +14,64 @@ const defaultConfig: any = {
 };
 
 async function getVersion() {
-    if (platform === 'desktop') {
+    if (platform === "desktop") {
         version = await ipc.getVersion();
+    } else if (platform === "web") {
+        version = require("../../../static/version.json").version;
     }
-    return version
+    return version;
 }
 
 async function getConfig(callback: any) {
-    if (platform === 'desktop') {
+    if (platform === "desktop") {
         userConfig = await ipc.getConfig();
-        callback(userConfig)
-    }
-    else if (platform === 'web') {
-        getFile('config', (result: any) => {
+        callback(userConfig);
+    } else if (platform === "web") {
+        getFile("config", (result: any) => {
             if (result == undefined) {
                 setFile("config", defaultConfig);
-                callback(defaultConfig)
+                callback(defaultConfig);
             } else {
                 userConfig = result;
-                callback(userConfig)
+                callback(userConfig);
             }
-        })
+        });
     }
-
 }
 
 async function setLocale(lang: string) {
     let reback;
-    if (platform === 'desktop') {
+    if (platform === "desktop") {
         reback = await ipc.setLocale(lang);
+    } else if (platform === "web") {
+        userConfig.language = lang;
+        setFile("config", userConfig);
     }
-    else if (platform === 'web') {
-        userConfig.language = lang
-        setFile("config", userConfig)
-    }
-    return reback
+    return reback;
 }
 
 async function inited() {
     let reback;
-    if (platform === 'desktop') {
+    if (platform === "desktop") {
         reback = await ipc.inited();
-    }
-    else if (platform === 'web') {
-        getFile('config', (result: any) => {
-            result.init = true
+    } else if (platform === "web") {
+        getFile("config", (result: any) => {
+            result.init = true;
             setFile("config", result);
-        })
+        });
     }
-    return reback
+    return reback;
 }
 
 async function getSystemLocale() {
-    let reback = 'en_us';
-    if (platform === 'desktop') {
+    let reback = "en_us";
+    if (platform === "desktop") {
         reback = await ipc.getLocale();
+    } else if (platform === "web") {
+        reback = navigator.language;
     }
-    else if (platform === 'web') {
-        reback = navigator.language
-    }
-    reback = reback.replace("-", "_").toLowerCase()
-    return reback
+    reback = reback.replace("-", "_").toLowerCase();
+    return reback;
 }
 
-export { getVersion, getConfig, getSystemLocale, setLocale, inited }
+export { getVersion, getConfig, getSystemLocale, setLocale, inited };

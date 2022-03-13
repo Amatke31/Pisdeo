@@ -50,9 +50,7 @@
             </div>
             <div v-else-if="option == 'setting.account'" class="right">
                 <div class="title">{{ $t("setting.account") }}</div>
-                <div>
-                    
-                </div>
+                <div></div>
             </div>
             <div v-else-if="option == 'setting.develop'" class="right">
                 <div class="title">{{ $t("setting.develop") }}</div>
@@ -74,18 +72,35 @@
                 <p>Version: {{ version }}</p>
                 <p>Environment: {{ platform }}</p>
                 <br />
-                <p>Released under the AGPL-3.0</p>
+                <p>
+                    Released under the
+                    <a
+                        style="color:rgb(57 116 255)"
+                        href="https://www.gnu.org/licenses/agpl-3.0.txt"
+                        target="_blank"
+                        >AGPL-3.0</a
+                    >
+                </p>
                 <p>Copyright © 2021-2022 Amatke31</p>
+                <div>
+                    <a
+                        style="color:rgb(57 116 255)"
+                        href="https://gitee.com/amatke31-work/nexwebdesigner"
+                        target="_blank"
+                    >
+                        {{ $t("about.gitee") }}
+                    </a>
+                </div>
             </div>
             <div
                 v-for="[id, icon, child] in menuOption"
                 :key="id"
                 v-show="
                     option == id &&
-                    option != 'setting.common' &&
-                    option != 'setting.account' &&
-                    option != 'setting.develop' &&
-                    option != 'setting.about'
+                        option != 'setting.common' &&
+                        option != 'setting.account' &&
+                        option != 'setting.develop' &&
+                        option != 'setting.about'
                 "
                 class="right"
             >
@@ -127,7 +142,7 @@ export default defineComponent({
     async created() {
         this.version = await getVersion();
     },
-    mounted: function () {
+    mounted: function() {
         this.lang = this.$i18n.locale;
         this.$i18n.availableLocales.forEach((lang) => {
             this.supportLang.push({
@@ -137,7 +152,7 @@ export default defineComponent({
         });
     },
     watch: {
-        lang: async function (lang) {
+        lang: async function(lang) {
             const lastLang = this.$i18n.locale;
             this.$i18n.locale = lang;
             if (platform === "desktop") {
@@ -153,7 +168,7 @@ export default defineComponent({
         },
     },
     methods: {
-        reset: function () {
+        reset: function() {
             ElMessageBox.confirm(this.$t("setting.reset.warning"), "Warning", {
                 confirmButtonText: this.$t("common.confirm"),
                 cancelButtonText: this.$t("common.cancel"),
@@ -192,17 +207,17 @@ export default defineComponent({
                 })
                 .catch(() => {});
         },
-        enableToolAlways: function () {
-            localStorage.setItem('nwddevtool', 'always')
-            this.$emit('refreshToolStatus')
+        enableToolAlways: function() {
+            localStorage.setItem("nwddevtool", "always");
+            this.$emit("refreshToolStatus");
         },
-        enableToolJustDevelopment: function () {
-            localStorage.setItem('nwddevtool', 'development')
-            this.$emit('refreshToolStatus')
+        enableToolJustDevelopment: function() {
+            localStorage.setItem("nwddevtool", "development");
+            this.$emit("refreshToolStatus");
         },
-        unableToolAlways: function () {
-            localStorage.setItem('nwddevtool', 'never')
-            this.$emit('refreshToolStatus')
+        unableToolAlways: function() {
+            localStorage.setItem("nwddevtool", "never");
+            this.$emit("refreshToolStatus");
         },
     },
 });
