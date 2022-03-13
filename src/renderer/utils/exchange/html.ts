@@ -17,7 +17,10 @@ function analysisObj(obj: any): string {
         if (noChange.includes(ref)) {
             switch (ref) {
                 case "text":
-                    out += obj[ref];
+                    out += obj["text"];
+                    break;
+                case "css":
+                    out += ObjToCSS(obj["css"]);
                     break;
             }
         }
@@ -43,7 +46,7 @@ function analysisObjWithElement(obj: any): HTMLElement {
         if (noChange.includes(ref)) {
             switch (ref) {
                 case "text":
-                    out.innerText = obj[ref]
+                    out.innerText = obj[ref];
             }
         }
     }
@@ -53,4 +56,23 @@ function analysisObjWithElement(obj: any): HTMLElement {
     return out;
 }
 
-export { ObjToHTML, analysisObj, ObjToElement, analysisObjWithElement };
+function ObjToCSS(obj: any) {
+    let out: string = "";
+    obj.forEach((obj: any) => {
+        out += obj.class
+        out += '{'
+        for (let ref in obj) {
+            out += `${ref}:${obj[ref]};`
+        }
+        out += '}'
+    });
+    return out
+}
+
+export {
+    ObjToHTML,
+    analysisObj,
+    ObjToElement,
+    analysisObjWithElement,
+    ObjToCSS,
+};

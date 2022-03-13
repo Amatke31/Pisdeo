@@ -33,9 +33,16 @@ const project = {
                                         element: "style",
                                         css: [
                                             {
-                                                class: "menu-bar",
+                                                class: "*",
+                                                margin: "0",
+                                                padding: "0",
+                                            },
+                                            {
+                                                class: ".menu-bar",
                                                 width: "100%",
-                                                height: "32px",
+                                                height: "auto",
+                                                padding: "4px",
+                                                color: "#fff",
                                                 "background-color": "#222",
                                             },
                                         ],

@@ -2,7 +2,12 @@ import ipc from "./platform/desktop/ipc";
 import platform from "./platform/platform";
 import { getFile, setFile } from "./platform/web/file";
 
-let version: string = "Manual Build";
+let version: Object = {
+    isProduction: false,
+    buildTime: "Manual Build",
+    version: "Manual Build",
+    channel: "Develop",
+};
 let userConfig: any = {};
 
 const defaultConfig: any = {
@@ -15,9 +20,9 @@ const defaultConfig: any = {
 
 async function getVersion() {
     if (platform === "desktop") {
-        version = await ipc.getVersion();
+        version = JSON.parse(await ipc.getVersion());
     } else if (platform === "web") {
-        version = require("../../../static/version.json").version;
+        version = require("../../../static/version.json");
     }
     return version;
 }

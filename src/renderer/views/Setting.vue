@@ -134,7 +134,12 @@ export default defineComponent({
             lang: "",
             option: "setting.common",
             supportLang: [] as any,
-            version: "",
+            version: {
+                isProduction: false,
+                buildTime: "Manual Build",
+                version: "Manual Build",
+                channel: "Develop",
+            } as Object,
             platform,
             resetDialog: false,
         };

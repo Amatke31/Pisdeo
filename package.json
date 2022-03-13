@@ -3,8 +3,8 @@
     "version": "1.0.0",
     "author": "Amatke31",
     "scripts": {
-        "build": "vue-cli-service build",
-        "build:gulp": "gulp build",
+        "build:nogulp": "vue-cli-service build",
+        "build": "gulp build",
         "lint": "vue-cli-service lint",
         "build:desktop": "vue-cli-service electron:build",
         "dev": "vue-cli-service serve",
