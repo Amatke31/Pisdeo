@@ -1,4 +1,4 @@
-import { ObjToElement, ObjToHTML } from "../utils/exchange/html";
+import { ObjToHTML } from "../utils/exchange/html";
 import { createProject } from "../utils/project/createProject";
 import { loadProject } from "../utils/project/loadProject";
 
@@ -53,7 +53,7 @@ const project = {
                                     {
                                         element: "div",
                                         class: "menu-bar",
-                                        text: "Test"
+                                        text: "Test",
                                     },
                                 ],
                             },
@@ -73,12 +73,14 @@ const project = {
         },
         beforeLoadTestProject(state: any) {
             state.program = state.testProgram;
-            state.workspace.currentFile = "index.html";
         },
         openFile(state: any, filePath: string) {
             state.workspace.currentFile = filePath;
             if (!state.workspace.openFile.includes(filePath)) {
-                state.workspace.openFile.push(filePath);
+                state.workspace.openFile.push({
+                    file: filePath,
+                    context: state.program.file[filePath],
+                });
             }
             if (
                 supportExt.includes(
@@ -88,13 +90,14 @@ const project = {
                 switch (state.workspace.currentFile.split(".").pop()) {
                     case "html":
                         state.workspace.viewer = ObjToHTML(
-                            state.program.file[
-                                state.workspace.currentFile
-                            ]
+                            state.program.file[state.workspace.currentFile]
                         );
                         break;
                 }
             }
+        },
+        chooseElement(state: any, e: any) {
+            state.workspace.htmlChooser = e.element;
         },
     },
     actions: {
@@ -113,7 +116,7 @@ const project = {
             });
         },
         loadTestProject({ state, commit }) {
-            commit('openFile', "index.html")
+            commit("openFile", "index.html");
             return new Promise((resolve) => {
                 resolve({ code: 200 });
             });

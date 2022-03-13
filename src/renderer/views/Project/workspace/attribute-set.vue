@@ -1,0 +1,33 @@
+<template>
+    <div class="attributeSet"></div>
+</template>
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+    data () {
+        return {
+            attribute: []
+        }
+    },
+    mounted: function() {
+        this.$store.subscribe((mutation, state) => {
+            if (mutation.type == "chooseElement") {
+                let htmlChooser = state.project.workspace.htmlChooser.split('-')
+                console.log(htmlChooser.length)
+            }
+        });
+    },
+});
+</script>
+<style lang="scss" scoped>
+.attributeSet {
+    margin: 2px;
+    width: 20vw;
+    height: 60vh;
+    background-color: #222;
+    border-radius: 8px;
+    border: 1px solid #444;
+    overflow: hidden;
+}
+</style>

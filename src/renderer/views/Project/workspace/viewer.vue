@@ -13,13 +13,17 @@ export default defineComponent({
         };
     },
     mounted: function() {
-        this.viewer = this.$store.state.project.workspace.viewer;
-        let iframe = this.$refs.viewer;
-        let iDoc: any = (<HTMLIFrameElement>iframe).contentDocument;
-        console.log(this.viewer);
-        iDoc.open();
-        iDoc.write(this.viewer);
-        iDoc.close();
+        this.asyncView();
+    },
+    methods: {
+        asyncView: function() {
+            this.viewer = this.$store.state.project.workspace.viewer;
+            let iframe = this.$refs.viewer;
+            let iDoc: any = (<HTMLIFrameElement>iframe).contentDocument;
+            iDoc.open();
+            iDoc.write(this.viewer);
+            iDoc.close();
+        },
     },
 });
 </script>

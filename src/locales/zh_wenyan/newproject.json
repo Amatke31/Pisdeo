@@ -1,6 +1,6 @@
 {
     "newproject.madeby": "此范本为{author}所制",
-    "newproject.title": "以此范本{template}建{framework}项目",
+    "newproject.title": "以此范本{template}建{framework}工",
     "newproject.projectname": "项目名",
     "newproject.projectlocation": "路何在",
     "newproject.create": "建"

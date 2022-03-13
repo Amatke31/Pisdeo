@@ -1,5 +1,5 @@
 .n-btn {
-    width: 130px;
+    min-width: 130px;
     height: 40px;
     color: rgb(209, 209, 209);
     border-radius: 5px;
@@ -10,7 +10,7 @@
     transition: all 0.3s ease;
     display: inline-block;
     outline: none;
-    padding: 0;
+    padding: 0 10px;
     border: none;
     background-color: #3a3a3a;
     line-height: 42px;

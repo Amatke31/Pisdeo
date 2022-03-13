@@ -3,6 +3,7 @@
         <div class="above">
             <htmlChooser />
             <viewer />
+            <attributeSet />
         </div>
         <div class="below"></div>
     </div>
@@ -12,8 +13,9 @@ import { defineComponent } from "vue";
 import htmlChooser from "./workspace/html-chooser.vue";
 import fileChooser from "./workspace/file-chooser.vue";
 import viewer from "./workspace/viewer.vue";
+import attributeSet from "./workspace/attribute-set.vue";
 export default defineComponent({
-    components: { htmlChooser, fileChooser, viewer },
+    components: { htmlChooser, fileChooser, viewer, attributeSet },
 });
 </script>
 <style lang="scss" scoped>

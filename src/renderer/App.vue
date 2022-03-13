@@ -27,6 +27,7 @@
         <Setting
             v-else-if="page === 'Setting'"
             @goToStartPage="page = 'Start'"
+            @refreshToolStatus="refreshToolStatus"
             :menuOption="settingMenuOption"
         />
         <div
@@ -35,12 +36,14 @@
             v-html="consoleText"
         ></div>
     </div>
-    <Tool v-if="isDevelopment" :toolFunction="toolFunction" />
-    <el-dialog
-        v-model="loadProjectWithDebugDialog"
-        title="Tool"
-        width="30%"
-    >
+    <Tool
+        v-if="
+            openNWDDevTool == 'always' ||
+                (openNWDDevTool == 'development' && isDevelopment)
+        "
+        :toolFunction="toolFunction"
+    />
+    <el-dialog v-model="loadProjectWithDebugDialog" title="Tool" width="30%">
         <span>Load Project</span>
         <el-input v-model="loadProjectPath" placeholder="Project Path" />
         <template #footer>
@@ -152,10 +155,12 @@ export default defineComponent({
             settingMenuOption: [
                 ["setting.common", "mdi-cog", []],
                 ["setting.account", "mdi-account-circle", []],
+                ["setting.develop", "mdi-hammer-screwdriver", []],
                 ["setting.about", "mdi-information", []],
             ],
             loadProjectWithDebugDialog: false,
             loadProjectPath: "",
+            openNWDDevTool: "development",
         };
     },
     components: {
@@ -296,6 +301,9 @@ export default defineComponent({
                     });
                 }
             });
+        },
+        refreshToolStatus: function() {
+            this.openNWDDevTool = localStorage.getItem("nwddevtool") as string;
         },
     },
 });

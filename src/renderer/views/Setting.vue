@@ -54,6 +54,20 @@
                     
                 </div>
             </div>
+            <div v-else-if="option == 'setting.develop'" class="right">
+                <div class="title">{{ $t("setting.develop") }}</div>
+                <div>
+                    <n-btn @click="enableToolAlways">
+                        {{ $t("setting.enableToolAlways") }}
+                    </n-btn>
+                    <n-btn @click="enableToolJustDevelopment">
+                        {{ $t("setting.enableToolJustDevelopment") }}
+                    </n-btn>
+                    <n-btn @click="unableToolAlways">
+                        {{ $t("setting.unableToolAlways") }}
+                    </n-btn>
+                </div>
+            </div>
             <div v-else-if="option == 'setting.about'" class="right">
                 <h1>NexWebDesigner</h1>
                 <p>{{ $t("about.introduce") }}</p>
@@ -70,6 +84,7 @@
                     option == id &&
                     option != 'setting.common' &&
                     option != 'setting.account' &&
+                    option != 'setting.develop' &&
                     option != 'setting.about'
                 "
                 class="right"
@@ -176,6 +191,18 @@ export default defineComponent({
                     }, 1000);
                 })
                 .catch(() => {});
+        },
+        enableToolAlways: function () {
+            localStorage.setItem('nwddevtool', 'always')
+            this.$emit('refreshToolStatus')
+        },
+        enableToolJustDevelopment: function () {
+            localStorage.setItem('nwddevtool', 'development')
+            this.$emit('refreshToolStatus')
+        },
+        unableToolAlways: function () {
+            localStorage.setItem('nwddevtool', 'never')
+            this.$emit('refreshToolStatus')
         },
     },
 });

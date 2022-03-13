@@ -1,6 +1,6 @@
 <template>
     <div ref="htmlChooser" class="html-chooser">
-        <div id="html-chooser"></div>
+        <div id="html-chooser" @click="htmlChoose"></div>
     </div>
 </template>
 <script lang="ts">
@@ -20,7 +20,7 @@ export default defineComponent({
                 .appendChild(this.ObjToHtmlchooser(e));
         },
         click: function(e) {
-            this.$store.state.project.workspace.htmlChooser = e;
+            this.$store.commit({ type: "chooseElement", element: e });
         },
     },
     mounted: function() {
@@ -30,6 +30,7 @@ export default defineComponent({
         this.$store.subscribe((mutation, state) => {
             if (
                 mutation.type == "openFile" &&
+                state.project.workspace.currentFile &&
                 supportExt.includes(
                     state.project.workspace.currentFile.split(".").pop()
                 )
@@ -41,22 +42,6 @@ export default defineComponent({
                                 state.project.workspace.currentFile
                             ];
                         break;
-                }
-            }
-        });
-        document.addEventListener("click", (e: any) => {
-            let chooseId = e.path[0].id;
-            if (this.click) {
-                if (e.path.includes(this.$refs.htmlChooser)) {
-                    document.getElementById(this.click)!.className = `layer`;
-                }
-            }
-            if (chooseId.indexOf("layer") == 0) {
-                this.click = chooseId;
-                document.getElementById(chooseId)!.className = `layer choose`;
-            } else {
-                if (e.path.includes(this.$refs.htmlChooser)) {
-                    this.click = "";
                 }
             }
         });
@@ -97,6 +82,22 @@ export default defineComponent({
                 ansaz++;
             }
             return element;
+        },
+        htmlChoose: function(e: any) {
+            let chooseId = e.path[0].id;
+            if (this.click) {
+                if (e.path.includes(this.$refs.htmlChooser)) {
+                    document.getElementById(this.click)!.className = `layer`;
+                }
+            }
+            if (chooseId.indexOf("layer") == 0) {
+                this.click = chooseId;
+                document.getElementById(chooseId)!.className = `layer choose`;
+            } else {
+                if (e.path.includes(this.$refs.htmlChooser)) {
+                    this.click = "";
+                }
+            }
         },
     },
 });

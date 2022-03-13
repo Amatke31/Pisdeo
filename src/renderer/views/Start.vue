@@ -364,7 +364,7 @@ export default defineComponent({
 }
 
 #newProject.hide .window {
-    transform: scale(0.9);
+    transform: scale(0.95);
     opacity: 0;
 }
 .nav {
