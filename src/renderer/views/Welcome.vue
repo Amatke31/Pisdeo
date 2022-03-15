@@ -173,6 +173,7 @@ export default defineComponent({
         margin: 0;
         left: 0;
         top: 0;
+        overflow-y: auto;
     }
 }
 .mask {
