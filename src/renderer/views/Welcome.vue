@@ -68,8 +68,8 @@ export default defineComponent({
             supportLang: [] as any,
         };
     },
-    mounted: async function () {
-        const systenLang = (await getSystemLocale());
+    mounted: async function() {
+        const systenLang = await getSystemLocale();
         this.lang = this.$i18n.availableLocales.includes(systenLang)
             ? systenLang
             : "en_us";
@@ -86,7 +86,7 @@ export default defineComponent({
         },
     },
     methods: {
-        setLanguage: async function () {
+        setLanguage: async function() {
             this.$i18n.locale = this.lang;
             if (platform === "desktop") {
                 const setResult = await setLocale(this.lang);
@@ -96,11 +96,11 @@ export default defineComponent({
                     ElMessage.error(this.$t("welcome.setlocaleerror"));
                 }
             } else {
-                setLocale(this.lang)
-                this.step++
+                setLocale(this.lang);
+                this.step++;
             }
         },
-        complete: async function () {
+        complete: async function() {
             if (platform === "desktop") {
                 const setResult = await inited();
                 if (setResult == "successful") {
@@ -109,7 +109,7 @@ export default defineComponent({
                     ElMessage.error(this.$t("welcome.initerror"));
                 }
             } else {
-                inited()
+                inited();
                 this.$emit("goStart");
             }
         },
@@ -134,6 +134,7 @@ export default defineComponent({
     opacity: 1;
     transition: 0.3s;
     padding-top: 96px;
+    text-align: center;
 
     .img {
         font-size: 96px;
@@ -159,12 +160,19 @@ export default defineComponent({
         }
     }
 
-    .nS {
-        margin: 0 40%;
-    }
-
     .et {
         margin: 50% 40%;
+    }
+}
+@media (orientation: portrait) {
+    .window {
+        width: 100vw;
+        height: 100vh;
+        min-width: none;
+        min-height: none;
+        margin: 0;
+        left: 0;
+        top: 0;
     }
 }
 .mask {
