@@ -2,6 +2,7 @@ const { spawn } = require("child_process");
 const { src, task, series, parallel } = require("gulp");
 const inquirer = require("inquirer");
 const fs = require("fs");
+const os = require("os");
 
 function build(cb) {
     inquirer
@@ -28,7 +29,12 @@ function build(cb) {
                     channel: answers.channel,
                 }),
                 (err) => {
-                    const run = spawn("vue-cli-service", ["build"]);
+                    const run = spawn(
+                        os.platform() !== 'win32'
+                            ? "vue-cli-service"
+                            : "vue-cli-service.cmd",
+                        ["build"]
+                    );
                     run.stdout.on("data", (data) => {
                         console.log(`${data}`);
                     });
