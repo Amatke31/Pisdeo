@@ -159,10 +159,6 @@ export default defineComponent({
             width: 60%;
         }
     }
-
-    .et {
-        margin: 50% 40%;
-    }
 }
 @media (orientation: portrait) {
     .window {
