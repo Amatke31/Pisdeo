@@ -3,18 +3,29 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+import { getAttribute } from "../../../utils/exchange/attribute";
 
 export default defineComponent({
-    data () {
+    data() {
         return {
-            attribute: []
-        }
+            attribute: [],
+        };
     },
     mounted: function() {
         this.$store.subscribe((mutation, state) => {
             if (mutation.type == "chooseElement") {
-                let htmlChooser = state.project.workspace.htmlChooser.split('-')
-                console.log(htmlChooser.length)
+                let htmlChooser = state.project.workspace.htmlChooser.split(
+                    "-"
+                );
+                console.log(
+                    getAttribute(
+                        state.project.program.file[
+                            state.project.workspace.currentFile
+                        ],
+                        htmlChooser,
+                        2
+                    )
+                );
             }
         });
     },
