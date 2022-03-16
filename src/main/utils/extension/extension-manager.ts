@@ -2,7 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import vm from 'vm'
 import { CommonApi, UIApi } from './extension-api'
-import platform from '@/renderer/utils/platform/platform'
+import platform from '@/main/utils/platform/platform'
 import axios from 'axios'
 import JSZip from 'jszip'
 

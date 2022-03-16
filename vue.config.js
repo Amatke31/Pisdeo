@@ -4,7 +4,7 @@ const path = require('path')
 module.exports = {
 	pages: {
 		index: {
-			entry: './src/renderer/main.ts'
+			entry: './src/main/main.ts'
 		}
 	},
 	pluginOptions: {
