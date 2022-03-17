@@ -233,13 +233,14 @@ export default defineComponent({
         });
 
         this.consoleText += "<p>[INFO]Load extension...</p>";
-        let extensioninfo = await extensionManager.LoadNWDExt(this.$i18n);
-        this.ExtensionInfo = extensioninfo;
-        extensioninfo.forEach((ExtInfo: any) => {
-            extensionManager.runExtension(ExtInfo);
-        });
-        this.consoleText += `<p>[INFO]${extensioninfo.length} extension detected</p>`;
-        this.consoleText += `<p>[INFO]Complete</p>`;
+        // let extensioninfo = await extensionManager.LoadNWDExt(this.$i18n);
+        // this.ExtensionInfo = extensioninfo;
+        // extensioninfo.forEach((ExtInfo: any) => {
+        //     extensionManager.runExtension(ExtInfo);
+        // });
+        // this.consoleText += `<p>[INFO]${extensioninfo.length} extension detected</p>`;
+        // this.consoleText += `<p>[INFO]Complete</p>`;
+        this.$store.dispatch('loadNWDExt', this.$i18n)
         this.startIsInit = true;
     },
     methods: {
