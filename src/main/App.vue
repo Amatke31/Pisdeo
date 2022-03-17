@@ -185,7 +185,12 @@ export default defineComponent({
         });
     },
     async mounted() {
-        this.openNWDDevTool = localStorage.getItem("nwddevtool") as string;
+        if (localStorage.getItem("nwddevtool")) {
+            this.openNWDDevTool = localStorage.getItem("nwddevtool") as string;
+        } else {
+            localStorage.setItem("nwddevtool", 'development')
+            this.openNWDDevTool = 'development';
+        }
         // event
         event.on("addTemplate", (info) => {
             let isAdd = false;
