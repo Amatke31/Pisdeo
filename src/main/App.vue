@@ -188,8 +188,8 @@ export default defineComponent({
         if (localStorage.getItem("nwddevtool")) {
             this.openNWDDevTool = localStorage.getItem("nwddevtool") as string;
         } else {
-            localStorage.setItem("nwddevtool", 'development')
-            this.openNWDDevTool = 'development';
+            localStorage.setItem("nwddevtool", "development");
+            this.openNWDDevTool = "development";
         }
         // event
         event.on("addTemplate", (info) => {
@@ -240,7 +240,7 @@ export default defineComponent({
         // });
         // this.consoleText += `<p>[INFO]${extensioninfo.length} extension detected</p>`;
         // this.consoleText += `<p>[INFO]Complete</p>`;
-        this.$store.dispatch('loadNWDExt', this.$i18n)
+        this.$store.dispatch("loadNWDExt", { i18n: this.$i18n });
         this.startIsInit = true;
     },
     methods: {
