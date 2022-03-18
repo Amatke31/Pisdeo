@@ -9,8 +9,7 @@ import JSZip from "jszip";
 const extension = {
     state() {
         return {
-            extensionInfo: [],
-            instance: [],
+            extension: {},
         };
     },
     mutations: {},
@@ -22,7 +21,8 @@ const extension = {
                 info = JSON.parse(
                     await zipData.files["info.json"].async("text")
                 );
-                state.extensionInfo.push(info);
+                info.file = zipData.files;
+                state.extension[info.id] = info;
 
                 //load locale
                 for (const fileName in zipData.files) {
@@ -52,10 +52,10 @@ const extension = {
                 });
                 script.runInContext(context);
                 const ExtensionPrototype = context.module.exports;
-                const ins = new Function(
+                const instance = new Function(
                     ExtensionPrototype(new CommonApi(info), new UIApi(info))
                 );
-                state.instance.push(ins);
+                info.instance = instance;
             } else {
                 throw new Error("Cannot find 'main.js' in nwdx extension");
             }

@@ -1,6 +1,7 @@
 module.exports = (api, ui) => {
     api.addTemplate({
         name: 'My HomePage',
-        id: "org.nexwebdesigner.template.myhomepage"
+        id: "nexwebdesigner.template.myhomepage",
+        cover: "assets/staticProject.svg"
     })
 }

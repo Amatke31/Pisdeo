@@ -10,6 +10,7 @@ class CommonApi {
         templateInfo = {
             name: templateInfo.name,
             id: templateInfo.id,
+            cover: templateInfo.cover,
             require: templateInfo.require ? templateInfo.require : [],
             framework: templateInfo.framework ? templateInfo.framework : "",
             extension: this.extensionInfo

@@ -192,13 +192,12 @@ export default defineComponent({
             this.openNWDDevTool = "development";
         }
         // event
-        event.on("addTemplate", (info) => {
+        event.on("addTemplate", async (info) => {
             let isAdd = false;
             this.template.forEach((info) => {
                 if (info.id) isAdd = true;
             });
             if (!isAdd) {
-                this.template.push(info);
                 let require = new Array();
                 if (info.require) {
                     info.require.forEach((parameter: any) => {
@@ -209,6 +208,14 @@ export default defineComponent({
                         );
                     });
                 }
+                let cover = await this.$store.state.extension.extension[
+                    info.extension.id
+                ].file[info.cover].async("base64");
+                let ext = info.cover.split(".").pop();
+                if (ext == "svg") ext = "svg+xml";
+                cover = `data:image/${ext};base64,${cover}`;
+                info.cover = cover;
+                this.template.push(info);
                 this.templateRequire[info.extension.id] = require;
             }
         });

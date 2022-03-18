@@ -24,18 +24,10 @@
                         class="card"
                     >
                         <div
-                            v-if="item.extension.author == 'NexWebDesigner'"
-                            class="img"
-                            :style="cardImg(item.extension.icon)"
-                        ></div>
-                        <div
-                            v-else
                             class="img"
                             :style="
                                 cardImg(
-                                    item.extension.path +
-                                        '/' +
-                                        item.extension.icon
+                                        item.cover
                                 )
                             "
                         ></div>
