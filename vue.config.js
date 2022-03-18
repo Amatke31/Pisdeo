@@ -25,10 +25,6 @@ module.exports = {
 				appId: 'org.nexwebdeisgner.nexwebdeisgner',
 				extraResources: [
 					{
-						from: './src/extension/base/build/',
-						to: './extension/base/'
-					},
-					{
 						from: './static/',
 						to: './static/'
 					}
