@@ -59,7 +59,6 @@ const extension = {
             } else {
                 throw new Error("Cannot find 'main.js' in nwdx extension");
             }
-            console.log(info)
         },
         loadNWDExt: async function({ state, dispatch }, { i18n }) {
             if (platform === "desktop") {
@@ -70,7 +69,7 @@ const extension = {
                         "/extension/base/dist/org.nexwebdesigner.base@1.0.0.nwdx",
                     responseType: "arraybuffer",
                 }).then(async (res) => {
-                    dispatch(res, i18n);
+                    dispatch("loadExtension", { zipFile: res.data, i18n });
                 });
             }
         },
