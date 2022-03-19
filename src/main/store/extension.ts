@@ -59,7 +59,6 @@ const extension = {
                 const instance = new Function(
                     ExtensionPrototype(new CommonApi(info), new UIApi(info))
                 );
-                info.instance = instance;
             } else {
                 throw new Error("Cannot find 'main.js' in nwdx extension");
             }
