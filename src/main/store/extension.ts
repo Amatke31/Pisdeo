@@ -12,10 +12,13 @@ const extension = {
     state() {
         return {
             extension: {},
-            template: []
+            template: [],
         };
     },
     mutations: {
+        addTemplate(state: any, info: any) {
+            console.log(info)
+        },
     },
     actions: {
         loadExtension: async function({ state, commit }, { zipFile, i18n }) {
