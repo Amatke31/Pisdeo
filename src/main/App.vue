@@ -30,11 +30,7 @@
             @refreshToolStatus="refreshToolStatus"
             :menuOption="settingMenuOption"
         />
-        <div
-            v-if="!(startIsInit || projectIsInit)"
-            class="console"
-            v-html="consoleText"
-        ></div>
+        <div v-if="!startIsInit" class="console" v-html="consoleText"></div>
     </div>
     <Tool
         v-if="
@@ -95,7 +91,6 @@ export default defineComponent({
             homePath: "",
             template: new Array(),
             startIsInit: false,
-            projectIsInit: false,
             consoleText: "<p>loading...</p>",
             documentsPath: "",
             templateRequire: new Object() as RequireForm,
@@ -224,9 +219,6 @@ export default defineComponent({
                 this.template.push(info);
                 this.templateRequire[info.extension.id] = require;
             }
-        });
-        event.on("projectLoaded", () => {
-            this.projectIsInit = true;
         });
 
         event.on("addMenu", (data: any) => {
