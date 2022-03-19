@@ -1,4 +1,4 @@
-import { CommonApi, UIApi } from "../utils/extension/extension-api";
+// import { CommonApi, UIApi } from "../utils/extension/extension-api";
 import path from "path";
 import fs from "fs";
 import vm from "vm";
@@ -6,13 +6,26 @@ import platform from "@/main/utils/platform/platform";
 import axios from "axios";
 import JSZip from "jszip";
 
+import event from "../utils/event";
+
 const extension = {
     state() {
         return {
             extension: {},
         };
     },
-    mutations: {},
+    mutations: {
+        addTemplate(state: any, templateInfo: any, extid: string) {
+            templateInfo = {
+                name: templateInfo.name,
+                id: templateInfo.id,
+                cover: templateInfo.cover,
+                require: templateInfo.require ? templateInfo.require : [],
+                framework: templateInfo.framework ? templateInfo.framework : "",
+                extension: extid,
+            };
+        },
+    },
     actions: {
         loadExtension: async function({ state, commit }, { zipFile, i18n }) {
             const zipData = await JSZip.loadAsync(zipFile);
@@ -75,5 +88,39 @@ const extension = {
         },
     },
 };
+
+class CommonApi {
+    extensionInfo: object;
+    constructor(extensionInfo: object) {
+        this.extensionInfo = extensionInfo;
+    }
+
+    addTemplate(templateInfo: any) {
+        templateInfo = {
+            name: templateInfo.name,
+            id: templateInfo.id,
+            cover: templateInfo.cover,
+            require: templateInfo.require ? templateInfo.require : [],
+            framework: templateInfo.framework ? templateInfo.framework : "",
+            extension: this.extensionInfo,
+        };
+        event.emit("addTemplate", templateInfo);
+    }
+}
+
+class UIApi {
+    extensionInfo: object;
+    constructor(extensionInfo: object) {
+        this.extensionInfo = extensionInfo;
+    }
+
+    addMenu(where: string, id: string, icon: string) {
+        event.emit("addMenu", { where, id, icon });
+    }
+
+    addElement(where: string, id: string, type: string, run: any) {
+        event.emit("addElement", { where, id, type, run });
+    }
+}
 
 export default extension;
