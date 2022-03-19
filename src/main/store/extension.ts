@@ -12,19 +12,10 @@ const extension = {
     state() {
         return {
             extension: {},
+            template: []
         };
     },
     mutations: {
-        addTemplate(state: any, templateInfo: any, extid: string) {
-            templateInfo = {
-                name: templateInfo.name,
-                id: templateInfo.id,
-                cover: templateInfo.cover,
-                require: templateInfo.require ? templateInfo.require : [],
-                framework: templateInfo.framework ? templateInfo.framework : "",
-                extension: extid,
-            };
-        },
     },
     actions: {
         loadExtension: async function({ state, commit }, { zipFile, i18n }) {
