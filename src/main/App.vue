@@ -212,7 +212,14 @@ export default defineComponent({
                     info.extension.id
                 ].file[info.cover].async("base64");
                 let ext = info.cover.split(".").pop();
-                if (ext == "svg") ext = "svg+xml";
+                switch (ext) {
+                    case "svg":
+                        ext = "svg+xml";
+                        break;
+                    case "jpg":
+                        ext = "jpeg";
+                        break;
+                }
                 cover = `data:image/${ext};base64,${cover}`;
                 info.cover = cover;
                 this.template.push(info);
