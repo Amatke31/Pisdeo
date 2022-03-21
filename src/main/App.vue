@@ -57,7 +57,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import event from "./utils/event";
 import Start from "./views/Start.vue";
 import Project from "./views/Project.vue";
 import Welcome from "./views/Welcome.vue";
@@ -185,56 +184,12 @@ export default defineComponent({
             localStorage.setItem("nwddevtool", "development");
             this.openNWDDevTool = "development";
         }
-        // event
-        event.on("addTemplate", async (info) => {
-            let isAdd = false;
-            this.template.forEach((info) => {
-                if (info.id) isAdd = true;
-            });
-            if (!isAdd) {
-                let require = new Array();
-                if (info.require) {
-                    info.require.forEach((parameter: any) => {
-                        require.push(
-                            typeof parameter === "object"
-                                ? parameter
-                                : { name: parameter }
-                        );
-                    });
-                }
-                let cover = await this.$store.state.extension.extension[
-                    info.extension.id
-                ].file[info.cover].async("base64");
-                let ext = info.cover.split(".").pop();
-                switch (ext) {
-                    case "svg":
-                        ext = "svg+xml";
-                        break;
-                    case "jpg":
-                        ext = "jpeg";
-                        break;
-                }
-                cover = `data:image/${ext};base64,${cover}`;
-                info.cover = cover;
-                this.template.push(info);
-                this.templateRequire[info.extension.id] = require;
+
+        this.$store.subscribe((mutation, state) => {
+            if (mutation.type == "addTemplate") {
+                this.template = state.extension.template
+                this.templateRequire[state.extension.template.pop().extension.id] = require;
             }
-        });
-
-        event.on("addMenu", (data: any) => {
-            this.settingMenuOption.push([data.id, data.icon, []]);
-        });
-
-        event.on("addElement", (data: any) => {
-            this.settingMenuOption.forEach((key: any) => {
-                if (key[0] == data.where) {
-                    key[2].push({
-                        type: data.type,
-                        id: data.id,
-                        run: data.run,
-                    });
-                }
-            });
         });
         this.$store.dispatch("loadNWDExt", { i18n: this.$i18n });
         this.startIsInit = true;

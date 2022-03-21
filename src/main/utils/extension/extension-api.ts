@@ -1,9 +1,11 @@
-import event from '../event';
+import event from "../event";
 
 class CommonApi {
     extensionInfo: object;
-    constructor(extensionInfo: object) {
-        this.extensionInfo = extensionInfo
+    store: any;
+    constructor(extensionInfo: object, store: any) {
+        this.extensionInfo = extensionInfo;
+        this.store = store;
     }
 
     addTemplate(templateInfo: any) {
@@ -13,28 +15,25 @@ class CommonApi {
             cover: templateInfo.cover,
             require: templateInfo.require ? templateInfo.require : [],
             framework: templateInfo.framework ? templateInfo.framework : "",
-            extension: this.extensionInfo
-        }
-        event.emit('addTemplate', templateInfo)
+            extension: this.extensionInfo,
+        };
+        this.store.commit('addTemplate', templateInfo)
     }
 }
 
 class UIApi {
     extensionInfo: object;
-    constructor(extensionInfo: object) {
-        this.extensionInfo = extensionInfo
+    constructor(extensionInfo: object, store: any) {
+        this.extensionInfo = extensionInfo;
     }
 
     addMenu(where: string, id: string, icon: string) {
-        event.emit('addMenu', { where, id, icon })
+        event.emit("addMenu", { where, id, icon });
     }
 
     addElement(where: string, id: string, type: string, run: any) {
-        event.emit('addElement', { where, id, type, run })
+        event.emit("addElement", { where, id, type, run });
     }
 }
 
-export {
-    CommonApi,
-    UIApi,
-}
+export { CommonApi, UIApi };

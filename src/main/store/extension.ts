@@ -1,12 +1,10 @@
-// import { CommonApi, UIApi } from "../utils/extension/extension-api";
+import { CommonApi, UIApi } from "../utils/extension/extension-api";
 import path from "path";
 import fs from "fs";
 import vm from "vm";
 import platform from "@/main/utils/platform/platform";
 import axios from "axios";
 import JSZip from "jszip";
-
-import event from "../utils/event";
 
 const extension = {
     state() {
@@ -16,12 +14,42 @@ const extension = {
         };
     },
     mutations: {
-        addTemplate(state: any, info: any) {
-            console.log(info)
+        async addTemplate(state: any, info: any) {
+            let isAdd = false;
+            state.template.forEach((info: any) => {
+                if (info.id) isAdd = true;
+            });
+            if (!isAdd) {
+                let require = new Array();
+                if (info.require) {
+                    info.require.forEach((parameter: any) => {
+                        require.push(
+                            typeof parameter === "object"
+                                ? parameter
+                                : { name: parameter }
+                        );
+                    });
+                }
+                let cover = await state.extension[info.extension.id].file[
+                    info.cover
+                ].async("base64");
+                let ext = info.cover.split(".").pop();
+                switch (ext) {
+                    case "svg":
+                        ext = "svg+xml";
+                        break;
+                    case "jpg":
+                        ext = "jpeg";
+                        break;
+                }
+                cover = `data:image/${ext};base64,${cover}`;
+                info.cover = cover;
+                state.template.push(info);
+            }
         },
     },
     actions: {
-        loadExtension: async function({ state, commit }, { zipFile, i18n }) {
+        loadExtension: async function(store, { zipFile, i18n }) {
             const zipData = await JSZip.loadAsync(zipFile);
             let info: any = {};
             if ("info.json" in zipData.files) {
@@ -29,7 +57,7 @@ const extension = {
                     await zipData.files["info.json"].async("text")
                 );
                 info.file = zipData.files;
-                state.extension[info.id] = info;
+                store.state.extension[info.id] = info;
 
                 //load locale
                 for (const fileName in zipData.files) {
@@ -60,7 +88,10 @@ const extension = {
                 script.runInContext(context);
                 const ExtensionPrototype = context.module.exports;
                 const instance = new Function(
-                    ExtensionPrototype(new CommonApi(info), new UIApi(info))
+                    ExtensionPrototype(
+                        new CommonApi(info, store),
+                        new UIApi(info, store)
+                    )
                 );
             } else {
                 throw new Error("Cannot find 'main.js' in nwdx extension");
@@ -81,39 +112,5 @@ const extension = {
         },
     },
 };
-
-class CommonApi {
-    extensionInfo: object;
-    constructor(extensionInfo: object) {
-        this.extensionInfo = extensionInfo;
-    }
-
-    addTemplate(templateInfo: any) {
-        templateInfo = {
-            name: templateInfo.name,
-            id: templateInfo.id,
-            cover: templateInfo.cover,
-            require: templateInfo.require ? templateInfo.require : [],
-            framework: templateInfo.framework ? templateInfo.framework : "",
-            extension: this.extensionInfo,
-        };
-        event.emit("addTemplate", templateInfo);
-    }
-}
-
-class UIApi {
-    extensionInfo: object;
-    constructor(extensionInfo: object) {
-        this.extensionInfo = extensionInfo;
-    }
-
-    addMenu(where: string, id: string, icon: string) {
-        event.emit("addMenu", { where, id, icon });
-    }
-
-    addElement(where: string, id: string, type: string, run: any) {
-        event.emit("addElement", { where, id, type, run });
-    }
-}
 
 export default extension;
