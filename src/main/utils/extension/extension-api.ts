@@ -1,5 +1,3 @@
-import event from "../event";
-
 class CommonApi {
     extensionInfo: object;
     store: any;
@@ -25,14 +23,6 @@ class UIApi {
     extensionInfo: object;
     constructor(extensionInfo: object, store: any) {
         this.extensionInfo = extensionInfo;
-    }
-
-    addMenu(where: string, id: string, icon: string) {
-        event.emit("addMenu", { where, id, icon });
-    }
-
-    addElement(where: string, id: string, type: string, run: any) {
-        event.emit("addElement", { where, id, type, run });
     }
 }
 
