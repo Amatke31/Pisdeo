@@ -74,7 +74,7 @@ const extension = {
                     }
                 }
             } else {
-                throw new Error("Cannot find 'info.json' in nwdx extension");
+                throw new Error(`Cannot find 'info.json' in ${info.name}(${info.id}) extension`);
             }
 
             if ("main.js" in zipData.files) {
@@ -94,7 +94,7 @@ const extension = {
                     )
                 );
             } else {
-                throw new Error("Cannot find 'main.js' in nwdx extension");
+                throw new Error(`Cannot find 'main.js' in ${info.name}(${info.id}) extension`);
             }
         },
         loadNWDExt: async function({ state, dispatch }, { i18n }) {
