@@ -18,6 +18,30 @@
                 <h2 class="npt">{{ $t("start.pageNewproject") }}</h2>
                 <div class="npc">
                     <div
+                        @click="newProject('project.blank')"
+                        class="card"
+                    >
+                        <div
+                            class="img"
+                            :style="
+                                cardImg('assets/blankproject.svg')
+                            "
+                        ></div>
+                        <div class="title">{{ $t('project.blank') }}</div>
+                    </div>
+                    <div
+                        @click="newProject('project.uilib')"
+                        class="card"
+                    >
+                        <div
+                            class="img"
+                            :style="
+                                cardImg('assets/uilib.svg')
+                            "
+                        ></div>
+                        <div class="title">{{ $t('project.uilib') }}</div>
+                    </div>
+                    <div
                         @click="newProject(item)"
                         v-for="item in template"
                         v-bind:key="item.name"
