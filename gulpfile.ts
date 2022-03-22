@@ -16,7 +16,7 @@ function build(cb) {
                 type: "list",
                 message: "choose channel",
                 name: "channel",
-                choices: ["Alpha", "Beta", "RC", "Release"],
+                choices: ["Develop", "Alpha", "Beta", "RC", "Release"],
             },
         ])
         .then((answers) => {

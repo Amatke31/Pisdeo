@@ -187,8 +187,8 @@ export default defineComponent({
 
         this.$store.subscribe((mutation, state) => {
             if (mutation.type == "addTemplate") {
-                this.template = state.extension.template
-                this.templateRequire[state.extension.template.pop().extension.id] = require;
+                this.template = state.extension.template;
+                this.templateRequire[mutation.payload.id] = mutation.payload.require;
             }
         });
         this.$store.dispatch("loadNWDExt", { i18n: this.$i18n });

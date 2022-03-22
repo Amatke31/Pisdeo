@@ -10,15 +10,13 @@ const extension = {
     state() {
         return {
             extension: {},
-            template: [],
+            template: {},
         };
     },
     mutations: {
         async addTemplate(state: any, info: any) {
             let isAdd = false;
-            state.template.forEach((info: any) => {
-                if (info.id) isAdd = true;
-            });
+            state.template.hasOwnProperty(info.id)
             if (!isAdd) {
                 let require = new Array();
                 if (info.require) {
@@ -44,7 +42,7 @@ const extension = {
                 }
                 cover = `data:image/${ext};base64,${cover}`;
                 info.cover = cover;
-                state.template.push(info);
+                state.template[info.id] = info;
             }
         },
     },
@@ -74,7 +72,9 @@ const extension = {
                     }
                 }
             } else {
-                throw new Error(`Cannot find 'info.json' in ${info.name}(${info.id}) extension`);
+                throw new Error(
+                    `Cannot find 'info.json' in ${info.name}(${info.id}) extension`
+                );
             }
 
             if ("main.js" in zipData.files) {
@@ -94,7 +94,9 @@ const extension = {
                     )
                 );
             } else {
-                throw new Error(`Cannot find 'main.js' in ${info.name}(${info.id}) extension`);
+                throw new Error(
+                    `Cannot find 'main.js' in ${info.name}(${info.id}) extension`
+                );
             }
         },
         loadNWDExt: async function({ state, dispatch }, { i18n }) {

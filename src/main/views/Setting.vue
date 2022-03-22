@@ -71,7 +71,7 @@
                 <p>{{ $t("about.introduce") }}</p>
                 <p>Version: {{ version.version }}</p>
                 <p>Channel: {{ version.channel }}</p>
-                <p>Environment: {{ platform }}</p>
+                <p>Platform: {{ platform }}</p>
                 <br />
                 <p>Copyright © 2021-2022 Amatke31. All rights reserved.</p>
                 <p>
@@ -141,7 +141,7 @@ export default defineComponent({
                 version: "Manual Build",
                 channel: "Develop",
             } as Object,
-            platform,
+            platform: platform[0].toUpperCase() + platform.substr(1),
             resetDialog: false,
         };
     },
