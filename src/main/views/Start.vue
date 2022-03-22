@@ -131,7 +131,7 @@ export default defineComponent({
             type: Boolean,
         },
         template: {
-            type: Array,
+            type: Object,
         },
         homePath: {
             type: String,
