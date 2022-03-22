@@ -23,14 +23,14 @@ function build(cb) {
             fs.writeFile(
                 "./static/version.json",
                 JSON.stringify({
-                    isProduction: answers.channel != "Alpha",
+                    isProduction: answers.channel != "Alpha" || "Develop",
                     buildTime: new Date().getTime(),
                     version: answers.version,
                     channel: answers.channel,
                 }),
                 (err) => {
                     const run = spawn(
-                        os.platform() !== 'win32'
+                        os.platform() !== "win32"
                             ? "vue-cli-service"
                             : "vue-cli-service.cmd",
                         ["build"]
