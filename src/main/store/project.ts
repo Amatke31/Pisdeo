@@ -44,6 +44,7 @@ const project = {
                                                 padding: "4px",
                                                 color: "#fff",
                                                 "background-color": "#222",
+                                                "box-sizing": "border-box"
                                             },
                                         ],
                                     },

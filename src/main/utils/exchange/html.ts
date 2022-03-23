@@ -1,4 +1,5 @@
 let noChange = ["element", "children", "css", "script", "text"];
+let noCssChange = ["class"];
 
 function ObjToHTML(obj: any) {
     let out: string = "";
@@ -59,14 +60,15 @@ function analysisObjWithElement(obj: any): HTMLElement {
 function ObjToCSS(obj: any) {
     let out: string = "";
     obj.forEach((obj: any) => {
-        out += obj.class
-        out += '{'
+        out += obj.class;
+        out += "{";
         for (let ref in obj) {
-            out += `${ref}:${obj[ref]};`
+            if (!noCssChange.includes(ref)) out += `${ref}:${obj[ref]};`;
         }
-        out += '}'
+        out += "}";
     });
-    return out
+    console.log(out);
+    return out;
 }
 
 export {
