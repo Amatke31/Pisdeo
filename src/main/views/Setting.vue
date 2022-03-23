@@ -270,6 +270,10 @@ export default defineComponent({
         padding: 8px 16px;
         overflow-y: scroll;
 
+        @media screen and (max-width: 600px) {
+            width: calc(100% - 70px);
+        }
+
         & > div {
             margin-bottom: 10px;
 
