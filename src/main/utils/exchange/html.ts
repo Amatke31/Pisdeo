@@ -67,7 +67,6 @@ function ObjToCSS(obj: any) {
         }
         out += "}";
     });
-    console.log(out);
     return out;
 }
 

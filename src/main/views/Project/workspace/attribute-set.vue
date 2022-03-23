@@ -11,7 +11,7 @@ export default defineComponent({
             attribute: [],
         };
     },
-    mounted: function() {
+    created: function() {
         this.$store.subscribe((mutation, state) => {
             if (mutation.type == "chooseElement") {
                 let htmlChooser = state.project.workspace.htmlChooser.split(
