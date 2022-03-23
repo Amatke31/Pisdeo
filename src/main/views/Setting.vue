@@ -260,6 +260,9 @@ export default defineComponent({
     display: flex;
     .menu {
         width: 205px;
+        @media screen and (max-width: 600px) {
+            width: 70px;
+        }
     }
     .right {
         width: calc(100% - 205px);
