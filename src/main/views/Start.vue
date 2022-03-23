@@ -323,6 +323,14 @@ export default defineComponent({
         left: calc((100vw - 750px) / 2);
         opacity: 1;
         transition: 0.3s;
+        overflow-y: auto;
+
+        @media screen and (max-width: 750px) {
+            width: 90vw;
+            left: 5vw;
+            top: 5vh;
+            height: 90vh;
+        }
 
         .create {
             position: absolute;
