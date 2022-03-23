@@ -160,7 +160,7 @@ export default defineComponent({
         }
     }
 }
-@media (orientation: portrait) {
+@media (max-width: 750px) {
     .window {
         width: 100vw;
         height: 100vh;
