@@ -68,7 +68,7 @@ export default defineComponent({
             supportLang: [] as any,
         };
     },
-    mounted: async function() {
+    created: async function() {
         const systenLang = await getSystemLocale();
         this.lang = this.$i18n.availableLocales.includes(systenLang)
             ? systenLang

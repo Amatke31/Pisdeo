@@ -17,29 +17,19 @@
             <div v-if="isInit" class="newProject">
                 <h2 class="npt">{{ $t("start.pageNewproject") }}</h2>
                 <div class="npc">
-                    <div
-                        @click="newProject('project.blank')"
-                        class="card"
-                    >
+                    <div @click="newProject('project.blank')" class="card">
                         <div
                             class="img"
-                            :style="
-                                cardImg('assets/blankproject.svg')
-                            "
+                            :style="cardImg('assets/blankproject.svg')"
                         ></div>
-                        <div class="title">{{ $t('project.blank') }}</div>
+                        <div class="title">{{ $t("project.blank") }}</div>
                     </div>
-                    <div
-                        @click="newProject('project.uilib')"
-                        class="card"
-                    >
+                    <div @click="newProject('project.uilib')" class="card">
                         <div
                             class="img"
-                            :style="
-                                cardImg('assets/uilib.svg')
-                            "
+                            :style="cardImg('assets/uilib.svg')"
                         ></div>
-                        <div class="title">{{ $t('project.uilib') }}</div>
+                        <div class="title">{{ $t("project.uilib") }}</div>
                     </div>
                     <div
                         @click="newProject(item)"
@@ -47,14 +37,7 @@
                         v-bind:key="item.name"
                         class="card"
                     >
-                        <div
-                            class="img"
-                            :style="
-                                cardImg(
-                                        item.cover
-                                )
-                            "
-                        ></div>
+                        <div class="img" :style="cardImg(item.cover)"></div>
                         <div class="title">{{ $t(item.name) }}</div>
                     </div>
                 </div>
@@ -196,7 +179,7 @@ export default defineComponent({
             platform,
         };
     },
-    mounted: function () {},
+    mounted: function() {},
     watch: {
         warningShow() {
             if (this.warningShow == true) {
@@ -219,7 +202,7 @@ export default defineComponent({
         version = await getVersion();
     },
     methods: {
-        newProject: function (info: {
+        newProject: function(info: {
             name: string;
             framework: string;
             extension: { author: string; id: string };
@@ -241,13 +224,13 @@ export default defineComponent({
                 this.newProjectWCss = "window";
             }, 50);
         },
-        closeNPW: function () {
+        closeNPW: function() {
             this.newProjectWCss = "hide";
             setTimeout(() => {
                 this.newProjectWCss = "hide none";
             }, 300);
         },
-        openAboutWindow: function () {
+        openAboutWindow: function() {
             this.msgHTML = `
                 <h1>NexWebDesigner</h1>
                 <p style="color:#ccc;">${this.$t("about.introduce")}</p>
@@ -258,10 +241,10 @@ export default defineComponent({
             `;
             this.msgIsShow = true;
         },
-        close: function () {
+        close: function() {
             this.msgIsShow = false;
         },
-        changePath: async function () {
+        changePath: async function() {
             if (platform === "desktop") {
                 const cppath = await ipc.chooseProjectPath();
                 if (cppath != "") {
@@ -269,19 +252,19 @@ export default defineComponent({
                 }
             }
         },
-        createProject: function () {
-            this.closeNPW()
+        createProject: function() {
+            this.closeNPW();
             this.$store.commit({
-                type: 'beforeCreateProject',
-                name: this.ProjectForm.name
-            })
-            this.$emit('createProject')
+                type: "beforeCreateProject",
+                name: this.ProjectForm.name,
+            });
+            this.$emit("createProject");
         },
-        openStore: function () {},
-        openSetting: function () {
+        openStore: function() {},
+        openSetting: function() {
             this.$emit("openSetting");
         },
-        cardImg: function (img: string) {
+        cardImg: function(img: string) {
             if (img != undefined) {
                 return `background-image: url(${img})`;
             } else {
@@ -425,6 +408,12 @@ export default defineComponent({
         .npc {
             display: inline-flex;
             overflow-x: auto;
+            
+            color: rgba(0, 0, 0, 0);
+            transition: color 0.3s ease;
+            &:hover {
+                color: rgba(0, 0, 0, 0.3);
+            }
 
             .card {
                 background-color: #2c2c2c;

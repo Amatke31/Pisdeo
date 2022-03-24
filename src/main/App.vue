@@ -352,6 +352,7 @@ a {
 *::-webkit-scrollbar,
 *::-webkit-scrollbar-thumb {
     width: 26px;
+    height: 26px;
     border-radius: 13px;
     background-clip: padding-box;
     border: 10px solid transparent;
