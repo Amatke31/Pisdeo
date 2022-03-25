@@ -23,6 +23,7 @@
         <Project
             v-else-if="page === 'Project'"
             @goToStartPage="page = 'Start'"
+            :attribute="attribute"
         />
         <Setting
             v-else-if="page === 'Setting'"
@@ -66,6 +67,7 @@ import Tool from "./components/developtool/tool.vue";
 import Setting from "./views/Setting.vue";
 import { getConfig, getVersion } from "./utils/common";
 import { ElLoading, ElMessage } from "element-plus";
+import { getAttribute } from "./utils/exchange/attribute";
 
 interface RequireForm {
     [propName: string]: any;
@@ -161,6 +163,7 @@ export default defineComponent({
             loadProjectWithDebugDialog: false,
             loadProjectPath: "",
             openNWDDevTool: "development",
+            attribute: {}
         };
     },
     components: {
@@ -194,6 +197,21 @@ export default defineComponent({
         });
         this.$store.dispatch("loadNWDExt", { i18n: this.$i18n });
         this.startIsInit = true;
+        this.$store.subscribe((mutation, state) => {
+            if (mutation.type == "chooseElement") {
+                let htmlChooser = state.project.workspace.htmlChooser.split(
+                    "-"
+                );
+                let attribute = getAttribute(
+                    state.project.program.file[
+                        state.project.workspace.currentFile
+                    ],
+                    htmlChooser,
+                    2
+                );
+                this.attribute = attribute
+            }
+        });
     },
     methods: {
         pushPage: function(page: string) {

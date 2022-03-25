@@ -3,7 +3,7 @@
         <div class="above">
             <htmlChooser />
             <viewer />
-            <attributeSet />
+            <attributeSet :attribute="attribute" />
         </div>
         <div class="below"></div>
     </div>
@@ -15,6 +15,11 @@ import fileChooser from "./workspace/file-chooser.vue";
 import viewer from "./workspace/viewer.vue";
 import attributeSet from "./workspace/attribute-set.vue";
 export default defineComponent({
+    props: {
+        attribute: {
+            type: Object,
+        },
+    },
     components: { htmlChooser, fileChooser, viewer, attributeSet },
 });
 </script>

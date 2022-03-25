@@ -3,5 +3,6 @@
     "project.exist": "The project already exists",
     "project.cannotfind": "The project could not be found",
     "project.blank": "Website",
-    "project.uilib": "UI Library"
+    "project.uilib": "UI Library",
+    "attr.text": "Text"
 }

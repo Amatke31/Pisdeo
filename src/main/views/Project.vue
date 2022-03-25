@@ -1,7 +1,7 @@
 <template>
     <div>
-        <menuBar/>
-        <workspace/>
+        <menuBar />
+        <workspace :attribute="attribute" />
     </div>
 </template>
 <script lang="ts">
@@ -9,10 +9,15 @@ import { defineComponent } from "vue";
 import menuBar from "./Project/menu-bar.vue";
 import workspace from "./Project/workspace.vue";
 export default defineComponent({
-  components: { menuBar, workspace },
+    props: {
+        attribute: {
+            type: Object,
+        },
+    },
+    components: { menuBar, workspace },
     mounted() {},
     methods: {
-        goToStartPage: function () {
+        goToStartPage: function() {
             this.$emit("goToStartPage");
         },
     },

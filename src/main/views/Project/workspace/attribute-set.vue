@@ -1,32 +1,32 @@
 <template>
-    <div class="attributeSet"></div>
+    <div class="attributeSet">
+        <div class="textEdit">
+            <v-text-field
+                :label="$t('attr.text')"
+                v-model="text"
+                color="text-white"
+            ></v-text-field>
+        </div>
+    </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { getAttribute } from "../../../utils/exchange/attribute";
 
 export default defineComponent({
+    props: {
+        attribute: {
+            type: Object,
+        },
+    },
     data() {
         return {
-            attribute: [],
+            text: "",
         };
     },
-    mounted: function() {
-        this.$store.subscribe((mutation, state) => {
-            if (mutation.type == "chooseElement") {
-                let htmlChooser = state.project.workspace.htmlChooser.split(
-                    "-"
-                );
-                let attribute = getAttribute(
-                    state.project.program.file[
-                        state.project.workspace.currentFile
-                    ],
-                    htmlChooser,
-                    2
-                );
-                console.log(attribute)
-            }
-        });
+    watch: {
+        attribute: function(n) {
+            this.text = n.text ? n.text : "";
+        },
     },
 });
 </script>
@@ -39,5 +39,9 @@ export default defineComponent({
     border-radius: 8px;
     border: 1px solid #444;
     overflow: hidden;
+}
+
+.textEdit {
+    // display: flex;
 }
 </style>
