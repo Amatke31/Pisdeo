@@ -272,7 +272,7 @@ export default defineComponent({
             this.openNWDDevTool = localStorage.getItem("nwddevtool") as string;
         },
         closeDevToolOneTime: function() {
-            this.openNWDDevTool = "az";
+            this.openNWDDevTool = "23333333333333";
         },
     },
 });
