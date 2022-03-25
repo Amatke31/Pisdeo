@@ -163,7 +163,8 @@ export default defineComponent({
             loadProjectWithDebugDialog: false,
             loadProjectPath: "",
             openNWDDevTool: "development",
-            attribute: {}
+            attribute: {},
+            viewer: null
         };
     },
     components: {
@@ -203,13 +204,16 @@ export default defineComponent({
                     "-"
                 );
                 let attribute = getAttribute(
-                    state.project.program.file[
+                    state.project.workspace.openFile[
                         state.project.workspace.currentFile
-                    ],
+                    ].context,
                     htmlChooser,
                     2
                 );
                 this.attribute = attribute
+            }
+            if (mutation.type == "refreshProgram") {
+                this.viewer = state.project.workspace.viewer
             }
         });
     },

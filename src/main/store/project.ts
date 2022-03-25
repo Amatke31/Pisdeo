@@ -14,7 +14,7 @@ const project = {
                 file: {},
             },
             workspace: {
-                openFile: [],
+                openFile: {},
                 currentFile: "",
                 htmlChooser: "",
                 viewer: null,
@@ -44,7 +44,7 @@ const project = {
                                                 padding: "4px",
                                                 color: "#fff",
                                                 "background-color": "#222",
-                                                "box-sizing": "border-box"
+                                                "box-sizing": "border-box",
                                             },
                                         ],
                                     },
@@ -84,11 +84,11 @@ const project = {
         },
         openFile(state: any, filePath: string) {
             state.workspace.currentFile = filePath;
-            if (!state.workspace.openFile.includes(filePath)) {
-                state.workspace.openFile.push({
+            if (!state.workspace.openFile[filePath]) {
+                state.workspace.openFile[filePath] = {
                     file: filePath,
                     context: state.program.file[filePath],
-                });
+                };
             }
             if (
                 supportExt.includes(
@@ -106,6 +106,12 @@ const project = {
         },
         chooseElement(state: any, e: any) {
             state.workspace.htmlChooser = e.element;
+        },
+        refreshProgram(state: any, code: any) {
+            state.workspace.openFile[state.workspace.currentFile] = code;
+            state.workspace.viewer = ObjToHTML(
+                state.program.file[state.workspace.currentFile]
+            );
         },
     },
     actions: {

@@ -12,6 +12,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+import { setAttribute } from "../../../utils/exchange/attribute";
 
 export default defineComponent({
     props: {
@@ -21,16 +22,39 @@ export default defineComponent({
     },
     data() {
         return {
+            lock: false,
             text: "",
         };
     },
     watch: {
         attribute: function(n) {
+            this.lock = true;
             this.text = n.text ? n.text : "";
+            setTimeout(() => {
+                this.lock = false;
+            }, 100);
         },
         text: function(n) {
-            
-        }
+            if (!this.lock) {
+                let htmlChooser = this.$store.state.project.workspace.htmlChooser.split(
+                    "-"
+                );
+                this.$store.commit(
+                    "refreshProgram",
+                    setAttribute(
+                        this.$store.state.project.workspace.openFile[
+                            this.$store.state.project.workspace.currentFile
+                        ].context,
+                        htmlChooser,
+                        2,
+                        {
+                            changeAttr: "text",
+                            text: n,
+                        }
+                    )
+                );
+            }
+        },
     },
 });
 </script>
