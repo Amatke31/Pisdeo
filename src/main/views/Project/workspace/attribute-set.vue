@@ -5,6 +5,7 @@
                 :label="$t('attr.text')"
                 v-model="text"
                 color="text-white"
+                variant="underlined"
             ></v-text-field>
         </div>
     </div>
@@ -27,6 +28,9 @@ export default defineComponent({
         attribute: function(n) {
             this.text = n.text ? n.text : "";
         },
+        text: function(n) {
+            
+        }
     },
 });
 </script>
@@ -39,5 +43,6 @@ export default defineComponent({
     border-radius: 8px;
     border: 1px solid #444;
     overflow: hidden;
+    padding: 10px 4px;
 }
 </style>
