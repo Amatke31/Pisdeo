@@ -16,7 +16,7 @@
         <div class="main">
             <div v-if="isInit" class="newProject">
                 <h2 class="npt">{{ $t("start.pageNewproject") }}</h2>
-                <div class="npc">
+                <div class="npc scroll">
                     <div @click="newProject('project.blank')" class="card">
                         <div
                             class="img"
@@ -408,12 +408,6 @@ export default defineComponent({
         .npc {
             display: inline-flex;
             overflow-x: auto;
-            
-            color: rgba(0, 0, 0, 0);
-            transition: color 0.3s ease;
-            &:hover {
-                color: rgba(0, 0, 0, 0.3);
-            }
 
             .card {
                 background-color: #2c2c2c;

@@ -22,7 +22,7 @@
                     :prepend-icon="icon"
                 ></v-list-item>
             </v-list>
-            <div v-if="option == 'setting.common'" class="right">
+            <div v-if="option == 'setting.common'" class="right scroll">
                 <div class="title">{{ $t("setting.common") }}</div>
                 <div>
                     <div>{{ $t("setting.language") }}:</div>
@@ -269,12 +269,6 @@ export default defineComponent({
         height: 100%;
         padding: 8px 16px;
         overflow-y: scroll;
-
-        color: rgba(0, 0, 0, 0);
-        transition: color 0.3s ease;
-        &:hover {
-            color: rgba(0, 0, 0, 0.3);
-        }
 
         @media screen and (max-width: 600px) {
             width: calc(100% - 70px);

@@ -1,8 +1,8 @@
 <template>
-    <LegalZH v-if="lang == 'zh'" class="legal" style="overflow-y: scroll" />
+    <LegalZH v-if="lang == 'zh'" class="legal scroll" style="overflow-y: scroll" />
     <LegalEN
         v-else-if="lang == 'en'"
-        class="legal"
+        class="legal scroll"
         style="overflow-y: scroll"
     />
 </template>
@@ -16,7 +16,7 @@ export default {
             lang: "en",
         };
     },
-    mounted: function () {
+    mounted: function() {
         let lang = this.$i18n.locale;
         if (lang.indexOf("zh_") == 0) this.lang = "zh";
         else this.lang = "en";
@@ -46,12 +46,5 @@ export default {
     p {
         font-size: 15px;
     }
-}
-.legal {
-    color: rgba(0, 0, 0, 0);
-    transition: color 0.3s ease;
-}
-.legal:hover {
-    color: rgba(0, 0, 0, 0.3);
 }
 </style>

@@ -188,7 +188,8 @@ export default defineComponent({
         this.$store.subscribe((mutation, state) => {
             if (mutation.type == "addTemplate") {
                 this.template = state.extension.template;
-                this.templateRequire[mutation.payload.id] = mutation.payload.require;
+                this.templateRequire[mutation.payload.id] =
+                    mutation.payload.require;
             }
         });
         this.$store.dispatch("loadNWDExt", { i18n: this.$i18n });
@@ -277,7 +278,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style lang="scss">
 * {
     font-family: Helvetica;
     margin: 0;
@@ -360,5 +361,14 @@ a {
 
 *::-webkit-scrollbar-thumb {
     box-shadow: inset 0 0 0 10px;
+}
+
+.scroll {
+    color: rgba(0, 0, 0, 0);
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: rgba(0, 0, 0, 0.3);
+    }
 }
 </style>

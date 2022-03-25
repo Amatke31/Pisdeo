@@ -11,21 +11,20 @@ export default defineComponent({
             attribute: [],
         };
     },
-    created: function() {
+    mounted: function() {
         this.$store.subscribe((mutation, state) => {
             if (mutation.type == "chooseElement") {
                 let htmlChooser = state.project.workspace.htmlChooser.split(
                     "-"
                 );
-                console.log(
-                    getAttribute(
-                        state.project.program.file[
-                            state.project.workspace.currentFile
-                        ],
-                        htmlChooser,
-                        2
-                    )
+                let attribute = getAttribute(
+                    state.project.program.file[
+                        state.project.workspace.currentFile
+                    ],
+                    htmlChooser,
+                    2
                 );
+                console.log(attribute)
             }
         });
     },
