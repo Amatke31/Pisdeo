@@ -259,6 +259,7 @@ export default defineComponent({
 .main {
     display: flex;
     .menu {
+        padding: 0;
         width: 205px;
         background-color: #181818;
         @media screen and (max-width: 600px) {
