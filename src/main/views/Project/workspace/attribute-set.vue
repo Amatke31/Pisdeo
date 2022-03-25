@@ -40,8 +40,4 @@ export default defineComponent({
     border: 1px solid #444;
     overflow: hidden;
 }
-
-.textEdit {
-    // display: flex;
-}
 </style>

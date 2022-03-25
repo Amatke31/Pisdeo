@@ -9,14 +9,17 @@
         <div v-if="showList" class="list">
             <p>Developer Tool</p>
             <div v-for="value in toolFunction" :key="value.label">
-                <n-btn
+                <v-btn
+                    size="small"
                     v-if="value.type == 'btn'"
                     @click="
                         showList = false;
                         value.command();
                     "
-                    >{{ value.label }}</n-btn
+                    variant="text"
                 >
+                    {{ value.label }}
+                </v-btn>
             </div>
         </div>
     </div>

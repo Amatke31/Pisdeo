@@ -260,6 +260,7 @@ export default defineComponent({
     display: flex;
     .menu {
         width: 205px;
+        background-color: #181818;
         @media screen and (max-width: 600px) {
             width: 70px;
         }
