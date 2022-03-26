@@ -86,9 +86,7 @@ export default defineComponent({
     data() {
         return {
             showVirtualTitleBar:
-                platform === "desktop" &&
-                os &&
-                (os.platform() == "darwin" || os.platform() == "win32"),
+                platform === "desktop" && os && os.platform() == "darwin",
             ExtensionInfo: new Array(),
             homePath: "",
             template: new Array(),
