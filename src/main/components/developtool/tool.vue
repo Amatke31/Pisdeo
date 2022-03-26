@@ -35,11 +35,6 @@ export default defineComponent({
     },
     props: ["toolFunction"],
     mounted: function() {
-        document.addEventListener("click", (e: any) => {
-            if (!e.path.includes(this.$refs.codetool)) {
-                this.showList = false;
-            }
-        });
         dragElement(document.getElementById("codetool"));
 
         function dragElement(elmnt: any) {

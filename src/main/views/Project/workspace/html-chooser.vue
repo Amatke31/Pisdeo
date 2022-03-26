@@ -84,19 +84,15 @@ export default defineComponent({
             return element;
         },
         htmlChoose: function(e: any) {
-            let chooseId = e.path[0].id;
+            let chooseId = e.target.id;
             if (this.click) {
-                if (e.path.includes(this.$refs.htmlChooser)) {
-                    document.getElementById(this.click)!.className = `layer`;
-                }
+                document.getElementById(this.click)!.className = `layer`;
             }
             if (chooseId.indexOf("layer") == 0) {
                 this.click = chooseId;
                 document.getElementById(chooseId)!.className = `layer choose`;
             } else {
-                if (e.path.includes(this.$refs.htmlChooser)) {
-                    this.click = "";
-                }
+                this.click = "";
             }
         },
     },
