@@ -107,8 +107,9 @@ const project = {
         chooseElement(state: any, e: any) {
             state.workspace.htmlChooser = e.element;
         },
-        refreshProgram(state: any, code: any) {
-            state.workspace.openFile[state.workspace.currentFile] = code;
+        refreshProgramWithCode(state: any, code: any) {
+            console.log(code)
+            state.workspace.openFile[state.workspace.currentFile].context = code;
             state.workspace.viewer = ObjToHTML(
                 state.program.file[state.workspace.currentFile]
             );

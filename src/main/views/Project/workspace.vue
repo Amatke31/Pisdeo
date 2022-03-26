@@ -2,7 +2,7 @@
     <div class="workspace">
         <div class="above">
             <htmlChooser />
-            <viewer />
+            <viewer :viewer="viewer" />
             <attributeSet :attribute="attribute" />
         </div>
         <div class="below"></div>
@@ -18,6 +18,9 @@ export default defineComponent({
     props: {
         attribute: {
             type: Object,
+        },
+        viewer: {
+            type: String,
         },
     },
     components: { htmlChooser, fileChooser, viewer, attributeSet },

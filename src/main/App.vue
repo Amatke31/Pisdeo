@@ -24,6 +24,7 @@
             v-else-if="page === 'Project'"
             @goToStartPage="page = 'Start'"
             :attribute="attribute"
+            :viewer="viewer"
         />
         <Setting
             v-else-if="page === 'Setting'"
@@ -212,8 +213,13 @@ export default defineComponent({
                 );
                 this.attribute = attribute
             }
-            if (mutation.type == "refreshProgram") {
-                this.viewer = state.project.workspace.viewer
+            if (state.project.workspace.currentFile && state.project.workspace.openFile && state.project.workspace.openFile[state.project.workspace.currentFile]) {
+                this.asyncView()
+            }
+        });
+        this.$store.subscribeAction((action, state) => {
+            if (state.project.workspace.currentFile && state.project.workspace.openFile && state.project.workspace.openFile[state.project.workspace.currentFile]) {
+                this.asyncView()
             }
         });
     },
@@ -295,6 +301,9 @@ export default defineComponent({
         },
         closeDevToolOneTime: function() {
             this.openNWDDevTool = "23333333333333";
+        },
+        asyncView: function() {
+            this.viewer = this.$store.state.project.workspace.viewer;
         },
     },
 });

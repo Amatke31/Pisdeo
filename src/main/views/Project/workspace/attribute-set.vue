@@ -40,7 +40,7 @@ export default defineComponent({
                     "-"
                 );
                 this.$store.commit(
-                    "refreshProgram",
+                    "refreshProgramWithCode",
                     setAttribute(
                         this.$store.state.project.workspace.openFile[
                             this.$store.state.project.workspace.currentFile

@@ -1,7 +1,7 @@
 <template>
     <div>
         <menuBar />
-        <workspace :attribute="attribute" />
+        <workspace :attribute="attribute" :viewer="viewer" />
     </div>
 </template>
 <script lang="ts">
@@ -12,6 +12,9 @@ export default defineComponent({
     props: {
         attribute: {
             type: Object,
+        },
+        viewer: {
+            type: String,
         },
     },
     components: { menuBar, workspace },

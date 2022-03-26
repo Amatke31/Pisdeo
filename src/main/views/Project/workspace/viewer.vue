@@ -7,17 +7,15 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-    data() {
-        return {
-            viewer: null,
-        };
+    props: {
+        viewer: {
+            type: String,
+        },
     },
     mounted: function() {
-        this.asyncView();
     },
-    methods: {
-        asyncView: function() {
-            this.viewer = this.$store.state.project.workspace.viewer;
+    watch: {
+        viewer: function() {
             let iframe = this.$refs.viewer;
             let iDoc: any = (<HTMLIFrameElement>iframe).contentDocument;
             iDoc.open();
