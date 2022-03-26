@@ -13,16 +13,22 @@ export default defineComponent({
         },
     },
     mounted: function() {
+        this.asyncView()
     },
     watch: {
         viewer: function() {
+            this.asyncView()
+        },
+    },
+    methods: {
+        asyncView: function() {
             let iframe = this.$refs.viewer;
             let iDoc: any = (<HTMLIFrameElement>iframe).contentDocument;
             iDoc.open();
             iDoc.write(this.viewer);
             iDoc.close();
-        },
-    },
+        }
+    }
 });
 </script>
 <style lang="scss" scoped>

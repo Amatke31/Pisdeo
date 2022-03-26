@@ -165,7 +165,7 @@ export default defineComponent({
             loadProjectPath: "",
             openNWDDevTool: "development",
             attribute: {},
-            viewer: null
+            viewer: null,
         };
     },
     components: {
@@ -211,15 +211,19 @@ export default defineComponent({
                     htmlChooser,
                     2
                 );
-                this.attribute = attribute
+                this.attribute = attribute;
             }
-            if (state.project.workspace.currentFile && state.project.workspace.openFile && state.project.workspace.openFile[state.project.workspace.currentFile]) {
-                this.asyncView()
+            if (mutation.type == "openFile") {
+                this.asyncView();
             }
-        });
-        this.$store.subscribeAction((action, state) => {
-            if (state.project.workspace.currentFile && state.project.workspace.openFile && state.project.workspace.openFile[state.project.workspace.currentFile]) {
-                this.asyncView()
+            if (
+                state.project.workspace.currentFile &&
+                state.project.workspace.openFile &&
+                state.project.workspace.openFile[
+                    state.project.workspace.currentFile
+                ]
+            ) {
+                this.asyncView();
             }
         });
     },
