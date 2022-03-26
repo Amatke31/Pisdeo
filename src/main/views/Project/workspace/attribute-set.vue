@@ -6,6 +6,7 @@
                 v-model="text"
                 color="text-white"
                 variant="underlined"
+                v-if="attribute.element == '.text'"
             ></v-text-field>
         </div>
     </div>
