@@ -1,6 +1,9 @@
 <template>
-    <div ref="htmlChooser" class="html-chooser">
-        <div id="html-chooser" @click="htmlChoose"></div>
+    <div class="html-chooser">
+        <div class="elementBar">
+            <v-icon size="x-small" class="addElement">mdi-plus</v-icon>
+        </div>
+        <div ref="htmlChooser" id="html-chooser" @click="htmlChoose"></div>
     </div>
 </template>
 <script lang="ts">
@@ -114,6 +117,24 @@ export default defineComponent({
     height: 60vh;
     background-color: #222;
     overflow: hidden;
+}
+
+.elementBar {
+    height: 22px;
+    background-color: #292929;
+    display: flex;
+
+    .addElement {
+        margin: 3px;
+        width: 16px;
+        height: 16px;
+        background-color: #292929;
+        border-radius: 4px;
+
+        &:hover {
+            background-color: #393939;
+        }
+    }
 }
 
 .layer {
