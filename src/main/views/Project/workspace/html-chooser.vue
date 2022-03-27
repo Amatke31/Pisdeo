@@ -110,12 +110,9 @@ export default defineComponent({
 </script>
 <style lang="scss">
 .html-chooser {
-    margin: 2px;
-    width: 20vw;
+    width: 15vw;
     height: 60vh;
     background-color: #222;
-    border-radius: 8px;
-    border: 1px solid #444;
     overflow: hidden;
 }
 

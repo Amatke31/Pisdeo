@@ -33,11 +33,9 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .viewer {
-    margin: 2px;
-    width: 60vw;
+    width: 70vw;
     height: 60vh;
     background-color: #fff;
-    border-radius: 8px;
     border: 1px solid #444;
     overflow: hidden;
 }
