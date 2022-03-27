@@ -1,0 +1,8 @@
+{
+    "project.loading": "加载中...",
+    "project.exist": "该项目已经存在",
+    "project.cannotfind": "找不到该项目",
+    "project.blank": "网站",
+    "project.uilib": "UI库",
+    "attr.text": "文本"
+}

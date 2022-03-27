@@ -178,6 +178,9 @@ export default defineComponent({
             userConfig = config;
             this.page = userConfig.init ? "Start" : "Welcome";
             this.$i18n.locale = userConfig.language;
+            if (userConfig.language.indexOf('zh') == 0) {
+                this.$i18n.fallbackLocale = "zh_cn"
+            }
         });
     },
     async mounted() {

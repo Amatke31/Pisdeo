@@ -65,7 +65,9 @@ export default defineComponent({
             ans: number
         ): HTMLElement {
             let out: HTMLElement = document.createElement("div");
-            out.innerText = obj.element;
+            out.innerText = obj.elementName
+                ? obj.elementName
+                : this.elementToText(obj.element);
             out.className = `layer`;
             out.id = `${root}-${ans}`;
             out.style.paddingLeft = `${i * 8 + 4}px`;
@@ -93,6 +95,14 @@ export default defineComponent({
                 document.getElementById(chooseId)!.className = `layer choose`;
             } else {
                 this.click = "";
+            }
+        },
+        elementToText: function(element: string) {
+            switch (element) {
+                case ".text":
+                    return this.$t("element.text");
+                default:
+                    return this.$t(`element.${element}`);
             }
         },
     },
