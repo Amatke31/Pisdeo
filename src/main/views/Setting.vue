@@ -167,6 +167,11 @@ export default defineComponent({
                 } else {
                     ElMessage.error(this.$t("welcome.setlocaleerror"));
                     this.$i18n.locale = lastLang;
+                    if (lastLang.indexOf("zh") == 0) {
+                        this.$i18n.fallbackLocale = "zh_cn";
+                    } else {
+                        this.$i18n.fallbackLocale = "en";
+                    }
                 }
             } else {
                 setLocale(this.lang);
@@ -205,7 +210,7 @@ export default defineComponent({
                 .then(() => {
                     ElMessage({
                         type: "success",
-                        message: "Reset Completed",
+                        message: this.$t("setting.reset.success"),
                     });
                     setTimeout(() => {
                         location.reload();

@@ -7,6 +7,7 @@
     "setting.common": "Common",
     "setting.reset": "Reset",
     "setting.reset.warning": "Are you sure you want to reset? This will delete all settings and extensions.",
+    "setting.reset.success": "Reset Completed",
     "setting.enableToolAlways": "Always Open DevTool",
     "setting.enableToolJustDevelopment": "Open DevTool When in development",
     "setting.unableToolAlways": "Always Close DevTool"

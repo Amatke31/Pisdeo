@@ -59,6 +59,7 @@ import Legal from "../components/legal.vue";
 import platform from "../utils/platform/platform";
 
 export default defineComponent({
+    name: "Welcome",
     emits: ["goStart"],
     components: { Legal },
     data() {
@@ -79,10 +80,20 @@ export default defineComponent({
                 label: this.$t(`language.${lang}`),
             });
         });
+        if (this.lang.indexOf("zh") == 0) {
+            this.$i18n.fallbackLocale = "zh_cn";
+        } else {
+            this.$i18n.fallbackLocale = "en";
+        }
     },
     watch: {
         lang(lang) {
             this.$i18n.locale = lang;
+            if (lang.indexOf("zh") == 0) {
+                this.$i18n.fallbackLocale = "zh_cn";
+            } else {
+                this.$i18n.fallbackLocale = "en";
+            }
         },
     },
     methods: {
