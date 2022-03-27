@@ -1,12 +1,10 @@
 <template>
     <div>
-        <menuBar />
         <workspace :attribute="attribute" :viewer="viewer" />
     </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import menuBar from "./Project/menu-bar.vue";
 import workspace from "./Project/workspace.vue";
 export default defineComponent({
     props: {
@@ -17,7 +15,7 @@ export default defineComponent({
             type: String,
         },
     },
-    components: { menuBar, workspace },
+    components: { workspace },
     mounted() {},
     methods: {
         goToStartPage: function() {
