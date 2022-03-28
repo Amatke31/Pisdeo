@@ -193,7 +193,6 @@ export default defineComponent({
     opacity: 1;
     overflow: hidden;
     z-index: 10;
-    backdrop-filter: blur(2px);
     background-color: rgba(50, 50, 50, 0.7);
 }
 .desktop {
