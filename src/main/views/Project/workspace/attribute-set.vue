@@ -39,7 +39,6 @@ export default defineComponent({
             }, 100);
         },
         text: function(n) {
-            console.log(n);
             if (!this.lock) {
                 let htmlChooser = this.$store.state.project.workspace.htmlChooser.split(
                     "-"
