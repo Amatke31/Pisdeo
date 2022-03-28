@@ -1,7 +1,9 @@
 <template>
     <div class="html-chooser">
         <div class="elementBar">
-            <v-icon :class="add" size="x-small">mdi-plus</v-icon>
+            <v-icon :class="add" size="x-small" @click="addElement('window')">mdi-plus</v-icon>
+            <v-icon :class="add" size="x-small" @click="addElement('p')">mdi-plus</v-icon>
+            <v-icon :class="add" size="x-small" @click="addElement('.text')">mdi-plus</v-icon>
         </div>
         <div ref="htmlChooser" id="html-chooser" @click="htmlChoose"></div>
     </div>
