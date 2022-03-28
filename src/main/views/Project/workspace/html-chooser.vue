@@ -13,7 +13,7 @@ export default defineComponent({
     data() {
         return {
             html: [],
-            click: "",
+            click: "layer-0",
         };
     },
     watch: {
@@ -97,7 +97,7 @@ export default defineComponent({
                 this.click = chooseId;
                 document.getElementById(chooseId)!.className = `layer choose`;
             } else {
-                this.click = "";
+                this.click = "layer-0";
             }
         },
         elementToText: function(element: string) {
@@ -117,6 +117,12 @@ export default defineComponent({
     height: 60vh;
     background-color: #222;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+#html-chooser {
+    height: 100%;
 }
 
 .elementBar {
