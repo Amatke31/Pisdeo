@@ -1,6 +1,6 @@
 <template>
     <div class="viewer">
-        <iframe ref="viewer"> </iframe>
+        <iframe ref="viewer"></iframe>
     </div>
 </template>
 <script lang="ts">
@@ -13,11 +13,13 @@ export default defineComponent({
         },
     },
     mounted: function() {
-        this.asyncView()
+        this.$nextTick(() => {
+            this.asyncView();
+        });
     },
     watch: {
         viewer: function() {
-            this.asyncView()
+            this.asyncView();
         },
     },
     methods: {
@@ -27,8 +29,8 @@ export default defineComponent({
             iDoc.open();
             iDoc.write(this.viewer);
             iDoc.close();
-        }
-    }
+        },
+    },
 });
 </script>
 <style lang="scss" scoped>

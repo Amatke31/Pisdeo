@@ -34,9 +34,9 @@ export default defineComponent({
         attribute: function(n) {
             this.lock = true;
             this.text = n.text ? n.text : "";
-            this.$nextTick(() => {
+            setTimeout(() => {
                 this.lock = false;
-            });
+            }, 100);
         },
         text: function(n) {
             console.log(n);
