@@ -1,9 +1,7 @@
 <template>
     <div class="html-chooser">
         <div class="elementBar">
-            <v-icon :style="add" size="x-small" class="addElement"
-                >mdi-plus</v-icon
-            >
+            <v-icon :class="add" size="x-small">mdi-plus</v-icon>
         </div>
         <div ref="htmlChooser" id="html-chooser" @click="htmlChoose"></div>
     </div>
@@ -26,10 +24,10 @@ export default defineComponent({
     },
     computed: {
         canAddElement() {
-            return disableAdd.indexOf(this.attribute!.element) !== -1;
+            return disableAdd.indexOf(this.attribute!.element) == -1;
         },
         add() {
-            return this.canAddElement ? "color: #aaa" : "color: #fff";
+            return this.canAddElement ? "addElement" : "addElement disable";
         },
     },
     watch: {
@@ -152,9 +150,18 @@ export default defineComponent({
         height: 16px;
         background-color: #292929;
         border-radius: 4px;
+        color: #fff;
 
         &:hover {
             background-color: #393939;
+        }
+    }
+
+    .addElement.disable {
+        color: #aaa;
+
+        &:hover {
+            background-color: #292929;
         }
     }
 }
