@@ -1,7 +1,7 @@
 <template>
     <div class="workspace">
         <div class="above">
-            <htmlChooser />
+            <htmlChooser :attribute="attribute" />
             <viewer :viewer="viewer" />
             <attributeSet :attribute="attribute" />
         </div>

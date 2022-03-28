@@ -1,20 +1,34 @@
 <template>
     <div class="html-chooser">
         <div class="elementBar">
-            <v-icon size="x-small" class="addElement">mdi-plus</v-icon>
+            <!-- <v-icon :style="add" size="x-small" class="addElement">mdi-plus</v-icon> -->
         </div>
         <div ref="htmlChooser" id="html-chooser" @click="htmlChoose"></div>
     </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-let supportExt = ["html", "htm", "css", "js"];
+const supportExt = ["html", "htm", "css", "js"];
+const disableAdd = [".text"]
 export default defineComponent({
+    props: {
+        attribute: {
+            type: Object,
+        },
+    },
     data() {
         return {
             html: [],
             click: "layer-0",
         };
+    },
+    computed: {
+        canAddElement () {
+            return disableAdd.indexOf(this.attribute!.element) == -1
+        },
+        add () {
+            return this.canAddElement ? "color: #aaa" : "color: #fff"
+        }
     },
     watch: {
         html: function(e) {
