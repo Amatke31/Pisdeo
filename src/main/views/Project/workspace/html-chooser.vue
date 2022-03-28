@@ -1,9 +1,15 @@
 <template>
     <div class="html-chooser">
         <div class="elementBar">
-            <v-icon :class="add" size="x-small" @click="addElement('window')">mdi-plus</v-icon>
-            <v-icon :class="add" size="x-small" @click="addElement('p')">mdi-plus</v-icon>
-            <v-icon :class="add" size="x-small" @click="addElement('.text')">mdi-plus</v-icon>
+            <v-icon :class="add" size="x-small" @click="addElement('window')"
+                >mdi-plus</v-icon
+            >
+            <v-icon :class="add" size="x-small" @click="addElement('p')"
+                >mdi-plus</v-icon
+            >
+            <v-icon :class="add" size="x-small" @click="addElement('.text')"
+                >mdi-plus</v-icon
+            >
         </div>
         <div ref="htmlChooser" id="html-chooser" @click="htmlChoose"></div>
     </div>
@@ -124,6 +130,19 @@ export default defineComponent({
                     return this.$t(`element.${element}`);
             }
         },
+        addElement: function(element: string) {
+            if (element == "window") {
+                this.openElementChooser();
+            } else {
+                let htmlChooser = this.click.split(
+                    "-"
+                );
+                this.$store.commit(
+                    "refreshViewWithCode"
+                );
+            }
+        },
+        openElementChooser: function() {},
     },
 });
 </script>

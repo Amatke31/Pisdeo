@@ -73,10 +73,30 @@ function ObjToCSS(obj: any) {
     return out;
 }
 
+function addElement(obj: any, path: any, layer: number, changeAttr: any) {
+    if (path.length == 2) {
+        return obj;
+    } else if (path.length == layer) {
+        let next = obj
+        next[changeAttr.changeAttr] = changeAttr[changeAttr.changeAttr]
+        return next;
+    } else {
+        let out = obj
+        out.children[Number(path[layer])] = addElement(
+            obj.children[Number(path[layer])],
+            path,
+            layer + 1,
+            changeAttr
+        );
+        return out
+    }
+}
+
 export {
     ObjToHTML,
     analysisObj,
     ObjToElement,
     analysisObjWithElement,
     ObjToCSS,
+    addElement
 };
