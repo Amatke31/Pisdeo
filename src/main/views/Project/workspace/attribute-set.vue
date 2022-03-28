@@ -31,11 +31,12 @@ export default defineComponent({
         attribute: function(n) {
             this.lock = true;
             this.text = n.text ? n.text : "";
-            setTimeout(() => {
+            this.$nextTick(() => {
                 this.lock = false;
-            }, 100);
+            })
         },
         text: function(n) {
+            console.log(n)
             if (!this.lock) {
                 let htmlChooser = this.$store.state.project.workspace.htmlChooser.split(
                     "-"

@@ -61,7 +61,7 @@ const project = {
                                     {
                                         element: "div",
                                         class: "menu-bar",
-                                        elementName: "MenuBar",
+                                        elementName: "Menu Bar",
                                         children: [
                                             {
                                                 element: ".text",
