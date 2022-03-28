@@ -1,5 +1,8 @@
 <template>
     <div class="attributeSet">
+        <h2 style="user-select: none;">
+            {{ $t(`element.${attribute.element.split(".").pop()}`) }}
+        </h2>
         <div class="textEdit">
             <v-text-field
                 :label="$t('attr.text')"
@@ -33,10 +36,10 @@ export default defineComponent({
             this.text = n.text ? n.text : "";
             this.$nextTick(() => {
                 this.lock = false;
-            })
+            });
         },
         text: function(n) {
-            console.log(n)
+            console.log(n);
             if (!this.lock) {
                 let htmlChooser = this.$store.state.project.workspace.htmlChooser.split(
                     "-"
@@ -66,6 +69,6 @@ export default defineComponent({
     height: 60vh;
     background-color: #222;
     overflow: hidden;
-    padding: 10px 4px;
+    padding: 0 4px;
 }
 </style>
