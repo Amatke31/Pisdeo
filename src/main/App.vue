@@ -229,6 +229,11 @@ export default defineComponent({
                 this.asyncView();
             }
         });
+        this.$store.subscribeAction((action, state) => {
+            if (action.type == "openFile") {
+                this.asyncView();
+            }
+        });
     },
     methods: {
         pushPage: function(page: string) {

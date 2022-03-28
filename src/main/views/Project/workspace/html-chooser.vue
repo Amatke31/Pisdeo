@@ -30,9 +30,9 @@ export default defineComponent({
         this.html = this.$store.state.project.program.file[
             this.$store.state.project.workspace.currentFile
         ];
-        this.$store.subscribe((mutation, state) => {
+        this.$store.subscribeAction((action, state) => {
             if (
-                mutation.type == "openFile" &&
+                action.type == "openFile" &&
                 state.project.workspace.currentFile &&
                 supportExt.includes(
                     state.project.workspace.currentFile.split(".").pop()

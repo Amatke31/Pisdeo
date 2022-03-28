@@ -88,7 +88,43 @@ const project = {
         beforeLoadTestProject(state: any) {
             state.program = state.testProgram;
         },
-        openFile(state: any, filePath: string) {
+        chooseElement(state: any, e: any) {
+            state.workspace.htmlChooser = e.element;
+        },
+        refreshView(state: any) {
+            state.workspace.viewer = ObjToHTML(
+                state.program.file[state.workspace.currentFile]
+            );
+        },
+        refreshViewWithCode(state: any, code: any) {
+            state.workspace.openFile[state.workspace.currentFile].context = code;
+            state.workspace.viewer = ObjToHTML(
+                state.program.file[state.workspace.currentFile]
+            );
+        },
+    },
+    actions: {
+        createProject({ state }) {
+            return new Promise((resolve) => {
+                createProject(state, (result: any) => {
+                    resolve(result);
+                });
+            });
+        },
+        loadProject({ state }) {
+            return new Promise((resolve) => {
+                loadProject(state, (result: any) => {
+                    resolve(result);
+                });
+            });
+        },
+        loadTestProject({ dispatch }) {
+            dispatch("openFile", "index.html");
+            return new Promise((resolve) => {
+                resolve({ code: 200 });
+            });
+        },
+        openFile({ state, commit }, filePath: string) {
             state.workspace.currentFile = filePath;
             if (!state.workspace.openFile[filePath]) {
                 state.workspace.openFile[filePath] = {
@@ -103,43 +139,10 @@ const project = {
             ) {
                 switch (state.workspace.currentFile.split(".").pop()) {
                     case "html":
-                        state.workspace.viewer = ObjToHTML(
-                            state.program.file[state.workspace.currentFile]
-                        );
+                        commit('refreshView')
                         break;
                 }
             }
-        },
-        chooseElement(state: any, e: any) {
-            state.workspace.htmlChooser = e.element;
-        },
-        refreshProgramWithCode(state: any, code: any) {
-            state.workspace.openFile[state.workspace.currentFile].context = code;
-            state.workspace.viewer = ObjToHTML(
-                state.program.file[state.workspace.currentFile]
-            );
-        },
-    },
-    actions: {
-        createProject({ state, commit }) {
-            return new Promise((resolve) => {
-                createProject(state, (result: any) => {
-                    resolve(result);
-                });
-            });
-        },
-        loadProject({ state, commit }) {
-            return new Promise((resolve) => {
-                loadProject(state, (result: any) => {
-                    resolve(result);
-                });
-            });
-        },
-        loadTestProject({ state, commit }) {
-            commit("openFile", "index.html");
-            return new Promise((resolve) => {
-                resolve({ code: 200 });
-            });
         },
     },
 };
