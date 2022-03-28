@@ -162,7 +162,9 @@ export default defineComponent({
             loadProjectWithDebugDialog: false,
             loadProjectPath: "",
             openNWDDevTool: "development",
-            attribute: {},
+            attribute: {
+                element: "html"
+            },
             viewer: null,
         };
     },
