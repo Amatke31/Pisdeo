@@ -175,6 +175,15 @@ export default defineComponent({
         },
         removeElement: function() {
             let htmlChooser = this.click.split("-");
+            this.htmlChoose({
+                target: {
+                    id: this.click.slice(
+                        0,
+                        this.click.length -
+                            (this.click.split("-").pop()!.length + 1)
+                    ),
+                },
+            });
             this.$store.commit(
                 "refreshViewWithCode",
                 removeElement(
