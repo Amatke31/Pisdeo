@@ -95,6 +95,24 @@ function addElement(obj: any, path: any, layer: number, element: any) {
     }
 }
 
+function removeElement(obj: any, path: any, layer: number) {
+    if (path.length == 2) {
+        return obj;
+    } else if (path.length == layer - 1) {
+        let next = obj;
+        delete next[path.pop()];
+        return next;
+    } else {
+        let out = obj;
+        out.children[Number(path[layer])] = removeElement(
+            obj.children[Number(path[layer])],
+            path,
+            layer + 1
+        );
+        return out;
+    }
+}
+
 export {
     ObjToHTML,
     analysisObj,
@@ -102,4 +120,5 @@ export {
     analysisObjWithElement,
     ObjToCSS,
     addElement,
+    removeElement,
 };

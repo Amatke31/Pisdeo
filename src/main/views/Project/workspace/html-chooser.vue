@@ -10,13 +10,16 @@
             <v-icon :class="add" size="x-small" @click="addElement('.text')"
                 >mdi-plus</v-icon
             >
+            <v-icon class="addElement" size="x-small" @click="removeElement"
+                >mdi-minus</v-icon
+            >
         </div>
         <div ref="htmlChooser" id="html-chooser" @click="htmlChoose"></div>
     </div>
 </template>
 <script lang="ts">
-import { addElement } from "@/main/utils/exchange/html";
 import { defineComponent } from "vue";
+import { addElement, removeElement } from "@/main/utils/exchange/html";
 const supportExt = ["html", "htm", "css", "js"];
 const disableAdd = [".text", "html", "style", "script"];
 export default defineComponent({
@@ -153,7 +156,9 @@ export default defineComponent({
         addElement: function(element: string) {
             if (element == "window") {
                 this.openElementChooser();
-            } else {
+            } else if (disableAdd.indexOf(this.attribute!.element) != -1) {
+
+            } else{
                 let htmlChooser = this.click.split("-");
                 this.$store.commit(
                     "refreshViewWithCode",
@@ -166,6 +171,23 @@ export default defineComponent({
                         {
                             element,
                         }
+                    )
+                );
+            }
+        },
+        removeElement: function(element: string) {
+            if (element == "window") {
+                this.openElementChooser();
+            } else {
+                let htmlChooser = this.click.split("-");
+                this.$store.commit(
+                    "refreshViewWithCode",
+                    removeElement(
+                        this.$store.state.project.workspace.openFile[
+                            this.$store.state.project.workspace.currentFile
+                        ].context,
+                        htmlChooser,
+                        2
                     )
                 );
             }
