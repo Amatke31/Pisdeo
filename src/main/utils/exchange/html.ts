@@ -73,12 +73,12 @@ function ObjToCSS(obj: any) {
     return out;
 }
 
-function addElement(obj: any, path: any, layer: number, changeAttr: any) {
+function addElement(obj: any, path: any, layer: number, element: any) {
     if (path.length == 2) {
         return obj;
     } else if (path.length == layer) {
         let next = obj
-        next[changeAttr.changeAttr] = changeAttr[changeAttr.changeAttr]
+        next.children.push(element)
         return next;
     } else {
         let out = obj
@@ -86,7 +86,7 @@ function addElement(obj: any, path: any, layer: number, changeAttr: any) {
             obj.children[Number(path[layer])],
             path,
             layer + 1,
-            changeAttr
+            element
         );
         return out
     }

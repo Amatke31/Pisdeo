@@ -15,6 +15,7 @@
     </div>
 </template>
 <script lang="ts">
+import { addElement } from "@/main/utils/exchange/html";
 import { defineComponent } from "vue";
 const supportExt = ["html", "htm", "css", "js"];
 const disableAdd = [".text", "html", "style", "script"];
@@ -55,6 +56,24 @@ export default defineComponent({
         this.$store.subscribeAction((action, state) => {
             if (
                 action.type == "openFile" &&
+                state.project.workspace.currentFile &&
+                supportExt.includes(
+                    state.project.workspace.currentFile.split(".").pop()
+                )
+            ) {
+                switch (state.project.workspace.currentFile.split(".").pop()) {
+                    case "html":
+                        this.html =
+                            state.project.program.file[
+                                state.project.workspace.currentFile
+                            ];
+                        break;
+                }
+            }
+        });
+        this.$store.subscribe((mutation, state) => {
+            if (
+                mutation.type == "refreshViewWithCode" &&
                 state.project.workspace.currentFile &&
                 supportExt.includes(
                     state.project.workspace.currentFile.split(".").pop()
@@ -134,11 +153,19 @@ export default defineComponent({
             if (element == "window") {
                 this.openElementChooser();
             } else {
-                let htmlChooser = this.click.split(
-                    "-"
-                );
+                let htmlChooser = this.click.split("-");
                 this.$store.commit(
-                    "refreshViewWithCode"
+                    "refreshViewWithCode",
+                    addElement(
+                        this.$store.state.project.workspace.openFile[
+                            this.$store.state.project.workspace.currentFile
+                        ].context,
+                        htmlChooser,
+                        2,
+                        {
+                            element
+                        }
+                    )
                 );
             }
         },
