@@ -7,7 +7,7 @@ const arrRemove = function(it: any, arr: Array<any>) {
         return false;
     }
     const a = arr.slice(0, it);
-    const b = arr.slice(it, arr.length - a.length - 1);
+    const b = arr.slice(it + 1, arr.length - a.length);
     console.log(arr, it, a, b);
     return a.concat(b);
 };
