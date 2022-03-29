@@ -157,6 +157,12 @@ export default defineComponent({
                 this.openElementChooser();
             } else if (disableAdd.indexOf(this.attribute!.element) != -1) {
             } else {
+                let addElementInfo: any = {element}
+                switch(element) {
+                    case ".text":
+                        addElementInfo.text = ""
+                        break;
+                }
                 let htmlChooser = this.click.split("-");
                 this.$store.commit(
                     "refreshViewWithCode",
@@ -166,9 +172,7 @@ export default defineComponent({
                         ].context,
                         htmlChooser,
                         2,
-                        {
-                            element,
-                        }
+                        addElementInfo
                     )
                 );
             }

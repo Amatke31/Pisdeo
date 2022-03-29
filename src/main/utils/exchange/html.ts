@@ -1,18 +1,15 @@
 let noChange = ["element", "children", "css", "script", "text"];
 let noCssChange = ["class"];
 
-const arrRemove = function(it, arr: Array<any>) {
-    console.log(arr)
+const arrRemove = function(it: any, arr: Array<any>) {
+    it = Number(it);
     if (!arr || arr.length == 0) {
         return false;
     }
-    let flag = arr.indexOf(it);
-    if (flag > -1) {
-        arr.splice(flag, 1);
-        return arr;
-    } else {
-        return false;
-    }
+    const a = arr.slice(0, it);
+    const b = arr.slice(it, arr.length - a.length - 1);
+    console.log(arr, it, a, b);
+    return a.concat(b);
 };
 
 function ObjToHTML(obj: any) {
@@ -114,7 +111,7 @@ function removeElement(obj: any, path: any, layer: number) {
         return obj;
     } else if (path.length == layer + 1) {
         let next = obj;
-        next.children = arrRemove(path.pop(), next.children)
+        next.children = arrRemove(path.pop(), next.children);
         return next;
     } else {
         let out = obj;
