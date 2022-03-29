@@ -98,9 +98,9 @@ function addElement(obj: any, path: any, layer: number, element: any) {
 function removeElement(obj: any, path: any, layer: number) {
     if (path.length == 2) {
         return obj;
-    } else if (path.length == layer - 1) {
+    } else if (path.length == layer + 1) {
         let next = obj;
-        delete next[path.pop()];
+        delete next.children[path.pop()];
         return next;
     } else {
         let out = obj;

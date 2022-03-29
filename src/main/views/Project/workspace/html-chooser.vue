@@ -109,7 +109,6 @@ export default defineComponent({
             root: string,
             ans: number
         ): HTMLElement {
-            console.log(obj);
             let out: HTMLElement = document.createElement("div");
             out.innerText = obj.elementName
                 ? obj.elementName
@@ -157,8 +156,7 @@ export default defineComponent({
             if (element == "window") {
                 this.openElementChooser();
             } else if (disableAdd.indexOf(this.attribute!.element) != -1) {
-
-            } else{
+            } else {
                 let htmlChooser = this.click.split("-");
                 this.$store.commit(
                     "refreshViewWithCode",
@@ -175,22 +173,18 @@ export default defineComponent({
                 );
             }
         },
-        removeElement: function(element: string) {
-            if (element == "window") {
-                this.openElementChooser();
-            } else {
-                let htmlChooser = this.click.split("-");
-                this.$store.commit(
-                    "refreshViewWithCode",
-                    removeElement(
-                        this.$store.state.project.workspace.openFile[
-                            this.$store.state.project.workspace.currentFile
-                        ].context,
-                        htmlChooser,
-                        2
-                    )
-                );
-            }
+        removeElement: function() {
+            let htmlChooser = this.click.split("-");
+            this.$store.commit(
+                "refreshViewWithCode",
+                removeElement(
+                    this.$store.state.project.workspace.openFile[
+                        this.$store.state.project.workspace.currentFile
+                    ].context,
+                    htmlChooser,
+                    2
+                )
+            );
         },
         openElementChooser: function() {},
         refreshChooser: function() {
