@@ -1,6 +1,20 @@
 let noChange = ["element", "children", "css", "script", "text"];
 let noCssChange = ["class"];
 
+const arrRemove = function(it, arr: Array<any>) {
+    console.log(arr)
+    if (!arr || arr.length == 0) {
+        return false;
+    }
+    let flag = arr.indexOf(it);
+    if (flag > -1) {
+        arr.splice(flag, 1);
+        return arr;
+    } else {
+        return false;
+    }
+};
+
 function ObjToHTML(obj: any) {
     let out: string = "";
     out = analysisObj(obj);
@@ -100,7 +114,7 @@ function removeElement(obj: any, path: any, layer: number) {
         return obj;
     } else if (path.length == layer + 1) {
         let next = obj;
-        delete next.children[path.pop()];
+        next.children = arrRemove(path.pop(), next.children)
         return next;
     } else {
         let out = obj;

@@ -18,7 +18,7 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, toRaw } from "vue";
 import { addElement, removeElement } from "@/main/utils/exchange/html";
 const supportExt = ["html", "htm", "css", "js"];
 const disableAdd = [".text", "html", "style", "script"];
@@ -187,9 +187,9 @@ export default defineComponent({
             this.$store.commit(
                 "refreshViewWithCode",
                 removeElement(
-                    this.$store.state.project.workspace.openFile[
+                    toRaw(this.$store.state.project.workspace.openFile[
                         this.$store.state.project.workspace.currentFile
-                    ].context,
+                    ].context),
                     htmlChooser,
                     2
                 )

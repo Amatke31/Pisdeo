@@ -163,7 +163,7 @@ export default defineComponent({
             loadProjectPath: "",
             openNWDDevTool: "development",
             attribute: {
-                element: "html"
+                element: "html",
             },
             viewer: null,
         };
