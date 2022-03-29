@@ -77,18 +77,21 @@ function addElement(obj: any, path: any, layer: number, element: any) {
     if (path.length == 2) {
         return obj;
     } else if (path.length == layer) {
-        let next = obj
-        next.children.push(element)
+        let next = obj;
+        if (!next.children) {
+            next.children = [];
+        }
+        next.children.push(element);
         return next;
     } else {
-        let out = obj
+        let out = obj;
         out.children[Number(path[layer])] = addElement(
             obj.children[Number(path[layer])],
             path,
             layer + 1,
             element
         );
-        return out
+        return out;
     }
 }
 
@@ -98,5 +101,5 @@ export {
     ObjToElement,
     analysisObjWithElement,
     ObjToCSS,
-    addElement
+    addElement,
 };

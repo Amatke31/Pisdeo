@@ -40,11 +40,6 @@ export default defineComponent({
         },
     },
     watch: {
-        html: function(e) {
-            document
-                .getElementById("html-chooser")!
-                .appendChild(this.ObjToHtmlchooser(e));
-        },
         click: function(e) {
             this.$store.commit({ type: "chooseElement", element: e });
         },
@@ -53,6 +48,7 @@ export default defineComponent({
         this.html = this.$store.state.project.program.file[
             this.$store.state.project.workspace.currentFile
         ];
+        this.refreshChooser();
         this.$store.subscribeAction((action, state) => {
             if (
                 action.type == "openFile" &&
@@ -64,9 +60,10 @@ export default defineComponent({
                 switch (state.project.workspace.currentFile.split(".").pop()) {
                     case "html":
                         this.html =
-                            state.project.program.file[
+                            state.project.workspace.openFile[
                                 state.project.workspace.currentFile
-                            ];
+                            ].context;
+                        this.refreshChooser();
                         break;
                 }
             }
@@ -82,9 +79,10 @@ export default defineComponent({
                 switch (state.project.workspace.currentFile.split(".").pop()) {
                     case "html":
                         this.html =
-                            state.project.program.file[
+                            state.project.workspace.openFile[
                                 state.project.workspace.currentFile
-                            ];
+                            ].context;
+                        this.refreshChooser();
                         break;
                 }
             }
@@ -108,6 +106,7 @@ export default defineComponent({
             root: string,
             ans: number
         ): HTMLElement {
+            console.log(obj);
             let out: HTMLElement = document.createElement("div");
             out.innerText = obj.elementName
                 ? obj.elementName
@@ -117,15 +116,17 @@ export default defineComponent({
             out.style.paddingLeft = `${i * 8 + 4}px`;
             element.appendChild(out);
             let ansaz = 0;
-            for (let child in obj.children) {
-                element = this.analysisObj(
-                    obj.children[child],
-                    element,
-                    i + 1,
-                    out.id,
-                    ansaz
-                );
-                ansaz++;
+            if (obj.children) {
+                for (let child in obj.children) {
+                    element = this.analysisObj(
+                        obj.children[child],
+                        element,
+                        i + 1,
+                        out.id,
+                        ansaz
+                    );
+                    ansaz++;
+                }
             }
             return element;
         },
@@ -163,13 +164,18 @@ export default defineComponent({
                         htmlChooser,
                         2,
                         {
-                            element
+                            element,
                         }
                     )
                 );
             }
         },
         openElementChooser: function() {},
+        refreshChooser: function() {
+            document.getElementById(
+                "html-chooser"
+            )!.innerHTML = this.ObjToHtmlchooser(this.html).innerHTML;
+        },
     },
 });
 </script>
