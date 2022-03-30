@@ -380,6 +380,8 @@ export default defineComponent({
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 72px;
+    
     .nav-left {
         align-items: center;
         display: flex;
