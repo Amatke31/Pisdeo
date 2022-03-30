@@ -4,13 +4,13 @@
             {{ $t(`element.${attribute.element.split(".").pop()}`) }}
         </h2>
         <div class="textEdit">
-            <v-text-field
+            <v-textarea
                 :label="$t('attr.text')"
                 v-model="text"
                 color="text-white"
                 variant="underlined"
                 v-if="attribute.element == '.text'"
-            ></v-text-field>
+            ></v-textarea>
         </div>
     </div>
 </template>
