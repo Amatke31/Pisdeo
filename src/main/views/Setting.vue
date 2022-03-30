@@ -22,8 +22,8 @@
                     :prepend-icon="icon"
                 ></v-list-item>
             </v-list>
-            <div v-if="option == 'setting.common'" class="right scroll">
-                <div class="title">{{ $t("setting.common") }}</div>
+            <div v-if="option == 'setting.general'" class="right scroll">
+                <div class="title">{{ $t("setting.general") }}</div>
                 <div>
                     <div>{{ $t("setting.language") }}:</div>
                     <el-select
@@ -98,7 +98,7 @@
                 :key="id"
                 v-show="
                     option == id &&
-                        option != 'setting.common' &&
+                        option != 'setting.general' &&
                         option != 'setting.account' &&
                         option != 'setting.develop' &&
                         option != 'setting.about'
@@ -133,7 +133,7 @@ export default defineComponent({
     data() {
         return {
             lang: "",
-            option: "setting.common",
+            option: "setting.general",
             supportLang: [] as any,
             version: {
                 isProduction: false,

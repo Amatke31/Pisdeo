@@ -4,7 +4,7 @@
     "setting.about": "About",
     "setting.language": "Language",
     "setting.develop": "Develop",
-    "setting.common": "Common",
+    "setting.general": "General",
     "setting.reset": "Reset",
     "setting.reset.warning": "Are you sure you want to reset? This will delete all settings and extensions.",
     "setting.reset.success": "Reset Completed",

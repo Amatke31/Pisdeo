@@ -154,7 +154,7 @@ export default defineComponent({
                 },
             ],
             settingMenuOption: [
-                ["setting.common", "mdi-cog", []],
+                ["setting.general", "mdi-cog", []],
                 ["setting.account", "mdi-account-circle", []],
                 ["setting.develop", "mdi-hammer-screwdriver", []],
                 ["setting.about", "mdi-information", []],

@@ -4,7 +4,7 @@
     "setting.about": "关于",
     "setting.language": "语言",
     "setting.develop": "开发",
-    "setting.common": "通用",
+    "setting.general": "常规",
     "setting.reset": "重置",
     "setting.reset.warning": "你确定要重置吗？这将删除所有设置和扩展。",
     "setting.reset.success": "重置完毕",
