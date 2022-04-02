@@ -3,6 +3,7 @@
         <h2 style="user-select: none;">
             {{ $t(`element.${attribute.element.split(".").pop()}`) }}
         </h2>
+        <div class="attrBar"></div>
         <div class="textEdit" v-if="attribute.element == '.text'">
             <v-textarea
                 :label="$t('attr.text')"
