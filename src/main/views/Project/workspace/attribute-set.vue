@@ -3,14 +3,16 @@
         <h2 style="user-select: none;">
             {{ $t(`element.${attribute.element.split(".").pop()}`) }}
         </h2>
-        <div class="textEdit">
+        <div class="textEdit" v-if="attribute.element == '.text'">
             <v-textarea
                 :label="$t('attr.text')"
                 v-model="text"
                 color="text-white"
                 variant="underlined"
-                v-if="attribute.element == '.text'"
             ></v-textarea>
+        </div>
+        <div class="frame" v-else>
+            <div :class="frame.edge"></div>
         </div>
     </div>
 </template>
@@ -28,6 +30,9 @@ export default defineComponent({
         return {
             lock: false,
             text: "",
+            frame: {
+                edge: "fold",
+            },
         };
     },
     watch: {
