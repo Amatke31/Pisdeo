@@ -12,7 +12,19 @@
             ></v-textarea>
         </div>
         <div class="frame" v-else>
-            <div :class="frame.edge"></div>
+            <div id="edgeFrame" :class="frame.edge.class">
+                <div class="folder"></div>
+                <div>
+                    <div class="margin">
+                    </div>
+                    <div class="padding">
+                    </div>
+                    <div class="border">
+                    </div>
+                    <div class="outline">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -31,7 +43,10 @@ export default defineComponent({
             lock: false,
             text: "",
             frame: {
-                edge: "fold",
+                edge: {
+                    class: "fold",
+                    height: "100px"
+                },
             },
         };
     },
