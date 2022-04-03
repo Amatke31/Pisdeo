@@ -4,5 +4,7 @@
     "project.cannotfind": "找不到该项目",
     "project.blank": "网站",
     "project.uilib": "UI库",
-    "attr.text": "内容"
+    "attr.text": "内容",
+    "attr.set": "设定",
+    "attr.calc": "计算"
 }

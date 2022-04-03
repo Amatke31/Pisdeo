@@ -4,5 +4,7 @@
     "project.cannotfind": "The project could not be found",
     "project.blank": "Website",
     "project.uilib": "UI Library",
-    "attr.text": "Text"
+    "attr.text": "Text",
+    "attr.set": "Set",
+    "attr.calc": "Clac"
 }
