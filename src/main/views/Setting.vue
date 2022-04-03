@@ -167,14 +167,19 @@ export default defineComponent({
                 } else {
                     ElMessage.error(this.$t("welcome.setlocaleerror"));
                     this.$i18n.locale = lastLang;
-                    if (lastLang.indexOf("zh") == 0) {
+                    if (lang.indexOf("zh") == 0) {
                         this.$i18n.fallbackLocale = "zh_cn";
                     } else {
-                        this.$i18n.fallbackLocale = "en";
+                        this.$i18n.fallbackLocale = "en_us";
                     }
                 }
             } else {
                 setLocale(this.lang);
+            }
+            if (lang.indexOf("zh") == 0) {
+                this.$i18n.fallbackLocale = "zh_cn";
+            } else {
+                this.$i18n.fallbackLocale = "en_us";
             }
         },
     },

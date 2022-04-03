@@ -1,13 +1,13 @@
 <template>
     <div class="attributeSet">
+        <h2 class="elementName">
+            {{ $t(`element.${attribute.element.split(".").pop()}`) }}
+        </h2>
         <div class="attrBar">
             <div class="btn">{{ $t("attr.set") }}</div>
             <div class="btn">{{ $t("attr.calc") }}</div>
         </div>
-        <div class="content">
-            <h2 style="user-select: none;">
-                {{ $t(`element.${attribute.element.split(".").pop()}`) }}
-            </h2>
+        <div>
             <div class="textEdit" v-if="attribute.element == '.text'">
                 <v-textarea
                     :label="$t('attr.text')"
@@ -85,6 +85,11 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
+.elementName {
+    margin: 0 4px;
+    user-select: none;
+}
+
 .attributeSet {
     width: 15vw;
     height: 60vh;
@@ -92,13 +97,23 @@ export default defineComponent({
     overflow: hidden;
 
     .attrBar {
-        height: 22px;
+        height: 30px;
         background-color: #292929;
         display: flex;
-    }
 
-    .content {
-        padding: 0 4px;
+        .btn {
+            margin: 4px 6px;
+            font-size: 14px;
+
+            
+        }
+    }
+}
+
+.frame {
+    .folder {
+        height: 22px;
+        background-color: #292929;
     }
 }
 </style>

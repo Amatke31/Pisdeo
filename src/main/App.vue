@@ -183,7 +183,7 @@ export default defineComponent({
             if (userConfig.language.indexOf("zh") == 0) {
                 this.$i18n.fallbackLocale = "zh_cn";
             } else {
-                this.$i18n.fallbackLocale = "en";
+                this.$i18n.fallbackLocale = "en_us";
             }
         });
     },

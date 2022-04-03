@@ -83,7 +83,7 @@ export default defineComponent({
         if (this.lang.indexOf("zh") == 0) {
             this.$i18n.fallbackLocale = "zh_cn";
         } else {
-            this.$i18n.fallbackLocale = "en";
+            this.$i18n.fallbackLocale = "en_us";
         }
     },
     watch: {
@@ -92,7 +92,7 @@ export default defineComponent({
             if (lang.indexOf("zh") == 0) {
                 this.$i18n.fallbackLocale = "zh_cn";
             } else {
-                this.$i18n.fallbackLocale = "en";
+                this.$i18n.fallbackLocale = "en_us";
             }
         },
     },
