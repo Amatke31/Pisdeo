@@ -18,7 +18,7 @@
             </div>
             <div class="frame" v-else>
                 <div id="edgeFrame" :class="frame.edge.class">
-                    <div class="folder"></div>
+                    <div class="folder">{{ $t('attr.edge') }}</div>
                     <div>
                         <div class="margin"></div>
                         <div class="padding"></div>

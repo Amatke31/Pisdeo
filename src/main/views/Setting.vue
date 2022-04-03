@@ -167,7 +167,7 @@ export default defineComponent({
                 } else {
                     ElMessage.error(this.$t("welcome.setlocaleerror"));
                     this.$i18n.locale = lastLang;
-                    if (lang.indexOf("zh") == 0) {
+                    if (lastLang.indexOf("zh") == 0) {
                         this.$i18n.fallbackLocale = "zh_cn";
                     } else {
                         this.$i18n.fallbackLocale = "en_us";
@@ -194,7 +194,7 @@ export default defineComponent({
                         instance.confirmButtonLoading = true;
                         instance.confirmButtonText = "Loading...";
                         if (platform == "desktop") {
-                        } else {
+                        } else if (platform == "web") {
                             recovery((success: Boolean) => {
                                 if (success) {
                                     instance.confirmButtonLoading = true;

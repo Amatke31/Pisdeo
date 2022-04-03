@@ -6,5 +6,6 @@
     "project.uilib": "UI Library",
     "attr.text": "Text",
     "attr.set": "Set",
-    "attr.calc": "Clac"
+    "attr.calc": "Clac",
+    "attr.edge": "edge"
 }
