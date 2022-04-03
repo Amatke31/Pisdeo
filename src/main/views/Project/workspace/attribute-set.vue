@@ -1,31 +1,29 @@
 <template>
     <div class="attributeSet">
-        <h2 style="user-select: none;">
-            {{ $t(`element.${attribute.element.split(".").pop()}`) }}
-        </h2>
         <div class="attrBar">
-            <div class="btn">{{ $t('attr.set') }}</div>
-            <div class="btn">{{ $t('attr.calc') }}</div>
+            <div class="btn">{{ $t("attr.set") }}</div>
+            <div class="btn">{{ $t("attr.calc") }}</div>
         </div>
-        <div class="textEdit" v-if="attribute.element == '.text'">
-            <v-textarea
-                :label="$t('attr.text')"
-                v-model="text"
-                color="text-white"
-                variant="underlined"
-            ></v-textarea>
-        </div>
-        <div class="frame" v-else>
-            <div id="edgeFrame" :class="frame.edge.class">
-                <div class="folder"></div>
-                <div>
-                    <div class="margin">
-                    </div>
-                    <div class="padding">
-                    </div>
-                    <div class="border">
-                    </div>
-                    <div class="outline">
+        <div class="content">
+            <h2 style="user-select: none;">
+                {{ $t(`element.${attribute.element.split(".").pop()}`) }}
+            </h2>
+            <div class="textEdit" v-if="attribute.element == '.text'">
+                <v-textarea
+                    :label="$t('attr.text')"
+                    v-model="text"
+                    color="text-white"
+                    variant="underlined"
+                ></v-textarea>
+            </div>
+            <div class="frame" v-else>
+                <div id="edgeFrame" :class="frame.edge.class">
+                    <div class="folder"></div>
+                    <div>
+                        <div class="margin"></div>
+                        <div class="padding"></div>
+                        <div class="border"></div>
+                        <div class="outline"></div>
                     </div>
                 </div>
             </div>
@@ -49,7 +47,7 @@ export default defineComponent({
             frame: {
                 edge: {
                     class: "fold",
-                    height: "100px"
+                    height: "100px",
                 },
             },
         };
@@ -92,6 +90,15 @@ export default defineComponent({
     height: 60vh;
     background-color: #222;
     overflow: hidden;
-    padding: 0 4px;
+
+    .attrBar {
+        height: 22px;
+        background-color: #292929;
+        display: flex;
+    }
+
+    .content {
+        padding: 0 4px;
+    }
 }
 </style>
