@@ -5,7 +5,7 @@
     "project.blank": "Website",
     "project.uilib": "UI Library",
     "attr.text": "Text",
-    "attr.set": "Set",
-    "attr.calc": "Clac",
+    "attr.style": "Styles",
+    "attr.computed": "Computed",
     "attr.edge": "edge"
 }

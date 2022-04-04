@@ -254,7 +254,6 @@ export default defineComponent({
     font-size: 10px;
     padding: 2px 4px;
     cursor: pointer;
-    user-select: none;
 }
 
 .layer:hover {

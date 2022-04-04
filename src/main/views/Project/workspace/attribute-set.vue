@@ -3,22 +3,18 @@
         <h2 class="elementName">
             {{ $t(`element.${attribute.element.split(".").pop()}`) }}
         </h2>
-        <div class="attrBar">
-            <div class="btn">{{ $t("attr.set") }}</div>
-            <div class="btn">{{ $t("attr.calc") }}</div>
-        </div>
-        <div>
-            <div class="textEdit" v-if="attribute.element == '.text'">
-                <v-textarea
-                    :label="$t('attr.text')"
-                    v-model="text"
-                    color="text-white"
-                    variant="underlined"
-                ></v-textarea>
+        <span v-if="attribute.element !== '.text'">
+            <div :class="attrBar">
+                <div class="btn style" @click="attrPage = 'style'">
+                    {{ $t("attr.style") }}
+                </div>
+                <div class="btn computed" @click="attrPage = 'computed'">
+                    {{ $t("attr.computed") }}
+                </div>
             </div>
-            <div class="frame" v-else>
+            <div class="frame" v-if="attrPage == 'style'">
                 <div id="edgeFrame" :class="frame.edge.class">
-                    <div class="folder">{{ $t('attr.edge') }}</div>
+                    <div class="folder">{{ $t("attr.edge") }}</div>
                     <div>
                         <div class="margin"></div>
                         <div class="padding"></div>
@@ -27,6 +23,15 @@
                     </div>
                 </div>
             </div>
+            <div class="frame" v-if="attrPage == 'computed'"></div>
+        </span>
+        <div class="textEdit" v-else>
+            <v-textarea
+                :label="$t('attr.text')"
+                v-model="text"
+                color="text-white"
+                variant="underlined"
+            ></v-textarea>
         </div>
     </div>
 </template>
@@ -50,7 +55,13 @@ export default defineComponent({
                     height: "100px",
                 },
             },
+            attrPage: "style",
         };
+    },
+    computed: {
+        attrBar() {
+            return `attrBar ${this.attrPage}`;
+        },
     },
     watch: {
         attribute: function(n) {
@@ -97,20 +108,41 @@ export default defineComponent({
     overflow: hidden;
 
     .attrBar {
-        height: 30px;
+        height: 36px;
         background-color: #292929;
         display: flex;
+        border-top: 1px solid rgba(204, 204, 204, 0.2);
+        padding: 0 2px;
 
         .btn {
-            margin: 4px 6px;
+            padding: 5px 6px;
+            margin: 2px 0px;
             font-size: 14px;
+            cursor: pointer;
 
-            
+            &:hover,
+            &:focus {
+                background-color: #333;
+            }
         }
+    }
+
+    .attrBar.style .btn.style {
+        background-color: #444;
+        border-bottom: 1px solid #999;
+    }
+
+    .attrBar.computed .btn.computed {
+        background-color: #444;
+        border-bottom: 1px solid #999;
     }
 }
 
 .frame {
+    // margin-top: 10px;
+    border-top: 1px solid rgba(204, 204, 204, 0.2);
+    box-shadow: #000000 0 6px 6px -6px inset;
+
     .folder {
         height: 22px;
         background-color: #292929;
