@@ -4,7 +4,7 @@
     "author": "Amatke31",
     "scripts": {
         "build:nogulp": "vue-cli-service build",
-        "build": "gulp build",
+        "build": "gulp build --color",
         "lint": "vue-cli-service lint",
         "build:desktop": "vue-cli-service electron:build",
         "dev": "vue-cli-service serve",
@@ -27,6 +27,7 @@
         "localforage": "^1.10.0",
         "markdown-it": "^12.3.2",
         "material-design-icons": "^3.0.1",
+        "node-pty": "^0.10.1",
         "node-sass": "4.12.0",
         "path-browserify": "^1.0.1",
         "roboto-fontface": "*",
