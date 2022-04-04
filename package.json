@@ -2,6 +2,7 @@
     "name": "nexwebdesigner",
     "version": "1.0.0",
     "author": "Amatke31",
+    "license": "AGPL-3.0",
     "scripts": {
         "build:nogulp": "vue-cli-service build",
         "build": "gulp build --color",
@@ -28,7 +29,6 @@
         "markdown-it": "^12.3.2",
         "material-design-icons": "^3.0.1",
         "node-pty": "^0.10.1",
-        "node-sass": "4.12.0",
         "path-browserify": "^1.0.1",
         "roboto-fontface": "*",
         "semver": "^7.3.5",
@@ -60,8 +60,8 @@
         "electron-devtools-installer": "^3.1.0",
         "husky": "^7.0.4",
         "inquirer": "^8.2.1",
-        "sass": "^1.38.0",
-        "sass-loader": "^10.2.0",
+        "sass": "^1.49.11",
+        "sass-loader": "^12.6.0",
         "style-loader": "^3.2.1",
         "stylus": "^0.55.0",
         "typescript": "~4.1.5",
@@ -79,11 +79,5 @@
         "> 1%",
         "last 2 versions",
         "not dead"
-    ],
-    "husky": {
-        "hooks": {
-            "post-commit": "exec < /dev/tty && node scripts/check-version.js"
-        }
-    },
-    "license": "AGPL-3.0"
+    ]
 }

@@ -39,7 +39,7 @@ module.exports = {
                 path: require.resolve("path-browserify"),
                 vm: require.resolve("vm-browserify"),
                 fs: false,
-                os: false,
+                os: require.resolve("os-browserify"),
             },
         },
         plugins: [
