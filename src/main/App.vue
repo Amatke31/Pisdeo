@@ -29,7 +29,7 @@
         <Setting
             v-else-if="page === 'Setting'"
             @goToStartPage="page = 'Start'"
-            @refreshToolStatus="refreshToolStatus"
+            @sendCommand="SettingCommand"
             :menuOption="settingMenuOption"
         />
         <div v-if="!startIsInit" class="console" v-html="consoleText"></div>
@@ -310,8 +310,26 @@ export default defineComponent({
                 }
             });
         },
-        refreshToolStatus: function() {
-            this.openNWDDevTool = localStorage.getItem("nwddevtool") as string;
+        SettingCommand: function(command: string) {
+            switch (command) {
+                case "setToolState.always":
+                    localStorage.setItem("nwddevtool", "always");
+                    this.openNWDDevTool = "always";
+                    break;
+                case "setToolState.development":
+                    localStorage.setItem("nwddevtool", "development");
+                    this.openNWDDevTool = "development";
+                    break;
+                case "setToolState.never":
+                    localStorage.setItem("nwddevtool", "never");
+                    this.openNWDDevTool = "never";
+                    break;
+                case "loadTestProject":
+                    this.loadTestProject();
+                    break;
+                default:
+                    console.log(`Cannot find command '${command}'`);
+            }
         },
         closeDevToolOneTime: function() {
             this.openNWDDevTool = "23333333333333";

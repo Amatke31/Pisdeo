@@ -55,14 +55,23 @@
             <div v-else-if="option == 'setting.develop'" class="right">
                 <div class="title">{{ $t("setting.develop") }}</div>
                 <div>
-                    <n-btn @click="enableToolAlways">
-                        {{ $t("setting.enableToolAlways") }}
-                    </n-btn>
-                    <n-btn @click="enableToolJustDevelopment">
-                        {{ $t("setting.enableToolJustDevelopment") }}
-                    </n-btn>
-                    <n-btn @click="unableToolAlways">
-                        {{ $t("setting.unableToolAlways") }}
+                    <el-select
+                        v-model="toolState"
+                        class="m-2 select"
+                        placeholder="Select"
+                        size="large"
+                    >
+                        <el-option
+                            v-for="item in toolStateList"
+                            class="option"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                        >
+                        </el-option>
+                    </el-select>
+                    <n-btn @click="sendCommand('loadTestProject')">
+                        {{ $t("setting.loadTestProject") }}
                     </n-btn>
                 </div>
             </div>
@@ -135,6 +144,21 @@ export default defineComponent({
             lang: "",
             option: "setting.general",
             supportLang: [] as any,
+            toolState: "development",
+            toolStateList: [
+                {
+                    label: this.$t("setting.enableToolAlways"),
+                    value: "always",
+                },
+                {
+                    label: this.$t("setting.enableToolJustDevelopment"),
+                    value: "development",
+                },
+                {
+                    label: this.$t("setting.unableToolAlways"),
+                    value: "never",
+                },
+            ],
             version: {
                 isProduction: false,
                 buildTime: "Manual Build",
@@ -147,6 +171,7 @@ export default defineComponent({
     },
     async created() {
         this.version = await getVersion();
+        this.toolState = localStorage.getItem("nwddevtool") as string;
     },
     mounted: function() {
         this.lang = this.$i18n.locale;
@@ -181,6 +206,9 @@ export default defineComponent({
             } else {
                 this.$i18n.fallbackLocale = "en_us";
             }
+        },
+        toolState: function(n) {
+            this.sendCommand(`setToolState.${n}`);
         },
     },
     methods: {
@@ -223,17 +251,8 @@ export default defineComponent({
                 })
                 .catch(() => {});
         },
-        enableToolAlways: function() {
-            localStorage.setItem("nwddevtool", "always");
-            this.$emit("refreshToolStatus");
-        },
-        enableToolJustDevelopment: function() {
-            localStorage.setItem("nwddevtool", "development");
-            this.$emit("refreshToolStatus");
-        },
-        unableToolAlways: function() {
-            localStorage.setItem("nwddevtool", "never");
-            this.$emit("refreshToolStatus");
+        sendCommand: function(command: string) {
+            this.$emit("sendCommand", command);
         },
     },
 });

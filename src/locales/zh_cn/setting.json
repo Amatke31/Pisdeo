@@ -10,5 +10,6 @@
     "setting.reset.success": "重置完毕",
     "setting.enableToolAlways": "永远打开开发者工具",
     "setting.enableToolJustDevelopment": "在开发模式时打开开发者工具",
-    "setting.unableToolAlways": "永远关闭开发者工具"
+    "setting.unableToolAlways": "永远关闭开发者工具",
+    "setting.loadTestProject": "加载测试项目"
 }

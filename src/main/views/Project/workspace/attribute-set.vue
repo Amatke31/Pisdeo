@@ -139,7 +139,6 @@ export default defineComponent({
 }
 
 .frame {
-    // margin-top: 10px;
     border-top: 1px solid rgba(204, 204, 204, 0.2);
     box-shadow: #000000 0 6px 6px -6px inset;
 

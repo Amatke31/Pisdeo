@@ -10,5 +10,6 @@
     "setting.reset.success": "Reset Completed",
     "setting.enableToolAlways": "Always Open DevTool",
     "setting.enableToolJustDevelopment": "Open DevTool When in development",
-    "setting.unableToolAlways": "Always Close DevTool"
+    "setting.unableToolAlways": "Always Close DevTool",
+    "setting.loadTestProject": "Load Test Project"
 }
