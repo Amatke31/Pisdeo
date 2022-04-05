@@ -143,6 +143,12 @@ export default defineComponent({
                 },
             },
             attrPage: "style",
+            unit: [
+                {
+                    label: "px",
+                    value: "px"
+                }
+            ]
         };
     },
     computed: {
