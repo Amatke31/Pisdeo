@@ -26,12 +26,7 @@
                 <div class="title">{{ $t("setting.general") }}</div>
                 <div>
                     <div>{{ $t("setting.language") }}:</div>
-                    <el-select
-                        v-model="lang"
-                        class="m-2 select"
-                        placeholder="Select"
-                        size="large"
-                    >
+                    <el-select v-model="lang" class="m-2 select" placeholder="Select" size="large">
                         <el-option
                             v-for="item in supportLang"
                             class="option"
@@ -63,6 +58,21 @@
                     >
                         <el-option
                             v-for="item in toolStateList"
+                            class="option"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                        >
+                        </el-option>
+                    </el-select>
+                    <el-select
+                        v-model="openTestProjectInAppLoad"
+                        class="m-2 select"
+                        placeholder="Select"
+                        size="large"
+                    >
+                        <el-option
+                            v-for="item in openTestProjectInAppLoadStateList"
                             class="option"
                             :key="item.value"
                             :label="item.label"
@@ -119,9 +129,7 @@
                     <h1 v-if="type.type == 'title'">{{ $t(id) }}</h1>
                     <p v-else-if="type.type == 'text'">{{ type.content }}</p>
                     <p v-else-if="type.type == 'textAsync'" v-text="run()"></p>
-                    <n-btn v-else-if="type.type == 'btn'" @click="run()">{{
-                        type.text
-                    }}</n-btn>
+                    <n-btn v-else-if="type.type == 'btn'" @click="run()">{{ type.text }}</n-btn>
                     <br v-else-if="type.type == 'br'" />
                     <div v-if="type.type == 'select'">{{ type.name }}:</div>
                 </div>
@@ -159,6 +167,17 @@ export default defineComponent({
                     value: "never",
                 },
             ],
+            openTestProjectInAppLoad: "close",
+            openTestProjectInAppLoadStateList: [
+                {
+                    label: "When load app, auto open the test project",
+                    value: "open"
+                },
+                {
+                    label: "Close",
+                    value: "close"
+                }
+            ],
             version: {
                 isProduction: false,
                 buildTime: "Manual Build",
@@ -172,6 +191,7 @@ export default defineComponent({
     async created() {
         this.version = await getVersion();
         this.toolState = localStorage.getItem("nwddevtool") as string;
+        this.openTestProjectInAppLoad = localStorage.getItem("ltpwal") as string;
     },
     mounted: function() {
         this.lang = this.$i18n.locale;
@@ -210,6 +230,9 @@ export default defineComponent({
         toolState: function(n) {
             this.sendCommand(`setToolState.${n}`);
         },
+        openTestProjectInAppLoad: function(n) {
+            this.sendCommand(`setAutoOpenTestProject.${n}`);
+        },
     },
     methods: {
         reset: function() {
@@ -228,9 +251,7 @@ export default defineComponent({
                                     instance.confirmButtonLoading = true;
                                     done();
                                 } else {
-                                    ElMessage.error(
-                                        this.$t("setting.reseterror")
-                                    );
+                                    ElMessage.error(this.$t("setting.reseterror"));
                                     done();
                                 }
                             });

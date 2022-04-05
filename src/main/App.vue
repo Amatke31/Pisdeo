@@ -35,10 +35,7 @@
         <div v-if="!startIsInit" class="console" v-html="consoleText"></div>
     </div>
     <Tool
-        v-if="
-            openNWDDevTool == 'always' ||
-                (openNWDDevTool == 'development' && isDevelopment)
-        "
+        v-if="openNWDDevTool == 'always' || (openNWDDevTool == 'development' && isDevelopment)"
         :toolFunction="toolFunction"
     />
     <el-dialog v-model="loadProjectWithDebugDialog" title="Tool" width="30%">
@@ -46,12 +43,8 @@
         <el-input v-model="loadProjectPath" placeholder="Project Path" />
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="loadProjectWithDebugDialog = false"
-                    >Cancel</el-button
-                >
-                <el-button type="primary" @click="loadProjectWithDebug"
-                    >Confirm</el-button
-                >
+                <el-button @click="loadProjectWithDebugDialog = false">Cancel</el-button>
+                <el-button type="primary" @click="loadProjectWithDebug">Confirm</el-button>
             </span>
         </template>
     </el-dialog>
@@ -85,8 +78,7 @@ let userConfig: any = {
 export default defineComponent({
     data() {
         return {
-            showVirtualTitleBar:
-                platform === "desktop" && os && os.platform() == "darwin",
+            showVirtualTitleBar: platform === "desktop" && os && os.platform() == "darwin",
             ExtensionInfo: new Array(),
             homePath: "",
             template: new Array(),
@@ -100,8 +92,7 @@ export default defineComponent({
             title: "NexWebDesigner",
             platform,
             version: "Manual Build",
-            isDevelopment:
-                process.env.NODE_ENV === "development" ? true : false,
+            isDevelopment: process.env.NODE_ENV === "development" ? true : false,
             toolFunction: [
                 {
                     label: "Start Page",
@@ -162,6 +153,7 @@ export default defineComponent({
             loadProjectWithDebugDialog: false,
             loadProjectPath: "",
             openNWDDevTool: "development",
+            loadTestProjectAuto: "close",
             attribute: {
                 element: "html",
             },
@@ -185,6 +177,17 @@ export default defineComponent({
             } else {
                 this.$i18n.fallbackLocale = "en_us";
             }
+            if (localStorage.getItem("ltpwal")) {
+                this.loadTestProjectAuto = localStorage.getItem("ltpwal") as string;
+                if (this.loadTestProjectAuto == "open") {
+                    this.$nextTick(() => {
+                        this.loadTestProject();
+                    });
+                }
+            } else {
+                localStorage.setItem("ltpwal", "close");
+                this.loadTestProjectAuto = "close";
+            }
         });
     },
     async mounted() {
@@ -198,21 +201,16 @@ export default defineComponent({
         this.$store.subscribe((mutation, state) => {
             if (mutation.type == "addTemplate") {
                 this.template = state.extension.template;
-                this.templateRequire[mutation.payload.id] =
-                    mutation.payload.require;
+                this.templateRequire[mutation.payload.id] = mutation.payload.require;
             }
         });
         this.$store.dispatch("loadNWDExt", { i18n: this.$i18n });
         this.startIsInit = true;
         this.$store.subscribe((mutation, state) => {
             if (mutation.type == "chooseElement") {
-                let htmlChooser = state.project.workspace.htmlChooser.split(
-                    "-"
-                );
+                let htmlChooser = state.project.workspace.htmlChooser.split("-");
                 let attribute = getAttribute(
-                    state.project.workspace.openFile[
-                        state.project.workspace.currentFile
-                    ].context,
+                    state.project.workspace.openFile[state.project.workspace.currentFile].context,
                     htmlChooser,
                     2
                 );
@@ -224,9 +222,7 @@ export default defineComponent({
             if (
                 state.project.workspace.currentFile &&
                 state.project.workspace.openFile &&
-                state.project.workspace.openFile[
-                    state.project.workspace.currentFile
-                ]
+                state.project.workspace.openFile[state.project.workspace.currentFile]
             ) {
                 this.asyncView();
             }
@@ -323,6 +319,14 @@ export default defineComponent({
                 case "setToolState.never":
                     localStorage.setItem("nwddevtool", "never");
                     this.openNWDDevTool = "never";
+                    break;
+                case "setAutoOpenTestProject.open":
+                    localStorage.setItem("ltpwal", "open");
+                    this.loadTestProjectAuto = "open";
+                    break;
+                case "setAutoOpenTestProject.close":
+                    localStorage.setItem("ltpwal", "close");
+                    this.loadTestProjectAuto = "close";
                     break;
                 case "loadTestProject":
                     this.loadTestProject();

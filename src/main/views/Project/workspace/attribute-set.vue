@@ -24,85 +24,81 @@
                         />
                         <div>{{ $t("attr.edge") }}</div>
                     </div>
-                    <div class="content">
-                        <div class="Show">
-                            <div class="marginFrame">
-                                <div class="flexItemTop">
-                                    <div class="marginTip">margin</div>
-                                    <div class="marginNum">0</div>
-                                    <div class="marginTip"></div>
-                                </div>
-                                <div class="flexItemMiddle">
-                                    <div class="marginNum">0</div>
-                                    <div class="borderFrame">
-                                        <div class="flexItemTop">
-                                            <div class="borderTip">border</div>
-                                            <div class="borderNum">0</div>
-                                            <div class="borderTip"></div>
-                                        </div>
-                                        <div class="flexItemMiddle">
-                                            <div class="borderNum">0</div>
-                                            <div class="paddingFrame">
-                                                <div class="flexItemTop">
-                                                    <div class="paddingTip">
-                                                        padding
-                                                    </div>
-                                                    <div class="paddingNum">
-                                                        0
-                                                    </div>
-                                                    <div class="paddingTip"></div>
-                                                </div>
-                                                <div class="flexItemMiddle">
-                                                    <div class="paddingNum">
-                                                        0
-                                                    </div>
-                                                    <div class="contentFrame">
-                                                        1x1
-                                                    </div>
-                                                    <div class="paddingNum">
-                                                        0
-                                                    </div>
-                                                </div>
-                                                <div class="flexItemBottom">
-                                                    <div class="paddingTip"></div>
-                                                    <div class="paddingNum">
-                                                        0
-                                                    </div>
-                                                    <div class="paddingTip"></div>
-                                                </div>
-                                            </div>
-                                            <div class="borderNum">0</div>
-                                        </div>
-                                        <div class="flexItemBottom">
-                                            <div class="borderTip"></div>
-                                            <div class="borderNum">0</div>
-                                            <div class="borderTip"></div>
-                                        </div>
+                    <el-collapse-transition>
+                        <div class="content" v-show="frame.edge.class == 'open'">
+                            <div class="Show">
+                                <div class="marginFrame">
+                                    <div class="flexItemTop">
+                                        <div class="marginTip">margin</div>
+                                        <div class="marginNum">0</div>
+                                        <div class="marginTip"></div>
                                     </div>
-                                    <div class="marginNum">0</div>
+                                    <div class="flexItemMiddle">
+                                        <div class="marginNum">0</div>
+                                        <div class="borderFrame">
+                                            <div class="flexItemTop">
+                                                <div class="borderTip">border</div>
+                                                <div class="borderNum">0</div>
+                                                <div class="borderTip"></div>
+                                            </div>
+                                            <div class="flexItemMiddle">
+                                                <div class="borderNum">0</div>
+                                                <div class="paddingFrame">
+                                                    <div class="flexItemTop">
+                                                        <div class="paddingTip">
+                                                            padding
+                                                        </div>
+                                                        <div class="paddingNum">
+                                                            0
+                                                        </div>
+                                                        <div class="paddingTip"></div>
+                                                    </div>
+                                                    <div class="flexItemMiddle">
+                                                        <div class="paddingNum">
+                                                            0
+                                                        </div>
+                                                        <div class="contentFrame">
+                                                            1x1
+                                                        </div>
+                                                        <div class="paddingNum">
+                                                            0
+                                                        </div>
+                                                    </div>
+                                                    <div class="flexItemBottom">
+                                                        <div class="paddingTip"></div>
+                                                        <div class="paddingNum">
+                                                            0
+                                                        </div>
+                                                        <div class="paddingTip"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="borderNum">0</div>
+                                            </div>
+                                            <div class="flexItemBottom">
+                                                <div class="borderTip"></div>
+                                                <div class="borderNum">0</div>
+                                                <div class="borderTip"></div>
+                                            </div>
+                                        </div>
+                                        <div class="marginNum">0</div>
+                                    </div>
+                                    <div class="flexItemBottom">
+                                        <div class="marginTip"></div>
+                                        <div class="marginNum">0</div>
+                                        <div class="marginTip"></div>
+                                    </div>
                                 </div>
-                                <div class="flexItemBottom">
-                                    <div class="marginTip"></div>
-                                    <div class="marginNum">0</div>
-                                    <div class="marginTip"></div>
+                            </div>
+                            <div class="set">
+                                <div class="item">
+                                    <div>margin:</div>
                                 </div>
+                                <div class="item"></div>
+                                <div class="item"></div>
+                                <div class="item"></div>
                             </div>
                         </div>
-                        <div class="set">
-                            <div class="item">
-
-                            </div>
-                            <div class="item">
-
-                            </div>
-                            <div class="item">
-
-                            </div>
-                            <div class="item">
-                                
-                            </div>
-                        </div>
-                    </div>
+                    </el-collapse-transition>
                 </div>
             </div>
             <div class="frame" v-if="attrPage == 'computed'"></div>
@@ -237,6 +233,7 @@ export default defineComponent({
             padding: 1px;
             transform: rotate(-90deg);
             border-radius: 4px;
+            transition: .1s;
 
             &:hover {
                 background-color: #333;
@@ -245,31 +242,27 @@ export default defineComponent({
     }
 
     .open .folder {
-        height: 22px;
-        background-color: #292929;
-        display: flex;
-
         .arrow {
             transform: rotate(0deg);
         }
 
-        .content {
-            display: block;
-        }
+        // .content {
+        //     display: block;
+        // }
     }
 
-    .content {
-        display: none;
-    }
+    // .content {
+    //     display: none;
+    // }
 
-    .open .content {
-        display: block;
-    }
+    // .open .content {
+    //     display: block;
+    // }
 }
 
 #edgeFrame .content {
     .Show {
-        height: 240px;
+        height: 160px;
         display: flex;
         justify-content: center;
 
