@@ -27,73 +27,79 @@
                     <div class="content">
                         <div class="Show">
                             <div class="marginFrame">
-                                <span class="flexItem">
-                                    <span class="marginTip">margin</span>
-                                    <span class="marginNum">0</span>
-                                    <span class="marginTip"></span>
-                                </span>
-                                <span class="flexItem">
-                                    <span class="marginNum">0</span>
+                                <div class="flexItemTop">
+                                    <div class="marginTip">margin</div>
+                                    <div class="marginNum">0</div>
+                                    <div class="marginTip"></div>
+                                </div>
+                                <div class="flexItemMiddle">
+                                    <div class="marginNum">0</div>
                                     <div class="borderFrame">
-                                        <span class="flexItem">
-                                            <span class="marginTip"
-                                                >border</span
-                                            >
-                                            <span class="marginNum">0</span>
-                                            <span class="marginTip"></span>
-                                        </span>
-                                        <span class="flexItem">
-                                            <span class="marginNum">0</span>
+                                        <div class="flexItemTop">
+                                            <div class="borderTip">border</div>
+                                            <div class="borderNum">0</div>
+                                            <div class="borderTip"></div>
+                                        </div>
+                                        <div class="flexItemMiddle">
+                                            <div class="borderNum">0</div>
                                             <div class="paddingFrame">
-                                                <span class="flexItem">
-                                                    <span class="marginTip"
-                                                        >padding</span
-                                                    >
-                                                    <span class="marginNum"
-                                                        >0</span
-                                                    >
-                                                    <span
-                                                        class="marginTip"
-                                                    ></span>
-                                                </span>
-                                                <span class="flexItem">
-                                                    <span class="marginNum"
-                                                        >0</span
-                                                    >
-                                                    <div
-                                                        class="contentFrame"
-                                                    ></div>
-                                                    <span class="marginNum"
-                                                        >0</span
-                                                    >
-                                                </span>
-                                                <span class="flexItem">
-                                                    <span
-                                                        class="marginTip"
-                                                    ></span>
-                                                    <span class="marginNum"
-                                                        >0</span
-                                                    >
-                                                    <span
-                                                        class="marginTip"
-                                                    ></span>
-                                                </span>
+                                                <div class="flexItemTop">
+                                                    <div class="paddingTip">
+                                                        padding
+                                                    </div>
+                                                    <div class="paddingNum">
+                                                        0
+                                                    </div>
+                                                    <div class="paddingTip"></div>
+                                                </div>
+                                                <div class="flexItemMiddle">
+                                                    <div class="paddingNum">
+                                                        0
+                                                    </div>
+                                                    <div class="contentFrame">
+                                                        1x1
+                                                    </div>
+                                                    <div class="paddingNum">
+                                                        0
+                                                    </div>
+                                                </div>
+                                                <div class="flexItemBottom">
+                                                    <div class="paddingTip"></div>
+                                                    <div class="paddingNum">
+                                                        0
+                                                    </div>
+                                                    <div class="paddingTip"></div>
+                                                </div>
                                             </div>
-                                            <span class="marginNum">0</span>
-                                        </span>
-                                        <span class="flexItem">
-                                            <span class="marginTip"></span>
-                                            <span class="marginNum">0</span>
-                                            <span class="marginTip"></span>
-                                        </span>
+                                            <div class="borderNum">0</div>
+                                        </div>
+                                        <div class="flexItemBottom">
+                                            <div class="borderTip"></div>
+                                            <div class="borderNum">0</div>
+                                            <div class="borderTip"></div>
+                                        </div>
                                     </div>
-                                    <span class="marginNum">0</span>
-                                </span>
-                                <span class="flexItem">
-                                    <span class="marginTip"></span>
-                                    <span class="marginNum">0</span>
-                                    <span class="marginTip"></span>
-                                </span>
+                                    <div class="marginNum">0</div>
+                                </div>
+                                <div class="flexItemBottom">
+                                    <div class="marginTip"></div>
+                                    <div class="marginNum">0</div>
+                                    <div class="marginTip"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="set">
+                            <div class="item">
+
+                            </div>
+                            <div class="item">
+
+                            </div>
+                            <div class="item">
+
+                            </div>
+                            <div class="item">
+                                
                             </div>
                         </div>
                     </div>
@@ -149,9 +155,7 @@ export default defineComponent({
         },
         text: function(n) {
             if (!this.lock) {
-                let htmlChooser = this.$store.state.project.workspace.htmlChooser.split(
-                    "-"
-                );
+                let htmlChooser = this.$store.state.project.workspace.htmlChooser.split("-");
                 this.$store.commit(
                     "refreshViewWithCode",
                     setAttribute(
@@ -171,8 +175,7 @@ export default defineComponent({
     },
     methods: {
         fold: function(which: string) {
-            this.frame[which].class =
-                this.frame[which].class == "fold" ? "open" : "fold";
+            this.frame[which].class = this.frame[which].class == "fold" ? "open" : "fold";
         },
     },
 });
@@ -264,38 +267,51 @@ export default defineComponent({
     }
 }
 
-.content {
+#edgeFrame .content {
     .Show {
         height: 240px;
         display: flex;
         justify-content: center;
-        align-items: center;
 
         * {
             color: #333;
+            font-size: 14px;
         }
 
         .marginFrame {
             background-color: rgb(216, 173, 120);
-            height: 180px;
+            height: 150px;
             width: 220px;
             display: flex;
             flex-direction: column;
+            border: 1px dashed #292929;
 
-            .flexItem {
-                width: 100%;
+            .flexItemTop,
+            .flexItemBottom {
                 display: flex;
                 justify-content: space-around;
+                height: 20px;
 
                 .marginTip {
+                    padding: 0 4px;
                     width: 73px;
-                    font-size: 14px;
                 }
 
                 .marginNum {
-                    width: 24px;
-                    font-size: 14px;
-                    text-align: center;
+                    width: 73px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+
+            .flexItemMiddle {
+                display: flex;
+                justify-content: space-around;
+                height: 160px;
+
+                .marginNum {
+                    width: 15px;
                     display: flex;
                     justify-content: center;
                     align-items: center;
@@ -303,21 +319,92 @@ export default defineComponent({
 
                 .borderFrame {
                     width: 190px;
-                    height: 140px;
+                    height: 110px;
                     background-color: rgb(232, 202, 126);
                     border: 1px solid #292929;
+                    display: flex;
+                    flex-direction: column;
 
-                    .paddingFrame {
-                        width: 160px;
-                        height: 96px;
-                        background-color: rgb(150, 219, 131);
-                        border: 1px solid #292929;
+                    .flexItemTop,
+                    .flexItemBottom {
+                        display: flex;
+                        justify-content: space-around;
+                        height: 20px;
 
-                        .contentFrame {
-                            width: 200px;
-                            height: 52px;
-                            background-color: rgb(131, 187, 219);
-                            border: 1px solid #292929;
+                        .borderTip {
+                            padding: 0 4px;
+                            width: 63px;
+                        }
+
+                        .borderNum {
+                            width: 63px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                        }
+                    }
+
+                    .flexItemMiddle {
+                        display: flex;
+                        justify-content: space-around;
+                        height: 120px;
+
+                        .borderNum {
+                            width: 15px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                        }
+
+                        .paddingFrame {
+                            width: 160px;
+                            height: 68px;
+                            background-color: rgb(150, 219, 131);
+                            border: 1px dashed #292929;
+                            display: flex;
+                            flex-direction: column;
+
+                            .flexItemTop,
+                            .flexItemBottom {
+                                display: flex;
+                                justify-content: space-around;
+                                height: 20px;
+
+                                .paddingTip {
+                                    padding: 0 4px;
+                                    width: 53px;
+                                }
+
+                                .paddingNum {
+                                    width: 53px;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                }
+                            }
+
+                            .flexItemMiddle {
+                                display: flex;
+                                justify-content: space-around;
+                                height: 120px;
+
+                                .paddingNum {
+                                    width: 15px;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                }
+
+                                .contentFrame {
+                                    width: 130px;
+                                    height: 26px;
+                                    background-color: rgb(131, 187, 219);
+                                    border: 1px solid #292929;
+                                    padding: 1px;
+                                    display: flex;
+                                    justify-content: center;
+                                }
+                            }
                         }
                     }
                 }

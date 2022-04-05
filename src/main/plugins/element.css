@@ -4,6 +4,7 @@
     --el-border-color-light: rgb(50, 50, 50);
     --el-border-color-lighter: rgb(50, 50, 50);
     --el-select-input-focus-border-color: rgb(150, 150, 150);
+    --el-border-base: var(--el-border-width-base) var(--el-border-style-base) var(--el-border-color-base);
 }
 
 :root {
@@ -18,4 +19,45 @@
     --el-color-primary-light-2: hsl(210, 0%, 93%);
     --el-color-primary-light-1: hsl(212, 0%, 96%);
     --el-color-primary-dark-2: hsl(211, 0%, 50%);
+}
+
+
+/* element-plus-dark fix */
+
+.el-input__inner {
+    box-shadow: unset;
+}
+
+.el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
+    background-color: var(--el-bg-color);
+}
+
+.element-plus-dark .el-button {
+    --el-button-bg-color: transparent;
+    --el-button-hover-bg-color: transparent;
+    --el-button-disabled-bg-color: var(--el-disabled-bg-color);
+    --el-button-text-color: var(--el-text-color-regular);
+    --el-button-hover-text-color: var(--el-color-primary);
+    --el-button-disabled-text-color: var(--el-text-color-placeholder);
+    --el-button-border-color: var(--el-border-color-base);
+}
+
+.element-plus-dark .el-button.el-button--primary {
+    --el-button-text-color: var(--el-color-white);
+    --el-button-bg-color: var(--el-color-primary);
+    --el-button-border-color: var(--el-color-primary);
+    --el-button-hover-text-color: var(--el-color-white);
+    --el-button-hover-bg-color: var(--el-color-primary-light-3);
+    --el-button-hover-border-color: var(--el-color-primary-light-3);
+    --el-button-active-bg-color: var(--el-color-primary-dark-2);
+    --el-button-active-border-color: var(--el-color-primary-dark-2);
+    --el-button-disabled-text-color: var(--el-color-white);
+    --el-button-disabled-bg-color: var(--el-color-primary-light-5);
+    --el-button-disabled-border-color: var(--el-color-primary-light-5);
+    --el-button-bg-color: transparent;
+    --el-button-hover-bg-color: transparent;
+    --el-button-disabled-bg-color: var(--el-disabled-bg-color);
+    --el-button-text-color: var(--el-text-color-regular);
+    --el-button-hover-text-color: var(--el-color-primary);
+    --el-button-disabled-text-color: var(--el-text-color-placeholder);
 }
