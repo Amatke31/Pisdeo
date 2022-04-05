@@ -14,12 +14,88 @@
             </div>
             <div class="frame" v-if="attrPage == 'style'">
                 <div id="edgeFrame" :class="frame.edge.class">
-                    <div class="folder">{{ $t("attr.edge") }}</div>
-                    <div>
-                        <div class="margin"></div>
-                        <div class="padding"></div>
-                        <div class="border"></div>
-                        <div class="outline"></div>
+                    <div class="folder">
+                        <icon-down
+                            class="arrow"
+                            theme="outline"
+                            size="16"
+                            fill="#aaa"
+                            @click="fold('edge')"
+                        />
+                        <div>{{ $t("attr.edge") }}</div>
+                    </div>
+                    <div class="content">
+                        <div class="Show">
+                            <div class="marginFrame">
+                                <span class="flexItem">
+                                    <span class="marginTip">margin</span>
+                                    <span class="marginNum">0</span>
+                                    <span class="marginTip"></span>
+                                </span>
+                                <span class="flexItem">
+                                    <span class="marginNum">0</span>
+                                    <div class="borderFrame">
+                                        <span class="flexItem">
+                                            <span class="marginTip"
+                                                >border</span
+                                            >
+                                            <span class="marginNum">0</span>
+                                            <span class="marginTip"></span>
+                                        </span>
+                                        <span class="flexItem">
+                                            <span class="marginNum">0</span>
+                                            <div class="paddingFrame">
+                                                <span class="flexItem">
+                                                    <span class="marginTip"
+                                                        >padding</span
+                                                    >
+                                                    <span class="marginNum"
+                                                        >0</span
+                                                    >
+                                                    <span
+                                                        class="marginTip"
+                                                    ></span>
+                                                </span>
+                                                <span class="flexItem">
+                                                    <span class="marginNum"
+                                                        >0</span
+                                                    >
+                                                    <div
+                                                        class="contentFrame"
+                                                    ></div>
+                                                    <span class="marginNum"
+                                                        >0</span
+                                                    >
+                                                </span>
+                                                <span class="flexItem">
+                                                    <span
+                                                        class="marginTip"
+                                                    ></span>
+                                                    <span class="marginNum"
+                                                        >0</span
+                                                    >
+                                                    <span
+                                                        class="marginTip"
+                                                    ></span>
+                                                </span>
+                                            </div>
+                                            <span class="marginNum">0</span>
+                                        </span>
+                                        <span class="flexItem">
+                                            <span class="marginTip"></span>
+                                            <span class="marginNum">0</span>
+                                            <span class="marginTip"></span>
+                                        </span>
+                                    </div>
+                                    <span class="marginNum">0</span>
+                                </span>
+                                <span class="flexItem">
+                                    <span class="marginTip"></span>
+                                    <span class="marginNum">0</span>
+                                    <span class="marginTip"></span>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -93,6 +169,12 @@ export default defineComponent({
             }
         },
     },
+    methods: {
+        fold: function(which: string) {
+            this.frame[which].class =
+                this.frame[which].class == "fold" ? "open" : "fold";
+        },
+    },
 });
 </script>
 <style lang="scss" scoped>
@@ -129,12 +211,12 @@ export default defineComponent({
 
     .attrBar.style .btn.style {
         background-color: #444;
-        border-bottom: 1px solid #999;
+        border-bottom: 2px solid #999;
     }
 
     .attrBar.computed .btn.computed {
         background-color: #444;
-        border-bottom: 1px solid #999;
+        border-bottom: 2px solid #999;
     }
 }
 
@@ -145,6 +227,102 @@ export default defineComponent({
     .folder {
         height: 22px;
         background-color: #292929;
+        display: flex;
+
+        .arrow {
+            margin: 3px;
+            padding: 1px;
+            transform: rotate(-90deg);
+            border-radius: 4px;
+
+            &:hover {
+                background-color: #333;
+            }
+        }
+    }
+
+    .open .folder {
+        height: 22px;
+        background-color: #292929;
+        display: flex;
+
+        .arrow {
+            transform: rotate(0deg);
+        }
+
+        .content {
+            display: block;
+        }
+    }
+
+    .content {
+        display: none;
+    }
+
+    .open .content {
+        display: block;
+    }
+}
+
+.content {
+    .Show {
+        height: 240px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        * {
+            color: #333;
+        }
+
+        .marginFrame {
+            background-color: rgb(216, 173, 120);
+            height: 180px;
+            width: 220px;
+            display: flex;
+            flex-direction: column;
+
+            .flexItem {
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
+
+                .marginTip {
+                    width: 73px;
+                    font-size: 14px;
+                }
+
+                .marginNum {
+                    width: 24px;
+                    font-size: 14px;
+                    text-align: center;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .borderFrame {
+                    width: 190px;
+                    height: 140px;
+                    background-color: rgb(232, 202, 126);
+                    border: 1px solid #292929;
+
+                    .paddingFrame {
+                        width: 160px;
+                        height: 96px;
+                        background-color: rgb(150, 219, 131);
+                        border: 1px solid #292929;
+
+                        .contentFrame {
+                            width: 200px;
+                            height: 52px;
+                            background-color: rgb(131, 187, 219);
+                            border: 1px solid #292929;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 </style>
