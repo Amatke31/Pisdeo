@@ -90,12 +90,21 @@
                                 </div>
                             </div>
                             <div class="set">
-                                <div class="item">
-                                    <div>margin:</div>
-                                </div>
-                                <div class="item"></div>
-                                <div class="item"></div>
-                                <div class="item"></div>
+                                <el-input
+                                    v-model="margin"
+                                    placeholder="margin"
+                                    class="input-with-select"
+                                >
+                                    <template #append>
+                                        <el-select
+                                            v-model="marginUnit"
+                                            placeholder="margin unit"
+                                            style="width: 110px"
+                                        >
+                                            <el-option v-for="item in unit" :key="item.value" :label="item.label" :value="item.value" />
+                                        </el-select>
+                                    </template>
+                                </el-input>
                             </div>
                         </div>
                     </el-collapse-transition>
@@ -233,7 +242,7 @@ export default defineComponent({
             padding: 1px;
             transform: rotate(-90deg);
             border-radius: 4px;
-            transition: .1s;
+            transition: 0.1s;
 
             &:hover {
                 background-color: #333;
