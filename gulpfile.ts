@@ -3,7 +3,7 @@ const { src, task, series, parallel } = require("gulp");
 const inquirer = require("inquirer");
 const fs = require("fs");
 const os = require("os");
-const pty = require("node-pty");
+// const pty = require("node-pty");
 
 const shell = os.platform() === "win32" ? "powershell.exe" : "zsh";
 
@@ -38,24 +38,13 @@ function build(cb) {
                     channel: answers.channel,
                 }),
                 (err) => {
-                    var ptyProcess = pty.spawn(
+                    console.log('Building...')
+                    var ptyProcess = spawn(
                         os.platform() !== "win32"
                             ? "vue-cli-service"
                             : "vue-cli-service.cmd",
-                        ["build"],
-                        [],
-                        {
-                            name: "build-run",
-                            cols: 80,
-                            rows: 30,
-                            cwd: process.env.HOME,
-                            env: process.env,
-                        }
+                        ["build"]
                     );
-
-                    ptyProcess.on("data", function(data) {
-                        process.stdout.write(data);
-                    });
 
                     ptyProcess.on("close", () => {
                         fs.writeFile(
