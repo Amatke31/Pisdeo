@@ -4,6 +4,7 @@
     "project.cannotfind": "The project could not be found",
     "project.blank": "Website",
     "project.uilib": "UI Library",
+    "project.component": "Component",
     "attr.text": "Text",
     "attr.style": "Styles",
     "attr.computed": "Computed",

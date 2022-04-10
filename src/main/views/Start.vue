@@ -31,6 +31,13 @@
                         ></div>
                         <div class="title">{{ $t("project.uilib") }}</div>
                     </div>
+                    <div @click="newProject('project.component')" class="card">
+                        <div
+                            class="img"
+                            :style="cardImg('assets/component.svg')"
+                        ></div>
+                        <div class="title">{{ $t("project.component") }}</div>
+                    </div>
                     <div
                         @click="newProject(item)"
                         v-for="item in template"

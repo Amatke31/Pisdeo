@@ -5077,7 +5077,7 @@ element-plus-dark@^2.0.2:
   resolved "https://registry.npmmirror.com/element-plus-dark/-/element-plus-dark-2.0.2.tgz#43ea64e7178e2ed7ab4fb7f7a5f3744190909bb9"
   integrity sha512-wHqhFLY1dKOgzO6nAYqXyU4MjHjsuJ+YZuo3tvfYAkZrwv9QqiyhUvrq/AVTTZVEFHibzeMkEzxWBsusI8uepA==
 
-element-plus@^2.0.5:
+element-plus@^2.1.8:
   version "2.1.8"
   resolved "https://registry.npmmirror.com/element-plus/-/element-plus-2.1.8.tgz#4480e47ae6e7c86763cc0cf383e86f749f748526"
   integrity sha512-hwFtzw0R5lKMhWf3oVvSU/ucfN8RiY8DRaRWo6LktX4RlWWA2QjKfDXtISBi5Rb303Ny4I0Sgz0CA1Fd4Z2GGg==

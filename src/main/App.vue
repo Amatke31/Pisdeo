@@ -438,4 +438,11 @@ a {
         color: rgba(0, 0, 0, 0.3);
     }
 }
+
+input,
+select {
+    &:focus-visible {
+        outline: none;
+    }
+}
 </style>

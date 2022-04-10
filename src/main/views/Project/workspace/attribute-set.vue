@@ -1,5 +1,5 @@
 <template>
-    <div class="attributeSet">
+    <div class="attr-set">
         <h2 class="elementName">
             {{ $t(`element.${attribute.element.split(".").pop()}`) }}
         </h2>
@@ -90,21 +90,17 @@
                                 </div>
                             </div>
                             <div class="set">
-                                <el-input
-                                    v-model="margin"
-                                    placeholder="margin"
-                                    class="input-with-select"
-                                >
-                                    <template #append>
-                                        <el-select
-                                            v-model="marginUnit"
-                                            placeholder="margin unit"
-                                            style="width: 110px"
-                                        >
-                                            <el-option v-for="item in unit" :key="item.value" :label="item.label" :value="item.value" />
-                                        </el-select>
-                                    </template>
-                                </el-input>
+                                <div class="input double num">
+                                    <input class="maininput" v-model="v.margin.v" />
+                                    <select class="subinput" v-model="v.margin.unit">
+                                        <option
+                                            v-for="item in unit"
+                                            :key="item.value"
+                                            v-text="item.label"
+                                            :value="item.value"
+                                        ></option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </el-collapse-transition>
@@ -138,7 +134,7 @@ export default defineComponent({
             text: "",
             frame: {
                 edge: {
-                    class: "fold",
+                    class: "open",
                     height: "100px",
                 },
             },
@@ -146,9 +142,27 @@ export default defineComponent({
             unit: [
                 {
                     label: "px",
-                    value: "px"
-                }
-            ]
+                    value: "px",
+                },
+                {
+                    label: "em",
+                    value: "em",
+                },
+                {
+                    label: "vw",
+                    value: "vw",
+                },
+                {
+                    label: "vh",
+                    value: "vh",
+                },
+            ],
+            v: {
+                margin: {
+                    v: 0,
+                    unit: "px",
+                },
+            },
         };
     },
     computed: {
@@ -183,6 +197,11 @@ export default defineComponent({
                 );
             }
         },
+        v: function(n) {
+            for (let item in n) {
+                console.log(item)
+            }
+        },
     },
     methods: {
         fold: function(which: string) {
@@ -197,8 +216,7 @@ export default defineComponent({
     user-select: none;
 }
 
-.attributeSet {
-    width: 15vw;
+.attr-set {
     height: 60vh;
     background-color: #222;
     overflow: hidden;
@@ -260,19 +278,7 @@ export default defineComponent({
         .arrow {
             transform: rotate(0deg);
         }
-
-        // .content {
-        //     display: block;
-        // }
     }
-
-    // .content {
-    //     display: none;
-    // }
-
-    // .open .content {
-    //     display: block;
-    // }
 }
 
 #edgeFrame .content {
@@ -289,7 +295,7 @@ export default defineComponent({
         .marginFrame {
             background-color: rgb(216, 173, 120);
             height: 150px;
-            width: 220px;
+            width: 190px;
             display: flex;
             flex-direction: column;
             border: 1px dashed #292929;
@@ -326,7 +332,7 @@ export default defineComponent({
                 }
 
                 .borderFrame {
-                    width: 190px;
+                    width: 160px;
                     height: 110px;
                     background-color: rgb(232, 202, 126);
                     border: 1px solid #292929;
@@ -365,7 +371,7 @@ export default defineComponent({
                         }
 
                         .paddingFrame {
-                            width: 160px;
+                            width: 130px;
                             height: 68px;
                             background-color: rgb(150, 219, 131);
                             border: 1px dashed #292929;
@@ -404,7 +410,7 @@ export default defineComponent({
                                 }
 
                                 .contentFrame {
-                                    width: 130px;
+                                    width: 100px;
                                     height: 26px;
                                     background-color: rgb(131, 187, 219);
                                     border: 1px solid #292929;
@@ -415,6 +421,45 @@ export default defineComponent({
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    .set {
+        input {
+            padding: 2px 8px;
+        }
+        select {
+            padding: 2px 8px;
+        }
+        .input {
+            margin: 2px;
+            border: 1px solid #444;
+            border-radius: 8px;
+        }
+        .double {
+            display: flex;
+
+            .maininput {
+                width: 70%;
+            }
+
+            .subinput {
+                width: 30%;
+            }
+        }
+
+        .num {
+            width: 100px;
+
+            &.double {
+                .maininput {
+                    width: 60%;
+                }
+
+                .subinput {
+                    width: 40%;
                 }
             }
         }

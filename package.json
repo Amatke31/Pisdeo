@@ -21,7 +21,7 @@
 		"babel-runtime": "^6.26.0",
 		"copy-webpack-plugin": "^9.0.1",
 		"core-js": "^3.21.0",
-		"element-plus": "^2.0.5",
+		"element-plus": "^2.1.8",
 		"element-plus-dark": "^2.0.2",
 		"gulp": "^4.0.2",
 		"jszip": "^3.7.1",

@@ -35,7 +35,6 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .viewer {
-    width: 70vw;
     height: 60vh;
     background-color: #fff;
     border: 1px solid #444;

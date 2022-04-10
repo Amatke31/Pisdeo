@@ -1,18 +1,10 @@
 <template>
     <div class="html-chooser">
         <div class="elementBar">
-            <v-icon :class="add" size="x-small" @click="addElement('window')"
-                >mdi-plus</v-icon
-            >
-            <v-icon :class="add" size="x-small" @click="addElement('p')"
-                >mdi-plus</v-icon
-            >
-            <v-icon :class="add" size="x-small" @click="addElement('.text')"
-                >mdi-plus</v-icon
-            >
-            <v-icon class="addElement" size="x-small" @click="removeElement"
-                >mdi-minus</v-icon
-            >
+            <v-icon :class="add" size="x-small" @click="addElement('window')">mdi-plus</v-icon>
+            <v-icon :class="add" size="x-small" @click="addElement('p')">mdi-plus</v-icon>
+            <v-icon :class="add" size="x-small" @click="addElement('.text')">mdi-plus</v-icon>
+            <v-icon class="addElement" size="x-small" @click="removeElement">mdi-minus</v-icon>
         </div>
         <div ref="htmlChooser" id="html-chooser" @click="htmlChoose"></div>
     </div>
@@ -56,9 +48,7 @@ export default defineComponent({
             if (
                 action.type == "openFile" &&
                 state.project.workspace.currentFile &&
-                supportExt.includes(
-                    state.project.workspace.currentFile.split(".").pop()
-                )
+                supportExt.includes(state.project.workspace.currentFile.split(".").pop())
             ) {
                 switch (state.project.workspace.currentFile.split(".").pop()) {
                     case "html":
@@ -75,9 +65,7 @@ export default defineComponent({
             if (
                 mutation.type == "refreshViewWithCode" &&
                 state.project.workspace.currentFile &&
-                supportExt.includes(
-                    state.project.workspace.currentFile.split(".").pop()
-                )
+                supportExt.includes(state.project.workspace.currentFile.split(".").pop())
             ) {
                 switch (state.project.workspace.currentFile.split(".").pop()) {
                     case "html":
@@ -110,9 +98,7 @@ export default defineComponent({
             ans: number
         ): HTMLElement {
             let out: HTMLElement = document.createElement("div");
-            out.innerText = obj.elementName
-                ? obj.elementName
-                : this.elementToText(obj.element);
+            out.innerText = obj.elementName ? obj.elementName : this.elementToText(obj.element);
             out.className = `layer`;
             out.id = `${root}-${ans}`;
             out.style.paddingLeft = `${i * 8 + 4}px`;
@@ -120,13 +106,7 @@ export default defineComponent({
             let ansaz = 0;
             if (obj.children) {
                 for (let child in obj.children) {
-                    element = this.analysisObj(
-                        obj.children[child],
-                        element,
-                        i + 1,
-                        out.id,
-                        ansaz
-                    );
+                    element = this.analysisObj(obj.children[child], element, i + 1, out.id, ansaz);
                     ansaz++;
                 }
             }
@@ -157,10 +137,10 @@ export default defineComponent({
                 this.openElementChooser();
             } else if (disableAdd.indexOf(this.attribute!.element) != -1) {
             } else {
-                let addElementInfo: any = {element}
-                switch(element) {
+                let addElementInfo: any = { element };
+                switch (element) {
                     case ".text":
-                        addElementInfo.text = ""
+                        addElementInfo.text = "";
                         break;
                 }
                 let htmlChooser = this.click.split("-");
@@ -183,17 +163,18 @@ export default defineComponent({
                 target: {
                     id: this.click.slice(
                         0,
-                        this.click.length -
-                            (this.click.split("-").pop()!.length + 1)
+                        this.click.length - (this.click.split("-").pop()!.length + 1)
                     ),
                 },
             });
             this.$store.commit(
                 "refreshViewWithCode",
                 removeElement(
-                    toRaw(this.$store.state.project.workspace.openFile[
-                        this.$store.state.project.workspace.currentFile
-                    ].context),
+                    toRaw(
+                        this.$store.state.project.workspace.openFile[
+                            this.$store.state.project.workspace.currentFile
+                        ].context
+                    ),
                     htmlChooser,
                     2
                 )
@@ -201,16 +182,15 @@ export default defineComponent({
         },
         openElementChooser: function() {},
         refreshChooser: function() {
-            document.getElementById(
-                "html-chooser"
-            )!.innerHTML = this.ObjToHtmlchooser(this.html).innerHTML;
+            document.getElementById("html-chooser")!.innerHTML = this.ObjToHtmlchooser(
+                this.html
+            ).innerHTML;
         },
     },
 });
 </script>
 <style lang="scss">
 .html-chooser {
-    width: 15vw;
     height: 60vh;
     background-color: #222;
     overflow: hidden;
@@ -238,13 +218,13 @@ export default defineComponent({
         &:hover {
             background-color: #393939;
         }
-    }
 
-    .addElement.disable {
-        color: #aaa;
+        &.disable {
+            color: #aaa;
 
-        &:hover {
-            background-color: #292929;
+            &:hover {
+                background-color: #292929;
+            }
         }
     }
 }

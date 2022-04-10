@@ -61,3 +61,8 @@
     --el-button-hover-text-color: var(--el-color-primary);
     --el-button-disabled-text-color: var(--el-text-color-placeholder);
 }
+
+.el-input-group--append .el-input-group__append .el-select .el-input .el-input__inner {
+    background-color: var(--el-input-bg-color);
+    box-shadow: unset!important;
+}

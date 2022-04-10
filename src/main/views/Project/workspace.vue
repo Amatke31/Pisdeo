@@ -1,9 +1,9 @@
 <template>
     <div class="workspace">
         <div class="above">
-            <htmlChooser :attribute="attribute" />
-            <viewer :viewer="viewer" />
-            <attributeSet :attribute="attribute" />
+            <htmlChooser class="html-chooser" :attribute="attribute" />
+            <viewer class="viewer" :viewer="viewer" />
+            <attributeSet class="attr-set" :attribute="attribute" />
         </div>
         <div class="below"></div>
     </div>
@@ -29,5 +29,14 @@ export default defineComponent({
 <style lang="scss" scoped>
 .above {
     display: flex;
+    .html-chooser {
+        width: 20vw;
+    }
+    .viewer {
+        width: 60vw;
+    }
+    .attr-set {
+        width: 20vw;
+    }
 }
 </style>
