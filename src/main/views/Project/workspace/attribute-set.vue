@@ -26,73 +26,50 @@
                     </div>
                     <el-collapse-transition>
                         <div class="content" v-show="frame.edge.class == 'open'">
-                            <div class="Show">
-                                <div class="marginFrame">
-                                    <div class="flexItemTop">
-                                        <div class="marginTip">margin</div>
-                                        <div class="marginNum">0</div>
-                                        <div class="marginTip"></div>
-                                    </div>
-                                    <div class="flexItemMiddle">
-                                        <div class="marginNum">0</div>
-                                        <div class="borderFrame">
-                                            <div class="flexItemTop">
-                                                <div class="borderTip">border</div>
-                                                <div class="borderNum">0</div>
-                                                <div class="borderTip"></div>
-                                            </div>
-                                            <div class="flexItemMiddle">
-                                                <div class="borderNum">0</div>
-                                                <div class="paddingFrame">
-                                                    <div class="flexItemTop">
-                                                        <div class="paddingTip">
-                                                            padding
-                                                        </div>
-                                                        <div class="paddingNum">
-                                                            0
-                                                        </div>
-                                                        <div class="paddingTip"></div>
-                                                    </div>
-                                                    <div class="flexItemMiddle">
-                                                        <div class="paddingNum">
-                                                            0
-                                                        </div>
-                                                        <div class="contentFrame">
-                                                            1x1
-                                                        </div>
-                                                        <div class="paddingNum">
-                                                            0
-                                                        </div>
-                                                    </div>
-                                                    <div class="flexItemBottom">
-                                                        <div class="paddingTip"></div>
-                                                        <div class="paddingNum">
-                                                            0
-                                                        </div>
-                                                        <div class="paddingTip"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="borderNum">0</div>
-                                            </div>
-                                            <div class="flexItemBottom">
-                                                <div class="borderTip"></div>
-                                                <div class="borderNum">0</div>
-                                                <div class="borderTip"></div>
-                                            </div>
-                                        </div>
-                                        <div class="marginNum">0</div>
-                                    </div>
-                                    <div class="flexItemBottom">
-                                        <div class="marginTip"></div>
-                                        <div class="marginNum">0</div>
-                                        <div class="marginTip"></div>
-                                    </div>
-                                </div>
+                            <div class="directionTip">
+                                <div>top</div>
+                                <div>right</div>
+                                <div>down</div>
+                                <div>left</div>
                             </div>
-                            <div class="set">
+                            <div class="marginSet">
+                                <div class="tip">margin:</div>
                                 <div class="input double num">
-                                    <input class="maininput" v-model="v.margin.v" />
-                                    <select class="subinput" v-model="v.margin.unit">
+                                    <input class="maininput" v-model="v.margin.v.t" />
+                                    <select class="subinput" v-model="v.margin.unit.t">
+                                        <option
+                                            v-for="item in unit"
+                                            :key="item.value"
+                                            v-text="item.label"
+                                            :value="item.value"
+                                        ></option>
+                                    </select>
+                                </div>
+                                <div class="input double num">
+                                    <input class="maininput" v-model="v.margin.v.r" />
+                                    <select class="subinput" v-model="v.margin.unit.r">
+                                        <option
+                                            v-for="item in unit"
+                                            :key="item.value"
+                                            v-text="item.label"
+                                            :value="item.value"
+                                        ></option>
+                                    </select>
+                                </div>
+                                <div class="input double num">
+                                    <input class="maininput" v-model="v.margin.v.d" />
+                                    <select class="subinput" v-model="v.margin.unit.d">
+                                        <option
+                                            v-for="item in unit"
+                                            :key="item.value"
+                                            v-text="item.label"
+                                            :value="item.value"
+                                        ></option>
+                                    </select>
+                                </div>
+                                <div class="input double num">
+                                    <input class="maininput" v-model="v.margin.v.l" />
+                                    <select class="subinput" v-model="v.margin.unit.l">
                                         <option
                                             v-for="item in unit"
                                             :key="item.value"
@@ -106,7 +83,71 @@
                     </el-collapse-transition>
                 </div>
             </div>
-            <div class="frame" v-if="attrPage == 'computed'"></div>
+            <div class="frame" v-if="attrPage == 'computed'">
+                <div class="edgeShow">
+                    <div class="marginFrame">
+                        <div class="flexItemTop">
+                            <div class="marginTip">margin</div>
+                            <div class="marginNum">0</div>
+                            <div class="marginTip"></div>
+                        </div>
+                        <div class="flexItemMiddle">
+                            <div class="marginNum">0</div>
+                            <div class="borderFrame">
+                                <div class="flexItemTop">
+                                    <div class="borderTip">border</div>
+                                    <div class="borderNum">0</div>
+                                    <div class="borderTip"></div>
+                                </div>
+                                <div class="flexItemMiddle">
+                                    <div class="borderNum">0</div>
+                                    <div class="paddingFrame">
+                                        <div class="flexItemTop">
+                                            <div class="paddingTip">
+                                                padding
+                                            </div>
+                                            <div class="paddingNum">
+                                                0
+                                            </div>
+                                            <div class="paddingTip"></div>
+                                        </div>
+                                        <div class="flexItemMiddle">
+                                            <div class="paddingNum">
+                                                0
+                                            </div>
+                                            <div class="contentFrame">
+                                                1x1
+                                            </div>
+                                            <div class="paddingNum">
+                                                0
+                                            </div>
+                                        </div>
+                                        <div class="flexItemBottom">
+                                            <div class="paddingTip"></div>
+                                            <div class="paddingNum">
+                                                0
+                                            </div>
+                                            <div class="paddingTip"></div>
+                                        </div>
+                                    </div>
+                                    <div class="borderNum">0</div>
+                                </div>
+                                <div class="flexItemBottom">
+                                    <div class="borderTip"></div>
+                                    <div class="borderNum">0</div>
+                                    <div class="borderTip"></div>
+                                </div>
+                            </div>
+                            <div class="marginNum">0</div>
+                        </div>
+                        <div class="flexItemBottom">
+                            <div class="marginTip"></div>
+                            <div class="marginNum">0</div>
+                            <div class="marginTip"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </span>
         <div class="textEdit" v-else>
             <v-textarea
@@ -159,8 +200,8 @@ export default defineComponent({
             ],
             v: {
                 margin: {
-                    v: 0,
-                    unit: "px",
+                    v: { t: 0, r: 0, d: 0, l: 0 },
+                    unit: { t: "px", r: "px", d: "px", l: "px" },
                 },
             },
         };
@@ -199,7 +240,7 @@ export default defineComponent({
         },
         v: function(n) {
             for (let item in n) {
-                console.log(item)
+                console.log(item);
             }
         },
     },
@@ -250,6 +291,10 @@ export default defineComponent({
         background-color: #444;
         border-bottom: 2px solid #999;
     }
+
+    .textEdit {
+        user-select: text;
+    }
 }
 
 .frame {
@@ -282,184 +327,206 @@ export default defineComponent({
 }
 
 #edgeFrame .content {
-    .Show {
-        height: 160px;
-        display: flex;
-        justify-content: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 
-        * {
-            color: #333;
-            font-size: 14px;
+    * {
+        font-size: 10px;
+    }
+
+    input {
+        padding: 2px 4px;
+    }
+    select {
+        padding: 2px 2px;
+    }
+    .input {
+        margin: 2px;
+        border: 1px solid #444;
+        border-radius: 8px;
+    }
+    .double {
+        display: flex;
+
+        .maininput {
+            width: 70%;
         }
 
-        .marginFrame {
-            background-color: rgb(216, 173, 120);
-            height: 150px;
-            width: 190px;
-            display: flex;
-            flex-direction: column;
-            border: 1px dashed #292929;
+        .subinput {
+            width: 30%;
+        }
+    }
 
-            .flexItemTop,
-            .flexItemBottom {
-                display: flex;
-                justify-content: space-around;
-                height: 20px;
+    .num {
+        width: 60px;
 
-                .marginTip {
-                    padding: 0 4px;
-                    width: 73px;
-                }
-
-                .marginNum {
-                    width: 73px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
+        &.double {
+            .maininput {
+                width: 60%;
             }
 
-            .flexItemMiddle {
-                display: flex;
-                justify-content: space-around;
-                height: 160px;
-
-                .marginNum {
-                    width: 15px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-
-                .borderFrame {
-                    width: 160px;
-                    height: 110px;
-                    background-color: rgb(232, 202, 126);
-                    border: 1px solid #292929;
-                    display: flex;
-                    flex-direction: column;
-
-                    .flexItemTop,
-                    .flexItemBottom {
-                        display: flex;
-                        justify-content: space-around;
-                        height: 20px;
-
-                        .borderTip {
-                            padding: 0 4px;
-                            width: 63px;
-                        }
-
-                        .borderNum {
-                            width: 63px;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                        }
-                    }
-
-                    .flexItemMiddle {
-                        display: flex;
-                        justify-content: space-around;
-                        height: 120px;
-
-                        .borderNum {
-                            width: 15px;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                        }
-
-                        .paddingFrame {
-                            width: 130px;
-                            height: 68px;
-                            background-color: rgb(150, 219, 131);
-                            border: 1px dashed #292929;
-                            display: flex;
-                            flex-direction: column;
-
-                            .flexItemTop,
-                            .flexItemBottom {
-                                display: flex;
-                                justify-content: space-around;
-                                height: 20px;
-
-                                .paddingTip {
-                                    padding: 0 4px;
-                                    width: 53px;
-                                }
-
-                                .paddingNum {
-                                    width: 53px;
-                                    display: flex;
-                                    justify-content: center;
-                                    align-items: center;
-                                }
-                            }
-
-                            .flexItemMiddle {
-                                display: flex;
-                                justify-content: space-around;
-                                height: 120px;
-
-                                .paddingNum {
-                                    width: 15px;
-                                    display: flex;
-                                    justify-content: center;
-                                    align-items: center;
-                                }
-
-                                .contentFrame {
-                                    width: 100px;
-                                    height: 26px;
-                                    background-color: rgb(131, 187, 219);
-                                    border: 1px solid #292929;
-                                    padding: 1px;
-                                    display: flex;
-                                    justify-content: center;
-                                }
-                            }
-                        }
-                    }
-                }
+            .subinput {
+                width: 40%;
             }
         }
     }
 
-    .set {
-        input {
-            padding: 2px 8px;
+    .directionTip {
+        display: flex;
+        align-items: center;
+        padding-left: 40px;
+
+        * {
+            width: 64px;
+            text-align: center;
         }
-        select {
-            padding: 2px 8px;
-        }
-        .input {
-            margin: 2px;
-            border: 1px solid #444;
-            border-radius: 8px;
-        }
-        .double {
+    }
+
+    .marginSet {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.edgeShow {
+    height: 160px;
+    display: flex;
+    justify-content: center;
+
+    * {
+        color: #333;
+        font-size: 14px;
+    }
+
+    .marginFrame {
+        background-color: rgb(216, 173, 120);
+        height: 150px;
+        width: 190px;
+        display: flex;
+        flex-direction: column;
+        border: 1px dashed #292929;
+
+        .flexItemTop,
+        .flexItemBottom {
             display: flex;
+            justify-content: space-around;
+            height: 20px;
 
-            .maininput {
-                width: 70%;
+            .marginTip {
+                padding: 0 4px;
+                width: 73px;
             }
 
-            .subinput {
-                width: 30%;
+            .marginNum {
+                width: 73px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
         }
 
-        .num {
-            width: 100px;
+        .flexItemMiddle {
+            display: flex;
+            justify-content: space-around;
+            height: 160px;
 
-            &.double {
-                .maininput {
-                    width: 60%;
+            .marginNum {
+                width: 15px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .borderFrame {
+                width: 160px;
+                height: 110px;
+                background-color: rgb(232, 202, 126);
+                border: 1px solid #292929;
+                display: flex;
+                flex-direction: column;
+
+                .flexItemTop,
+                .flexItemBottom {
+                    display: flex;
+                    justify-content: space-around;
+                    height: 20px;
+
+                    .borderTip {
+                        padding: 0 4px;
+                        width: 63px;
+                    }
+
+                    .borderNum {
+                        width: 63px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
                 }
 
-                .subinput {
-                    width: 40%;
+                .flexItemMiddle {
+                    display: flex;
+                    justify-content: space-around;
+                    height: 120px;
+
+                    .borderNum {
+                        width: 15px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+
+                    .paddingFrame {
+                        width: 130px;
+                        height: 68px;
+                        background-color: rgb(150, 219, 131);
+                        border: 1px dashed #292929;
+                        display: flex;
+                        flex-direction: column;
+
+                        .flexItemTop,
+                        .flexItemBottom {
+                            display: flex;
+                            justify-content: space-around;
+                            height: 20px;
+
+                            .paddingTip {
+                                padding: 0 4px;
+                                width: 53px;
+                            }
+
+                            .paddingNum {
+                                width: 53px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            }
+                        }
+
+                        .flexItemMiddle {
+                            display: flex;
+                            justify-content: space-around;
+                            height: 120px;
+
+                            .paddingNum {
+                                width: 15px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            }
+
+                            .contentFrame {
+                                width: 100px;
+                                height: 26px;
+                                background-color: rgb(131, 187, 219);
+                                border: 1px solid #292929;
+                                padding: 1px;
+                                display: flex;
+                                justify-content: center;
+                            }
+                        }
+                    }
                 }
             }
         }

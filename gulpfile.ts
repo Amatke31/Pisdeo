@@ -3,7 +3,6 @@ const { src, task, series, parallel } = require("gulp");
 const inquirer = require("inquirer");
 const fs = require("fs");
 const os = require("os");
-// const pty = require("node-pty");
 
 const shell = os.platform() === "win32" ? "powershell.exe" : "zsh";
 
