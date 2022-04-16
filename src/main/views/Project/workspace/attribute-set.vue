@@ -26,58 +26,9 @@
                     </div>
                     <el-collapse-transition>
                         <div class="content" v-show="frame.edge.class == 'open'">
-                            <div class="directionTip">
-                                <div>top</div>
-                                <div>right</div>
-                                <div>down</div>
-                                <div>left</div>
-                            </div>
-                            <div class="marginSet">
-                                <div class="tip">margin:</div>
-                                <div class="input double num">
-                                    <input class="maininput" v-model="v.margin.v.t" />
-                                    <select class="subinput" v-model="v.margin.unit.t">
-                                        <option
-                                            v-for="item in unit"
-                                            :key="item.value"
-                                            v-text="item.label"
-                                            :value="item.value"
-                                        ></option>
-                                    </select>
-                                </div>
-                                <div class="input double num">
-                                    <input class="maininput" v-model="v.margin.v.r" />
-                                    <select class="subinput" v-model="v.margin.unit.r">
-                                        <option
-                                            v-for="item in unit"
-                                            :key="item.value"
-                                            v-text="item.label"
-                                            :value="item.value"
-                                        ></option>
-                                    </select>
-                                </div>
-                                <div class="input double num">
-                                    <input class="maininput" v-model="v.margin.v.d" />
-                                    <select class="subinput" v-model="v.margin.unit.d">
-                                        <option
-                                            v-for="item in unit"
-                                            :key="item.value"
-                                            v-text="item.label"
-                                            :value="item.value"
-                                        ></option>
-                                    </select>
-                                </div>
-                                <div class="input double num">
-                                    <input class="maininput" v-model="v.margin.v.l" />
-                                    <select class="subinput" v-model="v.margin.unit.l">
-                                        <option
-                                            v-for="item in unit"
-                                            :key="item.value"
-                                            v-text="item.label"
-                                            :value="item.value"
-                                        ></option>
-                                    </select>
-                                </div>
+                            <div v-for="item in itemV" :key="item.key">
+                                <div>{{ $t(item.label) }}</div>
+                                <div></div>
                             </div>
                         </div>
                     </el-collapse-transition>
@@ -198,8 +149,26 @@ export default defineComponent({
                     value: "vh",
                 },
             ],
+            itemV: [
+                {
+                    label: "attr.margin",
+                    key: "attr.margin",
+                },
+            ],
             v: {
                 margin: {
+                    v: { t: 0, r: 0, d: 0, l: 0 },
+                    unit: { t: "px", r: "px", d: "px", l: "px" },
+                },
+                padding: {
+                    v: { t: 0, r: 0, d: 0, l: 0 },
+                    unit: { t: "px", r: "px", d: "px", l: "px" },
+                },
+                border: {
+                    v: { t: 0, r: 0, d: 0, l: 0 },
+                    unit: { t: "px", r: "px", d: "px", l: "px" },
+                },
+                outline: {
                     v: { t: 0, r: 0, d: 0, l: 0 },
                     unit: { t: "px", r: "px", d: "px", l: "px" },
                 },
@@ -370,22 +339,6 @@ export default defineComponent({
                 width: 40%;
             }
         }
-    }
-
-    .directionTip {
-        display: flex;
-        align-items: center;
-        padding-left: 40px;
-
-        * {
-            width: 64px;
-            text-align: center;
-        }
-    }
-
-    .marginSet {
-        display: flex;
-        align-items: center;
     }
 }
 
