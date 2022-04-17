@@ -3,14 +3,12 @@
         <div class="nav">
             <div class="nav-left">
                 <h1>{{ $t("start.title") }}</h1>
-                <n-navbtn v-if="isInit" @click="openStore" class="n-btn-2">{{
+                <n-btn v-if="isInit" @click="openStore" btnStyle="nav">{{
                     $t("start.extensions")
-                }}</n-navbtn>
+                }}</n-btn>
             </div>
             <div class="nav-right">
-                <n-navbtn @click="openSetting" class="n-btn-2">{{
-                    $t("start.setting")
-                }}</n-navbtn>
+                <n-btn @click="openSetting" btnStyle="nav">{{ $t("start.setting") }}</n-btn>
             </div>
         </div>
         <div class="main">
@@ -18,24 +16,15 @@
                 <h2 class="npt">{{ $t("start.pageNewproject") }}</h2>
                 <div class="npc scroll">
                     <div @click="newProject('project.blank')" class="card">
-                        <div
-                            class="img"
-                            :style="cardImg('assets/blankproject.svg')"
-                        ></div>
+                        <div class="img" :style="cardImg('assets/blankproject.svg')"></div>
                         <div class="title">{{ $t("project.blank") }}</div>
                     </div>
                     <div @click="newProject('project.uilib')" class="card">
-                        <div
-                            class="img"
-                            :style="cardImg('assets/uilib.svg')"
-                        ></div>
+                        <div class="img" :style="cardImg('assets/uilib.svg')"></div>
                         <div class="title">{{ $t("project.uilib") }}</div>
                     </div>
                     <div @click="newProject('project.component')" class="card">
-                        <div
-                            class="img"
-                            :style="cardImg('assets/component.svg')"
-                        ></div>
+                        <div class="img" :style="cardImg('assets/component.svg')"></div>
                         <div class="title">{{ $t("project.component") }}</div>
                     </div>
                     <div
@@ -51,8 +40,8 @@
             </div>
         </div>
         <msg :isShow="msgIsShow" :html="msgHTML" @close="close"></msg>
-        <div id="newProject" :class="newProjectWCss">
-            <div class="window">
+        <div id="newProject">
+            <n-window :open="openNWD">
                 <div class="title">
                     <h1>
                         {{
@@ -73,13 +62,9 @@
                 <div class="form">
                     <div class="name">
                         <div>{{ $t("newproject.projectname") }}:</div>
-                        <div v-if="platform !== 'web'">
-                            {{ $t("newproject.projectlocation") }}:
-                        </div>
+                        <div v-if="platform !== 'web'">{{ $t("newproject.projectlocation") }}:</div>
                         <div
-                            v-for="templateRequire in templateRequire[
-                                templateInfo.extension.id
-                            ]"
+                            v-for="templateRequire in templateRequire[templateInfo.extension.id]"
                             :key="templateRequire.name"
                         >
                             {{ $t(templateRequire.name) }}:
@@ -95,9 +80,7 @@
                         />
                         <input
                             spellcheck="false"
-                            v-for="templateRequire in templateRequire[
-                                templateInfo.extension.id
-                            ]"
+                            v-for="templateRequire in templateRequire[templateInfo.extension.id]"
                             :key="templateRequire.name"
                             v-model="ProjectForm[templateRequire.name]"
                         />
@@ -106,17 +89,14 @@
                 <n-btn class="create" @click="createProject">
                     {{ $t("newproject.create") }}
                 </n-btn>
-            </div>
-            <div class="mask" @click="closeNPW"></div>
+            </n-window>
         </div>
         <div :class="warningCss" id="_warning">
             <div class="warning" :style="'width:500px;margin-left:-250px;'">
                 <div>
-                    The application has crashed and may need to be repaired. If
-                    you need help, you can view the
-                    <a @click="openDoc(`problem/${errorCode}`)"
-                        >documentation</a
-                    >
+                    The application has crashed and may need to be repaired. If you need help, you
+                    can view the
+                    <a @click="openDoc(`problem/${errorCode}`)">documentation</a>
                 </div>
                 <div>Error Code: {{ errorCode }}</div>
             </div>
@@ -167,6 +147,7 @@ export default defineComponent({
             errorCode: "",
             msgHTML: "",
             newProjectWCss: "hide none",
+            openNWD: false,
             newProjectW: false,
             consoleText: "<p>loading...</p>",
             templateInfo: {
@@ -216,26 +197,24 @@ export default defineComponent({
             require: any;
         }) {
             info.require.forEach(
-                (parameter: {
-                    name: string;
-                    default: any;
-                    [propName: string]: any;
-                }) => {
+                (parameter: { name: string; default: any; [propName: string]: any }) => {
                     this.ProjectForm[parameter.name] = parameter.default;
                 }
             );
             this.templateInfo = info;
             this.ProjectForm.path = path.join(documentsPath, "NexWebDesigner");
-            this.newProjectWCss = "hide";
-            setTimeout(() => {
-                this.newProjectWCss = "window";
-            }, 50);
+            this.openNWD = true
+            // this.newProjectWCss = "hide";
+            // setTimeout(() => {
+            //     this.newProjectWCss = "window";
+            // }, 50);
         },
         closeNPW: function() {
-            this.newProjectWCss = "hide";
-            setTimeout(() => {
-                this.newProjectWCss = "hide none";
-            }, 300);
+            // this.newProjectWCss = "hide";
+            // setTimeout(() => {
+            //     this.newProjectWCss = "hide none";
+            // }, 300);
+            this.openNWD = false
         },
         openAboutWindow: function() {
             this.msgHTML = `
@@ -388,7 +367,7 @@ export default defineComponent({
     justify-content: space-between;
     align-items: center;
     height: 72px;
-    
+
     .nav-left {
         align-items: center;
         display: flex;
