@@ -28,7 +28,6 @@
 		"localforage": "^1.10.0",
 		"markdown-it": "^12.3.2",
 		"material-design-icons": "^3.0.1",
-		"node-pty": "^0.10.1",
 		"path-browserify": "^1.0.1",
 		"roboto-fontface": "*",
 		"semver": "^7.3.7",
