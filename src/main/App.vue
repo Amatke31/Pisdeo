@@ -78,7 +78,8 @@ let userConfig: any = {
 export default defineComponent({
     data() {
         return {
-            showVirtualTitleBar: platform === "desktop" && os && os.platform() == "darwin",
+            showVirtualTitleBar: platform === "desktop",
+            os: os.platform(),
             ExtensionInfo: new Array(),
             homePath: "",
             template: new Array(),
