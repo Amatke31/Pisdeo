@@ -59,7 +59,7 @@ import os from "os";
 import platform from "./utils/platform/platform";
 import Tool from "./components/developtool/tool.vue";
 import Setting from "./views/Setting.vue";
-import { getConfig, getVersion } from "./utils/common";
+import { getConfig } from "./utils/common";
 import { ElLoading, ElMessage } from "element-plus";
 import { getAttribute } from "./utils/exchange/attribute";
 
@@ -79,7 +79,7 @@ export default defineComponent({
     data() {
         return {
             showVirtualTitleBar: platform === "desktop",
-            os: os.platform(),
+            os: os.platform() ? os.platform() : "web",
             ExtensionInfo: new Array(),
             homePath: "",
             template: new Array(),
