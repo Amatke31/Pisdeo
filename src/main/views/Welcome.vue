@@ -1,5 +1,5 @@
 <template>
-    <div class="window">
+    <n-window :open="true">
         <div v-if="step == 1">
             <i class="img iconfont icon-earth"></i>
             <div class="title">{{ $t("welcome.lang.choose") }}</div>
@@ -48,7 +48,7 @@
                 <n-btn @click="login()">{{ $t("common.agree") }}</n-btn>
             </div>
         </div>
-    </div>
+    </n-window>
     <div class="mask"></div>
 </template>
 <script lang="ts">
@@ -128,72 +128,28 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
-.window {
-    transform: scale(1);
-    width: 750px;
-    height: 600px;
-    position: fixed;
-    top: calc((100vh - 600px) / 2);
-    border-radius: 15px;
-    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.05);
-    z-index: 20;
-    display: flex;
-    flex-direction: column;
-    background-color: rgb(50, 50, 50);
-    padding: 36px;
-    left: calc((100vw - 750px) / 2);
-    opacity: 1;
-    transition: 0.3s;
-    padding-top: 96px;
+.img {
+    font-size: 96px;
     text-align: center;
-
-    .img {
-        font-size: 96px;
-        text-align: center;
-        width: 100%;
-        display: block;
-    }
-
-    .title {
-        font-weight: 500;
-        font-size: 32px;
-        text-align: center;
-        width: 100%;
-    }
-
-    .select {
-        width: 60%;
-        text-align: center;
-        margin: 30px 20%;
-
-        .option {
-            width: 60%;
-        }
-    }
-}
-@media (max-width: 750px) {
-    .window {
-        width: 100vw;
-        height: 100vh;
-        min-width: none;
-        min-height: none;
-        margin: 0;
-        left: 0;
-        top: 0;
-        overflow-y: auto;
-    }
-}
-.mask {
-    transition: 0.3s;
-    position: fixed;
     width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    opacity: 1;
-    overflow: hidden;
-    z-index: 10;
-    background-color: rgba(50, 50, 50, 0.7);
+    display: block;
+}
+
+.title {
+    font-weight: 500;
+    font-size: 32px;
+    text-align: center;
+    width: 100%;
+}
+
+.select {
+    width: 60%;
+    text-align: center;
+    margin: 30px 20%;
+
+    .option {
+        width: 60%;
+    }
 }
 .desktop {
     height: calc(100% - 28px);

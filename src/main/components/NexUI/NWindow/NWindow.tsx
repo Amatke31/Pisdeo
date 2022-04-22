@@ -11,7 +11,7 @@ export default defineComponent({
     },
 
     setup(props, { slots, emit }) {
-        let state = reactive({ Wcss: "hide none" });
+        let state = reactive({ Wcss: props.open ? "" : "hide none" });
         watch(
             () => props.open,
             (n) => {
@@ -35,7 +35,7 @@ export default defineComponent({
                     <div
                         class={["n-window___mask"]}
                         onClick={(e) => {
-                            emit('close')
+                            emit("close");
                         }}
                     ></div>
                 </div>
