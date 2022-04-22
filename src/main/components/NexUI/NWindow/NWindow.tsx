@@ -34,7 +34,7 @@ export default defineComponent({
                     <div class={["n-window"]}>{slots.default?.()}</div>
                     <div
                         class={["n-window___mask"]}
-                        onClick={(e) => {
+                        onClick={() => {
                             emit("close");
                         }}
                     ></div>

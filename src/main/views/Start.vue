@@ -203,18 +203,10 @@ export default defineComponent({
             );
             this.templateInfo = info;
             this.ProjectForm.path = path.join(documentsPath, "NexWebDesigner");
-            this.openNWD = true
-            // this.newProjectWCss = "hide";
-            // setTimeout(() => {
-            //     this.newProjectWCss = "window";
-            // }, 50);
+            this.openNWD = true;
         },
         closeNPW: function() {
-            // this.newProjectWCss = "hide";
-            // setTimeout(() => {
-            //     this.newProjectWCss = "hide none";
-            // }, 300);
-            this.openNWD = false
+            this.openNWD = false;
         },
         openAboutWindow: function() {
             this.msgHTML = `
@@ -275,90 +267,58 @@ export default defineComponent({
 }
 
 #newProject {
-    .window {
-        transform: scale(1);
-        width: 750px;
-        height: 600px;
-        position: fixed;
-        top: 10%;
-        border-radius: 15px;
-        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.05);
-        z-index: 3000;
+    .create {
+        position: absolute;
+        bottom: 43px;
+        right: 43px;
+    }
+
+    .form {
+        margin-top: 16px;
         display: flex;
-        flex-direction: column;
-        background-color: rgb(50, 50, 50);
-        padding: 36px;
-        top: calc((100vh - 600px) / 2);
-        left: calc((100vw - 750px) / 2);
-        opacity: 1;
-        transition: 0.3s;
+        margin-bottom: 16px;
         overflow-y: auto;
+        height: 360px;
 
-        @media screen and (max-width: 750px) {
-            width: 90vw;
-            left: 5vw;
-            top: 5vh;
-            height: 90vh;
-        }
+        .name,
+        .input {
+            div,
+            input {
+                padding: 16px;
+                outline: 0;
+                background: unset;
+                width: 100%;
+                border: 0;
+                height: 48px;
+                margin: 0 0 20px;
+                box-sizing: border-box;
+                font-size: 14px;
+                color: #fff;
+                transition: 0.2s;
+            }
 
-        .create {
-            position: absolute;
-            bottom: 43px;
-            right: 43px;
-        }
-
-        .form {
-            margin-top: 16px;
-            display: flex;
-            margin-bottom: 16px;
-            overflow-y: auto;
-            height: 360px;
-
-            .name,
-            .input {
-                div,
-                input {
-                    padding: 16px;
-                    outline: 0;
-                    background: unset;
-                    width: 100%;
-                    border: 0;
-                    height: 48px;
-                    margin: 0 0 20px;
-                    box-sizing: border-box;
-                    font-size: 14px;
-                    color: #fff;
-                    transition: 0.2s;
+            input {
+                border-radius: 12px;
+                background-color: #383838;
+                &:hover {
+                    background-color: #3f3f3f;
                 }
-
-                input {
-                    border-radius: 12px;
-                    background-color: #383838;
-                    &:hover {
-                        background-color: #3f3f3f;
-                    }
-                    &:focus {
-                        background-color: #454545;
-                    }
+                &:focus {
+                    background-color: #454545;
                 }
             }
+        }
 
-            .name {
-                text-align: right;
-                width: 25%;
-            }
+        .name {
+            text-align: right;
+            width: 25%;
+        }
 
-            .input {
-                text-align: left;
-                width: 80%;
-            }
+        .input {
+            text-align: left;
+            width: 80%;
         }
     }
-}
-
-#newProject.hide .window {
-    transform: scale(0.95);
-    opacity: 0;
 }
 .nav {
     padding: 12px;
@@ -431,20 +391,6 @@ export default defineComponent({
             }
         }
     }
-}
-
-.mask {
-    transition: 0.3s;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    opacity: 1;
-    overflow: hidden;
-    z-index: 2000;
-    backdrop-filter: blur(2px);
-    background-color: rgba(50, 50, 50, 0.7);
 }
 
 #_warning {

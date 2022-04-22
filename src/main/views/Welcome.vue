@@ -1,14 +1,9 @@
 <template>
-    <n-window :open="true">
-        <div v-if="step == 1">
+    <n-window class="window" :open="true">
+        <div class="stepW" v-if="step == 1">
             <i class="img iconfont icon-earth"></i>
             <div class="title">{{ $t("welcome.lang.choose") }}</div>
-            <el-select
-                v-model="lang"
-                class="m-2 select"
-                placeholder="Select"
-                size="large"
-            >
+            <el-select v-model="lang" class="m-2 select" placeholder="Select" size="large">
                 <el-option
                     v-for="item in supportLang"
                     class="option"
@@ -18,22 +13,18 @@
                 >
                 </el-option>
             </el-select>
-            <n-btn @click="setLanguage()" class="nS">{{
-                $t("common.nextstep")
-            }}</n-btn>
+            <n-btn @click="setLanguage()" class="nS">{{ $t("common.nextstep") }}</n-btn>
         </div>
-        <div v-else-if="step == 2" style="height: 100%">
+        <div class="stepW" v-else-if="step == 2" style="height: 100%">
             <div class="title">{{ $t("welcome.legal") }}</div>
             <Legal style="height: 80%" />
             <n-btn @click="step++" class="nS">{{ $t("common.agree") }}</n-btn>
         </div>
-        <div v-else-if="step == 3" style="height: 100%">
+        <div class="stepW" v-else-if="step == 3" style="height: 100%">
             <div class="title">{{ $t("welcome.complete") }}</div>
-            <n-btn @click="complete()" class="et">{{
-                $t("common.enter")
-            }}</n-btn>
+            <n-btn @click="complete()" class="nS">{{ $t("common.enter") }}</n-btn>
         </div>
-        <div v-if="false">
+        <div class="stepW" v-if="false">
             <i class="img iconfont icon-accountcircle"></i>
             <div class="title">{{ $t("welcome.account.ask") }}</div>
             <div
@@ -71,9 +62,7 @@ export default defineComponent({
     },
     created: async function() {
         const systenLang = await getSystemLocale();
-        this.lang = this.$i18n.availableLocales.includes(systenLang)
-            ? systenLang
-            : "en_us";
+        this.lang = this.$i18n.availableLocales.includes(systenLang) ? systenLang : "en_us";
         this.$i18n.availableLocales.forEach((lang) => {
             this.supportLang.push({
                 value: lang,
@@ -128,6 +117,18 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
+.window {
+    .stepW {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.nS {
+    width: 130px;
+    align-self: center;
+}
+
 .img {
     font-size: 96px;
     text-align: center;
