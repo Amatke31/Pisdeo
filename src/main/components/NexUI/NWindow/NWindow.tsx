@@ -4,11 +4,13 @@ import "./NWindow.scss";
 export default defineComponent({
     name: "NWindow",
 
+    emits: ["close"],
+
     props: {
         open: Boolean,
     },
 
-    setup(props, { slots }) {
+    setup(props, { slots, emit }) {
         let state = reactive({ Wcss: "hide none" });
         watch(
             () => props.open,
@@ -30,7 +32,12 @@ export default defineComponent({
             return (
                 <div class={[state.Wcss]}>
                     <div class={["n-window"]}>{slots.default?.()}</div>
-                    <div class={["n-window___mask"]}></div>
+                    <div
+                        class={["n-window___mask"]}
+                        onClick={(e) => {
+                            emit('close')
+                        }}
+                    ></div>
                 </div>
             );
         };

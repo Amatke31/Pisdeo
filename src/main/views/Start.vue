@@ -41,7 +41,7 @@
         </div>
         <msg :isShow="msgIsShow" :html="msgHTML" @close="close"></msg>
         <div id="newProject">
-            <n-window :open="openNWD">
+            <n-window :open="openNWD" @close="closeNPW">
                 <div class="title">
                     <h1>
                         {{
