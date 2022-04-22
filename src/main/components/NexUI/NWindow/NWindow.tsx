@@ -9,24 +9,24 @@ export default defineComponent({
     },
 
     setup(props, { slots }) {
-        return () => {
-            let state = reactive({ Wcss: "hide none" });
-            watch(
-                () => props.open,
-                (n) => {
-                    if (n) {
-                        state.Wcss = "hide";
-                        setTimeout(() => {
-                            state.Wcss = "";
-                        }, 50);
-                    } else {
-                        state.Wcss = "hide";
-                        setTimeout(() => {
-                            state.Wcss = "hide none";
-                        }, 300);
-                    }
+        let state = reactive({ Wcss: "hide none" });
+        watch(
+            () => props.open,
+            (n) => {
+                if (n) {
+                    state.Wcss = "hide";
+                    setTimeout(() => {
+                        state.Wcss = "";
+                    }, 50);
+                } else {
+                    state.Wcss = "hide";
+                    setTimeout(() => {
+                        state.Wcss = "hide none";
+                    }, 300);
                 }
-            );
+            }
+        );
+        return () => {
             return (
                 <div class={[state.Wcss]}>
                     <div class={["n-window"]}>{slots.default?.()}</div>
