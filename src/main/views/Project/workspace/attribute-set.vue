@@ -112,7 +112,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { setAttribute } from "../../../utils/exchange/attribute";
+import { setAttribute } from "../../../utils/resolve/attribute";
 
 export default defineComponent({
     props: {

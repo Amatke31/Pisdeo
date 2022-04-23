@@ -11,7 +11,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, toRaw } from "vue";
-import { addElement, removeElement } from "../../../utils/exchange/html";
+import { addElement, removeElement } from "../../../utils/resolve/html";
 const supportExt = ["html", "htm", "css", "js"];
 const disableAdd = [".text", "html", "style", "script"];
 export default defineComponent({
