@@ -1,4 +1,4 @@
-import { ObjToElement, ObjToHTML } from "../utils/exchange/html";
+import { ObjToElement, ObjToHTML } from "../utils/resolve/html";
 import { createProject } from "../utils/project/createProject";
 import { loadProject } from "../utils/project/loadProject";
 import testProgram from "../../../test/testProgram/project.json"
