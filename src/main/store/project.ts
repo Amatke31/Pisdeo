@@ -1,6 +1,7 @@
-import { ObjToHTML } from "../utils/exchange/html";
+import { ObjToElement, ObjToHTML } from "../utils/exchange/html";
 import { createProject } from "../utils/project/createProject";
 import { loadProject } from "../utils/project/loadProject";
+import testProgram from "../../../test/testProgram/project.json"
 
 let supportExt = ["html", "htm", "css", "js"];
 
@@ -18,62 +19,6 @@ const project = {
                 currentFile: "",
                 htmlChooser: "",
                 viewer: null,
-            },
-            testProgram: {
-                name: "Test",
-                author: "Amatke31",
-                file: {
-                    "index.html": {
-                        element: "html",
-                        children: [
-                            {
-                                element: "head",
-                                children: [
-                                    {
-                                        element: "style",
-                                        css: [
-                                            {
-                                                class: "*",
-                                                margin: "0",
-                                                padding: "0",
-                                            },
-                                            {
-                                                class: ".menu-bar",
-                                                width: "100%",
-                                                height: "auto",
-                                                padding: "4px",
-                                                color: "#fff",
-                                                "background-color": "#222",
-                                                "box-sizing": "border-box",
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        element: "script",
-                                        script: [],
-                                    },
-                                ],
-                            },
-                            {
-                                element: "body",
-                                class: "dark",
-                                children: [
-                                    {
-                                        element: "div",
-                                        class: "menu-bar",
-                                        elementName: "Menu Bar",
-                                        children: [
-                                            {
-                                                element: ".text",
-                                                text: "Test",
-                                            },
-                                        ],
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                },
             },
         };
     },
@@ -99,7 +44,7 @@ const project = {
             state.path = info.path;
         },
         beforeLoadTestProject(state: any) {
-            state.program = state.testProgram;
+            state.program = testProgram;
         },
         chooseElement(state: any, e: any) {
             state.workspace.htmlChooser = e.element;

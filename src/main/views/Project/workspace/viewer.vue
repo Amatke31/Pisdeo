@@ -26,9 +26,7 @@ export default defineComponent({
         asyncView: function() {
             let iframe = this.$refs.viewer;
             let iDoc: any = (<HTMLIFrameElement>iframe).contentDocument;
-            iDoc.open();
-            iDoc.write(this.viewer);
-            iDoc.close();
+            iDoc.children[0].innerHTML = this.viewer;
         },
     },
 });

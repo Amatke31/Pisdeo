@@ -1,0 +1,56 @@
+{
+    "name": "Test",
+    "author": "Amatke31",
+    "file": {
+        "index.html": {
+            "element": "html",
+            "children": [
+                {
+                    "element": "head",
+                    "children": [
+                        {
+                            "element": "style",
+                            "css": [
+                                {
+                                    "class": "*",
+                                    "margin": "0",
+                                    "padding": "0"
+                                },
+                                {
+                                    "class": ".menu-bar",
+                                    "width": "100%",
+                                    "height": "auto",
+                                    "padding": "4px",
+                                    "color": "#fff",
+                                    "background-color": "#222",
+                                    "box-sizing": "border-box"
+                                }
+                            ]
+                        },
+                        {
+                            "element": "script",
+                            "script": []
+                        }
+                    ]
+                },
+                {
+                    "element": "body",
+                    "class": "dark",
+                    "children": [
+                        {
+                            "element": "div",
+                            "class": "menu-bar",
+                            "elementName": "Menu Bar",
+                            "children": [
+                                {
+                                    "element": ".text",
+                                    "text": "Test"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

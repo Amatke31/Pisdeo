@@ -45,15 +45,15 @@ function analysisObj(obj: any): string {
 }
 
 function ObjToElement(obj: any) {
-    let out: Element = analysisObjWithElement(obj);
+    let out: HTMLElement = <HTMLElement>analysisObjWithElement(obj);
     return out;
 }
 
-function analysisObjWithElement(obj: any): HTMLElement {
-    let out: HTMLElement = document.createElement(obj.element);
+function analysisObjWithElement(obj: any): HTMLElement | string {
     if (obj.element == ".text") {
-        out.innerText = obj.text;
+        return obj.text;
     } else {
+        let out: HTMLElement = document.createElement(obj.element);
         for (let ref in obj) {
             if (!noChange.includes(ref)) out.setAttribute(ref, obj[ref]);
         }
@@ -64,10 +64,12 @@ function analysisObjWithElement(obj: any): HTMLElement {
             }
         }
         for (let child in obj.children) {
-            out.appendChild(analysisObjWithElement(obj.children[child]));
+            obj.children[child].element !== ".text"
+                ? out.appendChild(<HTMLElement>analysisObjWithElement(obj.children[child]))
+                : out.innerText == analysisObjWithElement(obj.children[child]);
         }
+        return out;
     }
-    return out;
 }
 
 function ObjToCSS(obj: any) {

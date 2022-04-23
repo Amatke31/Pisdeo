@@ -40,9 +40,7 @@ export default defineComponent({
         },
     },
     mounted: function() {
-        this.html = this.$store.state.project.program.file[
-            this.$store.state.project.workspace.currentFile
-        ];
+        this.html = this.$store.getters.currentFileContent;
         this.refreshChooser();
         this.$store.subscribeAction((action, state) => {
             if (
