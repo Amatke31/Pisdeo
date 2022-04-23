@@ -138,6 +138,8 @@
 import { defineComponent } from "vue";
 import { setAttribute } from "../../../utils/resolve/attribute";
 
+const noAttr = ["children", "element", "elementName"];
+
 export default defineComponent({
     props: {
         attribute: {
@@ -199,7 +201,22 @@ export default defineComponent({
             return `attrBar ${this.attrPage}`;
         },
         routine() {
-            return this.allRoutine[this.attribute!.element];
+            let other: Array<Object> = [];
+            for (let i in this.v) {
+                if (
+                    noAttr.indexOf(i) == -1 &&
+                    this.allRoutine[this.attribute!.element].find(function(obj: any) {
+                        return obj.name == i;
+                    }) == undefined
+                ) {
+                    other.push({ name: i, id: `nt.${i}`, type: "text" });
+                }
+            }
+            let out = [...other, ...this.allRoutine[this.attribute!.element]];
+            out.sort(function(a, b) {
+                return a.name.toLowerCase().charCodeAt(0) - b.name.toLowerCase().charCodeAt(0);
+            });
+            return out;
         },
     },
     watch: {

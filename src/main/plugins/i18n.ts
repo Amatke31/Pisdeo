@@ -33,5 +33,8 @@ export default createI18n({
         if (context.indexOf('element.') == 0) {
 			return context.split('.').pop()
 		}
+        if (context.indexOf('nt.') == 0) {
+			return context.split('.').pop()
+		}
     },
 });
