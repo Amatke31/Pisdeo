@@ -105,7 +105,7 @@
                 <div>
                     <a
                         style="color:#58a6ff"
-                        href="https://gitee.com/amatke31-work/nexwebdesigner"
+                        href="https://gitee.com/amatke31/nexwebdesigner"
                         target="_blank"
                     >
                         {{ $t("about.gitee") }}

@@ -7,6 +7,10 @@
     "project.component": "Component",
     "attr.text": "Text",
     "attr.style": "Styles",
+    "attr.attr": "Attribute",
     "attr.computed": "Computed",
-    "attr.edge": "edge"
+    "attr.edge": "edge",
+    "a.download": "Download Link",
+    "a.href": "Link",
+    "a.target": "Display"
 }

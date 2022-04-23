@@ -7,6 +7,10 @@
     "project.component": "组件",
     "attr.text": "内容",
     "attr.style": "样式",
+    "attr.attr": "属性",
     "attr.computed": "计算",
-    "attr.edge": "边缘"
+    "attr.edge": "边缘",
+    "a.download": "URL(直接下载)",
+    "a.href": "URL",
+    "a.target": "显示方法"
 }

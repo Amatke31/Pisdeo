@@ -8,6 +8,9 @@
                 <div class="btn style" @click="attrPage = 'style'">
                     {{ $t("attr.style") }}
                 </div>
+                <div class="btn attr" @click="attrPage = 'attr'">
+                    {{ $t("attr.attr") }}
+                </div>
                 <div class="btn computed" @click="attrPage = 'computed'">
                     {{ $t("attr.computed") }}
                 </div>
@@ -25,13 +28,34 @@
                         <div>{{ $t("attr.edge") }}</div>
                     </div>
                     <el-collapse-transition>
-                        <div class="content" v-show="frame.edge.class == 'open'">
-                            <div v-for="item in itemV" :key="item.key">
-                                <div>{{ $t(item.label) }}</div>
-                                <div></div>
-                            </div>
-                        </div>
+                        <div class="content" v-show="frame.edge.class == 'open'"></div>
                     </el-collapse-transition>
+                </div>
+            </div>
+            <div class="attrFrame" v-if="attrPage == 'attr'">
+                <div v-for="item in routine" :key="item.name" class="setDiv">
+                    <div class="attrName">{{ $t(item.id) + ":" }}</div>
+                    <el-input
+                        v-if="item.type !== 'select'"
+                        size="small"
+                        class="attrInput"
+                        v-model="v[item.name]"
+                        @change="setAttr(item.name, v[item.name])"
+                    />
+                    <el-select
+                        v-if="item.type == 'select'"
+                        size="small"
+                        class="attrInput"
+                        v-model="v[item.name]"
+                        @change="setAttr(item.name, v[item.name])"
+                    >
+                        <el-option
+                            v-for="item in item.select"
+                            :key="item.name"
+                            :label="$t(item.id)"
+                            :value="item.name"
+                        />
+                    </el-select>
                 </div>
             </div>
             <div class="frame" v-if="attrPage == 'computed'">
@@ -149,35 +173,33 @@ export default defineComponent({
                     value: "vh",
                 },
             ],
-            itemV: [
-                {
-                    label: "attr.margin",
-                    key: "attr.margin",
-                },
-            ],
-            v: {
-                margin: {
-                    v: { t: 0, r: 0, d: 0, l: 0 },
-                    unit: { t: "px", r: "px", d: "px", l: "px" },
-                },
-                padding: {
-                    v: { t: 0, r: 0, d: 0, l: 0 },
-                    unit: { t: "px", r: "px", d: "px", l: "px" },
-                },
-                border: {
-                    v: { t: 0, r: 0, d: 0, l: 0 },
-                    unit: { t: "px", r: "px", d: "px", l: "px" },
-                },
-                outline: {
-                    v: { t: 0, r: 0, d: 0, l: 0 },
-                    unit: { t: "px", r: "px", d: "px", l: "px" },
-                },
+            allRoutine: {
+                a: [
+                    { name: "download", type: "text", id: "a.download" },
+                    { name: "href", type: "text", id: "a.href" },
+                    {
+                        name: "target",
+                        type: "select",
+                        id: "a.target",
+                        default: "_self",
+                        select: [
+                            { name: "_self", id: "a.target.self" },
+                            { name: "_blank", id: "a.target.blank" },
+                            { name: "_parent", id: "a.target.parent" },
+                            { name: "_top", id: "a.target.top" },
+                        ],
+                    },
+                ],
             },
+            v: {},
         };
     },
     computed: {
         attrBar() {
             return `attrBar ${this.attrPage}`;
+        },
+        routine() {
+            return this.allRoutine[this.attribute!.element];
         },
     },
     watch: {
@@ -187,6 +209,11 @@ export default defineComponent({
             setTimeout(() => {
                 this.lock = false;
             }, 100);
+            this.v = {};
+            this.allRoutine[this.attribute!.element].forEach((attr: any) => {
+                this.v[attr.name] = attr.default ? attr.default : "";
+            });
+            this.v = { ...this.v, ...this.attribute };
         },
         text: function(n) {
             if (!this.lock) {
@@ -198,21 +225,32 @@ export default defineComponent({
                         2,
                         {
                             changeAttr: "text",
-                            text: n,
+                            value: n,
                         }
                     )
                 );
-            }
-        },
-        v: function(n) {
-            for (let item in n) {
-                console.log(item);
             }
         },
     },
     methods: {
         fold: function(which: string) {
             this.frame[which].class = this.frame[which].class == "fold" ? "open" : "fold";
+        },
+        setAttr: function(attr: string, value: string) {
+            if (!this.lock) {
+                this.$store.commit(
+                    "refreshViewWithCode",
+                    setAttribute(
+                        this.$store.getters.currentFileContent,
+                        this.$store.getters.getHTMLChooserLayer,
+                        2,
+                        {
+                            changeAttr: attr,
+                            value: value,
+                        }
+                    )
+                );
+            }
         },
     },
 });
@@ -258,8 +296,37 @@ export default defineComponent({
         border-bottom: 2px solid #999;
     }
 
+    .attrBar.attr .btn.attr {
+        background-color: #444;
+        border-bottom: 2px solid #999;
+    }
+
     .textEdit {
         user-select: text;
+    }
+}
+
+.attrFrame {
+    border-top: 1px solid rgba(204, 204, 204, 0.2);
+    box-shadow: #000000 0 6px 6px -6px inset;
+    display: flex;
+    flex-direction: column;
+
+    .setDiv {
+        display: flex;
+        margin: 7px auto;
+
+        * {
+            font-size: 12px;
+        }
+
+        .attrName {
+            width: 100px;
+        }
+
+        .attrInput {
+            width: calc(20vw - 10px - 100px);
+        }
     }
 }
 

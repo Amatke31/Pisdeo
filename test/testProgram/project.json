@@ -47,6 +47,34 @@
                                     "text": "Test"
                                 }
                             ]
+                        },
+                        {
+                            "element": "div",
+                            "elementName": "Repositorie Link",
+                            "children": [
+                                {
+                                    "element": "a",
+                                    "elementName": "Gitee Link",
+                                    "href": "https://gitee.com/amatke31/nexwebdesigner",
+                                    "target": "_blank",
+                                    "children": [
+                                        {
+                                            "element": ".text",
+                                            "text": "Gitee Repositorie"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "element": "a",
+                                    "elementName": "Github Link",
+                                    "children": [
+                                        {
+                                            "element": ".text",
+                                            "text": "Github Repositorie"
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ]
                 }

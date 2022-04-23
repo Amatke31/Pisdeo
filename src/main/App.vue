@@ -61,7 +61,7 @@ import Tool from "./components/developtool/tool.vue";
 import Setting from "./views/Setting.vue";
 import { getConfig } from "./utils/common";
 import { ElLoading, ElMessage } from "element-plus";
-import { getAttribute } from "./utils/exchange/attribute";
+import { getAttribute } from "./utils/resolve/attribute";
 
 interface RequireForm {
     [propName: string]: any;

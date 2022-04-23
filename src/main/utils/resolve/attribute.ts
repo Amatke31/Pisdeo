@@ -13,7 +13,7 @@ function setAttribute(obj: any, path: any, layer: number, changeAttr: any) {
         return obj;
     } else if (path.length == layer) {
         let next = obj
-        next[changeAttr.changeAttr] = changeAttr[changeAttr.changeAttr]
+        next[changeAttr.changeAttr] = changeAttr.value
         return next;
     } else {
         let out = obj
