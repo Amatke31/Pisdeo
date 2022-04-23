@@ -65,9 +65,9 @@ const project = {
                                         children: [
                                             {
                                                 element: ".text",
-                                                text: "Test"
-                                            }
-                                        ]
+                                                text: "Test",
+                                            },
+                                        ],
                                     },
                                 ],
                             },
@@ -76,6 +76,19 @@ const project = {
                 },
             },
         };
+    },
+    getters: {
+        currentFileContent: (state: {
+            workspace: {
+                openFile: { [x: string]: { content: any } };
+                currentFile: string;
+            };
+        }) => {
+            return state.workspace.openFile[state.workspace.currentFile].content;
+        },
+        getHTMLChooserLayer: (state: { workspace: { htmlChooser: string } }) => {
+            return state.workspace.htmlChooser.split("-");
+        },
     },
     mutations: {
         beforeCreateProject(state: any, info: any) {
@@ -92,15 +105,11 @@ const project = {
             state.workspace.htmlChooser = e.element;
         },
         refreshView(state: any) {
-            state.workspace.viewer = ObjToHTML(
-                state.program.file[state.workspace.currentFile]
-            );
+            state.workspace.viewer = ObjToHTML(state.program.file[state.workspace.currentFile]);
         },
         refreshViewWithCode(state: any, code: any) {
-            state.workspace.openFile[state.workspace.currentFile].context = code;
-            state.workspace.viewer = ObjToHTML(
-                state.program.file[state.workspace.currentFile]
-            );
+            state.workspace.openFile[state.workspace.currentFile].content = code;
+            state.workspace.viewer = ObjToHTML(state.program.file[state.workspace.currentFile]);
         },
     },
     actions: {
@@ -129,17 +138,13 @@ const project = {
             if (!state.workspace.openFile[filePath]) {
                 state.workspace.openFile[filePath] = {
                     file: filePath,
-                    context: state.program.file[filePath],
+                    content: state.program.file[filePath],
                 };
             }
-            if (
-                supportExt.includes(
-                    state.workspace.currentFile.split(".").pop()
-                )
-            ) {
+            if (supportExt.includes(state.workspace.currentFile.split(".").pop())) {
                 switch (state.workspace.currentFile.split(".").pop()) {
                     case "html":
-                        commit('refreshView')
+                        commit("refreshView");
                         break;
                 }
             }

@@ -53,9 +53,7 @@ export default defineComponent({
                 switch (state.project.workspace.currentFile.split(".").pop()) {
                     case "html":
                         this.html =
-                            state.project.workspace.openFile[
-                                state.project.workspace.currentFile
-                            ].context;
+                            this.$store.getters.currentFileContent;
                         this.refreshChooser();
                         break;
                 }
@@ -70,9 +68,7 @@ export default defineComponent({
                 switch (state.project.workspace.currentFile.split(".").pop()) {
                     case "html":
                         this.html =
-                            state.project.workspace.openFile[
-                                state.project.workspace.currentFile
-                            ].context;
+                            this.$store.getters.currentFileContent;
                         this.refreshChooser();
                         break;
                 }
@@ -147,9 +143,7 @@ export default defineComponent({
                 this.$store.commit(
                     "refreshViewWithCode",
                     addElement(
-                        this.$store.state.project.workspace.openFile[
-                            this.$store.state.project.workspace.currentFile
-                        ].context,
+                        this.$store.getters.currentFileContent,
                         htmlChooser,
                         2,
                         addElementInfo
@@ -171,9 +165,7 @@ export default defineComponent({
                 "refreshViewWithCode",
                 removeElement(
                     toRaw(
-                        this.$store.state.project.workspace.openFile[
-                            this.$store.state.project.workspace.currentFile
-                        ].context
+                        this.$store.getters.currentFileContent
                     ),
                     htmlChooser,
                     2

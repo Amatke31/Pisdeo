@@ -190,14 +190,11 @@ export default defineComponent({
         },
         text: function(n) {
             if (!this.lock) {
-                let htmlChooser = this.$store.state.project.workspace.htmlChooser.split("-");
                 this.$store.commit(
                     "refreshViewWithCode",
                     setAttribute(
-                        this.$store.state.project.workspace.openFile[
-                            this.$store.state.project.workspace.currentFile
-                        ].context,
-                        htmlChooser,
+                        this.$store.getters.currentFileContent,
+                        this.$store.getters.getHTMLChooserLayer,
                         2,
                         {
                             changeAttr: "text",

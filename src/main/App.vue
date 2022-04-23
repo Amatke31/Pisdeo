@@ -211,7 +211,7 @@ export default defineComponent({
             if (mutation.type == "chooseElement") {
                 let htmlChooser = state.project.workspace.htmlChooser.split("-");
                 let attribute = getAttribute(
-                    state.project.workspace.openFile[state.project.workspace.currentFile].context,
+                    this.$store.getters.currentFileContent,
                     htmlChooser,
                     2
                 );
