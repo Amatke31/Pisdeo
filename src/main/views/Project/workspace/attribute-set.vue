@@ -5,17 +5,54 @@
         </h2>
         <span v-if="attribute.element !== '.text'">
             <div :class="attrBar">
-                <div class="btn style" @click="attrPage = 'style'">
-                    {{ $t("attr.style") }}
-                </div>
-                <div class="btn attr" @click="attrPage = 'attr'">
-                    {{ $t("attr.attr") }}
+                <div class="btn set" @click="attrPage = 'set'">
+                    {{ $t("attr.set") }}
                 </div>
                 <div class="btn computed" @click="attrPage = 'computed'">
                     {{ $t("attr.computed") }}
                 </div>
             </div>
-            <div class="frame" v-if="attrPage == 'style'">
+            <div class="frame" v-if="attrPage == 'set'">
+                <div id="attrFrame" :class="frame.attr.class">
+                    <div class="folder">
+                        <icon-down
+                            class="arrow"
+                            theme="outline"
+                            size="16"
+                            fill="#aaa"
+                            @click="fold('attr')"
+                        />
+                        <div>{{ $t("attr.attr") }}</div>
+                    </div>
+                    <el-collapse-transition>
+                        <div class="content" v-show="frame.attr.class == 'open'">
+                            <div v-for="item in routine" :key="item.name" class="setDiv">
+                                <div class="attrName">{{ $t(item.id) + ":" }}</div>
+                                <el-input
+                                    v-if="item.type !== 'select'"
+                                    size="small"
+                                    class="attrInput"
+                                    v-model="v[item.name]"
+                                    @change="setAttr(item.name, v[item.name])"
+                                />
+                                <el-select
+                                    v-if="item.type == 'select'"
+                                    size="small"
+                                    class="attrInput"
+                                    v-model="v[item.name]"
+                                    @change="setAttr(item.name, v[item.name])"
+                                >
+                                    <el-option
+                                        v-for="item in item.select"
+                                        :key="item.name"
+                                        :label="$t(item.id)"
+                                        :value="item.name"
+                                    />
+                                </el-select>
+                            </div>
+                        </div>
+                    </el-collapse-transition>
+                </div>
                 <div id="edgeFrame" :class="frame.edge.class">
                     <div class="folder">
                         <icon-down
@@ -30,32 +67,6 @@
                     <el-collapse-transition>
                         <div class="content" v-show="frame.edge.class == 'open'"></div>
                     </el-collapse-transition>
-                </div>
-            </div>
-            <div class="attrFrame" v-if="attrPage == 'attr'">
-                <div v-for="item in routine" :key="item.name" class="setDiv">
-                    <div class="attrName">{{ $t(item.id) + ":" }}</div>
-                    <el-input
-                        v-if="item.type !== 'select'"
-                        size="small"
-                        class="attrInput"
-                        v-model="v[item.name]"
-                        @change="setAttr(item.name, v[item.name])"
-                    />
-                    <el-select
-                        v-if="item.type == 'select'"
-                        size="small"
-                        class="attrInput"
-                        v-model="v[item.name]"
-                        @change="setAttr(item.name, v[item.name])"
-                    >
-                        <el-option
-                            v-for="item in item.select"
-                            :key="item.name"
-                            :label="$t(item.id)"
-                            :value="item.name"
-                        />
-                    </el-select>
                 </div>
             </div>
             <div class="frame" v-if="attrPage == 'computed'">
@@ -138,7 +149,7 @@
 import { defineComponent } from "vue";
 import { setAttribute } from "../../../utils/resolve/attribute";
 
-const noAttr = ["children", "element", "elementName"];
+const noAttr = ["children", "element", "elementName", "class"];
 
 export default defineComponent({
     props: {
@@ -151,12 +162,16 @@ export default defineComponent({
             lock: false,
             text: "",
             frame: {
-                edge: {
+                attr: {
                     class: "open",
                     height: "100px",
                 },
+                edge: {
+                    class: "fold",
+                    height: "100px",
+                },
             },
-            attrPage: "style",
+            attrPage: "set",
             unit: [
                 {
                     label: "px",
@@ -201,18 +216,21 @@ export default defineComponent({
             return `attrBar ${this.attrPage}`;
         },
         routine() {
+            let main = this.allRoutine[this.attribute!.element]
+                ? this.allRoutine[this.attribute!.element]
+                : [];
             let other: Array<Object> = [];
             for (let i in this.v) {
                 if (
                     noAttr.indexOf(i) == -1 &&
-                    this.allRoutine[this.attribute!.element].find(function(obj: any) {
+                    main.find(function(obj: any) {
                         return obj.name == i;
                     }) == undefined
                 ) {
                     other.push({ name: i, id: `nt.${i}`, type: "text" });
                 }
             }
-            let out = [...other, ...this.allRoutine[this.attribute!.element]];
+            let out = [...other, ...main];
             out.sort(function(a, b) {
                 return a.name.toLowerCase().charCodeAt(0) - b.name.toLowerCase().charCodeAt(0);
             });
@@ -227,7 +245,10 @@ export default defineComponent({
                 this.lock = false;
             }, 100);
             this.v = {};
-            this.allRoutine[this.attribute!.element].forEach((attr: any) => {
+            (this.allRoutine[this.attribute!.element]
+                ? this.allRoutine[this.attribute!.element]
+                : []
+            ).forEach((attr: any) => {
                 this.v[attr.name] = attr.default ? attr.default : "";
             });
             this.v = { ...this.v, ...this.attribute };
@@ -303,7 +324,7 @@ export default defineComponent({
         }
     }
 
-    .attrBar.style .btn.style {
+    .attrBar.set .btn.set {
         background-color: #444;
         border-bottom: 2px solid #999;
     }
@@ -313,37 +334,8 @@ export default defineComponent({
         border-bottom: 2px solid #999;
     }
 
-    .attrBar.attr .btn.attr {
-        background-color: #444;
-        border-bottom: 2px solid #999;
-    }
-
     .textEdit {
         user-select: text;
-    }
-}
-
-.attrFrame {
-    border-top: 1px solid rgba(204, 204, 204, 0.2);
-    box-shadow: #000000 0 6px 6px -6px inset;
-    display: flex;
-    flex-direction: column;
-
-    .setDiv {
-        display: flex;
-        margin: 7px auto;
-
-        * {
-            font-size: 12px;
-        }
-
-        .attrName {
-            width: 100px;
-        }
-
-        .attrInput {
-            width: calc(20vw - 10px - 100px);
-        }
     }
 }
 
@@ -384,41 +376,26 @@ export default defineComponent({
     * {
         font-size: 10px;
     }
+}
 
-    input {
-        padding: 2px 4px;
-    }
-    select {
-        padding: 2px 2px;
-    }
-    .input {
-        margin: 2px;
-        border: 1px solid #444;
-        border-radius: 8px;
-    }
-    .double {
+#attrFrame .content {
+    display: flex;
+    flex-direction: column;
+
+    .setDiv {
         display: flex;
+        margin: 7px auto;
 
-        .maininput {
-            width: 70%;
+        * {
+            font-size: 12px;
         }
 
-        .subinput {
-            width: 30%;
+        .attrName {
+            width: 100px;
         }
-    }
 
-    .num {
-        width: 60px;
-
-        &.double {
-            .maininput {
-                width: 60%;
-            }
-
-            .subinput {
-                width: 40%;
-            }
+        .attrInput {
+            width: calc(20vw - 10px - 100px);
         }
     }
 }

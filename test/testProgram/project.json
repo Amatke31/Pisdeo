@@ -40,6 +40,7 @@
                         {
                             "element": "div",
                             "class": "menu-bar",
+                            "藏一个属性": "233",
                             "elementName": "Menu Bar",
                             "children": [
                                 {
@@ -57,7 +58,6 @@
                                     "elementName": "Gitee Link",
                                     "href": "https://gitee.com/amatke31/nexwebdesigner",
                                     "target": "_blank",
-                                    "test": "test",
                                     "children": [
                                         {
                                             "element": ".text",
