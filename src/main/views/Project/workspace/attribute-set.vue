@@ -25,9 +25,18 @@
                         <div>{{ $t("attr.attr") }}</div>
                     </div>
                     <el-collapse-transition>
-                        <div class="content" v-show="frame.attr.class == 'open'">
-                            <div v-for="item in routine" :key="item.name" class="setDiv">
-                                <div class="attrName">{{ $t(item.id) + ":" }}</div>
+                        <div
+                            class="content"
+                            v-show="frame.attr.class == 'open'"
+                        >
+                            <div
+                                v-for="item in routine"
+                                :key="item.name"
+                                class="setDiv"
+                            >
+                                <div class="attrName">
+                                    {{ $t(item.id) + ":" }}
+                                </div>
                                 <el-input
                                     v-if="item.type !== 'select'"
                                     size="small"
@@ -49,6 +58,17 @@
                                         :value="item.name"
                                     />
                                 </el-select>
+                                <icon-delete
+                                    :class="
+                                        'attrDel' + v[item.name]
+                                            ? ''
+                                            : 'disable'
+                                    "
+                                    theme="outline"
+                                    size="16"
+                                    @click="delAttr(item.name)"
+                                    :fill="v[item.name] ? '#eee' : '#333'"
+                                />
                             </div>
                         </div>
                     </el-collapse-transition>
@@ -65,7 +85,10 @@
                         <div>{{ $t("attr.edge") }}</div>
                     </div>
                     <el-collapse-transition>
-                        <div class="content" v-show="frame.edge.class == 'open'"></div>
+                        <div
+                            class="content"
+                            v-show="frame.edge.class == 'open'"
+                        ></div>
                     </el-collapse-transition>
                 </div>
             </div>
@@ -232,7 +255,10 @@ export default defineComponent({
             }
             let out = [...other, ...main];
             out.sort(function(a, b) {
-                return a.name.toLowerCase().charCodeAt(0) - b.name.toLowerCase().charCodeAt(0);
+                return (
+                    a.name.toLowerCase().charCodeAt(0) -
+                    b.name.toLowerCase().charCodeAt(0)
+                );
             });
             return out;
         },
@@ -272,7 +298,8 @@ export default defineComponent({
     },
     methods: {
         fold: function(which: string) {
-            this.frame[which].class = this.frame[which].class == "fold" ? "open" : "fold";
+            this.frame[which].class =
+                this.frame[which].class == "fold" ? "open" : "fold";
         },
         setAttr: function(attr: string, value: string) {
             if (!this.lock) {
@@ -395,7 +422,12 @@ export default defineComponent({
         }
 
         .attrInput {
-            width: calc(20vw - 10px - 100px);
+            width: calc(20vw - 10px - 100px - 20px);
+        }
+
+        .attrDel {
+            width: 20px;
+            padding: 4px;
         }
     }
 }
