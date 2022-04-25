@@ -59,11 +59,7 @@
                                     />
                                 </el-select>
                                 <icon-delete
-                                    :class="
-                                        'attrDel' + v[item.name]
-                                            ? ''
-                                            : 'disable'
-                                    "
+                                    class="attrDel"
                                     theme="outline"
                                     size="16"
                                     @click="delAttr(item.name)"
