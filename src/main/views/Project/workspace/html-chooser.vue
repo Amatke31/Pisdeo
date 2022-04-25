@@ -183,13 +183,13 @@ export default defineComponent({
 .html-chooser {
     height: 60vh;
     background-color: #222;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
 
 #html-chooser {
     height: 100%;
+    overflow: scroll;
 }
 
 .elementBar {
