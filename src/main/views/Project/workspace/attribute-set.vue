@@ -34,9 +34,12 @@
                                 :key="item.name"
                                 class="setDiv"
                             >
-                                <div class="attrName">
+                                <div v-if="item.cutsom" class="attrName">
                                     {{ $t(item.id) + ":" }}
                                 </div>
+                                <el-input v-else class="attrName">
+                                    {{ $t(item.id) + ":" }}
+                                </el-input>
                                 <el-input
                                     v-if="item.type !== 'select'"
                                     size="small"
@@ -59,7 +62,7 @@
                                     />
                                 </el-select>
                                 <icon-delete
-                                    class="attrDel"
+                                    :class="'attrDel'"
                                     theme="outline"
                                     size="16"
                                     @click="delAttr(item.name)"
@@ -246,7 +249,12 @@ export default defineComponent({
                         return obj.name == i;
                     }) == undefined
                 ) {
-                    other.push({ name: i, id: `nt.${i}`, type: "text" });
+                    other.push({
+                        name: i,
+                        id: `nt.${i}`,
+                        type: "text",
+                        custom: true,
+                    });
                 }
             }
             let out = [...other, ...main];
@@ -320,6 +328,10 @@ export default defineComponent({
 .elementName {
     margin: 0 4px;
     user-select: none;
+}
+
+.content {
+    overflow: scroll;
 }
 
 .attr-set {
