@@ -6,7 +6,7 @@
             <v-icon :class="add" size="x-small" @click="addElement('.text')">mdi-plus</v-icon>
             <v-icon class="addElement" size="x-small" @click="removeElement">mdi-minus</v-icon>
         </div>
-        <div ref="htmlChooser" id="html-chooser" @click="htmlChoose"></div>
+        <div ref="htmlChooser" id="html-chooser" class="scroll" @click="htmlChoose"></div>
     </div>
 </template>
 <script lang="ts">
@@ -50,8 +50,7 @@ export default defineComponent({
             ) {
                 switch (state.project.workspace.currentFile.split(".").pop()) {
                     case "html":
-                        this.html =
-                            this.$store.getters.currentFileContent;
+                        this.html = this.$store.getters.currentFileContent;
                         this.refreshChooser();
                         break;
                 }
@@ -65,8 +64,7 @@ export default defineComponent({
             ) {
                 switch (state.project.workspace.currentFile.split(".").pop()) {
                     case "html":
-                        this.html =
-                            this.$store.getters.currentFileContent;
+                        this.html = this.$store.getters.currentFileContent;
                         this.refreshChooser();
                         break;
                 }
@@ -161,13 +159,7 @@ export default defineComponent({
             });
             this.$store.commit(
                 "refreshViewWithCode",
-                removeElement(
-                    toRaw(
-                        this.$store.getters.currentFileContent
-                    ),
-                    htmlChooser,
-                    2
-                )
+                removeElement(toRaw(this.$store.getters.currentFileContent), htmlChooser, 2)
             );
         },
         openElementChooser: function() {},

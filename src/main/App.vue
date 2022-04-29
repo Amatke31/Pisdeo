@@ -431,6 +431,10 @@ a {
     box-shadow: inset 0 0 0 10px;
 }
 
+*::-webkit-scrollbar-corner {
+    background: unset;
+}
+
 .scroll {
     color: rgba(0, 0, 0, 0);
     transition: color 0.3s ease;
