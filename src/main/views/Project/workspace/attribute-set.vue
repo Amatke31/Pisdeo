@@ -13,6 +13,73 @@
                 </div>
             </div>
             <div class="frame" v-if="attrPage == 'set'">
+                <div id="generalFrame" :class="frame.general.class">
+                    <div class="folder">
+                        <icon-down
+                            class="arrow"
+                            theme="outline"
+                            size="16"
+                            fill="#aaa"
+                            @click="fold('general')"
+                        />
+                        <div>{{ $t("attr.general") }}</div>
+                    </div>
+                    <el-collapse-transition>
+                        <div class="content" v-show="frame.general.class == 'open'">
+                            <div class="setDiv">
+                                <div class="attrName">
+                                    {{ $t("attr.elementName") + ":" }}
+                                </div>
+                                <el-input
+                                    size="small"
+                                    class="attrInput"
+                                    v-model="vN['elementName']"
+                                    @change="setAttr('elementName', vN['elementName'])"
+                                />
+                            </div>
+                            <div class="setDiv">
+                                <div class="attrName">
+                                    {{ $t("attr.class") + ":" }}
+                                </div>
+                                <el-input
+                                    size="small"
+                                    class="attrInput"
+                                    v-model="vN['class']"
+                                    @change="setAttr('class', vN['class'])"
+                                />
+                            </div>
+                            <div class="setDiv">
+                                <div class="attrName">
+                                    {{ $t("attr.id") + ":" }}
+                                </div>
+                                <el-input
+                                    size="small"
+                                    class="attrInput"
+                                    v-model="vN['id']"
+                                    @change="setAttr('id', vN['id'])"
+                                />
+                            </div>
+                            <div class="setDiv">
+                                <div class="attrName">
+                                    {{ $t("attr.element") + ":" }}
+                                </div>
+                                <el-select
+                                    size="small"
+                                    class="attrInput"
+                                    v-model="vN['element']"
+                                    @change="setAttr('element', vN['element'])"
+                                >
+                                    <el-option
+                                        v-for="item in allElement"
+                                        :key="item"
+                                        :label="$t(`element.${item}`)"
+                                        :value="item"
+                                    />
+                                </el-select>
+                            </div>
+                        </div>
+                    </el-collapse-transition>
+                </div>
                 <div id="attrFrame" :class="frame.attr.class">
                     <div class="folder">
                         <icon-down
@@ -204,6 +271,10 @@ export default defineComponent({
             lock: false,
             text: "",
             frame: {
+                general: {
+                    class: "open",
+                    height: "100px",
+                },
                 attr: {
                     class: "open",
                     height: "100px",
@@ -265,9 +336,16 @@ export default defineComponent({
                         ],
                     },
                 ],
+                div: [],
             },
             v: {},
             vT: {},
+            vN: {
+                class: "",
+                id: "",
+                elementName: "",
+                element: "div",
+            },
         };
     },
     computed: {
@@ -299,6 +377,13 @@ export default defineComponent({
             out.sort(function(a, b) {
                 return a.name.toLowerCase().charCodeAt(0) - b.name.toLowerCase().charCodeAt(0);
             });
+            return out;
+        },
+        allElement() {
+            let out: Array<string> = [];
+            for (let item in this.allRoutine) {
+                out.push(item);
+            }
             return out;
         },
     },
@@ -434,6 +519,12 @@ export default defineComponent({
                     : false;
             });
             this.v = { ...this.v, ...this.attribute };
+            this.vN = {
+                elementName: this.attribute!.elementName ? this.attribute!.elementName : "",
+                class: this.attribute!.class ? this.attribute!.class : "",
+                id: this.attribute!.id ? this.attribute!.id : "",
+                element: this.attribute!.element,
+            };
         },
     },
 });
@@ -528,7 +619,7 @@ export default defineComponent({
     }
 }
 
-#attrFrame .content {
+.content {
     display: flex;
     flex-direction: column;
 
