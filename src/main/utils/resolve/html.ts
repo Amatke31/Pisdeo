@@ -24,7 +24,7 @@ function analysisObj(obj: any): string {
     } else {
         out += `<${obj.element}`;
         for (let ref in obj) {
-            if (!noChange.includes(ref) || obj[ref] == "___unset") out += ` ${ref}="${obj[ref]}"`;
+            if (!noChange.includes(ref)) out += ` ${ref}="${obj[ref]}"`;
         }
         out += `>`;
         for (let ref in obj) {
@@ -55,7 +55,7 @@ function analysisObjWithElement(obj: any): HTMLElement | string {
     } else {
         let out: HTMLElement = document.createElement(obj.element);
         for (let ref in obj) {
-            if (!noChange.includes(ref) || obj[ref] !== "___unset") out.setAttribute(ref, obj[ref]);
+            if (!noChange.includes(ref)) out.setAttribute(ref, obj[ref]);
         }
         for (let ref in obj) {
             if (noChange.includes(ref)) {
