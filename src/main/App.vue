@@ -347,7 +347,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-* {
+div,
+p,
+a {
     font-family: Helvetica;
     margin: 0;
     padding: 0;

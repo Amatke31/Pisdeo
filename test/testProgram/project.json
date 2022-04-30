@@ -81,6 +81,7 @@
                             "element": "button",
                             "elementName": "嗯妞",
                             "disabled": true,
+                            "test": "1",
                             "children": [
                                 {
                                     "element": ".text",

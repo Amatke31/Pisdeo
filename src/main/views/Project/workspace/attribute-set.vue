@@ -187,6 +187,7 @@
     </div>
 </template>
 <script lang="ts">
+import { ElMessage } from "element-plus";
 import { defineComponent } from "vue";
 import { setAttribute, delAttribute, setAttributeT } from "../../../utils/resolve/attribute";
 
@@ -362,18 +363,41 @@ export default defineComponent({
         },
         setAttrT: function(attr: string, value: string) {
             if (!this.lock) {
-                this.$store.commit(
-                    "refreshViewWithCode",
-                    setAttributeT(
-                        this.$store.getters.currentFileContent,
-                        this.$store.getters.getHTMLChooserLayer,
-                        2,
-                        {
-                            changeAttr: attr,
-                            value: value,
-                        }
-                    )
-                );
+                let main = this.allRoutine[this.attribute!.element]
+                    ? this.allRoutine[this.attribute!.element]
+                    : [];
+                if (
+                    main.find(function(obj: any) {
+                        return obj.name == value;
+                    }) !== undefined
+                ) {
+                    this.refreshAttr(this.attribute);
+                    ElMessage({
+                        showClose: true,
+                        message: this.$t("attr.warning.repeat"),
+                        type: "error",
+                    });
+                } else if (value == "") {
+                    this.refreshAttr(this.attribute);
+                    ElMessage({
+                        showClose: true,
+                        message: this.$t("attr.warning.null"),
+                        type: "error",
+                    });
+                } else {
+                    this.$store.commit(
+                        "refreshViewWithCode",
+                        setAttributeT(
+                            this.$store.getters.currentFileContent,
+                            this.$store.getters.getHTMLChooserLayer,
+                            2,
+                            {
+                                changeAttr: attr,
+                                value: value,
+                            }
+                        )
+                    );
+                }
             }
         },
         setAttrC: function(attr: string, value: Boolean) {
@@ -479,6 +503,7 @@ export default defineComponent({
             transform: rotate(-90deg);
             border-radius: 4px;
             transition: 0.1s;
+            cursor: pointer;
 
             &:hover {
                 background-color: #333;
@@ -533,6 +558,7 @@ export default defineComponent({
             margin: 4px;
             transition: 0.3s;
             border-radius: 4px;
+            cursor: pointer;
 
             &:hover {
                 background-color: #444;
@@ -540,6 +566,7 @@ export default defineComponent({
 
             &.disable {
                 background-color: unset;
+                cursor: default;
             }
         }
     }

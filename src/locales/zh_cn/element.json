@@ -46,5 +46,17 @@
     "element.code": "源代码",
     "element.audio": "音频",
     "element.img": "图像",
-    "element.source": "源文件"
+    "element.source": "源文件",
+    "a.download": "URL(直接下载)",
+    "a.href": "URL",
+    "a.target": "显示方法",
+    "a.target.self": "当前页面加载",
+    "a.target.blank": "新窗口打开",
+    "a.target.parent": "在父级页面加载",
+    "a.target.top": "在顶级页面加载",
+    "button.autofocus": "自动聚焦该焦点",
+    "button.disabled": "禁用按钮",
+    "input.autocomplete": "自动完成表单",
+    "input.autocomplete.on": "自动",
+    "input.autocomplete.off": "禁止"
 }

@@ -10,16 +10,6 @@
     "attr.attr": "Attribute",
     "attr.computed": "Computed",
     "attr.style": "style",
-    "a.download": "Download Link",
-    "a.href": "Link",
-    "a.target": "Display",
-    "a.target.self": "Current browsing context",
-    "a.target.blank": "New Tab",
-    "a.target.parent": "Parent browsing context",
-    "a.target.top": "Topmost browsing context",
-    "button.autofocus": "auto focus",
-    "button.disabled": "disabled",
-    "input.autocomplete": "auto complete",
-    "input.autocomplete.on": "on",
-    "input.autocomplete.off": "off"
+    "attr.warning.repeat": "Property already exists",
+    "attr.warning.null": "Cannot be set to null"
 }
