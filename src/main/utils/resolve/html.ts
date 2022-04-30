@@ -24,7 +24,7 @@ function analysisObj(obj: any): string {
     } else {
         out += `<${obj.element}`;
         for (let ref in obj) {
-            if (!noChange.includes(ref) || obj[ref] !== "___unset") out += ` ${ref}="${obj[ref]}"`;
+            if (!noChange.includes(ref) || obj[ref] == "___unset") out += ` ${ref}="${obj[ref]}"`;
         }
         out += `>`;
         for (let ref in obj) {

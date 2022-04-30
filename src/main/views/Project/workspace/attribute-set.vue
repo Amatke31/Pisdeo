@@ -27,18 +27,31 @@
                     <el-collapse-transition>
                         <div class="content" v-show="frame.attr.class == 'open'">
                             <div v-for="item in routine" :key="item.name" class="setDiv">
-                                <div v-if="!item.cutsom" class="attrName">
+                                <div v-if="!item.custom" class="attrName">
                                     {{ $t(item.id) + ":" }}
                                 </div>
-                                <el-input v-else class="attrName">
+                                <el-input
+                                    v-else
+                                    class="attrName custom"
+                                    v-model="vT[item.name]"
+                                    size="small"
+                                    @change="setAttrT(item.name, vT[item.name])"
+                                >
                                     {{ $t(item.id) + ":" }}
                                 </el-input>
                                 <el-input
-                                    v-if="item.type !== 'select'"
+                                    v-if="item.type !== 'select' && !item.custom"
                                     size="small"
                                     class="attrInput"
                                     v-model="v[item.name]"
                                     @change="setAttr(item.name, v[item.name])"
+                                />
+                                <el-input
+                                    v-if="item.type !== 'select' && item.custom"
+                                    size="small"
+                                    class="attrInput"
+                                    v-model="v[item.name]"
+                                    @change="setAttr(vT[item.name], v[item.name])"
                                 />
                                 <el-select
                                     v-if="item.type == 'select'"
@@ -55,11 +68,20 @@
                                     />
                                 </el-select>
                                 <icon-close-small
-                                    :class="'attrDel' + (canDel(item.name) ? '' : ' disable')"
+                                    :class="
+                                        'attrDel' +
+                                            (canDel(!item.custom ? item.name : vT[item.name])
+                                                ? ''
+                                                : ' disable')
+                                    "
                                     theme="outline"
                                     size="16"
-                                    @click="delAttr(item.name)"
-                                    :fill="canDel(item.name) ? '#eee' : '#333'"
+                                    @click="delAttr(!item.custom ? item.name : vT[item.name])"
+                                    :fill="
+                                        canDel(!item.custom ? item.name : vT[item.name])
+                                            ? '#eee'
+                                            : '#333'
+                                    "
                                 />
                             </div>
                         </div>
@@ -159,7 +181,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { setAttribute, delAttribute } from "../../../utils/resolve/attribute";
+import { setAttribute, delAttribute, setAttributeT } from "../../../utils/resolve/attribute";
 
 const noAttr = ["children", "element", "elementName", "class"];
 
@@ -221,6 +243,7 @@ export default defineComponent({
                 ],
             },
             v: {},
+            vT: {},
         };
     },
     computed: {
@@ -245,6 +268,7 @@ export default defineComponent({
                         type: "text",
                         custom: true,
                     });
+                    this.vT[i] = i;
                 }
             }
             let out = [...other, ...main];
@@ -311,6 +335,22 @@ export default defineComponent({
                     );
                     this.refreshAttr(this.attribute);
                 }
+            }
+        },
+        setAttrT: function(attr: string, value: string) {
+            if (!this.lock) {
+                this.$store.commit(
+                    "refreshViewWithCode",
+                    setAttributeT(
+                        this.$store.getters.currentFileContent,
+                        this.$store.getters.getHTMLChooserLayer,
+                        2,
+                        {
+                            changeAttr: attr,
+                            value: value,
+                        }
+                    )
+                );
             }
         },
         canDel: function(attr: string) {
@@ -441,6 +481,10 @@ export default defineComponent({
 
         .attrName {
             width: 100px;
+
+            &.custom {
+                padding: 0 4px;
+            }
         }
 
         .attrInput {
