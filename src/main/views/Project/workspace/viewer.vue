@@ -3,13 +3,18 @@
         <div id="viewerMenu">
             <icon-refresh class="btn" theme="outline" size="16" fill="#eee" @click="reload" />
         </div>
-        <iframe ref="viewer" id="viewer"></iframe>
+        <iframe v-if="!refreshing" ref="viewer" id="viewer"></iframe>
     </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
 
 export default defineComponent({
+    data() {
+        return {
+            refreshing: false,
+        };
+    },
     props: {
         viewer: {
             type: String,
@@ -32,13 +37,13 @@ export default defineComponent({
             iDoc.children[0].innerHTML = this.viewer;
         },
         reload: function() {
-            let iframe = this.$refs.viewer;
-            let iWindow: any = (<HTMLIFrameElement>iframe).contentWindow;
-            iWindow.location.reload();
-            setTimeout(() => {
-                let iDoc: any = (<HTMLIFrameElement>iframe).contentDocument;
-                iDoc.children[0].innerHTML = this.viewer;
-            }, 100);
+            this.refreshing = true;
+            this.$nextTick(() => {
+                this.refreshing = false;
+                this.$nextTick(() => {
+                    this.asyncView();
+                });
+            });
         },
     },
 });

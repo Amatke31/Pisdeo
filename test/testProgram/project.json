@@ -52,6 +52,7 @@
                         {
                             "element": "div",
                             "elementName": "Repositorie Link",
+                            "class": "repositorie",
                             "children": [
                                 {
                                     "element": "a",
@@ -72,6 +73,16 @@
                                         {
                                             "element": ".text",
                                             "text": "全球最大同性恋交友网站仓库"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "element": "style",
+                                    "css": [
+                                        {
+                                            "class": ".repositorie",
+                                            "display": "flex",
+                                            "flex-direction": "column"
                                         }
                                     ]
                                 }

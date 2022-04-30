@@ -1,4 +1,4 @@
-let noChange = ["element", "children", "css", "script", "text"];
+let noChange = ["element", "children", "css", "script", "text", "elementName"];
 let noCssChange = ["class"];
 
 const arrRemove = function(it: any, arr: Array<any>) {
