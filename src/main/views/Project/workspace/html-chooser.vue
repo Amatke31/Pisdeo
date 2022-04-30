@@ -181,7 +181,7 @@ export default defineComponent({
 
 #html-chooser {
     height: 100%;
-    overflow: scroll;
+    overflow: hidden;
 }
 
 .elementBar {

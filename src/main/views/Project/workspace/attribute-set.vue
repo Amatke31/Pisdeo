@@ -55,11 +55,11 @@
                                     />
                                 </el-select>
                                 <icon-close-small
-                                    :class="'attrDel'"
+                                    :class="'attrDel' + (canDel(item.name) ? '' : ' disable')"
                                     theme="outline"
                                     size="16"
                                     @click="delAttr(item.name)"
-                                    :fill="v[item.name] ? '#eee' : '#333'"
+                                    :fill="canDel(item.name) ? '#eee' : '#333'"
                                 />
                             </div>
                         </div>
@@ -159,7 +159,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { setAttribute } from "../../../utils/resolve/attribute";
+import { setAttribute, delAttribute } from "../../../utils/resolve/attribute";
 
 const noAttr = ["children", "element", "elementName", "class"];
 
@@ -256,19 +256,7 @@ export default defineComponent({
     },
     watch: {
         attribute: function(n) {
-            this.lock = true;
-            this.text = n.text ? n.text : "";
-            setTimeout(() => {
-                this.lock = false;
-            }, 100);
-            this.v = {};
-            (this.allRoutine[this.attribute!.element]
-                ? this.allRoutine[this.attribute!.element]
-                : []
-            ).forEach((attr: any) => {
-                this.v[attr.name] = attr.default ? attr.default : "";
-            });
-            this.v = { ...this.v, ...this.attribute };
+            this.refreshAttr(n);
         },
         text: function(n) {
             if (!this.lock) {
@@ -306,6 +294,46 @@ export default defineComponent({
                     )
                 );
             }
+        },
+        delAttr: function(attr: string, value: string) {
+            if (!this.lock) {
+                if (this.canDel(attr)) {
+                    this.$store.commit(
+                        "refreshViewWithCode",
+                        delAttribute(
+                            this.$store.getters.currentFileContent,
+                            this.$store.getters.getHTMLChooserLayer,
+                            2,
+                            {
+                                changeAttr: attr,
+                            }
+                        )
+                    );
+                    this.refreshAttr(this.attribute);
+                }
+            }
+        },
+        canDel: function(attr: string) {
+            if (this.attribute![attr] == undefined) {
+                return false;
+            } else {
+                return true;
+            }
+        },
+        refreshAttr: function(n: any) {
+            this.lock = true;
+            this.text = n.text ? n.text : "";
+            setTimeout(() => {
+                this.lock = false;
+            }, 100);
+            this.v = {};
+            (this.allRoutine[this.attribute!.element]
+                ? this.allRoutine[this.attribute!.element]
+                : []
+            ).forEach((attr: any) => {
+                this.v[attr.name] = attr.default ? attr.default : "";
+            });
+            this.v = { ...this.v, ...this.attribute };
         },
     },
 });
@@ -420,8 +448,18 @@ export default defineComponent({
         }
 
         .attrDel {
-            width: 20px;
-            padding: 4px;
+            width: 16px;
+            margin: 4px;
+            transition: 0.3s;
+            border-radius: 4px;
+
+            &:hover {
+                background-color: #444;
+            }
+
+            &.disable {
+                background-color: unset;
+            }
         }
     }
 }
