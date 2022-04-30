@@ -11,6 +11,7 @@
     "element.form": "表单",
     "element.select": "选择框",
     "element.input": "输入框",
+    "element.button": "按钮",
     "element.textarea": "多行文本框",
     "element.iframe": "内联框架",
     "element.ol": "有序列表",

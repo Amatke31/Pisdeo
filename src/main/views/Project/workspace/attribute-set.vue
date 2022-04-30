@@ -40,18 +40,25 @@
                                     {{ $t(item.id) + ":" }}
                                 </el-input>
                                 <el-input
-                                    v-if="item.type !== 'select' && !item.custom"
+                                    v-if="item.type == 'text' && !item.custom"
                                     size="small"
                                     class="attrInput"
                                     v-model="v[item.name]"
                                     @change="setAttr(item.name, v[item.name])"
                                 />
                                 <el-input
-                                    v-if="item.type !== 'select' && item.custom"
+                                    v-if="item.type == 'text' && item.custom"
                                     size="small"
                                     class="attrInput"
                                     v-model="v[item.name]"
                                     @change="setAttr(vT[item.name], v[item.name])"
+                                />
+                                <el-checkbox
+                                    v-if="item.type == 'checkbox'"
+                                    class="attrInput"
+                                    v-model="v[item.name]"
+                                    size="small"
+                                    @change="setAttrC(item.name, v[item.name])"
                                 />
                                 <el-select
                                     v-if="item.type == 'select'"
@@ -87,19 +94,19 @@
                         </div>
                     </el-collapse-transition>
                 </div>
-                <div id="edgeFrame" :class="frame.edge.class">
+                <div id="styleFrame" :class="frame.style.class">
                     <div class="folder">
                         <icon-down
                             class="arrow"
                             theme="outline"
                             size="16"
                             fill="#aaa"
-                            @click="fold('edge')"
+                            @click="fold('style')"
                         />
-                        <div>{{ $t("attr.edge") }}</div>
+                        <div>{{ $t("attr.style") }}</div>
                     </div>
                     <el-collapse-transition>
-                        <div class="content" v-show="frame.edge.class == 'open'"></div>
+                        <div class="content" v-show="frame.style.class == 'open'"></div>
                     </el-collapse-transition>
                 </div>
             </div>
@@ -200,7 +207,7 @@ export default defineComponent({
                     class: "open",
                     height: "100px",
                 },
-                edge: {
+                style: {
                     class: "fold",
                     height: "100px",
                 },
@@ -238,6 +245,22 @@ export default defineComponent({
                             { name: "_blank", id: "a.target.blank" },
                             { name: "_parent", id: "a.target.parent" },
                             { name: "_top", id: "a.target.top" },
+                        ],
+                    },
+                ],
+                button: [
+                    { name: "autofocus", type: "checkbox", id: "button.autofocus" },
+                    { name: "disabled", type: "checkbox", id: "button.disabled" },
+                ],
+                input: [
+                    {
+                        name: "autocomplete",
+                        type: "select",
+                        id: "button.autocomplete",
+                        default: "on",
+                        select: [
+                            { name: "on", id: "button.autocomplete.on" },
+                            { name: "off", id: "button.autocomplete.off" },
                         ],
                     },
                 ],
@@ -303,7 +326,7 @@ export default defineComponent({
         fold: function(which: string) {
             this.frame[which].class = this.frame[which].class == "fold" ? "open" : "fold";
         },
-        setAttr: function(attr: string, value: string) {
+        setAttr: function(attr: string, value: string | Boolean) {
             if (!this.lock) {
                 this.$store.commit(
                     "refreshViewWithCode",
@@ -319,7 +342,7 @@ export default defineComponent({
                 );
             }
         },
-        delAttr: function(attr: string, value: string) {
+        delAttr: function(attr: string) {
             if (!this.lock) {
                 if (this.canDel(attr)) {
                     this.$store.commit(
@@ -353,6 +376,15 @@ export default defineComponent({
                 );
             }
         },
+        setAttrC: function(attr: string, value: Boolean) {
+            if (!this.lock) {
+                if (value == true) {
+                    this.setAttr(attr, true);
+                } else if (value == false) {
+                    this.delAttr(attr);
+                }
+            }
+        },
         canDel: function(attr: string) {
             if (this.attribute![attr] == undefined) {
                 return false;
@@ -371,7 +403,11 @@ export default defineComponent({
                 ? this.allRoutine[this.attribute!.element]
                 : []
             ).forEach((attr: any) => {
-                this.v[attr.name] = attr.default ? attr.default : "";
+                this.v[attr.name] = attr.default
+                    ? attr.default
+                    : attr.type !== "checkout"
+                    ? ""
+                    : false;
             });
             this.v = { ...this.v, ...this.attribute };
         },
@@ -474,6 +510,7 @@ export default defineComponent({
     .setDiv {
         display: flex;
         margin: 7px auto;
+        align-items: center;
 
         * {
             font-size: 12px;

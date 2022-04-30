@@ -10,6 +10,7 @@
     "element.table": "table",
     "element.form": "form",
     "element.select": "select",
+    "element.button": "按钮",
     "element.input": "input",
     "element.textarea": "textarea",
     "element.iframe": "inline frame",

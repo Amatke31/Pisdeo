@@ -9,12 +9,17 @@
     "attr.set": "Set",
     "attr.attr": "Attribute",
     "attr.computed": "Computed",
-    "attr.edge": "edge",
+    "attr.style": "style",
     "a.download": "Download Link",
     "a.href": "Link",
     "a.target": "Display",
     "a.target.self": "Current browsing context",
     "a.target.blank": "New Tab",
     "a.target.parent": "Parent browsing context",
-    "a.target.top": "Topmost browsing context"
+    "a.target.top": "Topmost browsing context",
+    "button.autofocus": "auto focus",
+    "button.disabled": "disabled",
+    "input.autocomplete": "auto complete",
+    "input.autocomplete.on": "on",
+    "input.autocomplete.off": "off"
 }

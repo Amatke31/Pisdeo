@@ -45,7 +45,7 @@
                             "children": [
                                 {
                                     "element": ".text",
-                                    "text": "Test"
+                                    "text": "马牛吧台"
                                 }
                             ]
                         },
@@ -74,6 +74,27 @@
                                             "text": "Github Repositorie"
                                         }
                                     ]
+                                }
+                            ]
+                        },
+                        {
+                            "element": "button",
+                            "elementName": "嗯妞",
+                            "disabled": true,
+                            "children": [
+                                {
+                                    "element": ".text",
+                                    "text": "嗯不动"
+                                }
+                            ]
+                        },
+                        {
+                            "element": "button",
+                            "elementName": "嗯钮",
+                            "children": [
+                                {
+                                    "element": ".text",
+                                    "text": "嗯"
                                 }
                             ]
                         }
