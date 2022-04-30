@@ -1,6 +1,9 @@
 <template>
     <div class="viewer">
-        <iframe ref="viewer"></iframe>
+        <div id="viewerMenu">
+            <icon-refresh class="btn" theme="outline" size="16" fill="#eee" @click="reload" />
+        </div>
+        <iframe ref="viewer" id="viewer"></iframe>
     </div>
 </template>
 <script lang="ts">
@@ -28,6 +31,15 @@ export default defineComponent({
             let iDoc: any = (<HTMLIFrameElement>iframe).contentDocument;
             iDoc.children[0].innerHTML = this.viewer;
         },
+        reload: function() {
+            let iframe = this.$refs.viewer;
+            let iWindow: any = (<HTMLIFrameElement>iframe).contentWindow;
+            iWindow.location.reload();
+            setTimeout(() => {
+                let iDoc: any = (<HTMLIFrameElement>iframe).contentDocument;
+                iDoc.children[0].innerHTML = this.viewer;
+            }, 100);
+        },
     },
 });
 </script>
@@ -37,11 +49,29 @@ export default defineComponent({
     background-color: #fff;
     border: 1px solid #444;
     overflow: hidden;
-}
 
-iframe {
-    width: 100%;
-    height: 100%;
-    border: unset;
+    #viewerMenu {
+        height: 26px;
+        padding: 0;
+        background-color: #333;
+        display: flex;
+
+        .btn {
+            margin: 3px;
+            padding: 2px;
+            border-radius: 4px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #444;
+            }
+        }
+    }
+
+    #viewer {
+        width: 100%;
+        height: 100%;
+        border: unset;
+    }
 }
 </style>

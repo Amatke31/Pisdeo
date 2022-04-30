@@ -4,7 +4,8 @@
     --el-border-color-light: rgb(50, 50, 50);
     --el-border-color-lighter: rgb(50, 50, 50);
     --el-select-input-focus-border-color: rgb(150, 150, 150);
-    --el-border-base: var(--el-border-width-base) var(--el-border-style-base) var(--el-border-color-base);
+    --el-border-base: var(--el-border-width-base) var(--el-border-style-base)
+        var(--el-border-color-base);
 }
 
 :root {
@@ -21,14 +22,14 @@
     --el-color-primary-dark-2: hsl(211, 0%, 50%);
 }
 
-
 /* element-plus-dark fix */
 
 .el-input__inner {
     box-shadow: unset;
 }
 
-.el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
+.el-select-dropdown__item.hover,
+.el-select-dropdown__item:hover {
     background-color: var(--el-bg-color);
 }
 
@@ -64,5 +65,17 @@
 
 .el-input-group--append .el-input-group__append .el-select .el-input .el-input__inner {
     background-color: var(--el-input-bg-color);
-    box-shadow: unset!important;
+    box-shadow: unset !important;
+}
+
+.el-message .el-message-icon--error svg path {
+    color: var(--el-message-text-color);
+}
+
+.el-message .el-message-icon--warning svg path {
+    color: var(--el-message-text-color);
+}
+
+.el-message .el-message-icon--success svg path {
+    color: var(--el-message-text-color);
 }
