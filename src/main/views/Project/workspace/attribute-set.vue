@@ -68,6 +68,7 @@
                                     class="attrInput"
                                     v-model="vN['element']"
                                     @change="setAttr('element', vN['element'])"
+                                    :disabled="['html', 'head', 'body'].includes(vN['element'])"
                                 >
                                     <el-option
                                         v-for="item in allElement"
@@ -328,11 +329,11 @@ export default defineComponent({
                     {
                         name: "autocomplete",
                         type: "select",
-                        id: "button.autocomplete",
+                        id: "input.autocomplete",
                         default: "on",
                         select: [
-                            { name: "on", id: "button.autocomplete.on" },
-                            { name: "off", id: "button.autocomplete.off" },
+                            { name: "on", id: "input.autocomplete.on" },
+                            { name: "off", id: "input.autocomplete.off" },
                         ],
                     },
                 ],
@@ -344,7 +345,7 @@ export default defineComponent({
                 class: "",
                 id: "",
                 elementName: "",
-                element: "div",
+                element: "",
             },
         };
     },
