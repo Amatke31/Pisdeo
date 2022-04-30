@@ -79,3 +79,14 @@
 .el-message .el-message-icon--success svg path {
     color: var(--el-message-text-color);
 }
+
+.el-input.is-disabled .el-input__inner {
+    background-color: #222;
+    box-shadow: 0 0 0 1px #222 inset;
+    color: var(--el-disabled-text-color);
+    cursor: not-allowed;
+}
+
+.el-select .el-input.is-disabled .el-input__inner:hover {
+    box-shadow: 0 0 0 1px #222 inset;
+}
