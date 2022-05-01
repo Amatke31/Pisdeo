@@ -15,11 +15,11 @@ const arrRemove = function(it: any, arr: Array<any>) {
 function ObjToHTML(obj: any) {
     clearCss();
     let out: string = "";
-    out = analysisObj(obj);
+    out = analysisObj(obj, "layer-0");
     return out;
 }
 
-function analysisObj(obj: any): string {
+function analysisObj(obj: any, layer: string): string {
     let out: string = "";
     if (obj.element == ".text") {
         out += obj.text;
@@ -34,13 +34,15 @@ function analysisObj(obj: any): string {
                 if (noChange.includes(ref)) {
                     switch (ref) {
                         case "css":
-                            out += ObjToCSS(obj["css"]);
+                            out += ObjToCSS(obj["css"], layer);
                             break;
                     }
                 }
             }
+            let ans = 0;
             for (let child in obj.children) {
-                out += analysisObj(obj.children[child]);
+                out += analysisObj(obj.children[child], `${layer}-${ans}`);
+                ans++;
             }
             out += `</${obj.element}>`;
         } else {
@@ -68,7 +70,7 @@ function analysisObjWithElement(obj: any): HTMLElement | string {
             if (noChange.includes(ref)) {
                 switch (ref) {
                     case "css":
-                        out.innerHTML = ObjToCSS(obj["css"]);
+                        out.innerHTML = ObjToCSS(obj["css"], "");
                         break;
                 }
             }

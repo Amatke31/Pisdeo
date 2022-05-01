@@ -402,7 +402,7 @@ export default defineComponent({
                 ],
                 div: [],
             },
-            v: {},
+            v: {} as any,
             vT: {},
             vN: {
                 class: "",
@@ -609,6 +609,9 @@ export default defineComponent({
                 id: this.attribute!.id ? this.attribute!.id : "",
                 element: this.attribute!.element,
             };
+
+            //style css
+
             this.vC = [];
             this.vCFolder = {};
             if (this.attribute!.css) {
@@ -617,6 +620,23 @@ export default defineComponent({
                     this.vCFolder[e.class] = "open";
                 });
             }
+
+            //element css
+
+            const css = this.$store.state.project.workspace.css;
+            let cssHave: Array<string> = [];
+            for (let i in css) {
+                cssHave.push(i);
+            }
+            const className = this.v.class ? this.v.class : "";
+            const classNames = className.split(" ");
+            classNames.forEach((i: string) => {
+                if (cssHave.includes(`.${i}`)) {
+                    console.log(cssHave.indexOf(`.${i}`), css);
+                    this.vC.push(css[cssHave[cssHave.indexOf(`.${i}`)]]);
+                }
+            });
+            console.log(this.vC);
         },
         setCSS: function() {
             this.$store.dispatch(

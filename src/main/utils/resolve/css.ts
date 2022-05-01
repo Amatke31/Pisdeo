@@ -1,6 +1,6 @@
 let allCssSelector = {};
 
-function ObjToCSS(obj: any) {
+function ObjToCSS(obj: any, layer: string) {
     let out: string = "";
     obj.forEach((obj: any) => {
         out += obj.class;
@@ -10,6 +10,7 @@ function ObjToCSS(obj: any) {
         });
         out += "}";
         allCssSelector[obj.class] = obj;
+        allCssSelector[obj.class].layer = layer;
     });
     return out;
 }
