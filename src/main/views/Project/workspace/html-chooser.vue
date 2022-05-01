@@ -13,7 +13,7 @@
 import { defineComponent, toRaw } from "vue";
 import { addElement, removeElement } from "../../../utils/resolve/html";
 const supportExt = ["html", "htm", "css", "js"];
-const disableAdd = [".text", "html", "style", "script"];
+const disableAdd = [".text", "html", "style", "script", "img", "input", "br"];
 export default defineComponent({
     props: {
         attribute: {
