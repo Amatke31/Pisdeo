@@ -769,11 +769,11 @@ export default defineComponent({
 
                             .paddingTip {
                                 padding: 0 4px;
-                                width: 53px;
+                                width: 43px;
                             }
 
                             .paddingNum {
-                                width: 53px;
+                                width: 43px;
                                 display: flex;
                                 justify-content: center;
                                 align-items: center;
