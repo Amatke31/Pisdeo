@@ -66,6 +66,7 @@
                                 <el-select
                                     size="small"
                                     class="attrInput"
+                                    placeholder=" "
                                     v-model="vN['element']"
                                     @change="setAttr('element', vN['element'])"
                                     :disabled="['html', 'head', 'body'].includes(vN['element'])"
@@ -132,6 +133,7 @@
                                     v-if="item.type == 'select'"
                                     size="small"
                                     class="attrInput"
+                                    placeholder=" "
                                     v-model="v[item.name]"
                                     @change="setAttr(item.name, v[item.name])"
                                 >
@@ -174,7 +176,60 @@
                         <div>{{ $t("attr.style") }}</div>
                     </div>
                     <el-collapse-transition>
-                        <div class="content" v-show="frame.style.class == 'open'"></div>
+                        <div class="content" v-show="frame.style.class == 'open'">
+                            <div v-if="attribute.element == 'style'">
+                                <div
+                                    v-for="selector in vC"
+                                    :key="selector"
+                                    :class="'cssSelector ' + vCFolder[selector.class]"
+                                >
+                                    <div class="cssName">
+                                        <icon-down
+                                            class="arrow"
+                                            theme="outline"
+                                            size="16"
+                                            fill="#aaa"
+                                            @click="
+                                                vCFolder[selector.class] =
+                                                    vCFolder[selector.class] == 'fold'
+                                                        ? 'open'
+                                                        : 'fold'
+                                            "
+                                        />
+                                        <el-input
+                                            size="small"
+                                            class="attrInput"
+                                            v-model="vC[selector.class].class"
+                                        />
+                                    </div>
+                                    <el-collapse-transition>
+                                        <div
+                                            v-show="vCFolder[selector.class] == 'open'"
+                                            class="cssFolder"
+                                        >
+                                            <div
+                                                v-for="item in css[selector.class]"
+                                                :key="item"
+                                                class="setDiv"
+                                            >
+                                                <el-input
+                                                    size="small"
+                                                    class="attrInput custom"
+                                                    v-model="vCT[selector.class][item]"
+                                                    @change="setCSST(selector.class, item)"
+                                                />:
+                                                <el-input
+                                                    size="small"
+                                                    class="attrInput"
+                                                    v-model="vC[selector.class][item]"
+                                                    @change="setCSS()"
+                                                />
+                                            </div>
+                                        </div>
+                                    </el-collapse-transition>
+                                </div>
+                            </div>
+                        </div>
                     </el-collapse-transition>
                 </div>
             </div>
@@ -273,15 +328,15 @@ export default defineComponent({
             text: "",
             frame: {
                 general: {
-                    class: "open",
+                    class: "fold",
                     height: "100px",
                 },
                 attr: {
-                    class: "open",
+                    class: "fold",
                     height: "100px",
                 },
                 style: {
-                    class: "fold",
+                    class: "open",
                     height: "100px",
                 },
             },
@@ -347,6 +402,9 @@ export default defineComponent({
                 elementName: "",
                 element: "",
             },
+            vC: {},
+            vCT: {},
+            vCFolder: {},
         };
     },
     computed: {
@@ -378,6 +436,20 @@ export default defineComponent({
             out.sort(function(a, b) {
                 return a.name.toLowerCase().charCodeAt(0) - b.name.toLowerCase().charCodeAt(0);
             });
+            return out;
+        },
+        css() {
+            let out = {};
+            for (let i in this.vC) {
+                out[i] = [];
+                this.vCT[i] = {};
+                for (let j in this.vC[i]) {
+                    if (j != "class") {
+                        out[i].push(j);
+                        this.vCT[i][j] = j;
+                    }
+                }
+            }
             return out;
         },
         allElement() {
@@ -527,6 +599,39 @@ export default defineComponent({
                 id: this.attribute!.id ? this.attribute!.id : "",
                 element: this.attribute!.element,
             };
+            this.vC = {};
+            this.vCFolder = {};
+            if (this.attribute!.css) {
+                this.attribute!.css.forEach((e) => {
+                    this.vC[e.class] = e;
+                    this.vCFolder[e.class] = "open";
+                });
+            }
+        },
+        setCSS: function() {
+            let out: any = [];
+            for (let item in this.vC) {
+                out.push(this.vC[item]);
+            }
+            this.$store.dispatch(
+                "refreshViewWithCode",
+                setAttribute(
+                    this.$store.getters.currentFileContent,
+                    this.$store.getters.getHTMLChooserLayer,
+                    2,
+                    {
+                        changeAttr: "css",
+                        value: out,
+                    }
+                )
+            );
+        },
+        setCSST: function(selector: string, key: string) {
+            console.log(selector, key);
+            console.log(this.vC[selector][key]);
+            this.vC[selector][this.vCT[selector][key]] = this.vC[selector][key];
+            delete this.vC[selector][key];
+            this.setCSS();
         },
     },
 });
@@ -660,6 +765,39 @@ export default defineComponent({
             &.disable {
                 background-color: unset;
                 cursor: default;
+            }
+        }
+    }
+
+    .cssSelector {
+        .cssName {
+            height: 24px;
+            background-color: #292929;
+            display: flex;
+
+            .arrow {
+                margin: 3px;
+                padding: 1px;
+                transform: rotate(-90deg);
+                border-radius: 4px;
+                transition: 0.1s;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #333;
+                }
+            }
+        }
+
+        .cssFolder {
+            .setDiv {
+                justify-content: space-evenly;
+            }
+        }
+
+        &.open {
+            .arrow {
+                transform: rotate(0deg);
             }
         }
     }

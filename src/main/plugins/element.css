@@ -22,8 +22,6 @@
     --el-color-primary-dark-2: hsl(211, 0%, 50%);
 }
 
-/* element-plus-dark fix */
-
 .el-input__inner {
     box-shadow: unset;
 }
@@ -81,12 +79,12 @@
 }
 
 .el-input.is-disabled .el-input__inner {
-    background-color: #222;
-    box-shadow: 0 0 0 1px #222 inset;
+    background-color: #292929;
+    box-shadow: 0 0 0 1px #292929 inset;
     color: var(--el-disabled-text-color);
     cursor: not-allowed;
 }
 
 .el-select .el-input.is-disabled .el-input__inner:hover {
-    box-shadow: 0 0 0 1px #222 inset;
+    box-shadow: 0 0 0 1px #292929 inset;
 }
