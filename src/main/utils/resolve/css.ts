@@ -5,7 +5,7 @@ function ObjToCSS(obj: any, layer: string) {
     obj.forEach((obj: any) => {
         out += obj.class;
         out += "{";
-        obj.content.forEach((i) => {
+        obj.content.forEach((i: any) => {
             out += `${i.label}:${i.value};`;
         });
         out += "}";

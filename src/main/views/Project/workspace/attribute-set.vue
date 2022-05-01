@@ -237,6 +237,61 @@
                                     </el-collapse-transition>
                                 </div>
                             </div>
+                            <div v-else>
+                                <div
+                                    v-for="(selector, key) in vC"
+                                    :key="selector"
+                                    :class="'cssSelector ' + vCFolder[selector.class]"
+                                >
+                                    <div class="cssName">
+                                        <icon-down
+                                            class="arrow"
+                                            theme="outline"
+                                            size="16"
+                                            fill="#aaa"
+                                            @click="
+                                                vCFolder[selector.class] =
+                                                    vCFolder[selector.class] == 'fold'
+                                                        ? 'open'
+                                                        : 'fold'
+                                            "
+                                        />
+                                        {{ vCT2[selector.class] }}
+                                    </div>
+                                    <el-collapse-transition>
+                                        <div
+                                            v-show="vCFolder[selector.class] == 'open'"
+                                            class="cssFolder"
+                                        >
+                                            <div
+                                                v-for="(item, key2) in css[selector.class]"
+                                                :key="item.label"
+                                                class="setDiv"
+                                            >
+                                                <el-input
+                                                    size="small"
+                                                    class="attrInput custom"
+                                                    v-model="vCT[selector.class][item.label]"
+                                                    @change="
+                                                        setCSSTT2(
+                                                            selector.class,
+                                                            key,
+                                                            key2,
+                                                            item.label
+                                                        )
+                                                    "
+                                                />
+                                                <el-input
+                                                    size="small"
+                                                    class="attrInput"
+                                                    v-model="vC[key].content[key2].value"
+                                                    @change="setCSS2(key)"
+                                                />
+                                            </div>
+                                        </div>
+                                    </el-collapse-transition>
+                                </div>
+                            </div>
                         </div>
                     </el-collapse-transition>
                 </div>
@@ -320,9 +375,16 @@
 <script lang="ts">
 import { ElMessage } from "element-plus";
 import { defineComponent } from "vue";
-import { setAttribute, delAttribute, setAttributeT } from "../../../utils/resolve/attribute";
+import {
+    setAttribute,
+    delAttribute,
+    setAttributeT,
+    getAttribute,
+} from "../../../utils/resolve/attribute";
 
 const noAttr = ["children", "element", "elementName", "class", "css"];
+
+const mustResolve = ["*"];
 
 export default defineComponent({
     props: {
@@ -402,6 +464,55 @@ export default defineComponent({
                 ],
                 div: [],
             },
+            allCssA: [
+                "animation",
+                "animation-name",
+                "animation-duration",
+                "animation-timing-function",
+                "animation-delay",
+                "animation-iteration-count",
+                "animation-direction",
+                "animation-play-state",
+                "animation-fill-mode",
+                "background",
+                "background-attachment",
+                "background-color",
+                "background-image",
+                "background-position",
+                "background-repeat",
+                "background-clip",
+                "background-origin",
+                "background-size",
+                "border",
+                "border-bottom",
+                "border-bottom-color",
+                "border-bottom-style",
+                "border-bottom-width",
+                "border-color",
+                "border-left",
+                "border-left-color",
+                "border-left-style",
+                "border-left-width",
+                "border-right",
+                "border-right-color",
+                "border-right-style",
+                "border-right-width",
+                "border-top",
+                "border-top-color",
+                "border-top-style",
+                "border-top-width",
+                "border-bottom",
+                "border-bottom-color",
+                "border-bottom-style",
+                "border-bottom-width",
+                "border-width",
+                "outline",
+                "outline-color",
+                "outline-style",
+                "outline-width",
+            ],
+            remoteCss: [] as any,
+            cssList: [] as any,
             v: {} as any,
             vT: {},
             vN: {
@@ -491,7 +602,22 @@ export default defineComponent({
             }
         },
     },
+    created: function() {
+        this.cssList.value = this.allCssA.map((item) => {
+            return { value: item, label: this.$t(`css.${item}`) };
+        });
+    },
     methods: {
+        allCss: function(query: string) {
+            if (query) {
+                this.remoteCss.value = this.cssList.value.filter((item: any) => {
+                    return item.value.toLowerCase().includes(query.toLowerCase());
+                });
+                console.log(this.remoteCss);
+            } else {
+                this.remoteCss.value = [];
+            }
+        },
         fold: function(which: string) {
             this.frame[which].class = this.frame[which].class == "fold" ? "open" : "fold";
         },
@@ -613,6 +739,8 @@ export default defineComponent({
             //style css
 
             this.vC = [];
+            this.vCT = {};
+            this.vCT2 = {};
             this.vCFolder = {};
             if (this.attribute!.css) {
                 this.attribute!.css.forEach((e: any) => {
@@ -632,11 +760,16 @@ export default defineComponent({
             const classNames = className.split(" ");
             classNames.forEach((i: string) => {
                 if (cssHave.includes(`.${i}`)) {
-                    console.log(cssHave.indexOf(`.${i}`), css);
                     this.vC.push(css[cssHave[cssHave.indexOf(`.${i}`)]]);
+                    this.vCFolder[cssHave[cssHave.indexOf(`.${i}`)]] = "open";
                 }
             });
-            console.log(this.vC);
+            cssHave.forEach((i: string) => {
+                if (mustResolve.includes(i)) {
+                    this.vC.push(css[cssHave[cssHave.indexOf(i)]]);
+                    this.vCFolder[cssHave[cssHave.indexOf(i)]] = "open";
+                }
+            });
         },
         setCSS: function() {
             this.$store.dispatch(
@@ -660,6 +793,32 @@ export default defineComponent({
         setCSSTT: function(selector: string, key: string, key2: string, item: string) {
             this.vC[key].content[key2].label = this.vCT[selector][item];
             this.setCSS();
+        },
+        // not style element
+        setCSS2: function(key: string) {
+            const selector = this.vC[key];
+            const selectorLayer = selector.layer.split("-");
+            const file = this.$store.getters.currentFileContent;
+            let style = getAttribute(file, selectorLayer, 2);
+            const index = style.css.findIndex((i: any) => {
+                return i.class == this.vC[key].class;
+            });
+            style.css[index] = this.vC[key];
+            this.$store.dispatch(
+                "refreshViewWithCode",
+                setAttribute(file, selectorLayer, 2, {
+                    changeAttr: "css",
+                    value: style.css,
+                })
+            );
+        },
+        setCSST2: function(selector: string, key: string) {
+            this.vC[key].class = this.vCT2[selector];
+            this.vCFolder[this.vCT2[selector]] = "open";
+        },
+        setCSSTT2: function(selector: string, key: string, key2: string, item: string) {
+            this.vC[key].content[key2].label = this.vCT[selector][item];
+            this.setCSS2(key);
         },
     },
 });
@@ -802,6 +961,8 @@ export default defineComponent({
             height: 24px;
             background-color: #292929;
             display: flex;
+            font-size: 14px;
+            place-items: center;
 
             .arrow {
                 margin: 3px;
