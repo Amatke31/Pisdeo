@@ -23,7 +23,7 @@ export default defineComponent({
     data() {
         return {
             html: [],
-            click: "layer-0",
+            click: "",
         };
     },
     computed: {
@@ -42,6 +42,7 @@ export default defineComponent({
     mounted: function() {
         this.html = this.$store.getters.currentFileContent;
         this.refreshChooser();
+        this.htmlChoose({ target: { id: "layer-0" } });
         this.$store.subscribeAction((action, state) => {
             if (
                 action.type == "openFile" &&

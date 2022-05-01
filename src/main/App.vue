@@ -217,9 +217,6 @@ export default defineComponent({
                 );
                 this.attribute = attribute;
             }
-            if (mutation.type == "openFile") {
-                this.asyncView();
-            }
             if (
                 state.project.workspace.currentFile &&
                 state.project.workspace.openFile &&
