@@ -179,7 +179,7 @@
                         <div class="content" v-show="frame.style.class == 'open'">
                             <div v-if="attribute.element == 'style'">
                                 <div
-                                    v-for="selector in vC"
+                                    v-for="(selector, key) in vC"
                                     :key="selector"
                                     :class="'cssSelector ' + vCFolder[selector.class]"
                                 >
@@ -199,7 +199,8 @@
                                         <el-input
                                             size="small"
                                             class="attrInput"
-                                            v-model="vC[selector.class].class"
+                                            v-model="vCT2[selector.class]"
+                                            @change="setCSST(selector.class, key)"
                                         />
                                     </div>
                                     <el-collapse-transition>
@@ -216,12 +217,12 @@
                                                     size="small"
                                                     class="attrInput custom"
                                                     v-model="vCT[selector.class][item]"
-                                                    @change="setCSST(selector.class, item)"
+                                                    @change="setCSSTT(selector.class, key, item)"
                                                 />:
                                                 <el-input
                                                     size="small"
                                                     class="attrInput"
-                                                    v-model="vC[selector.class][item]"
+                                                    v-model="vC[key][item]"
                                                     @change="setCSS()"
                                                 />
                                             </div>
@@ -402,8 +403,9 @@ export default defineComponent({
                 elementName: "",
                 element: "",
             },
-            vC: {},
+            vC: [] as Array<any>,
             vCT: {},
+            vCT2: {},
             vCFolder: {},
         };
     },
@@ -440,16 +442,19 @@ export default defineComponent({
         },
         css() {
             let out = {};
-            for (let i in this.vC) {
-                out[i] = [];
-                this.vCT[i] = {};
-                for (let j in this.vC[i]) {
+            this.vCT = {};
+            this.vCT2 = {};
+            this.vC.forEach((i) => {
+                out[i.class] = [];
+                this.vCT[i.class] = {};
+                this.vCT2[i.class] = i.class;
+                for (let j in i) {
                     if (j != "class") {
-                        out[i].push(j);
-                        this.vCT[i][j] = j;
+                        out[i.class].push(j);
+                        this.vCT[i.class][j] = j;
                     }
                 }
-            }
+            });
             return out;
         },
         allElement() {
@@ -599,20 +604,16 @@ export default defineComponent({
                 id: this.attribute!.id ? this.attribute!.id : "",
                 element: this.attribute!.element,
             };
-            this.vC = {};
+            this.vC = [];
             this.vCFolder = {};
             if (this.attribute!.css) {
-                this.attribute!.css.forEach((e) => {
-                    this.vC[e.class] = e;
+                this.attribute!.css.forEach((e: any) => {
+                    this.vC.push(e);
                     this.vCFolder[e.class] = "open";
                 });
             }
         },
         setCSS: function() {
-            let out: any = [];
-            for (let item in this.vC) {
-                out.push(this.vC[item]);
-            }
             this.$store.dispatch(
                 "refreshViewWithCode",
                 setAttribute(
@@ -621,16 +622,19 @@ export default defineComponent({
                     2,
                     {
                         changeAttr: "css",
-                        value: out,
+                        value: this.vC,
                     }
                 )
             );
         },
         setCSST: function(selector: string, key: string) {
-            console.log(selector, key);
-            console.log(this.vC[selector][key]);
-            this.vC[selector][this.vCT[selector][key]] = this.vC[selector][key];
-            delete this.vC[selector][key];
+            this.vC[key].class = this.vCT2[selector];
+            this.vCFolder[this.vCT2[selector]] = "open";
+            this.setCSS();
+        },
+        setCSSTT: function(selector: string, key: string, item: string) {
+            this.vC[key][this.vCT[selector][item]] = this.vC[key][item];
+            delete this.vC[key][item];
             this.setCSS();
         },
     },
