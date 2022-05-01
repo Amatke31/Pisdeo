@@ -1,5 +1,6 @@
-let noChange = ["element", "children", "css", "script", "text", "elementName"];
-let noCssChange = ["class"];
+const noChange = ["element", "children", "css", "script", "text", "elementName"];
+const noCssChange = ["class"];
+const singleElemenet = ["img", "input", "br"];
 
 const arrRemove = function(it: any, arr: Array<any>) {
     it = Number(it);
@@ -26,20 +27,24 @@ function analysisObj(obj: any): string {
         for (let ref in obj) {
             if (!noChange.includes(ref)) out += ` ${ref}="${obj[ref]}"`;
         }
-        out += `>`;
-        for (let ref in obj) {
-            if (noChange.includes(ref)) {
-                switch (ref) {
-                    case "css":
-                        out += ObjToCSS(obj["css"]);
-                        break;
+        if (!singleElemenet.includes(obj.element)) {
+            out += `>`;
+            for (let ref in obj) {
+                if (noChange.includes(ref)) {
+                    switch (ref) {
+                        case "css":
+                            out += ObjToCSS(obj["css"]);
+                            break;
+                    }
                 }
             }
+            for (let child in obj.children) {
+                out += analysisObj(obj.children[child]);
+            }
+            out += `</${obj.element}>`;
+        } else {
+            out += "/>";
         }
-        for (let child in obj.children) {
-            out += analysisObj(obj.children[child]);
-        }
-        out += `</${obj.element}>`;
     }
     return out;
 }
@@ -63,10 +68,12 @@ function analysisObjWithElement(obj: any): HTMLElement | string {
                 }
             }
         }
-        for (let child in obj.children) {
-            obj.children[child].element !== ".text"
-                ? out.appendChild(<HTMLElement>analysisObjWithElement(obj.children[child]))
-                : out.innerText == analysisObjWithElement(obj.children[child]);
+        if (!singleElemenet.includes(obj.element)) {
+            for (let child in obj.children) {
+                obj.children[child].element !== ".text"
+                    ? out.appendChild(<HTMLElement>analysisObjWithElement(obj.children[child]))
+                    : out.innerText == analysisObjWithElement(obj.children[child]);
+            }
         }
         return out;
     }

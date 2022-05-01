@@ -109,6 +109,10 @@
                                     "text": "嗯"
                                 }
                             ]
+                        },
+                        {
+                            "element": "img",
+                            "src": "/favicon.ico"
                         }
                     ]
                 }
