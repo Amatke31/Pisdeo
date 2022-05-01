@@ -259,7 +259,7 @@ import { ElMessage } from "element-plus";
 import { defineComponent } from "vue";
 import { setAttribute, delAttribute, setAttributeT } from "../../../utils/resolve/attribute";
 
-const noAttr = ["children", "element", "elementName", "class"];
+const noAttr = ["children", "element", "elementName", "class", "css"];
 
 export default defineComponent({
     props: {
@@ -455,7 +455,8 @@ export default defineComponent({
                 if (
                     main.find(function(obj: any) {
                         return obj.name == value;
-                    }) !== undefined
+                    }) !== undefined ||
+                    this.attribute![value] !== undefined
                 ) {
                     this.refreshAttr(this.attribute);
                     ElMessage({

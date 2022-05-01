@@ -66,6 +66,7 @@ export default defineComponent({
                     case "html":
                         this.html = this.$store.getters.currentFileContent;
                         this.refreshChooser();
+                        this.htmlChoose(this.click);
                         break;
                 }
             }
@@ -94,6 +95,7 @@ export default defineComponent({
             out.className = `layer`;
             out.id = `${root}-${ans}`;
             out.style.paddingLeft = `${i * 8 + 4}px`;
+            out.setAttribute("tabindex", "0");
             element.appendChild(out);
             let ansaz = 0;
             if (obj.children) {
@@ -215,15 +217,31 @@ export default defineComponent({
     width: 100%;
     font-size: 10px;
     padding: 2px 4px;
+    border: unset;
     cursor: pointer;
-}
+    outline: none;
 
-.layer:hover {
-    background-color: #292929;
-}
+    &:hover {
+        background-color: #292929;
+    }
 
-.layer.choose {
-    background-color: #333;
-    outline: 1px solid #222;
+    &:focus {
+        padding: 1px 3px 1px 0;
+        border: 1px solid #888;
+        border-left: 0;
+        border-right: 0;
+    }
+
+    &.choose {
+        background-color: #444;
+
+        &:focus {
+            background-color: #555;
+            padding: 1px 3px 1px 0;
+            border: 1px solid #888;
+            border-left: 0;
+            border-right: 0;
+        }
+    }
 }
 </style>
