@@ -66,7 +66,7 @@ export default defineComponent({
                     case "html":
                         this.html = this.$store.getters.currentFileContent;
                         this.refreshChooser();
-                        this.htmlChoose(this.click);
+                        this.htmlChoose({ target: { id: this.click } });
                         break;
                 }
             }
