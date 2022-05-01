@@ -280,7 +280,7 @@
                                                             item.label
                                                         )
                                                     "
-                                                />
+                                                />:
                                                 <el-input
                                                     size="small"
                                                     class="attrInput"
