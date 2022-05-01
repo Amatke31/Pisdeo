@@ -65,6 +65,9 @@ function analysisObjWithElement(obj: any): HTMLElement | string {
         for (let ref in obj) {
             if (noChange.includes(ref)) {
                 switch (ref) {
+                    case "css":
+                        out.innerHTML = ObjToCSS(obj["css"]);
+                        break;
                 }
             }
         }
