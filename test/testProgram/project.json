@@ -13,17 +13,45 @@
                             "css": [
                                 {
                                     "class": "*",
-                                    "margin": "0",
-                                    "padding": "0"
+                                    "content": [
+                                        {
+                                            "label": "margin",
+                                            "value": "0"
+                                        },
+                                        {
+                                            "label": "padding",
+                                            "value": "0"
+                                        }
+                                    ]
                                 },
                                 {
                                     "class": ".menu-bar",
-                                    "width": "100%",
-                                    "height": "auto",
-                                    "padding": "4px",
-                                    "color": "#fff",
-                                    "background-color": "#222",
-                                    "box-sizing": "border-box"
+                                    "content": [
+                                        {
+                                            "label": "width",
+                                            "value": "100%"
+                                        },
+                                        {
+                                            "label": "height",
+                                            "value": "auto"
+                                        },
+                                        {
+                                            "label": "padding",
+                                            "value": "4px"
+                                        },
+                                        {
+                                            "label": "color",
+                                            "value": "#fff"
+                                        },
+                                        {
+                                            "label": "background-color",
+                                            "value": "#222"
+                                        },
+                                        {
+                                            "label": "box-sizing",
+                                            "value": "border-box"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -81,8 +109,16 @@
                                     "css": [
                                         {
                                             "class": ".repositorie",
-                                            "display": "flex",
-                                            "flex-direction": "column"
+                                            "content": [
+                                                {
+                                                    "label": "display",
+                                                    "value": "flex"
+                                                },
+                                                {
+                                                    "label": "flex-direction",
+                                                    "value": "column"
+                                                }
+                                            ]
                                         }
                                     ]
                                 }

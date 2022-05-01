@@ -209,20 +209,27 @@
                                             class="cssFolder"
                                         >
                                             <div
-                                                v-for="item in css[selector.class]"
-                                                :key="item"
+                                                v-for="(item, key2) in css[selector.class]"
+                                                :key="item.label"
                                                 class="setDiv"
                                             >
                                                 <el-input
                                                     size="small"
                                                     class="attrInput custom"
-                                                    v-model="vCT[selector.class][item]"
-                                                    @change="setCSSTT(selector.class, key, item)"
+                                                    v-model="vCT[selector.class][item.label]"
+                                                    @change="
+                                                        setCSSTT(
+                                                            selector.class,
+                                                            key,
+                                                            key2,
+                                                            item.label
+                                                        )
+                                                    "
                                                 />:
                                                 <el-input
                                                     size="small"
                                                     class="attrInput"
-                                                    v-model="vC[key][item]"
+                                                    v-model="vC[key].content[key2].value"
                                                     @change="setCSS()"
                                                 />
                                             </div>
@@ -448,12 +455,10 @@ export default defineComponent({
                 out[i.class] = [];
                 this.vCT[i.class] = {};
                 this.vCT2[i.class] = i.class;
-                for (let j in i) {
-                    if (j != "class") {
-                        out[i.class].push(j);
-                        this.vCT[i.class][j] = j;
-                    }
-                }
+                i.content.forEach((j) => {
+                    out[i.class].push(j);
+                    this.vCT[i.class][j.label] = j.label;
+                });
             });
             return out;
         },
@@ -632,9 +637,8 @@ export default defineComponent({
             this.vCFolder[this.vCT2[selector]] = "open";
             this.setCSS();
         },
-        setCSSTT: function(selector: string, key: string, item: string) {
-            this.vC[key][this.vCT[selector][item]] = this.vC[key][item];
-            delete this.vC[key][item];
+        setCSSTT: function(selector: string, key: string, key2: string, item: string) {
+            this.vC[key].content[key2].label = this.vCT[selector][item];
             this.setCSS();
         },
     },

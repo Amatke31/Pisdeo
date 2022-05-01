@@ -1,5 +1,3 @@
-const noCssChange = ["class"];
-
 let allCssSelector = {};
 
 function ObjToCSS(obj: any) {
@@ -7,9 +5,9 @@ function ObjToCSS(obj: any) {
     obj.forEach((obj: any) => {
         out += obj.class;
         out += "{";
-        for (let ref in obj) {
-            if (!noCssChange.includes(ref)) out += `${ref}:${obj[ref]};`;
-        }
+        obj.content.forEach((i) => {
+            out += `${i.label}:${i.value};`;
+        });
         out += "}";
         allCssSelector[obj.class] = obj;
     });
