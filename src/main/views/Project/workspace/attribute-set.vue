@@ -394,7 +394,7 @@ export default defineComponent({
         },
         text: function(n) {
             if (!this.lock) {
-                this.$store.commit(
+                this.$store.dispatch(
                     "refreshViewWithCode",
                     setAttribute(
                         this.$store.getters.currentFileContent,
@@ -415,7 +415,7 @@ export default defineComponent({
         },
         setAttr: function(attr: string, value: string | Boolean) {
             if (!this.lock) {
-                this.$store.commit(
+                this.$store.dispatch(
                     "refreshViewWithCode",
                     setAttribute(
                         this.$store.getters.currentFileContent,
@@ -432,7 +432,7 @@ export default defineComponent({
         delAttr: function(attr: string) {
             if (!this.lock) {
                 if (this.canDel(attr)) {
-                    this.$store.commit(
+                    this.$store.dispatch(
                         "refreshViewWithCode",
                         delAttribute(
                             this.$store.getters.currentFileContent,
@@ -472,7 +472,7 @@ export default defineComponent({
                         type: "error",
                     });
                 } else {
-                    this.$store.commit(
+                    this.$store.dispatch(
                         "refreshViewWithCode",
                         setAttributeT(
                             this.$store.getters.currentFileContent,

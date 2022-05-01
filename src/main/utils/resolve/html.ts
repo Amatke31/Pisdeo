@@ -1,5 +1,5 @@
+import { ObjToCSS, clearCss } from "./css";
 const noChange = ["element", "children", "css", "script", "text", "elementName"];
-const noCssChange = ["class"];
 const singleElemenet = ["img", "input", "br"];
 
 const arrRemove = function(it: any, arr: Array<any>) {
@@ -13,6 +13,7 @@ const arrRemove = function(it: any, arr: Array<any>) {
 };
 
 function ObjToHTML(obj: any) {
+    clearCss();
     let out: string = "";
     out = analysisObj(obj);
     return out;
@@ -55,6 +56,7 @@ function ObjToElement(obj: any) {
 }
 
 function analysisObjWithElement(obj: any): HTMLElement | string {
+    clearCss();
     if (obj.element == ".text") {
         return obj.text;
     } else {
@@ -80,19 +82,6 @@ function analysisObjWithElement(obj: any): HTMLElement | string {
         }
         return out;
     }
-}
-
-function ObjToCSS(obj: any) {
-    let out: string = "";
-    obj.forEach((obj: any) => {
-        out += obj.class;
-        out += "{";
-        for (let ref in obj) {
-            if (!noCssChange.includes(ref)) out += `${ref}:${obj[ref]};`;
-        }
-        out += "}";
-    });
-    return out;
 }
 
 function addElement(obj: any, path: any, layer: number, element: any) {
@@ -135,12 +124,4 @@ function removeElement(obj: any, path: any, layer: number) {
     }
 }
 
-export {
-    ObjToHTML,
-    analysisObj,
-    ObjToElement,
-    analysisObjWithElement,
-    ObjToCSS,
-    addElement,
-    removeElement,
-};
+export { ObjToHTML, analysisObj, ObjToElement, analysisObjWithElement, addElement, removeElement };

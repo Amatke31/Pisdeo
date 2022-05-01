@@ -2,6 +2,7 @@ import { ObjToHTML } from "../utils/resolve/html";
 import { createProject } from "../utils/project/createProject";
 import { loadProject } from "../utils/project/loadProject";
 import testProgram from "../../../test/testProgram/project.json";
+import { clearCss, getAllCssSelector } from "../utils/resolve/css";
 
 let supportExt = ["html", "htm", "css", "js"];
 
@@ -19,6 +20,7 @@ const project = {
                 currentFile: "",
                 htmlChooser: "",
                 viewer: null,
+                css: {},
             },
         };
     },
@@ -51,10 +53,7 @@ const project = {
         },
         refreshView(state: any) {
             state.workspace.viewer = ObjToHTML(state.program.file[state.workspace.currentFile]);
-        },
-        refreshViewWithCode(state: any, code: any) {
-            state.workspace.openFile[state.workspace.currentFile].content = code;
-            state.workspace.viewer = ObjToHTML(state.program.file[state.workspace.currentFile]);
+            state.workspace.css = getAllCssSelector();
         },
     },
     actions: {
@@ -66,6 +65,7 @@ const project = {
             });
         },
         loadProject({ state }) {
+            clearCss();
             return new Promise((resolve) => {
                 loadProject(state, (result: any) => {
                     resolve(result);
@@ -93,6 +93,10 @@ const project = {
                         break;
                 }
             }
+        },
+        refreshViewWithCode({ state, commit }, code: any) {
+            state.workspace.openFile[state.workspace.currentFile].content = code;
+            commit("refreshView");
         },
     },
 };

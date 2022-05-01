@@ -56,10 +56,8 @@ export default defineComponent({
                         break;
                 }
             }
-        });
-        this.$store.subscribe((mutation, state) => {
             if (
-                mutation.type == "refreshViewWithCode" &&
+                action.type == "refreshViewWithCode" &&
                 state.project.workspace.currentFile &&
                 supportExt.includes(state.project.workspace.currentFile.split(".").pop())
             ) {
@@ -139,7 +137,7 @@ export default defineComponent({
                         break;
                 }
                 let htmlChooser = this.click.split("-");
-                this.$store.commit(
+                this.$store.dispatch(
                     "refreshViewWithCode",
                     addElement(
                         this.$store.getters.currentFileContent,
@@ -160,7 +158,7 @@ export default defineComponent({
                     ),
                 },
             });
-            this.$store.commit(
+            this.$store.dispatch(
                 "refreshViewWithCode",
                 removeElement(toRaw(this.$store.getters.currentFileContent), htmlChooser, 2)
             );
