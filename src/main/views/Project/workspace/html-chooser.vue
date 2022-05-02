@@ -345,8 +345,5 @@ export default defineComponent({
 
 .ew {
     padding: 16px;
-
-    .ewp {
-    }
 }
 </style>
