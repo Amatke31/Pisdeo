@@ -1,12 +1,38 @@
 <template>
     <div class="html-chooser">
         <div class="elementBar">
-            <v-icon :class="add" size="x-small" @click="addElement('window')">mdi-plus</v-icon>
-            <v-icon :class="add" size="x-small" @click="addElement('p')">mdi-plus</v-icon>
-            <v-icon :class="add" size="x-small" @click="addElement('.text')">mdi-plus</v-icon>
-            <v-icon class="addElement" size="x-small" @click="removeElement">mdi-minus</v-icon>
+            <el-dropdown @command="addElement" :disabled="!canAddElement">
+                <icon-plus
+                    :class="add"
+                    size="16"
+                    @click="
+                        if (canAddElement) {
+                            openChooser = true;
+                        }
+                    "
+                    :fill="!canAddElement ? '#333' : '#eee'"
+                />
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item command="div">{{ $t("element.div") }}</el-dropdown-item>
+                        <el-dropdown-item command="p">{{ $t("element.p") }}</el-dropdown-item>
+                        <el-dropdown-item command="a">{{ $t("element.a") }}</el-dropdown-item>
+                        <el-dropdown-item command=".text">{{
+                            $t("element.text")
+                        }}</el-dropdown-item>
+                        <el-dropdown-item command="style">{{
+                            $t("element.style")
+                        }}</el-dropdown-item>
+                        <el-dropdown-item command="script">{{
+                            $t("element.script")
+                        }}</el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
+            <icon-minus class="addElement" size="16" @click="removeElement" />
         </div>
         <div ref="htmlChooser" id="html-chooser" class="scroll" @click="htmlChoose"></div>
+        <n-window :open="openChooser" @close="openChooser = false"></n-window>
     </div>
 </template>
 <script lang="ts">
@@ -24,6 +50,7 @@ export default defineComponent({
         return {
             html: [],
             click: "",
+            openChooser: false,
         };
     },
     computed: {
@@ -112,14 +139,14 @@ export default defineComponent({
         },
         htmlChoose: function(e: any) {
             let chooseId = e.target.id;
-            if (this.click) {
-                document.getElementById(this.click)!.className = `layer`;
-            }
             if (chooseId.indexOf("layer") == 0) {
-                this.click = chooseId;
+                if (this.click) {
+                    document.getElementById(this.click)!.className = `layer`;
+                }
                 document.getElementById(chooseId)!.className = `layer choose`;
+                this.click = chooseId;
             } else {
-                this.click = "layer-0";
+                document.getElementById(this.click)!.className = `layer`;
             }
         },
         elementToText: function(element: string) {
@@ -131,9 +158,7 @@ export default defineComponent({
             }
         },
         addElement: function(element: string) {
-            if (element == "window") {
-                this.openElementChooser();
-            } else if (disableAdd.indexOf(this.attribute!.element) != -1) {
+            if (this.canAddElement) {
             } else {
                 let addElementInfo: any = { element };
                 switch (element) {
@@ -168,7 +193,6 @@ export default defineComponent({
                 removeElement(toRaw(this.$store.getters.currentFileContent), htmlChooser, 2)
             );
         },
-        openElementChooser: function() {},
         refreshChooser: function() {
             document.getElementById("html-chooser")!.innerHTML = this.ObjToHtmlchooser(
                 this.html
