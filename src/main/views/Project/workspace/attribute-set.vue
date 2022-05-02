@@ -402,6 +402,7 @@ import {
     setAttributeT,
     getAttribute,
 } from "../../../utils/resolve/attribute";
+import { cssList } from "../../../utils/lib/css";
 
 const noAttr = ["children", "element", "elementName", "class", "css"];
 
@@ -485,51 +486,7 @@ export default defineComponent({
                 ],
                 div: [],
             },
-            allCssA: [
-                "animation",
-                "animation-name",
-                "animation-duration",
-                "animation-timing-function",
-                "animation-delay",
-                "animation-iteration-count",
-                "animation-direction",
-                "animation-play-state",
-                "animation-fill-mode",
-                "background",
-                "background-attachment",
-                "background-color",
-                "background-image",
-                "background-position",
-                "background-repeat",
-                "background-clip",
-                "background-origin",
-                "background-size",
-                "border",
-                "border-bottom",
-                "border-bottom-color",
-                "border-bottom-style",
-                "border-bottom-width",
-                "border-color",
-                "border-left",
-                "border-left-color",
-                "border-left-style",
-                "border-left-width",
-                "border-right",
-                "border-right-color",
-                "border-right-style",
-                "border-right-width",
-                "border-top",
-                "border-top-color",
-                "border-top-style",
-                "border-top-width",
-                "border-width",
-                "outline",
-                "outline-color",
-                "outline-style",
-                "outline-width",
-            ],
             remoteCss: [] as any,
-            cssList: [] as any,
             cssOption: [] as any,
             v: {} as any,
             vT: {},
@@ -623,11 +580,6 @@ export default defineComponent({
             }
         },
     },
-    created: function() {
-        this.cssList.value = this.allCssA.map((item) => {
-            return { value: item, transl: this.$t(`css.${item}`), change: item };
-        });
-    },
     methods: {
         queryCss: function(queryString: string, cb: any) {
             const createFilter = (queryString: string) => {
@@ -639,8 +591,8 @@ export default defineComponent({
                 };
             };
             const results = queryString
-                ? this.cssList.value.filter(createFilter(queryString))
-                : this.cssList.value;
+                ? cssList.value.filter(createFilter(queryString))
+                : cssList.value;
             this.cssOption = results;
         },
         fold: function(which: string) {
@@ -845,10 +797,8 @@ export default defineComponent({
             this.vCFolder[this.vCT2[selector]] = "open";
         },
         setCSSTT2: function(selector: string, key: string, key2: string, item: string) {
-            setTimeout(() => {
-                this.vC[key].content[key2].label = this.vCT[selector][item].change;
-                this.setCSS2(key);
-            }, 100);
+            this.vC[key].content[key2].label = this.vCT[selector][item].change;
+            this.setCSS2(key);
         },
     },
 });

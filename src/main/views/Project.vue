@@ -5,6 +5,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+import { translCss } from "../utils/lib/css";
 import workspace from "./Project/workspace.vue";
 export default defineComponent({
     props: {
@@ -16,7 +17,9 @@ export default defineComponent({
         },
     },
     components: { workspace },
-    mounted() {},
+    mounted() {
+        translCss(this.$t);
+    },
     methods: {
         goToStartPage: function() {
             this.$emit("goToStartPage");
