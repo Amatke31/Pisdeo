@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"author": "Amatke31",
 	"license": "AGPL-3.0",
+	"main": "background.js",
 	"scripts": {
 		"build": "gulp build --color",
 		"build:desktop": "vue-cli-service electron:build",
