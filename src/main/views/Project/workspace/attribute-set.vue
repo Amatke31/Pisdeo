@@ -213,10 +213,13 @@
                                                 :key="item.label"
                                                 class="setDiv"
                                             >
-                                                <el-input
+                                                <el-select
                                                     size="small"
                                                     class="attrInput custom"
-                                                    v-model="vCT[selector.class][item.label]"
+                                                    filterable
+                                                    remote
+                                                    v-model="vCT[selector.class][item.label].change"
+                                                    :remote-method="queryCss"
                                                     @change="
                                                         setCSSTT(
                                                             selector.class,
@@ -225,7 +228,14 @@
                                                             item.label
                                                         )
                                                     "
-                                                />:
+                                                >
+                                                    <el-option
+                                                        v-for="item in cssOption"
+                                                        :key="item.value"
+                                                        :label="item.transl"
+                                                        :value="item.value"
+                                                    /> </el-select
+                                                >:
                                                 <el-input
                                                     size="small"
                                                     class="attrInput"
@@ -268,10 +278,13 @@
                                                 :key="item.label"
                                                 class="setDiv"
                                             >
-                                                <el-input
+                                                <el-select
                                                     size="small"
                                                     class="attrInput custom"
-                                                    v-model="vCT[selector.class][item.label]"
+                                                    filterable
+                                                    remote
+                                                    v-model="vCT[selector.class][item.label].change"
+                                                    :remote-method="queryCss"
                                                     @change="
                                                         setCSSTT2(
                                                             selector.class,
@@ -280,7 +293,15 @@
                                                             item.label
                                                         )
                                                     "
-                                                />:
+                                                >
+                                                    <el-option
+                                                        v-for="item in cssOption"
+                                                        :key="item.value"
+                                                        :label="item.transl"
+                                                        :value="item.value"
+                                                    />
+                                                </el-select>
+                                                :
                                                 <el-input
                                                     size="small"
                                                     class="attrInput"
@@ -501,10 +522,6 @@ export default defineComponent({
                 "border-top-color",
                 "border-top-style",
                 "border-top-width",
-                "border-bottom",
-                "border-bottom-color",
-                "border-bottom-style",
-                "border-bottom-width",
                 "border-width",
                 "outline",
                 "outline-color",
@@ -513,6 +530,7 @@ export default defineComponent({
             ],
             remoteCss: [] as any,
             cssList: [] as any,
+            cssOption: [] as any,
             v: {} as any,
             vT: {},
             vN: {
@@ -568,7 +586,10 @@ export default defineComponent({
                 this.vCT2[i.class] = i.class;
                 i.content.forEach((j) => {
                     out[i.class].push(j);
-                    this.vCT[i.class][j.label] = j.label;
+                    this.vCT[i.class][j.label] = {
+                        value: j.label,
+                        change: this.$t(`css.${j.label}`),
+                    };
                 });
             });
             return out;
@@ -604,19 +625,23 @@ export default defineComponent({
     },
     created: function() {
         this.cssList.value = this.allCssA.map((item) => {
-            return { value: item, label: this.$t(`css.${item}`) };
+            return { value: item, transl: this.$t(`css.${item}`), change: item };
         });
     },
     methods: {
-        allCss: function(query: string) {
-            if (query) {
-                this.remoteCss.value = this.cssList.value.filter((item: any) => {
-                    return item.value.toLowerCase().includes(query.toLowerCase());
-                });
-                console.log(this.remoteCss);
-            } else {
-                this.remoteCss.value = [];
-            }
+        queryCss: function(queryString: string, cb: any) {
+            const createFilter = (queryString: string) => {
+                return (cssList: any) => {
+                    return (
+                        cssList.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0 ||
+                        cssList.transl.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+                    );
+                };
+            };
+            const results = queryString
+                ? this.cssList.value.filter(createFilter(queryString))
+                : this.cssList.value;
+            this.cssOption = results;
         },
         fold: function(which: string) {
             this.frame[which].class = this.frame[which].class == "fold" ? "open" : "fold";
@@ -736,13 +761,14 @@ export default defineComponent({
                 element: this.attribute!.element,
             };
 
-            //style css
-
             this.vC = [];
             this.vCT = {};
             this.vCT2 = {};
             this.vCFolder = {};
-            if (this.attribute!.css) {
+
+            //style css
+
+            if (this.attribute!.element == "style" && this.attribute!.css) {
                 this.attribute!.css.forEach((e: any) => {
                     this.vC.push(e);
                     this.vCFolder[e.class] = "open";
@@ -751,25 +777,27 @@ export default defineComponent({
 
             //element css
 
-            const css = this.$store.state.project.workspace.css;
-            let cssHave: Array<string> = [];
-            for (let i in css) {
-                cssHave.push(i);
+            if (this.attribute!.element !== "style") {
+                const css = this.$store.state.project.workspace.css;
+                let cssHave: Array<string> = [];
+                for (let i in css) {
+                    cssHave.push(i);
+                }
+                const className = this.v.class ? this.v.class : "";
+                const classNames = className.split(" ");
+                classNames.forEach((i: string) => {
+                    if (cssHave.includes(`.${i}`)) {
+                        this.vC.push(css[cssHave[cssHave.indexOf(`.${i}`)]]);
+                        this.vCFolder[cssHave[cssHave.indexOf(`.${i}`)]] = "open";
+                    }
+                });
+                cssHave.forEach((i: string) => {
+                    if (mustResolve.includes(i)) {
+                        this.vC.push(css[cssHave[cssHave.indexOf(i)]]);
+                        this.vCFolder[cssHave[cssHave.indexOf(i)]] = "open";
+                    }
+                });
             }
-            const className = this.v.class ? this.v.class : "";
-            const classNames = className.split(" ");
-            classNames.forEach((i: string) => {
-                if (cssHave.includes(`.${i}`)) {
-                    this.vC.push(css[cssHave[cssHave.indexOf(`.${i}`)]]);
-                    this.vCFolder[cssHave[cssHave.indexOf(`.${i}`)]] = "open";
-                }
-            });
-            cssHave.forEach((i: string) => {
-                if (mustResolve.includes(i)) {
-                    this.vC.push(css[cssHave[cssHave.indexOf(i)]]);
-                    this.vCFolder[cssHave[cssHave.indexOf(i)]] = "open";
-                }
-            });
         },
         setCSS: function() {
             this.$store.dispatch(
@@ -791,7 +819,7 @@ export default defineComponent({
             this.setCSS();
         },
         setCSSTT: function(selector: string, key: string, key2: string, item: string) {
-            this.vC[key].content[key2].label = this.vCT[selector][item];
+            this.vC[key].content[key2].label = this.vCT[selector][item].change;
             this.setCSS();
         },
         // not style element
@@ -817,8 +845,10 @@ export default defineComponent({
             this.vCFolder[this.vCT2[selector]] = "open";
         },
         setCSSTT2: function(selector: string, key: string, key2: string, item: string) {
-            this.vC[key].content[key2].label = this.vCT[selector][item];
-            this.setCSS2(key);
+            setTimeout(() => {
+                this.vC[key].content[key2].label = this.vCT[selector][item].change;
+                this.setCSS2(key);
+            }, 100);
         },
     },
 });

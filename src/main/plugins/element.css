@@ -31,6 +31,10 @@
     background-color: var(--el-bg-color);
 }
 
+.el-autocomplete-suggestion li:hover {
+    background-color: var(--el-bg-color);
+}
+
 .element-plus-dark .el-button {
     --el-button-bg-color: transparent;
     --el-button-hover-bg-color: transparent;
