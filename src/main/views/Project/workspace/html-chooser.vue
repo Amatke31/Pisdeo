@@ -64,8 +64,8 @@
                         <element-card
                             v-for="item in canAddList.filter((e) => {
                                 return (
-                                    e.indexOf(search) != -1 ||
-                                    $t(`element.${e}`).indexOf(search) != -1
+                                    e.indexOf(search.toLowerCase()) != -1 ||
+                                    $t(`element.${e}`).indexOf(search.toLowerCase()) != -1
                                 );
                             })"
                             :key="item"
@@ -233,7 +233,7 @@ export default defineComponent({
                         addElementInfo
                     )
                 );
-                element === ".text" ? "text" : element;
+                element = element === ".text" ? "text" : element;
                 if (!this.recent.includes(element)) {
                     this.recent.unshift(element);
                 } else {
@@ -345,7 +345,7 @@ export default defineComponent({
     padding: 16px;
 
     .ewp {
-        height: 544px;
+        height: 440px;
         overflow: overlay;
     }
 }
