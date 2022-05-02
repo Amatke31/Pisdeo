@@ -40,21 +40,23 @@
         <div ref="htmlChooser" id="html-chooser" class="scroll" @click="htmlChoose"></div>
         <n-window :open="openChooser" @close="openChooser = false" class="ew" style="padding:16px;">
             <el-tabs v-model="elementWindow" type="card">
-                <el-tab-pane :label="$t('common.recent')" name="recent" class="ewp scroll">
-                    <element-card
-                        v-for="item in recent"
-                        :key="item"
-                        :element="item"
-                        @click="addElement(item)"
-                    />
+                <el-tab-pane :label="$t('common.recent')" name="recent">
+                    <div class="ewp scroll">
+                        <element-card
+                            v-for="item in recent"
+                            :key="item"
+                            :element="item"
+                            @click="addElement(item)"
+                        />
+                    </div>
                 </el-tab-pane>
-                <el-tab-pane :label="$t('common.basic')" name="basic" class="ewp scroll">
+                <el-tab-pane :label="$t('common.basic')" name="basic">
                     <v-text-field
                         :label="$t('common.search')"
                         variant="underlined"
                         v-model="search"
                     ></v-text-field>
-                    <div v-if="search == ''">
+                    <div v-if="search == ''" class="ewp scroll">
                         <element-card
                             v-for="item in canAddList"
                             :key="item"
@@ -62,7 +64,7 @@
                             @click="addElement(item)"
                         />
                     </div>
-                    <div v-else>
+                    <div v-else class="ewp scroll">
                         <element-card
                             v-for="item in canAddList.filter((e) => {
                                 return (
@@ -345,5 +347,10 @@ export default defineComponent({
 
 .ew {
     padding: 16px;
+
+    .ewp {
+        height: 544px;
+        overflow: overlay;
+    }
 }
 </style>
