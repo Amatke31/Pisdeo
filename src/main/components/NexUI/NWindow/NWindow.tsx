@@ -32,7 +32,7 @@ export default defineComponent({
         return () => {
             return (
                 <div class={[state.Wcss]}>
-                    <div class={["n-window scroll"]} style={props.style}>
+                    <div class={["n-window"]} style={props.style}>
                         {slots.default?.()}
                     </div>
                     <div
