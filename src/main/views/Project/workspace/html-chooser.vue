@@ -70,6 +70,11 @@ export default defineComponent({
                 }
             }
         });
+        document.onkeydown = (e: any) => {
+            if (e.code == "Space" && e.target.id.indexOf("layer") == 0) {
+                this.htmlChoose(e);
+            }
+        };
     },
     methods: {
         ObjToHtmlchooser: function(obj: any) {

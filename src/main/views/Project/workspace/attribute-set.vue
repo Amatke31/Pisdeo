@@ -961,6 +961,10 @@ export default defineComponent({
         .cssFolder {
             .setDiv {
                 justify-content: space-evenly;
+
+                .attrInput {
+                    width: calc((20vw - 10px) / 2);
+                }
             }
         }
 
