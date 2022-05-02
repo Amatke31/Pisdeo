@@ -23,9 +23,6 @@
                         <el-dropdown-item command="style">{{
                             $t("element.style")
                         }}</el-dropdown-item>
-                        <el-dropdown-item command="script">{{
-                            $t("element.script")
-                        }}</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -104,7 +101,7 @@ export default defineComponent({
             openChooser: false,
             elementWindow: "recent",
             canAddList,
-            recent: [] as Array<string>,
+            recent: ["div", "p", "a", "text", "style"] as Array<string>,
             search: "",
         };
     },
@@ -224,6 +221,7 @@ export default defineComponent({
                 let addElementInfo: any = { element };
                 switch (element) {
                     case "text":
+                    case ".text":
                         addElementInfo.text = "";
                         break;
                 }
@@ -237,6 +235,7 @@ export default defineComponent({
                         addElementInfo
                     )
                 );
+                element === ".text" ? "text" : element;
                 if (!this.recent.includes(element)) {
                     this.recent.unshift(element);
                 } else {
