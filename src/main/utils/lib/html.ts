@@ -109,6 +109,19 @@ const allRoutine = {
     button: [
         { name: "autofocus", type: "checkbox", id: "button.autofocus" },
         { name: "disabled", type: "checkbox", id: "button.disabled" },
+        { name: "name", type: "text", id: "button.name" },
+        {
+            name: "type",
+            type: "select",
+            id: "button.type",
+            select: [
+                { name: "submit", id: "button.type.submit" },
+                { name: "reset", id: "button.type.reset" },
+                { name: "button", id: "button.type.button" },
+                { name: "menu", id: "button.type.menu" },
+            ],
+        },
+        { name: "value", type: "text", id: "button.value" },
     ],
     input: [
         {
