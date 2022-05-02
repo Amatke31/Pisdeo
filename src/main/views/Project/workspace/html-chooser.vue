@@ -1,7 +1,7 @@
 <template>
     <div class="html-chooser">
         <div class="elementBar">
-            <el-dropdown @command="addElement" :disabled="!canAddElement">
+            <el-dropdown size="small" @command="addElement" :disabled="!canAddElement">
                 <icon-plus
                     :class="add"
                     size="16"
@@ -159,7 +159,6 @@ export default defineComponent({
         },
         addElement: function(element: string) {
             if (this.canAddElement) {
-            } else {
                 let addElementInfo: any = { element };
                 switch (element) {
                     case ".text":
