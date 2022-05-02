@@ -4,5 +4,10 @@
     "common.refuse": "Refuse",
     "common.enter": "Enter",
     "common.cancel": "Cancel",
-    "common.confirm": "Confirm"
+    "common.confirm": "Confirm",
+    "common.recent": "Recent",
+    "common.basic": "Basic",
+    "common.component": "Component",
+    "common.add": "Add",
+    "common.search": "Search"
 }

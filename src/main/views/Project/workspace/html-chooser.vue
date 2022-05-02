@@ -29,15 +29,66 @@
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
-            <icon-minus class="addElement" size="16" @click="removeElement" />
+            <icon-minus
+                :class="rm"
+                size="16"
+                @click="
+                    if (canRmElement) {
+                        removeElement;
+                    }
+                "
+                :fill="!canRmElement ? '#333' : '#eee'"
+            />
         </div>
         <div ref="htmlChooser" id="html-chooser" class="scroll" @click="htmlChoose"></div>
-        <n-window :open="openChooser" @close="openChooser = false"></n-window>
+        <n-window :open="openChooser" @close="openChooser = false" class="ew" style="padding:16px;">
+            <el-tabs v-model="elementWindow" type="card">
+                <el-tab-pane :label="$t('common.recent')" name="recent" class="ewp scroll">
+                    <element-card
+                        v-for="item in recent"
+                        :key="item"
+                        :element="item"
+                        @click="addElement(item)"
+                    />
+                </el-tab-pane>
+                <el-tab-pane :label="$t('common.basic')" name="basic" class="ewp scroll">
+                    <v-text-field
+                        :label="$t('common.search')"
+                        variant="underlined"
+                        v-model="search"
+                    ></v-text-field>
+                    <div v-if="search == ''">
+                        <element-card
+                            v-for="item in canAddList"
+                            :key="item"
+                            :element="item"
+                            @click="addElement(item)"
+                        />
+                    </div>
+                    <div v-else>
+                        <element-card
+                            v-for="item in canAddList.filter((e) => {
+                                return (
+                                    e.indexOf(search) != -1 ||
+                                    $t(`element.${e}`).indexOf(search) != -1
+                                );
+                            })"
+                            :key="item"
+                            :element="item"
+                            @click="addElement(item)"
+                        />
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane :label="$t('common.component')" name="component"></el-tab-pane>
+            </el-tabs>
+        </n-window>
     </div>
 </template>
 <script lang="ts">
 import { defineComponent, toRaw } from "vue";
 import { addElement, removeElement } from "../../../utils/resolve/html";
+import { canAddList, cantAdd } from "../../../utils/lib/html";
+import elementCard from "../../../components/elementCard.vue";
 const supportExt = ["html", "htm", "css", "js"];
 const disableAdd = [".text", "html", "style", "script", "img", "input", "br"];
 export default defineComponent({
@@ -51,14 +102,25 @@ export default defineComponent({
             html: [],
             click: "",
             openChooser: false,
+            elementWindow: "recent",
+            canAddList,
+            recent: [] as Array<string>,
+            search: "",
         };
     },
+    components: { "element-card": elementCard },
     computed: {
         canAddElement() {
-            return disableAdd.indexOf(this.attribute!.element) == -1;
+            return !disableAdd.includes(this.attribute!.element);
+        },
+        canRmElement() {
+            return !cantAdd.includes(this.attribute!.element);
         },
         add() {
             return this.canAddElement ? "addElement" : "addElement disable";
+        },
+        rm() {
+            return this.canRmElement ? "addElement" : "addElement disable";
         },
     },
     watch: {
@@ -161,7 +223,7 @@ export default defineComponent({
             if (this.canAddElement) {
                 let addElementInfo: any = { element };
                 switch (element) {
-                    case ".text":
+                    case "text":
                         addElementInfo.text = "";
                         break;
                 }
@@ -175,22 +237,32 @@ export default defineComponent({
                         addElementInfo
                     )
                 );
+                if (!this.recent.includes(element)) {
+                    this.recent.unshift(element);
+                } else {
+                    this.recent = this.recent.filter((e) => {
+                        return e !== element;
+                    });
+                    this.recent.unshift(element);
+                }
             }
         },
         removeElement: function() {
-            let htmlChooser = this.click.split("-");
-            this.htmlChoose({
-                target: {
-                    id: this.click.slice(
-                        0,
-                        this.click.length - (this.click.split("-").pop()!.length + 1)
-                    ),
-                },
-            });
-            this.$store.dispatch(
-                "refreshViewWithCode",
-                removeElement(toRaw(this.$store.getters.currentFileContent), htmlChooser, 2)
-            );
+            if (this.canRmElement) {
+                let htmlChooser = this.click.split("-");
+                this.htmlChoose({
+                    target: {
+                        id: this.click.slice(
+                            0,
+                            this.click.length - (this.click.split("-").pop()!.length + 1)
+                        ),
+                    },
+                });
+                this.$store.dispatch(
+                    "refreshViewWithCode",
+                    removeElement(toRaw(this.$store.getters.currentFileContent), htmlChooser, 2)
+                );
+            }
         },
         refreshChooser: function() {
             document.getElementById("html-chooser")!.innerHTML = this.ObjToHtmlchooser(
@@ -210,7 +282,7 @@ export default defineComponent({
 
 #html-chooser {
     height: 100%;
-    overflow: hidden;
+    overflow: overlay;
 }
 
 .elementBar {
@@ -269,6 +341,13 @@ export default defineComponent({
             border-left: 0;
             border-right: 0;
         }
+    }
+}
+
+.ew {
+    padding: 16px;
+
+    .ewp {
     }
 }
 </style>

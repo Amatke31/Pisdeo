@@ -12,7 +12,7 @@
                     {{ $t("attr.computed") }}
                 </div>
             </div>
-            <div class="frame" v-if="attrPage == 'set'">
+            <div class="frame scroll" v-if="attrPage == 'set'">
                 <div id="generalFrame" :class="frame.general.class">
                     <div class="folder">
                         <icon-down
@@ -317,7 +317,7 @@
                     </el-collapse-transition>
                 </div>
             </div>
-            <div class="frame" v-if="attrPage == 'computed'">
+            <div class="frame scroll" v-if="attrPage == 'computed'">
                 <div class="edgeShow">
                     <div class="marginFrame">
                         <div class="flexItemTop">
@@ -420,7 +420,7 @@ export default defineComponent({
             text: "",
             frame: {
                 general: {
-                    class: "fold",
+                    class: "open",
                     height: "100px",
                 },
                 attr: {
@@ -856,6 +856,8 @@ export default defineComponent({
 .frame {
     border-top: 1px solid rgba(204, 204, 204, 0.2);
     box-shadow: #000000 0 6px 6px -6px inset;
+    overflow: overlay;
+    height: calc(60vh - 72px);
 
     .folder {
         height: 22px;

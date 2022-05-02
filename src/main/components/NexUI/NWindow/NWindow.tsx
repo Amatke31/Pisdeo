@@ -8,9 +8,10 @@ export default defineComponent({
 
     props: {
         open: Boolean,
+        style: String,
     },
 
-    setup(props, { slots, emit }) {
+    setup(props: any, { slots, emit }) {
         let state = reactive({ Wcss: props.open ? "" : "hide none" });
         watch(
             () => props.open,
@@ -31,7 +32,9 @@ export default defineComponent({
         return () => {
             return (
                 <div class={[state.Wcss]}>
-                    <div class={["n-window"]}>{slots.default?.()}</div>
+                    <div class={["n-window scroll"]} style={props.style}>
+                        {slots.default?.()}
+                    </div>
                     <div
                         class={["n-window___mask"]}
                         onClick={() => {
