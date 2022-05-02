@@ -186,7 +186,7 @@ const allRoutine = {
 
 function build(obj: Array<string>, className: string): Array<any> {
     return obj.map((item: string) => {
-        return { value: item, id: `${className}.${item}` };
+        return { name: item, id: `${className}.${item}` };
     });
 }
 
