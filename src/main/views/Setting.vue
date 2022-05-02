@@ -2,11 +2,12 @@
     <div class="start">
         <div class="nav">
             <div class="nav-left">
-                <v-btn
+                <icon-arrow-left
+                    theme="outline"
+                    size="24"
+                    fill="#eee"
+                    class="back"
                     @click="$emit('goToStartPage')"
-                    variant="text"
-                    size="large"
-                    icon="mdi-arrow-left"
                 />
                 <h1>{{ $t("setting.title") }}</h1>
             </div>
@@ -171,12 +172,12 @@ export default defineComponent({
             openTestProjectInAppLoadStateList: [
                 {
                     label: "When load app, auto open the test project",
-                    value: "open"
+                    value: "open",
                 },
                 {
                     label: "Close",
-                    value: "close"
-                }
+                    value: "close",
+                },
             ],
             version: {
                 isProduction: false,
@@ -290,6 +291,18 @@ export default defineComponent({
     justify-content: space-between;
     align-items: center;
     height: 72px;
+
+    .back {
+        transition: 0.5s;
+        width: 50px;
+        height: 50px;
+        padding: 13px;
+        border-radius: 50%;
+
+        &:hover {
+            background-color: #333;
+        }
+    }
 
     .nav-left {
         align-items: center;

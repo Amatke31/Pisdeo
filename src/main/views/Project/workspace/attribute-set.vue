@@ -403,6 +403,7 @@ import {
     getAttribute,
 } from "../../../utils/resolve/attribute";
 import { cssList } from "../../../utils/lib/css";
+import { allElement } from "../../../utils/lib/html";
 
 const noAttr = ["children", "element", "elementName", "class", "css"];
 
@@ -500,6 +501,7 @@ export default defineComponent({
             vCT: {},
             vCT2: {},
             vCFolder: {},
+            allElement,
         };
     },
     computed: {
@@ -549,13 +551,6 @@ export default defineComponent({
                     };
                 });
             });
-            return out;
-        },
-        allElement() {
-            let out: Array<string> = [];
-            for (let item in this.allRoutine) {
-                out.push(item);
-            }
             return out;
         },
     },

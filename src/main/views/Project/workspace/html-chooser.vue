@@ -29,11 +29,7 @@
             <icon-minus
                 :class="rm"
                 size="16"
-                @click="
-                    if (canRmElement) {
-                        removeElement;
-                    }
-                "
+                @click="removeElement"
                 :fill="!canRmElement ? '#333' : '#eee'"
             />
         </div>

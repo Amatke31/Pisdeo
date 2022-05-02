@@ -1,5 +1,6 @@
 <template>
     <div class="project">
+        <menubar />
         <workspace :attribute="attribute" :viewer="viewer" />
     </div>
 </template>
@@ -7,6 +8,7 @@
 import { defineComponent } from "vue";
 import { translCss } from "../utils/lib/css";
 import workspace from "./Project/workspace.vue";
+import menubar from "./Project/menubar.vue";
 export default defineComponent({
     props: {
         attribute: {
@@ -16,7 +18,7 @@ export default defineComponent({
             type: String,
         },
     },
-    components: { workspace },
+    components: { workspace, menubar },
     mounted() {
         translCss(this.$t);
     },
