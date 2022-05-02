@@ -23,7 +23,6 @@
     "element.pre": "preformatted",
     "element.a": "anchor",
     "element.b": "bold",
-    "element.big": "big",
     "element.del": "deleted",
     "element.u": "underlined",
     "element.small": "small",

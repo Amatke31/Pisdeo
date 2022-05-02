@@ -1,7 +1,10 @@
 <template>
     <div class="attr-set">
         <h2 class="elementName">
-            {{ $t(`element.${attribute.element.split(".").pop()}`) }}
+            {{
+                $t(`element.${attribute.element.split(".").pop()}`)[0].toUpperCase() +
+                    $t(`element.${attribute.element.split(".").pop()}`).substr(1)
+            }}
         </h2>
         <span v-if="attribute.element !== '.text'">
             <div :class="attrBar">
@@ -72,9 +75,9 @@
                                     :disabled="['html', 'head', 'body'].includes(vN['element'])"
                                 >
                                     <el-option
-                                        v-for="item in allElement"
+                                        v-for="item in canAddList"
                                         :key="item"
-                                        :label="$t(`element.${item}`)"
+                                        :label="label(item)"
                                         :value="item"
                                     />
                                 </el-select>
@@ -403,7 +406,7 @@ import {
     getAttribute,
 } from "../../../utils/resolve/attribute";
 import { cssList } from "../../../utils/lib/css";
-import { allElement } from "../../../utils/lib/html";
+import { canAddList, allRoutine } from "../../../utils/lib/html";
 
 const noAttr = ["children", "element", "elementName", "class", "css"];
 
@@ -452,41 +455,6 @@ export default defineComponent({
                     value: "vh",
                 },
             ],
-            allRoutine: {
-                a: [
-                    { name: "download", type: "text", id: "a.download" },
-                    { name: "href", type: "text", id: "a.href" },
-                    {
-                        name: "target",
-                        type: "select",
-                        id: "a.target",
-                        default: "_self",
-                        select: [
-                            { name: "_self", id: "a.target.self" },
-                            { name: "_blank", id: "a.target.blank" },
-                            { name: "_parent", id: "a.target.parent" },
-                            { name: "_top", id: "a.target.top" },
-                        ],
-                    },
-                ],
-                button: [
-                    { name: "autofocus", type: "checkbox", id: "button.autofocus" },
-                    { name: "disabled", type: "checkbox", id: "button.disabled" },
-                ],
-                input: [
-                    {
-                        name: "autocomplete",
-                        type: "select",
-                        id: "input.autocomplete",
-                        default: "on",
-                        select: [
-                            { name: "on", id: "input.autocomplete.on" },
-                            { name: "off", id: "input.autocomplete.off" },
-                        ],
-                    },
-                ],
-                div: [],
-            },
             remoteCss: [] as any,
             cssOption: [] as any,
             v: {} as any,
@@ -501,7 +469,8 @@ export default defineComponent({
             vCT: {},
             vCT2: {},
             vCFolder: {},
-            allElement,
+            canAddList,
+            allRoutine,
         };
     },
     computed: {
@@ -576,6 +545,13 @@ export default defineComponent({
         },
     },
     methods: {
+        label: function(element: string) {
+            return (
+                this.$t(`element.${element}`)[0].toUpperCase() +
+                this.$t(`element.${element}`).substr(1) +
+                (element !== "text" ? `<${element}>` : "")
+            );
+        },
         queryCss: function(queryString: string, cb: any) {
             const createFilter = (queryString: string) => {
                 return (cssList: any) => {
@@ -912,12 +888,13 @@ export default defineComponent({
         }
 
         .attrInput {
-            width: calc(20vw - 10px - 100px - 20px);
+            width: calc(20vw - 10px - 100px - 30px);
         }
 
         .attrDel {
             width: 16px;
             margin: 4px;
+            margin-right: 28px;
             transition: 0.3s;
             border-radius: 4px;
             cursor: pointer;

@@ -2,7 +2,9 @@
     <el-card :body-style="{ padding: '0px' }" class="element">
         <div class="itemChild">
             <span class="info">{{
-                $t(`element.${element}`) + (element !== "text" ? `<${element}>` : "")
+                $t(`element.${element}`)[0].toUpperCase() +
+                    $t(`element.${element}`).substr(1) +
+                    (element !== "text" ? `<${element}>` : "")
             }}</span>
             <div class="btn">
                 <el-button class="button" @click="addElement(element)">{{

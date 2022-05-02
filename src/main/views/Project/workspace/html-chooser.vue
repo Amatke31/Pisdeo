@@ -14,14 +14,8 @@
                 />
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item command="div">{{ $t("element.div") }}</el-dropdown-item>
-                        <el-dropdown-item command="p">{{ $t("element.p") }}</el-dropdown-item>
-                        <el-dropdown-item command="a">{{ $t("element.a") }}</el-dropdown-item>
-                        <el-dropdown-item command=".text">{{
-                            $t("element.text")
-                        }}</el-dropdown-item>
-                        <el-dropdown-item command="style">{{
-                            $t("element.style")
+                        <el-dropdown-item v-for="item in recent" :key="item" :command="item">{{
+                            $t(`element.${item}`)[0].toUpperCase() + $t(`element.${item}`).substr(1)
                         }}</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>

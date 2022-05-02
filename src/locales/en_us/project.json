@@ -14,7 +14,7 @@
     "attr.attr": "Attribute",
     "attr.general": "General",
     "attr.computed": "Computed",
-    "attr.style": "style",
+    "attr.style": "Style",
     "attr.warning.repeat": "Property already exists",
     "attr.warning.null": "Cannot be set to null"
 }
