@@ -1,14 +1,17 @@
 <textarea id="input"></textarea>
-<textarea id="out"></textarea>
+<textarea id="out1"></textarea>
+<textarea id="out2"></textarea>
 <button id="do">生成</button>
 <script>
     document.getElementById('do').onclick = function () {
         const input = document.getElementById('input').value
-        let out = input.split('\n')
-        out.forEach((item, key) => {
-            out[key] = `"css.${item.split('	')[0]}":"${item.split('	')[1]}"`
+        let out1 = JSON.stringify(input.split('\n'))
+        let out2 = input.split('\n')
+        out2.forEach((item, key) => {
+            out2[key] = `"css.${item.split('	')[0]}":"${item.split('	')[1]}"`
         })
-        document.getElementById('out').value = ',' + out
+        document.getElementById('out2').value = ',' + out2
+        document.getElementById('out1').value = out1.slice(1, out1.length - 1) + ','
     }
 </script>
 <style>
