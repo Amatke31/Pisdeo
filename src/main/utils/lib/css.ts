@@ -207,6 +207,7 @@ const allCSS = [
     "nav-up",
     "outline-offset",
     "resize",
+    "flex-direction",
 ];
 
 let cssList: any = [];

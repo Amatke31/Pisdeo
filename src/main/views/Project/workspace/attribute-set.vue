@@ -175,7 +175,11 @@
                         </div>
                     </el-collapse-transition>
                 </div>
-                <div id="styleFrame" :class="frame.style.class">
+                <div
+                    id="styleFrame"
+                    :class="frame.style.class"
+                    v-if="attribute.element !== 'script'"
+                >
                     <div class="folder">
                         <icon-down
                             class="arrow"
