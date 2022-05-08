@@ -84,6 +84,7 @@
                             @click="fold('attr')"
                         />
                         <div>{{ $t("attr.attr") }}</div>
+                        <icon-plus class="addAttr" size="16" @click="newAttr" />
                     </div>
                     <el-collapse-transition>
                         <div class="content" v-show="frame.attr.class == 'open'">
@@ -587,6 +588,11 @@ export default defineComponent({
         fold: function(which: string) {
             this.frame[which].class = this.frame[which].class == "fold" ? "open" : "fold";
         },
+        newAttr: function() {
+            this.setAttr("new", "");
+            this.refreshAttr(this.attribute);
+            this.frame.attr.class = "open";
+        },
         setAttr: function(attr: string, value: string | Boolean) {
             if (!this.lock) {
                 this.$store.dispatch(
@@ -841,6 +847,26 @@ export default defineComponent({
     .textEdit {
         user-select: text;
     }
+
+    .addAttr {
+        width: 16px;
+        height: 16px;
+        background-color: #292929;
+        border-radius: 4px;
+        color: #fff;
+
+        &:hover {
+            background-color: #393939;
+        }
+
+        &.disable {
+            color: #aaa;
+
+            &:hover {
+                background-color: #292929;
+            }
+        }
+    }
 }
 
 .frame {
@@ -853,6 +879,7 @@ export default defineComponent({
         height: 22px;
         background-color: #292929;
         display: flex;
+        align-items: center;
 
         .arrow {
             margin: 3px;

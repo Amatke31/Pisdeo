@@ -209,7 +209,7 @@ export default defineComponent({
         this.startIsInit = true;
         this.$store.subscribe((mutation, state) => {
             if (mutation.type == "chooseElement") {
-                let htmlChooser = state.project.workspace.htmlChooser.split("-");
+                let htmlChooser = this.$store.getters.getHTMLChooserLayer;
                 let attribute = getAttribute(
                     this.$store.getters.currentFileContent,
                     htmlChooser,
