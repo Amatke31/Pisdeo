@@ -57,8 +57,10 @@ const project = {
         createProject({ state, dispatch }) {
             return new Promise((resolve) => {
                 createProject(state, (result: any) => {
-                    state.program = result.program;
-                    dispatch("openFile", "index.html");
+                    if (result && result.code == 200) {
+                        state.program = result.program;
+                        dispatch("openFile", "index.html");
+                    }
                     resolve(result);
                 });
             });
@@ -80,7 +82,6 @@ const project = {
             });
         },
         openFile({ state, commit }, filePath: string) {
-            console.log(state);
             state.workspace.currentFile = filePath;
             if (!state.workspace.openFile[filePath]) {
                 state.workspace.openFile[filePath] = {
