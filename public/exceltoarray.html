@@ -1,0 +1,19 @@
+<textarea id="input"></textarea>
+<textarea id="out"></textarea>
+<button id="do">生成</button>
+<script>
+    document.getElementById('do').onclick = function () {
+        const input = document.getElementById('input').value
+        let out = input.split('\n')
+        out.forEach((item, key) => {
+            out[key] = `"css.${item.split('	')[0]}":"${item.split('	')[1]}"`
+        })
+        document.getElementById('out').value = ',' + out
+    }
+</script>
+<style>
+    textarea {
+        height: 500px;
+        width: 300px;
+    }
+</style>
