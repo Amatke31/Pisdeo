@@ -1,6 +1,6 @@
 <template>
     <n-window class="window" :open="true">
-        <div class="stepW" v-if="step == 1">
+        <div class="stepW scroll" v-if="step == 1">
             <i class="img iconfont icon-earth"></i>
             <div class="title">{{ $t("welcome.lang.choose") }}</div>
             <el-select v-model="lang" class="m-2 select" placeholder="Select" size="large">
@@ -121,6 +121,8 @@ export default defineComponent({
     .stepW {
         display: flex;
         flex-direction: column;
+        overflow: auto;
+        height: 100%;
     }
 }
 

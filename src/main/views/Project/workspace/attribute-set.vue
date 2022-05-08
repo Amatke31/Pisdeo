@@ -42,17 +42,6 @@
                             </div>
                             <div class="setDiv">
                                 <div class="attrName">
-                                    {{ $t("attr.class") + ":" }}
-                                </div>
-                                <el-input
-                                    size="small"
-                                    class="attrInput"
-                                    v-model="vN['class']"
-                                    @change="setAttr('class', vN['class'])"
-                                />
-                            </div>
-                            <div class="setDiv">
-                                <div class="attrName">
                                     {{ $t("attr.id") + ":" }}
                                 </div>
                                 <el-input
@@ -250,7 +239,18 @@
                                     </el-collapse-transition>
                                 </div>
                             </div>
-                            <div v-else>
+                            <div style="display:flex;flex-direction:column" v-else>
+                                <div class="setDiv">
+                                    <div class="attrName">
+                                        {{ $t("attr.class") + ":" }}
+                                    </div>
+                                    <el-input
+                                        size="small"
+                                        class="attrInput"
+                                        v-model="vN['class']"
+                                        @change="setAttr('class', vN['class'])"
+                                    />
+                                </div>
                                 <div
                                     v-for="(selector, key) in vC"
                                     :key="selector"
