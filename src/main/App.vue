@@ -268,7 +268,7 @@ export default defineComponent({
                 type: "beforeLoadProjectWithDebug",
                 path: this.loadProjectPath,
             });
-            this.$store.dispatch({ type: "loadProject" }).then((result) => {
+            this.$store.dispatch("loadProject", this.loadProjectPath).then((result) => {
                 loading.close();
                 if (result.code == 200) {
                     this.page = "Project";

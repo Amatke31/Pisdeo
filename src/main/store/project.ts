@@ -10,11 +10,8 @@ const project = {
     state() {
         return {
             name: "",
-            program: {
-                name: "",
-                author: "",
-                file: {},
-            },
+            path: "",
+            program: {},
             workspace: {
                 openFile: {},
                 currentFile: "",
@@ -64,10 +61,12 @@ const project = {
                 });
             });
         },
-        loadProject({ state }) {
+        loadProject({ state, dispatch }) {
             clearCss();
             return new Promise((resolve) => {
                 loadProject(state, (result: any) => {
+                    state.program = result.program;
+                    dispatch("openFile", "index.html");
                     resolve(result);
                 });
             });
@@ -79,6 +78,7 @@ const project = {
             });
         },
         openFile({ state, commit }, filePath: string) {
+            console.log(state);
             state.workspace.currentFile = filePath;
             if (!state.workspace.openFile[filePath]) {
                 state.workspace.openFile[filePath] = {
