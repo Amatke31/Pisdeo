@@ -27,7 +27,7 @@ export default defineComponent({
     },
     watch: {
         viewer: function() {
-            this.asyncView();
+            this.reload();
         },
     },
     methods: {
@@ -50,7 +50,7 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .viewer {
-    height: 60vh;
+    height: 100%;
     background-color: #fff;
     border: 1px solid #444;
     overflow: hidden;

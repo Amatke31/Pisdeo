@@ -265,7 +265,7 @@ export default defineComponent({
 </script>
 <style lang="scss">
 .html-chooser {
-    height: 60vh;
+    height: 100%;
     background-color: #222;
     display: flex;
     flex-direction: column;

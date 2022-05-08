@@ -89,104 +89,119 @@ const linktype = [
 ];
 
 const allRoutine = {
-    a: [
-        { name: "download", type: "text", id: "a.download" },
-        { name: "href", type: "text", id: "a.href" },
-        {
-            name: "target",
-            type: "select",
-            id: "a.target",
-            default: "_self",
-            select: [
-                { name: "_self", id: "a.target.self" },
-                { name: "_blank", id: "a.target.blank" },
-                { name: "_parent", id: "a.target.parent" },
-                { name: "_top", id: "a.target.top" },
-            ],
-        },
-        { name: "rel", type: "select", id: "a.rel", select: build(linktype, "linktype") },
-    ],
-    button: [
-        { name: "autofocus", type: "checkbox", id: "button.autofocus" },
-        { name: "disabled", type: "checkbox", id: "button.disabled" },
-        { name: "name", type: "text", id: "button.name" },
-        {
-            name: "type",
-            type: "select",
-            id: "button.type",
-            select: [
-                { name: "submit", id: "button.type.submit" },
-                { name: "reset", id: "button.type.reset" },
-                { name: "button", id: "button.type.button" },
-                { name: "menu", id: "button.type.menu" },
-            ],
-        },
-        { name: "value", type: "text", id: "button.value" },
-    ],
-    input: [
-        {
-            name: "autocomplete",
-            type: "select",
-            id: "input.autocomplete",
-            default: "on",
-            select: [
-                { name: "on", id: "input.autocomplete.on" },
-                { name: "off", id: "input.autocomplete.off" },
-            ],
-        },
-    ],
-    audio: [
-        { name: "autoplay", type: "checkbox", id: "audio.autoplay" },
-        { name: "controls", type: "checkbox", id: "audio.controls" },
-        {
-            name: "crossorigin",
-            type: "select",
-            id: "audio.crossorigin",
-            select: [
-                { name: "anonymous", id: "audio.crossorigin.anonymous" },
-                { name: "use-credentials", id: "audio.crossorigin.use-credentials" },
-            ],
-        },
-        { name: "currentTime", type: "text", id: "audio.currentTime" },
-        {
-            name: "disableRemotePlayback",
-            type: "select",
-            default: "false",
-            id: "audio.disableRemotePlayback",
-            select: [
-                { name: "true", id: "audio.disableremoteplayback.true" },
-                { name: "false", id: "audio.disableremoteplayback.false" },
-            ],
-        },
-        { name: "loop", type: "checkbox", id: "audio.loop" },
-        {
-            name: "muted",
-            type: "select",
-            id: "audio.muted",
-            default: "false",
-            select: [
-                { name: "true", id: "audio.muted.true" },
-                { name: "false", id: "audio.muted.false" },
-            ],
-        },
-        {
-            name: "preload",
-            type: "select",
-            id: "audio.preload",
-            default: "metadata",
-            select: [
-                { name: "none", id: "audio.preload.metadata" },
-                { name: "metadata", id: "audio.preload.metadata" },
-                { name: "auto", id: "audio.preload.auto" },
-            ],
-        },
-        { name: "src", type: "text", id: "audio.src" },
-    ],
+    a: build(
+        [
+            { name: "download", type: "text" },
+            { name: "href", type: "text" },
+            {
+                name: "target",
+                type: "select",
+                default: "_self",
+                select: build(["_self", "_blank", "_parent", "_top"], "a.target"),
+            },
+            { name: "rel", type: "multiple", id: "a.rel", select: build(linktype, "linktype") },
+        ],
+        "a"
+    ),
+    button: build(
+        [
+            { name: "autofocus", type: "checkbox" },
+            { name: "disabled", type: "checkbox" },
+            { name: "name", type: "text" },
+            {
+                name: "type",
+                type: "select",
+                select: build(["submit", "reset", "button", "menu"], "button.type"),
+            },
+            { name: "value", type: "text" },
+        ],
+        "button"
+    ),
+    input: build(
+        [
+            {
+                name: "type",
+                type: "select",
+                default: "text",
+                select: build(
+                    [
+                        "button",
+                        "checkbox",
+                        "color",
+                        "date",
+                        "datetime-local",
+                        "email",
+                        "file",
+                        "hidden",
+                        "image",
+                        "month",
+                        "number",
+                        "password",
+                        "radio",
+                        "range",
+                        "reset",
+                        "search",
+                        "submit",
+                        "tel",
+                        "text",
+                        "time",
+                        "url",
+                        "week",
+                    ],
+                    "input.type"
+                ),
+            },
+            {
+                name: "autocomplete",
+                type: "select",
+                default: "on",
+                select: build(["on", "off"], "input.autocomplate"),
+            },
+        ],
+        "input"
+    ),
+    audio: build(
+        [
+            { name: "autoplay", type: "checkbox" },
+            { name: "controls", type: "checkbox" },
+            {
+                name: "crossorigin",
+                type: "select",
+                select: build(["anonymous", "use-credentials"], "audio.crossorigin"),
+            },
+            { name: "currentTime", type: "text", id: "audio.currentTime" },
+            {
+                name: "disableRemotePlayback",
+                type: "select",
+                default: "false",
+                select: build(["true", "false"], "audio.disableRemotePlayback"),
+            },
+            { name: "loop", type: "checkbox", id: "audio.loop" },
+            {
+                name: "muted",
+                type: "select",
+                default: "false",
+                select: build(["true", "false"], "audio.muted"),
+            },
+            {
+                name: "preload",
+                type: "select",
+                default: "metadata",
+                select: build(["none", "metadata", "auto"], "audio.preload"),
+            },
+            { name: "src", type: "text" },
+        ],
+        "audio"
+    ),
 };
 
-function build(obj: Array<string>, className: string): Array<any> {
-    return obj.map((item: string) => {
-        return { name: item, id: `${className}.${item}` };
+function build(obj: Array<string | any>, className: string): Array<any> {
+    return obj.map((item: string | any) => {
+        if (typeof item === "string") {
+            return { name: item, id: `${className}.${item}` };
+        } else {
+            return { ...item, id: `${className}.${item.name}` };
+        }
     });
 }
 

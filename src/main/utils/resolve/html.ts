@@ -17,7 +17,20 @@ function analysisObj(obj: any, layer: string): string {
     } else {
         out += `<${obj.element}`;
         for (let ref in obj) {
-            if (!noChange.includes(ref)) out += ` ${ref}="${obj[ref]}"`;
+            if (!noChange.includes(ref)) {
+                if (Array.isArray(obj[ref])) {
+                    out += ` ${ref}="`;
+                    obj[ref].forEach((item: string, key: number) => {
+                        out += item;
+                        if (key != obj[ref].length - 1) {
+                            out += " ";
+                        }
+                    });
+                    out += `"`;
+                } else {
+                    out += ` ${ref}="${obj[ref]}"`;
+                }
+            }
         }
         if (!singleElemenet.includes(obj.element)) {
             out += `>`;

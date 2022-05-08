@@ -50,7 +50,7 @@
             </div>
             <div v-else-if="option == 'setting.develop'" class="right">
                 <div class="title">{{ $t("setting.develop") }}</div>
-                <div>
+                <div style="display:block;max-width:300px">
                     <el-select
                         v-model="toolState"
                         class="m-2 select"

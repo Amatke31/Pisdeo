@@ -6,7 +6,7 @@
                     $t(`element.${attribute.element.split(".").pop()}`).substr(1)
             }}
         </h2>
-        <span v-if="attribute.element !== '.text'">
+        <div v-if="attribute.element !== '.text'" style="height:100%">
             <div :class="attrBar">
                 <div class="btn set" @click="attrPage = 'set'">
                     {{ $t("attr.set") }}
@@ -126,6 +126,24 @@
                                     size="small"
                                     class="attrInput"
                                     placeholder=" "
+                                    v-model="v[item.name]"
+                                    @change="setAttr(item.name, v[item.name])"
+                                >
+                                    <el-option
+                                        v-for="item in item.select"
+                                        :key="item.name"
+                                        :label="$t(item.id)"
+                                        :value="item.name"
+                                    />
+                                </el-select>
+                                <el-select
+                                    v-if="item.type == 'multiple'"
+                                    size="small"
+                                    class="attrInput"
+                                    placeholder=" "
+                                    multiple
+                                    collapse-tags
+                                    collapse-tags-tooltip
                                     v-model="v[item.name]"
                                     @change="setAttr(item.name, v[item.name])"
                                 >
@@ -385,7 +403,7 @@
                     </div>
                 </div>
             </div>
-        </span>
+        </div>
         <div class="textEdit" v-else>
             <v-textarea
                 :label="$t('attr.text')"
@@ -781,11 +799,12 @@ export default defineComponent({
 }
 
 .content {
+    height: 100%;
     overflow: hidden;
 }
 
 .attr-set {
-    height: 60vh;
+    height: 100%;
     background-color: #222;
     overflow: hidden;
 
@@ -828,7 +847,7 @@ export default defineComponent({
     border-top: 1px solid rgba(204, 204, 204, 0.2);
     box-shadow: #000000 0 6px 6px -6px inset;
     overflow: overlay;
-    height: calc(60vh - 72px);
+    height: 100%;
 
     .folder {
         height: 22px;

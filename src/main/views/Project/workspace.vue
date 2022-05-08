@@ -27,8 +27,14 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
+.workspace {
+    height: 100%;
+}
+
 .above {
     display: flex;
+    height: 100%;
+
     .html-chooser {
         width: 20vw;
     }

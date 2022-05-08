@@ -31,6 +31,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.project {
+    height: 100vh;
+}
+
 .project * {
     user-select: none;
 }
