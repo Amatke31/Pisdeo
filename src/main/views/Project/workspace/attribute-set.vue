@@ -207,6 +207,7 @@
                                                         : 'fold'
                                             "
                                         />
+                                        <icon-plus class="addAttr" size="16" @click="addCSS(key)" />
                                         <el-input
                                             size="small"
                                             class="attrInput"
@@ -253,6 +254,12 @@
                                                     v-model="vC[key].content[key2].value"
                                                     @change="setCSS()"
                                                 />
+                                                <icon-close-small
+                                                    class="addAttr"
+                                                    theme="outline"
+                                                    size="16"
+                                                    @click="delCSS(key, key2)"
+                                                />
                                             </div>
                                         </div>
                                     </el-collapse-transition>
@@ -288,6 +295,7 @@
                                                         : 'fold'
                                             "
                                         />
+                                        <icon-plus class="addAttr" size="16" @click="addCSS(key)" />
                                         {{ vCT2[selector.class] }}
                                     </div>
                                     <el-collapse-transition>
@@ -329,6 +337,12 @@
                                                     class="attrInput"
                                                     v-model="vC[key].content[key2].value"
                                                     @change="setCSS2(key)"
+                                                />
+                                                <icon-close-small
+                                                    class="addAttr"
+                                                    theme="outline"
+                                                    size="16"
+                                                    @click="delCSS2(key, key2)"
                                                 />
                                             </div>
                                         </div>
@@ -426,6 +440,7 @@ import {
 } from "../../../utils/resolve/attribute";
 import { cssList } from "../../../utils/lib/css";
 import { canAddList, allRoutine } from "../../../utils/lib/html";
+import { arrRemove } from "@/main/utils/array";
 
 const noAttr = ["children", "element", "elementName", "class", "css"];
 
@@ -760,6 +775,14 @@ export default defineComponent({
                 )
             );
         },
+        addCSS: function(key: string) {
+            this.vC[key].content.push({ label: "new", value: "0" });
+            this.setCSS();
+        },
+        delCSS: function(key: string, key2: string) {
+            this.vC[key].content = <Array<any>>arrRemove(Number(key2), this.vC[key].content);
+            this.setCSS();
+        },
         setCSST: function(selector: string, key: string) {
             this.vC[key].class = this.vCT2[selector];
             this.vCFolder[this.vCT2[selector]] = "open";
@@ -786,6 +809,10 @@ export default defineComponent({
                     value: style.css,
                 })
             );
+        },
+        delCSS2: function(key: string, key2: string) {
+            this.vC[key].content = <Array<any>>arrRemove(Number(key2), this.vC[key].content);
+            this.setCSS2(key);
         },
         setCSST2: function(selector: string, key: string) {
             this.vC[key].class = this.vCT2[selector];
@@ -983,7 +1010,7 @@ export default defineComponent({
                 justify-content: space-evenly;
 
                 .attrInput {
-                    width: calc((20vw - 10px) / 2);
+                    width: calc((20vw - 10px - 30px) / 2);
                 }
             }
         }

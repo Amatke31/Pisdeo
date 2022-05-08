@@ -4,7 +4,7 @@ const arrRemove = function(it: any, arr: Array<any>) {
         return false;
     }
     const a = arr.slice(0, it);
-    const b = arr.slice(it + 1, arr.length - a.length);
+    const b = arr.slice(it + 1, arr.length);
     return a.concat(b);
 };
 
