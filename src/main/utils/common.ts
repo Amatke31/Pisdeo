@@ -1,8 +1,10 @@
+import Config from "@/types/Config";
+import Version from "@/types/Version";
 import ipc from "./platform/desktop/ipc";
 import platform from "./platform/platform";
 import { getFile, setFile } from "./platform/web/file";
 
-let version: Object = {
+let version: Version = {
     isProduction: false,
     buildTime: "Manual Build",
     version: "Manual Build",
@@ -10,7 +12,7 @@ let version: Object = {
 };
 let userConfig: any = {};
 
-const defaultConfig: any = {
+const defaultConfig: Config = {
     init: false,
     configVersion: "Manual Build",
     language: "en_us",
@@ -33,11 +35,11 @@ async function getConfig(callback: any) {
         callback(userConfig);
     } else if (platform === "web") {
         getFile("config", (result: any) => {
-            if (result == undefined) {
+            if (result == "") {
                 setFile("config", defaultConfig);
                 callback(defaultConfig);
             } else {
-                userConfig = result;
+                userConfig = JSON.parse(result);
                 callback(userConfig);
             }
         });
@@ -60,7 +62,7 @@ async function inited() {
     if (platform === "desktop") {
         reback = await ipc.inited();
     } else if (platform === "web") {
-        getFile("config", (result: any) => {
+        getConfig((result: Config) => {
             result.init = true;
             setFile("config", result);
         });

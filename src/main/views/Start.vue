@@ -109,6 +109,7 @@ import path from "path";
 import ipc from "../utils/platform/desktop/ipc";
 import { getVersion } from "../utils/common";
 import platform from "../utils/platform/platform";
+import getRecentList from "../utils/getRecentList";
 
 let documentsPath: string = "";
 let version: any = "Manual Build";
@@ -165,9 +166,9 @@ export default defineComponent({
             } as RequireForm,
             warningCss: "hide none",
             platform,
+            recentList: [] as Array<object>,
         };
     },
-    mounted: function() {},
     watch: {
         warningShow() {
             if (this.warningShow == true) {
@@ -188,6 +189,9 @@ export default defineComponent({
             documentsPath = await ipc.getDocumentsPath();
         }
         version = await getVersion();
+        getRecentList((result: Array<object>) => {
+            this.recentList = result;
+        });
     },
     methods: {
         newProject: function(info: {

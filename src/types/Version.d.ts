@@ -1,7 +1,7 @@
 type Version = {
-    commitId: string
-    ref: string
-    isProduction: boolean
-    buildTime: string
-    version: string
-}
+    isProduction: Boolean;
+    buildTime: string;
+    version: string;
+    channel: string;
+};
+export default Version
