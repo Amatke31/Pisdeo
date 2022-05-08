@@ -243,7 +243,7 @@ export default defineComponent({
             });
             this.$store.dispatch({ type: "createProject" }).then((result) => {
                 loading.close();
-                if (result == "ok") {
+                if (result.code == 200) {
                     this.page = "Project";
                 } else if (result == "exist") {
                     ElMessage({

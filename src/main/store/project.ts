@@ -54,9 +54,11 @@ const project = {
         },
     },
     actions: {
-        createProject({ state }) {
+        createProject({ state, dispatch }) {
             return new Promise((resolve) => {
                 createProject(state, (result: any) => {
+                    state.program = result.program;
+                    dispatch("openFile", "index.html");
                     resolve(result);
                 });
             });
