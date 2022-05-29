@@ -7,7 +7,7 @@ function createProject(info: any, callback: any) {
         getFile(`project/${info.name}`, (result: string) => {
             const program = {
                 name: info.name,
-                file: {
+                files: {
                     "index.html": {
                         element: "html",
                         children: [

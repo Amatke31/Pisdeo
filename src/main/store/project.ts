@@ -49,7 +49,7 @@ const project = {
             state.workspace.htmlChooser = e.element;
         },
         refreshView(state: any) {
-            state.workspace.viewer = ObjToHTML(state.program.file[state.workspace.currentFile]);
+            state.workspace.viewer = ObjToHTML(state.program.files[state.workspace.currentFile]);
             state.workspace.css = getAllCssSelector();
         },
     },
@@ -86,7 +86,7 @@ const project = {
             if (!state.workspace.openFile[filePath]) {
                 state.workspace.openFile[filePath] = {
                     file: filePath,
-                    content: state.program.file[filePath],
+                    content: state.program.files[filePath],
                 };
             }
             if (supportExt.includes(state.workspace.currentFile.split(".").pop())) {

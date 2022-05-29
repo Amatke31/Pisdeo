@@ -15,18 +15,18 @@
             <div v-if="isInit" class="newProject">
                 <h2 class="npt">{{ $t("start.pageNewproject") }}</h2>
                 <div class="npc scroll">
-                    <div @click="newProject('project.blank')" class="card">
+                    <div @click="newProject('project.website')" class="card">
                         <div class="img" :style="cardImg('assets/blankproject.svg')"></div>
-                        <div class="title">{{ $t("project.blank") }}</div>
+                        <div class="title">{{ $t("project.website") }}</div>
                     </div>
-                    <div @click="newProject('project.uilib')" class="card">
+                    <!-- <div @click="newProject('project.uilib')" class="card">
                         <div class="img" :style="cardImg('assets/uilib.svg')"></div>
                         <div class="title">{{ $t("project.uilib") }}</div>
                     </div>
                     <div @click="newProject('project.component')" class="card">
                         <div class="img" :style="cardImg('assets/component.svg')"></div>
                         <div class="title">{{ $t("project.component") }}</div>
-                    </div>
+                    </div> -->
                     <div
                         @click="newProject(item)"
                         v-for="item in template"

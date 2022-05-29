@@ -213,9 +213,9 @@ export default defineComponent({
         },
         addElement: function(element: string) {
             if (this.canAddElement) {
+                element = element === "text" ? ".text" : element;
                 let addElementInfo: any = { element };
                 switch (element) {
-                    case "text":
                     case ".text":
                         addElementInfo.text = "";
                         break;

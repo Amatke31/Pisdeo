@@ -1,7 +1,9 @@
 {
     "name": "Test",
     "author": "Amatke31",
-    "file": {
+    "type": "website",
+    "mainfile": "index.html",
+    "files": {
         "index.html": {
             "element": "html",
             "children": [

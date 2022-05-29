@@ -83,7 +83,7 @@ function analysisObjWithElement(obj: any): HTMLElement | string {
             for (let child in obj.children) {
                 obj.children[child].element !== ".text"
                     ? out.appendChild(<HTMLElement>analysisObjWithElement(obj.children[child]))
-                    : out.innerText == analysisObjWithElement(obj.children[child]);
+                    : (out.innerText = <string>analysisObjWithElement(obj.children[child]));
             }
         }
         return out;
