@@ -11,7 +11,7 @@ class Project {
     // workspace
     openedFile = {};
     viewer = {};
-    recentOpenFile = "";
+    currentOpenFile = "";
 
     // state
     inited = false;
@@ -47,12 +47,16 @@ class Project {
     loadWithTemplate(): void {}
 
     openFile(filePath: string): void {
-        this.openedFile[filePath] = this.files[filePath];
-        this.recentOpenFile = filePath;
-        this.onOpenFile(filePath, this.files[filePath]);
+        let exist = true;
+        if (!this.openedFile[filePath]) {
+            exist = false;
+            this.openedFile[filePath] = this.files[filePath];
+        }
+        this.currentOpenFile = filePath;
+        this.onOpenFile(filePath, this.files[filePath], exist);
     }
 
-    onOpenFile(filePath: string, content: any): void {}
+    onOpenFile(filePath: string, content: any, exist: boolean): void {}
 
     setFile(filePath: string, content: any) {
         this.files[filePath] = content;

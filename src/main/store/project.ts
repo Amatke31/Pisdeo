@@ -3,6 +3,8 @@ import { createProject } from "../utils/project/createProject";
 import { loadProject } from "../utils/project/loadProject";
 import testProgram from "../../../test/testProgram/project.json";
 import { clearCss, getAllCssSelector } from "../utils/resolve/css";
+import WebProject from "../project/web/web";
+import JSZip from "jszip";
 
 let supportExt = ["html", "htm", "css", "js"];
 
@@ -19,6 +21,7 @@ const project = {
                 viewer: null,
                 css: {},
             },
+            project: {},
         };
     },
     getters: {
@@ -30,7 +33,7 @@ const project = {
         }) => {
             return state.workspace.openFile[state.workspace.currentFile].content;
         },
-        getHTMLChooserLayer: (state: { workspace: { htmlChooser: string } }) => {
+        getHTMLChooserLayer: (state: any) => {
             return state.workspace.htmlChooser.split("-");
         },
     },
@@ -43,10 +46,12 @@ const project = {
             state.path = info.path;
         },
         beforeLoadTestProject(state: any) {
+            state.name = "Test";
             state.program = testProgram;
         },
         chooseElement(state: any, e: any) {
             state.workspace.htmlChooser = e.element;
+            state.project[state.name].htmlChoose = e.element;
         },
         refreshView(state: any) {
             state.workspace.viewer = ObjToHTML(state.program.files[state.workspace.currentFile]);
@@ -55,6 +60,10 @@ const project = {
     },
     actions: {
         createProject({ state, dispatch }) {
+            let instance = new WebProject();
+            instance.init(state.name, "Amatke31");
+            instance.loadWithTemplate();
+            state.project[state.name] = instance;
             return new Promise((resolve) => {
                 createProject(state, (result: any) => {
                     if (result && result.code == 200) {
@@ -69,13 +78,25 @@ const project = {
             clearCss();
             return new Promise((resolve) => {
                 loadProject(state, (result: any) => {
+                    let instance = new WebProject();
+                    instance.init(state.name, "Amatke31");
+                    let testzip = new JSZip();
+                    testzip.file("project.json", JSON.stringify(result.program));
+                    instance.loadProjectFromFile(testzip);
+                    state.project[state.name] = instance;
                     state.program = result.program;
                     dispatch("openFile", "index.html");
                     resolve(result);
                 });
             });
         },
-        loadTestProject({ dispatch }) {
+        loadTestProject({ state, dispatch }) {
+            let instance = new WebProject();
+            instance.init(state.name, "Amatke31");
+            let testzip = new JSZip();
+            testzip.file("project.json", JSON.stringify(testProgram));
+            instance.loadProjectFromFile(testzip);
+            state.project[state.name] = instance;
             dispatch("openFile", "index.html");
             return new Promise((resolve) => {
                 resolve({ code: 200 });
