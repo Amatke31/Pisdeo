@@ -128,9 +128,6 @@ export default defineComponent({
         template: {
             type: Object,
         },
-        homePath: {
-            type: String,
-        },
         documentsPath: {
             type: String,
         },

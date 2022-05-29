@@ -101,6 +101,7 @@ const project = {
             state.workspace.openFile[state.workspace.currentFile].content = code;
             commit("refreshView");
         },
+        unrender() {},
     },
 };
 

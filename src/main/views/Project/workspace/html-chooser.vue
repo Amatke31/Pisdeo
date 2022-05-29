@@ -121,7 +121,7 @@ export default defineComponent({
         this.html = this.$store.getters.currentFileContent;
         this.refreshChooser();
         this.htmlChoose({ target: { id: "layer-0" } });
-        this.$store.subscribeAction((action, state) => {
+        const unsub = this.$store.subscribeAction((action, state) => {
             if (
                 action.type == "openFile" &&
                 state.project.workspace.currentFile &&
@@ -146,6 +146,9 @@ export default defineComponent({
                         this.htmlChoose({ target: { id: this.click } });
                         break;
                 }
+            }
+            if (action.type == "unrender") {
+                unsub();
             }
         });
         document.onkeydown = (e: any) => {

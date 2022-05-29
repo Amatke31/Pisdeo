@@ -11,10 +11,8 @@
         <Welcome v-if="page === 'Welcome'" @goStart="page = 'Start'" />
         <Start
             v-else-if="page === 'Start'"
-            :extension="ExtensionInfo"
             :isInit="startIsInit"
             :template="template"
-            :homePath="homePath"
             :documentsPath="documentsPath"
             :templateRequire="templateRequire"
             @createProject="createProject"
@@ -62,6 +60,7 @@ import Setting from "./views/Setting.vue";
 import { getConfig } from "./utils/common";
 import { ElLoading, ElMessage } from "element-plus";
 import { getAttribute } from "./utils/resolve/attribute";
+import "./project/web/web";
 
 interface RequireForm {
     [propName: string]: any;
@@ -80,8 +79,6 @@ export default defineComponent({
         return {
             showVirtualTitleBar: platform === "desktop",
             os: os.platform() ? os.platform() : "web",
-            ExtensionInfo: new Array(),
-            homePath: "",
             template: new Array(),
             startIsInit: false,
             consoleText: "<p>loading...</p>",
@@ -190,6 +187,13 @@ export default defineComponent({
                 this.loadTestProjectAuto = "close";
             }
         });
+    },
+    watch: {
+        page(n) {
+            if (n !== "Project") {
+                this.$store.dispatch("unrender");
+            }
+        },
     },
     async mounted() {
         if (localStorage.getItem("nwddevtool")) {
