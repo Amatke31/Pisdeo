@@ -3,7 +3,7 @@
     <LegalEN
         v-else-if="lang == 'en'"
         class="legal scroll"
-        style="overflow-y: scroll"
+        style="overflow-y: overlay"
     />
 </template>
 <script>

@@ -10,7 +10,8 @@ class Project {
 
     // workspace
     openedFile = {};
-    viewer: HTMLElement | null = null;
+    viewer = {};
+    recentOpenFile = "";
 
     // state
     inited = false;
@@ -28,7 +29,17 @@ class Project {
      * load file from zip
      * @param content JSZip Class
      */
-    loadProjectFromFile(content: JSZip): void {}
+    async loadProjectFromFile(content: JSZip): Promise<void> {
+        let info = JSON.parse(await content.files["project.json"].async("text"));
+        if (this.type != info.type) {
+            throw new Error("Project type not match");
+        }
+        this.name = info.name;
+        this.author = info.author;
+        this.files = info.files;
+        this.mainfile = info.mainfile;
+        this.openFile(info.mainfile);
+    }
 
     /**
      * create project with template
@@ -37,10 +48,11 @@ class Project {
 
     openFile(filePath: string): void {
         this.openedFile[filePath] = this.files[filePath];
-        this.onOpenFile(filePath);
+        this.recentOpenFile = filePath;
+        this.onOpenFile(filePath, this.files[filePath]);
     }
 
-    onOpenFile(filePath: string): void {}
+    onOpenFile(filePath: string, content: any): void {}
 
     setFile(filePath: string, content: any) {
         this.files[filePath] = content;

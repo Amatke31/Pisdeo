@@ -5,23 +5,18 @@ import Project from "../base/base";
 
 class WebProject extends Project {
     type = "website";
+    supportExt = ["html", "htm", "css", "js"];
 
-    onOpenFile(filePath: string): void {
-        const content = this.files[filePath];
-        this.viewer = ObjToElement(content);
-        console.log(this.viewer);
-    }
-
-    async loadProjectFromFile(content: JSZip): Promise<void> {
-        let info = JSON.parse(await content.files["project.json"].async("text"));
-        if (this.type != info.type) {
-            throw new Error("Project type not match");
+    onOpenFile(filePath: string, content: any): void {
+        const ext = filePath.split(".")[1];
+        if (this.supportExt.includes(ext)) {
+            switch (ext) {
+                case "html":
+                    this.viewer[filePath] = ObjToElement(content);
+                    console.log(this.viewer);
+                    break;
+            }
         }
-        this.name = info.name;
-        this.author = info.author;
-        this.files = info.files;
-        this.mainfile = info.mainfile;
-        this.openFile(info.mainfile);
     }
 
     loadWithTemplate(): void {
