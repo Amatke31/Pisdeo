@@ -36,6 +36,9 @@ const project = {
         getHTMLChooserLayer: (state: any) => {
             return state.workspace.htmlChooser.split("-");
         },
+        getInstance: (state: any): WebProject => {
+            return state.project[state.name];
+        },
     },
     mutations: {
         beforeCreateProject(state: any, info: any) {
@@ -59,11 +62,11 @@ const project = {
         },
     },
     actions: {
-        createProject({ state, dispatch }) {
+        createProject({ state, getters, dispatch }) {
             let instance = new WebProject();
             instance.init(state.name, "Amatke31");
             instance.loadWithTemplate();
-            state.project[state.name] = instance;
+            getters.getInstance = instance;
             return new Promise((resolve) => {
                 createProject(state, (result: any) => {
                     if (result && result.code == 200) {
@@ -74,7 +77,7 @@ const project = {
                 });
             });
         },
-        loadProject({ state, dispatch }) {
+        loadProject({ state, getters, dispatch }) {
             clearCss();
             return new Promise((resolve) => {
                 loadProject(state, (result: any) => {
@@ -83,20 +86,20 @@ const project = {
                     let testzip = new JSZip();
                     testzip.file("project.json", JSON.stringify(result.program));
                     instance.loadProjectFromFile(testzip);
-                    state.project[state.name] = instance;
+                    getters.getInstance = instance;
                     state.program = result.program;
                     dispatch("openFile", "index.html");
                     resolve(result);
                 });
             });
         },
-        loadTestProject({ state, dispatch }) {
+        loadTestProject({ state, getters, dispatch }) {
             let instance = new WebProject();
             instance.init(state.name, "Amatke31");
             let testzip = new JSZip();
             testzip.file("project.json", JSON.stringify(testProgram));
             instance.loadProjectFromFile(testzip);
-            state.project[state.name] = instance;
+            getters.getInstance = instance;
             dispatch("openFile", "index.html");
             return new Promise((resolve) => {
                 resolve({ code: 200 });
