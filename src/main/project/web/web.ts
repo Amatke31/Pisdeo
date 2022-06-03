@@ -2,12 +2,16 @@ import { ObjToElement } from "@/main/utils/resolve/html";
 import Project from "../base/base";
 
 class WebProject extends Project {
-    type = "website";
-    supportExt = ["html", "htm", "css", "js"];
+    type: any = ["website", "web"];
+    static type: any = ["website", "web"];
+    supportExt: Array<string> = ["html", "htm", "css", "js"];
 
-    // Element Choose
-    _htmlChoose = {};
-    get htmlChoose() {
+    constructor(api: any) {
+        super(api);
+    }
+
+    private _htmlChoose: Object = {};
+    get htmlChoose(): string {
         return this._htmlChoose[this.currentOpenFile];
     }
     set htmlChoose(v) {

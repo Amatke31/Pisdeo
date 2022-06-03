@@ -18,10 +18,7 @@
             @createProject="createProject"
             @openSetting="page = 'Setting'"
         />
-        <Project
-            v-else-if="page === 'Project'"
-            @goToStartPage="page = 'Start'"
-        />
+        <Project v-else-if="page === 'Project'" @goToStartPage="page = 'Start'" />
         <Setting
             v-else-if="page === 'Setting'"
             @goToStartPage="page = 'Start'"
@@ -262,9 +259,9 @@ export default defineComponent({
                 text: "Loading",
                 background: "rgba(0, 0, 0, 0.7)",
             });
-            this.$store.commit({
-                type: "beforeLoadTestProject",
-            });
+            // this.$store.commit({
+            //     type: "beforeLoadTestProject",
+            // });
             this.$store.dispatch({ type: "loadTestProject" }).then((result) => {
                 loading.close();
                 if (result.code == 200) {

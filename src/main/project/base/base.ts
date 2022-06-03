@@ -4,9 +4,17 @@ class Project {
     // info
     name = "";
     author = "";
-    type = "";
     files = {};
     mainfile = "";
+    type: any = "";
+    static type = "";
+
+    //api
+    api = null;
+    constructor(api: any) {
+        this.api = api;
+        this.init();
+    }
 
     // workspace
     openedFile = {};
@@ -15,10 +23,7 @@ class Project {
 
     // state
     inited = false;
-
-    init(name: string, author: string): void {
-        this.name = name;
-        this.author = author;
+    init(): void {
         this.onInit();
         this.inited = true;
     }
@@ -31,8 +36,14 @@ class Project {
      */
     async loadProjectFromFile(content: JSZip): Promise<void> {
         let info = JSON.parse(await content.files["project.json"].async("text"));
-        if (this.type != info.type) {
-            throw new Error("Project type not match");
+        if (
+            !(
+                (this.type.includes(info.type) && Array.isArray(this.type)) ||
+                (this.type == info.type && this.type == "string")
+            )
+        ) {
+            console.error("Project type not match");
+            return;
         }
         this.name = info.name;
         this.author = info.author;
