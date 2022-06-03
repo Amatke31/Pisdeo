@@ -34,10 +34,7 @@ const project = {
             return state.workspace.openFile[state.workspace.currentFile].content;
         },
         getHTMLChooserLayer: (state: any) => {
-            return state.workspace.htmlChooser.split("-");
-        },
-        getInstance: (state: any): WebProject => {
-            return state.project[state.name];
+            return state.project[state.name].htmlChoose.split("-");
         },
     },
     mutations: {
@@ -60,6 +57,9 @@ const project = {
             state.workspace.viewer = ObjToHTML(state.program.files[state.workspace.currentFile]);
             state.workspace.css = getAllCssSelector();
         },
+        setInstance: (state: any, ins: any) => {
+            state.project[state.name] = ins;
+        },
     },
     actions: {
         createProject({ state, getters, dispatch }) {
@@ -77,7 +77,7 @@ const project = {
                 });
             });
         },
-        loadProject({ state, getters, dispatch }) {
+        loadProject({ state, dispatch, commit }) {
             clearCss();
             return new Promise((resolve) => {
                 loadProject(state, (result: any) => {
@@ -86,20 +86,20 @@ const project = {
                     let testzip = new JSZip();
                     testzip.file("project.json", JSON.stringify(result.program));
                     instance.loadProjectFromFile(testzip);
-                    getters.getInstance = instance;
+                    commit("setInstance", instance);
                     state.program = result.program;
                     dispatch("openFile", "index.html");
                     resolve(result);
                 });
             });
         },
-        loadTestProject({ state, getters, dispatch }) {
+        loadTestProject({ state, dispatch, commit }) {
             let instance = new WebProject();
             instance.init(state.name, "Amatke31");
             let testzip = new JSZip();
             testzip.file("project.json", JSON.stringify(testProgram));
             instance.loadProjectFromFile(testzip);
-            getters.getInstance = instance;
+            commit("setInstance", instance);
             dispatch("openFile", "index.html");
             return new Promise((resolve) => {
                 resolve({ code: 200 });

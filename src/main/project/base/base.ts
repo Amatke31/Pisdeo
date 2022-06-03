@@ -76,7 +76,7 @@ class Project {
      * Export JSZip Class
      * @returns JSZip
      */
-    get export(): JSZip {
+    get save(): JSZip {
         let nwdp = new JSZip();
         nwdp.file("project.json", JSON.stringify({ ...(<object>this.info), file: this.files }));
         return nwdp;

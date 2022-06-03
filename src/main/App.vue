@@ -21,8 +21,6 @@
         <Project
             v-else-if="page === 'Project'"
             @goToStartPage="page = 'Start'"
-            :attribute="attribute"
-            :viewer="viewer"
         />
         <Setting
             v-else-if="page === 'Setting'"
@@ -51,7 +49,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Start from "./views/Start.vue";
-import Project from "./views/Project.vue";
+import Project from "./views/Project";
 import Welcome from "./views/Welcome.vue";
 import os from "os";
 import platform from "./utils/platform/platform";
@@ -59,7 +57,6 @@ import Tool from "./components/developtool/tool.vue";
 import Setting from "./views/Setting.vue";
 import { getConfig } from "./utils/common";
 import { ElLoading, ElMessage } from "element-plus";
-import { getAttribute } from "./utils/resolve/attribute";
 import "./project/web/web";
 
 interface RequireForm {
@@ -152,10 +149,6 @@ export default defineComponent({
             loadProjectPath: "",
             openNWDDevTool: "development",
             loadTestProjectAuto: "close",
-            attribute: {
-                element: "html",
-            },
-            viewer: null,
         };
     },
     components: {
@@ -211,29 +204,6 @@ export default defineComponent({
         });
         this.$store.dispatch("loadNWDExt", { i18n: this.$i18n });
         this.startIsInit = true;
-        this.$store.subscribe((mutation, state) => {
-            if (mutation.type == "chooseElement") {
-                let htmlChooser = this.$store.getters.getHTMLChooserLayer;
-                let attribute = getAttribute(
-                    this.$store.getters.currentFileContent,
-                    htmlChooser,
-                    2
-                );
-                this.attribute = attribute;
-            }
-            if (
-                state.project.workspace.currentFile &&
-                state.project.workspace.openFile &&
-                state.project.workspace.openFile[state.project.workspace.currentFile]
-            ) {
-                this.asyncView();
-            }
-        });
-        this.$store.subscribeAction((action, state) => {
-            if (action.type == "openFile") {
-                this.asyncView();
-            }
-        });
     },
     methods: {
         pushPage: function(page: string) {
@@ -339,9 +309,6 @@ export default defineComponent({
         },
         closeDevToolOneTime: function() {
             this.openNWDDevTool = "23333333333333";
-        },
-        asyncView: function() {
-            this.viewer = this.$store.state.project.workspace.viewer;
         },
     },
 });

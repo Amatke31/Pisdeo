@@ -5,15 +5,13 @@ class WebProject extends Project {
     type = "website";
     supportExt = ["html", "htm", "css", "js"];
 
-    // workspace
-    htmlChoosed = {};
-
+    // Element Choose
+    _htmlChoose = {};
     get htmlChoose() {
-        return this.htmlChoosed[this.currentOpenFile];
+        return this._htmlChoose[this.currentOpenFile];
     }
-
     set htmlChoose(v) {
-        this.htmlChoosed[this.currentOpenFile] = v;
+        this._htmlChoose[this.currentOpenFile] = v;
     }
 
     onOpenFile(filePath: string, content: any, exist: boolean): void {
@@ -23,7 +21,7 @@ class WebProject extends Project {
                 case "html":
                     if (!exist) {
                         this.viewer[filePath] = ObjToElement(content);
-                        this.htmlChoosed[filePath] = "layer-0";
+                        this.htmlChoose = "layer-0";
                     }
                     break;
             }

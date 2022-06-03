@@ -1,6 +1,3 @@
-import path from 'path'
+import PathUtils from "./PathUtils";
 
-export default () =>
-    process.env.NODE_ENV !== 'development'
-        ? path.join(__dirname, '/static').replace(/\\/g, '\\\\')
-        : path.join(process.cwd(), 'static')
+export default () => PathUtils.resolvePath("static");

@@ -1,6 +1,6 @@
 "use strict";
 
-import { app, protocol, BrowserWindow, Menu, ipcMain, dialog, shell } from "electron";
+import { app, protocol, BrowserWindow, Menu, ipcMain, shell } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
@@ -9,7 +9,7 @@ const isMac = process.platform === "darwin";
 // app.setAsDefaultProtocolClient("nexwebdesigner");
 
 protocol.registerSchemesAsPrivileged([
-    { scheme: "nexwebdesigner", privileges: { secure: true, standard: true, corsEnabled: true } },
+    { scheme: "app", privileges: { secure: true, standard: true } },
 ]);
 
 async function createWindow(title: string, path: string) {
@@ -73,8 +73,7 @@ async function createWindow(title: string, path: string) {
                         if (isDevelopment) {
                             await win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}${path}`);
                         } else {
-                            createProtocol("nexwebdesigner");
-                            await win.loadURL(`nexwebdesigner://${path}`);
+                            await win.loadURL(`app://${path}`);
                         }
                     },
                 },
@@ -87,8 +86,8 @@ async function createWindow(title: string, path: string) {
     if (isDevelopment) {
         await win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}${path}`);
     } else {
-        createProtocol("nexwebdesigner");
-        await win.loadURL(`nexwebdesigner://${path}`);
+        createProtocol("app");
+        await win.loadURL(`app://${path}`);
     }
 }
 
@@ -99,7 +98,7 @@ app.on("window-all-closed", () => {
 });
 
 app.on("ready", async () => {
-    createWindow("NexWebEditor", "./index.html");
+    createWindow("NexWebDesigner", "./index.html");
 });
 
 if (isDevelopment) {
@@ -127,10 +126,6 @@ const appInfo = {
 
 ipcMain.on("Init", (event, arg) => {
     event.sender.send("Init", appInfo);
-});
-
-ipcMain.on("openDoc", function(event, path) {
-    createWindow("Document", "docs/src/.vuepress/dist/index.html");
 });
 
 ipcMain.on("projectLoadComplete", function(event) {
