@@ -82,13 +82,19 @@ const supportExt = ["html", "htm", "css", "js"];
 const disableAdd = [".text", "html", "style", "script", "img", "input", "br"];
 export default defineComponent({
     props: {
-        attribute: {
-            type: Object,
+        getAttribute: {
+            type: Function,
+            default: () => {},
+        },
+        html: {},
+        chooseElement: {
+            type: Function,
+            default: (e: any) => {},
         },
     },
     data() {
         return {
-            html: [],
+            attribute: {} as any,
             click: "",
             openChooser: false,
             elementWindow: "recent",
@@ -100,10 +106,10 @@ export default defineComponent({
     components: { "element-card": elementCard },
     computed: {
         canAddElement() {
-            return !disableAdd.includes(this.attribute!.element);
+            return !disableAdd.includes(this.attribute.element);
         },
         canRmElement() {
-            return !cantAdd.includes(this.attribute!.element);
+            return !cantAdd.includes(this.attribute.element);
         },
         add() {
             return this.canAddElement ? "addElement" : "addElement disable";
@@ -114,43 +120,13 @@ export default defineComponent({
     },
     watch: {
         click: function(e) {
-            this.$store.commit({ type: "chooseElement", element: e });
+            this.chooseElement(e);
+            this.attribute = this.getAttribute();
         },
     },
     mounted: function() {
-        this.html = this.$store.getters.currentFileContent;
         this.refreshChooser();
         this.htmlChoose({ target: { id: "layer-0" } });
-        const unsub = this.$store.subscribeAction((action, state) => {
-            if (
-                action.type == "openFile" &&
-                state.project.workspace.currentFile &&
-                supportExt.includes(state.project.workspace.currentFile.split(".").pop())
-            ) {
-                switch (state.project.workspace.currentFile.split(".").pop()) {
-                    case "html":
-                        this.html = this.$store.getters.currentFileContent;
-                        this.refreshChooser();
-                        break;
-                }
-            }
-            if (
-                action.type == "refreshViewWithCode" &&
-                state.project.workspace.currentFile &&
-                supportExt.includes(state.project.workspace.currentFile.split(".").pop())
-            ) {
-                switch (state.project.workspace.currentFile.split(".").pop()) {
-                    case "html":
-                        this.html = this.$store.getters.currentFileContent;
-                        this.refreshChooser();
-                        this.htmlChoose({ target: { id: this.click } });
-                        break;
-                }
-            }
-            if (action.type == "unrender") {
-                unsub();
-            }
-        });
         document.onkeydown = (e: any) => {
             if (e.code == "Space" && e.target.id.indexOf("layer") == 0) {
                 this.htmlChoose(e);
@@ -259,9 +235,8 @@ export default defineComponent({
             }
         },
         refreshChooser: function() {
-            document.getElementById("html-chooser")!.innerHTML = this.ObjToHtmlchooser(
-                this.html
-            ).innerHTML;
+            let html = this.ObjToHtmlchooser(this.html).innerHTML;
+            document.getElementById("html-chooser")!.innerHTML = html;
         },
     },
 });

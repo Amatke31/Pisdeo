@@ -3,5 +3,8 @@
     "start.about": "About",
     "start.pageNewproject": "New",
     "start.extensions": "Extensions",
-    "start.setting": "Setting"
+    "start.setting": "Setting",
+    "start.choosesolution": "Choose a solution",
+    "start.create": "Create",
+    "start.load": "Load"
 }

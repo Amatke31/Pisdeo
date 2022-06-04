@@ -1,20 +1,17 @@
-import { loadProject } from "../utils/project/loadProject";
-import testProgram from "../../../test/testProgram/project.json";
 import WebProject from "../project/web/web";
-import JSZip from "jszip";
-
-let supportExt = ["html", "htm", "css", "js"];
 
 class ProjectSolution {
-    solution: Object = {};
+    allSolution: Object = {};
+    _solution: Object = {};
 
     constructor() {}
 
     getSolution(projectType: string): any {
-        return this.solution[projectType];
+        return this._solution[projectType];
     }
 
     addSolution(project: any): void {
+        this.allSolution[project.solutionName] = project;
         let type: Array<string> = [];
         if (typeof project.type == "string") {
             type = [project.type];
@@ -22,10 +19,13 @@ class ProjectSolution {
             type = project.type;
         }
         type.forEach((type: string) => {
-            if (this.solution.hasOwnProperty(type)) {
-                this.solution[type].push(project);
+            if (this._solution.hasOwnProperty(type)) {
+                this._solution[type].push({
+                    solutionName: project.solutionName,
+                    instance: project,
+                });
             } else {
-                this.solution[type] = [project];
+                this._solution[type] = [{ solutionName: project.solutionName, instance: project }];
             }
         });
     }
@@ -37,46 +37,35 @@ solution.addSolution(WebProject);
 const project = {
     state() {
         return {
-            project: {},
+            project: [],
         };
     },
-    getters: {
-        currentFileContent: (state: any) => {
-            return state.workspace.openFile[state.workspace.currentFile].content;
-        },
-    },
-    mutations: {
-        setInstance: (state: any, ins: any) => {
-            state.project[state.name] = ins;
-        },
-    },
+    getters: {},
+    mutations: {},
     actions: {
-        loadProject({ state, dispatch, commit }) {
-            return new Promise((resolve) => {
-                loadProject(state, (result: any) => {
-                    let instance = new WebProject({});
-                    let testzip = new JSZip();
-                    testzip.file("project.json", JSON.stringify(result.program));
-                    instance.loadProjectFromFile(testzip);
-                    commit("setInstance", instance);
-                    state.program = result.program;
-                    dispatch("openFile", "index.html");
-                    resolve(result);
+        async findSolution({}, payload: any): Promise<any> {
+            return new Promise(async (resolve) => {
+                const content = payload.nwdp;
+                let info = JSON.parse(await content.files["project.json"].async("text"));
+                let preSolution: Array<any> = [];
+                solution.getSolution(info.type).forEach((project: any) => {
+                    preSolution.push({
+                        solutionName: project.solutionName,
+                        solutionDescription: project.instance.solutionDescription,
+                    });
                 });
+                resolve({ solution: preSolution, info });
             });
         },
-        loadTestProject({ state, dispatch, commit }) {
-            let instance = new WebProject({});
-            let testzip = new JSZip();
-            testzip.file("project.json", JSON.stringify(testProgram));
-            instance.loadProjectFromFile(testzip);
-            commit("setInstance", instance);
+        async loadProject({ state }, payload: any): Promise<void> {
+            let project = { ...payload };
+            state.project.push(project);
             return new Promise((resolve) => {
-                resolve({ code: 200 });
+                resolve();
             });
         },
-        unrender() {},
     },
 };
 
 export default project;
+export { solution };

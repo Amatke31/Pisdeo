@@ -3,5 +3,8 @@
     "start.about": "关于",
     "start.pageNewproject": "新项目",
     "start.extensions": "扩展",
-    "start.setting": "设置"
+    "start.setting": "设置",
+    "start.choosesolution": "请选择解决方案",
+    "start.create": "创建",
+    "start.load": "加载"
 }

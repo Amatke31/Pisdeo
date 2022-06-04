@@ -2,8 +2,6 @@
 	"name": "nexwebdesigner",
 	"version": "1.0.0",
 	"author": "Amatke31",
-	"license": "AGPL-3.0",
-	"main": "background.js",
 	"scripts": {
 		"build": "gulp build --color",
 		"build:desktop": "vue-cli-service electron:build",
@@ -14,18 +12,18 @@
 		"postinstall": "electron-builder install-app-deps",
 		"postuninstall": "electron-builder install-app-deps"
 	},
+	"main": "background.js",
 	"dependencies": {
-		"@icon-park/vue-next": "^1.3.6",
+		"@icon-park/vue-next": "^1.4.0",
 		"@mdi/font": "5.9.55",
 		"@types/semver": "^7.3.9",
-		"axios": "^0.21.4",
 		"babel-runtime": "^6.26.0",
 		"copy-webpack-plugin": "^9.0.1",
-		"core-js": "^3.22.0",
+		"core-js": "^3.22.8",
 		"element-plus": "^2.1.9",
 		"element-plus-dark": "^2.0.2",
 		"gulp": "^4.0.2",
-		"jszip": "^3.9.1",
+		"jszip": "^3.10.0",
 		"localforage": "^1.10.0",
 		"markdown-it": "^12.3.2",
 		"material-design-icons": "^3.0.1",
@@ -34,13 +32,13 @@
 		"semver": "^7.3.7",
 		"stylus-loader": "3.0.2",
 		"tinycolor2": "^1.4.2",
-		"ts-node": "^10.7.0",
-		"tslib": "^2.3.1",
+		"ts-node": "^10.8.0",
+		"tslib": "^2.4.0",
 		"vm-browserify": "^1.1.2",
-		"vue": "^3.2.33",
+		"vue": "^3.2.36",
 		"vue-class-component": "^8.0.0-0",
-		"vue-i18n": "^9.1.6",
-		"vuetify": "3.0.0-beta.0",
+		"vue-i18n": "^9.1.10",
+		"vuetify": "^3.0.0-beta.3",
 		"vuex": "^4.0.2",
 		"webfontloader": "^1.0.0",
 		"yaml": "^1.10.2"
@@ -52,35 +50,37 @@
 		"@vue/cli-plugin-typescript": "^5.0.4",
 		"@vue/cli-plugin-vuex": "^5.0.4",
 		"@vue/cli-service": "5.0.0-beta.7",
-		"@vue/compiler-sfc": "^3.2.33",
+		"@vue/compiler-sfc": "^3.2.36",
+		"axios": "^0.18.0",
 		"chalk": "^4.1.2",
 		"child_process": "^1.0.2",
 		"electron": "^18.0.4",
 		"electron-devtools-installer": "^3.2.0",
 		"husky": "^7.0.4",
-		"inquirer": "^8.2.2",
+		"inquirer": "^8.2.4",
 		"sass": "^1.50.0",
 		"sass-loader": "^12.6.0",
 		"style-loader": "^3.3.1",
 		"stylus": "^0.55.0",
 		"ts-loader": "~8.2.0",
-		"typescript": "^4.6.3",
+		"typescript": "^4.7.2",
 		"vue-cli-plugin-electron-builder": "^2.1.1",
 		"vue-cli-plugin-element-next": "^0.0.15",
 		"vue-cli-plugin-i18n": "^2.3.1",
-		"vue-cli-plugin-vuetify": "^2.4.8",
+		"vue-cli-plugin-vuetify": "^2.5.1",
 		"vue-dotmd-loader": "^0.2.2",
 		"vue-loader": "^17.0.0",
 		"vue-markdown-loader": "^2.5.0",
 		"vue-template-compiler": "^2.6.14",
-		"vuetify-loader": "^2.0.0-alpha.0"
-	},
-	"resolutions": {
-		"vue-cli-plugin-electron-builder/electron-builder": "^23.0.3"
+		"webpack-plugin-vuetify": "^2.0.0-alpha.10"
 	},
 	"browserslist": [
 		"> 1%",
 		"last 2 versions",
 		"not dead"
-	]
+	],
+	"license": "AGPL-3.0",
+	"resolutions": {
+		"vue-cli-plugin-electron-builder/electron-builder": "^23.0.3"
+	}
 }

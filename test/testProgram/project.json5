@@ -1,0 +1,160 @@
+{
+    name: "Test",
+    author: "Amatke31",
+    type: "website",
+    mainfile: "index.html",
+    files: {
+        "index.html": {
+            element: "html",
+            children: [
+                {
+                    element: "head",
+                    children: [
+                        {
+                            element: "style",
+                            css: [
+                                {
+                                    class: "*",
+                                    content: [
+                                        {
+                                            label: "margin",
+                                            value: "0",
+                                        },
+                                        {
+                                            label: "padding",
+                                            value: "0",
+                                        },
+                                    ],
+                                },
+                                {
+                                    class: ".menu-bar",
+                                    content: [
+                                        {
+                                            label: "width",
+                                            value: "100%",
+                                        },
+                                        {
+                                            label: "height",
+                                            value: "auto",
+                                        },
+                                        {
+                                            label: "padding",
+                                            value: "4px",
+                                        },
+                                        {
+                                            label: "color",
+                                            value: "#fff",
+                                        },
+                                        {
+                                            label: "background-color",
+                                            value: "#222",
+                                        },
+                                        {
+                                            label: "box-sizing",
+                                            value: "border-box",
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            element: "script",
+                            script: [],
+                        },
+                    ],
+                },
+                {
+                    element: "body",
+                    class: "dark",
+                    children: [
+                        {
+                            element: "div",
+                            class: "menu-bar",
+                            heiheihei: "233",
+                            elementName: "Menu Bar",
+                            children: [
+                                {
+                                    element: ".text",
+                                    text: "马牛吧台",
+                                },
+                            ],
+                        },
+                        {
+                            element: "div",
+                            elementName: "Repositorie Link",
+                            class: "repositorie",
+                            children: [
+                                {
+                                    element: "a",
+                                    elementName: "Gitee Link",
+                                    href: "https://gitee.com/amatke31/nexwebdesigner",
+                                    target: "_blank",
+                                    children: [
+                                        {
+                                            element: ".text",
+                                            text: "Gitee Repositorie",
+                                        },
+                                    ],
+                                },
+                                {
+                                    element: "a",
+                                    elementName: "Github Link",
+                                    children: [
+                                        {
+                                            element: ".text",
+                                            text: "全球最大同性恋交友网站仓库",
+                                        },
+                                    ],
+                                },
+                                {
+                                    element: "style",
+                                    css: [
+                                        {
+                                            class: ".repositorie",
+                                            content: [
+                                                {
+                                                    label: "display",
+                                                    value: "flex",
+                                                },
+                                                {
+                                                    label: "flex-direction",
+                                                    value: "column",
+                                                },
+                                            ],
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            element: "button",
+                            elementName: "嗯妞",
+                            disabled: true,
+                            test: "1",
+                            children: [
+                                {
+                                    element: ".text",
+                                    text: "嗯不动",
+                                },
+                            ],
+                        },
+                        {
+                            element: "button",
+                            elementName: "嗯钮",
+                            children: [
+                                {
+                                    element: ".text",
+                                    text: "嗯",
+                                },
+                            ],
+                        },
+                        {
+                            element: "img",
+                            src: "/favicon.ico",
+                        },
+                    ],
+                },
+            ],
+        },
+    },
+}

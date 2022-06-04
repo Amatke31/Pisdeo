@@ -49,15 +49,13 @@ module.exports = {
                         from: "src/extension/base/dist",
                         to: "extension/base/dist",
                     },
+                    {
+                        from: "test/testProgram",
+                        to: "test",
+                    },
                 ],
             }),
         ],
-        devServer: {
-            static: {
-                directory: path.join(__dirname, "src/extension"),
-                publicPath: "/extension",
-            },
-        },
     },
     chainWebpack: (config) => {
         config.module

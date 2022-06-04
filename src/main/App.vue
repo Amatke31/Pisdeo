@@ -18,13 +18,13 @@
             @createProject="createProject"
             @openSetting="page = 'Setting'"
         />
-        <Project v-else-if="page === 'Project'" @goToStartPage="page = 'Start'" />
         <Setting
             v-else-if="page === 'Setting'"
             @goToStartPage="page = 'Start'"
             @sendCommand="SettingCommand"
             :menuOption="settingMenuOption"
         />
+        <Project v-show="page === 'Project'" @goToStartPage="page = 'Start'" />
         <div v-if="!startIsInit" class="console" v-html="consoleText"></div>
     </div>
     <Tool
@@ -41,6 +41,27 @@
             </span>
         </template>
     </el-dialog>
+    <n-window :open="WindowOpen" @close="WindowOpen = false">
+        <div class="solution-container">
+            <div class="solution-title">{{ $t("start.choosesolution") }}</div>
+            <div class="solution-list">
+                <v-card
+                    v-for="item in solution"
+                    :key="item.solutionName"
+                    width="300"
+                    :title="item.solutionName"
+                    :text="item.solutionDescription"
+                    variant="contained-text"
+                >
+                    <v-card-actions>
+                        <v-btn @click="choosedSolution(item.solutionName)">
+                            {{ createOrLoad == "create" ? $t("start.create") : $t("start.load") }}
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </div>
+        </div>
+    </n-window>
 </template>
 
 <script lang="ts">
@@ -55,6 +76,7 @@ import Setting from "./views/Setting.vue";
 import { getConfig } from "./utils/common";
 import { ElLoading, ElMessage } from "element-plus";
 import "./project/web/web";
+import JSZip from "jszip";
 
 interface RequireForm {
     [propName: string]: any;
@@ -67,6 +89,9 @@ let userConfig: any = {
     theme: "auto",
     updateCheck: "ask",
 };
+
+let projectContent: any = null;
+let projectInfo: any = null;
 
 export default defineComponent({
     data() {
@@ -146,6 +171,9 @@ export default defineComponent({
             loadProjectPath: "",
             openNWDDevTool: "development",
             loadTestProjectAuto: "close",
+            WindowOpen: false,
+            solution: [] as Array<any>,
+            createOrLoad: "create",
         };
     },
     components: {
@@ -178,13 +206,6 @@ export default defineComponent({
             }
         });
     },
-    watch: {
-        page(n) {
-            if (n !== "Project") {
-                this.$store.dispatch("unrender");
-            }
-        },
-    },
     async mounted() {
         if (localStorage.getItem("nwddevtool")) {
             this.openNWDDevTool = localStorage.getItem("nwddevtool") as string;
@@ -212,18 +233,6 @@ export default defineComponent({
                 text: "Loading",
                 background: "rgba(0, 0, 0, 0.7)",
             });
-            this.$store.dispatch({ type: "createProject" }).then((result) => {
-                loading.close();
-                if (result.code == 200) {
-                    this.page = "Project";
-                } else if (result == "exist") {
-                    ElMessage({
-                        showClose: true,
-                        message: this.$t("project.exist"),
-                        type: "error",
-                    });
-                }
-            });
         },
         openLoadProjectWithDebug: function() {
             this.loadProjectWithDebugDialog = true;
@@ -235,22 +244,6 @@ export default defineComponent({
                 text: "Loading",
                 background: "rgba(0, 0, 0, 0.7)",
             });
-            this.$store.commit({
-                type: "beforeLoadProjectWithDebug",
-                path: this.loadProjectPath,
-            });
-            this.$store.dispatch("loadProject", this.loadProjectPath).then((result) => {
-                loading.close();
-                if (result.code == 200) {
-                    this.page = "Project";
-                } else if (result.code == 300) {
-                    ElMessage({
-                        showClose: true,
-                        message: this.$t("project.cannotfind"),
-                        type: "error",
-                    });
-                }
-            });
         },
         loadTestProject: function() {
             this.loadProjectWithDebugDialog = false;
@@ -259,20 +252,34 @@ export default defineComponent({
                 text: "Loading",
                 background: "rgba(0, 0, 0, 0.7)",
             });
-            // this.$store.commit({
-            //     type: "beforeLoadTestProject",
-            // });
-            this.$store.dispatch({ type: "loadTestProject" }).then((result) => {
-                loading.close();
-                if (result.code == 200) {
-                    this.page = "Project";
-                } else if (result.code == 300) {
-                    ElMessage({
-                        showClose: true,
-                        message: this.$t("project.cannotfind"),
-                        type: "error",
-                    });
-                }
+            this.$axios({
+                method: "get",
+                url: "/test/test.nwdp",
+                responseType: "arraybuffer",
+            }).then((res: any) => {
+                const content = res.data;
+                let nwdp = new JSZip();
+                nwdp.loadAsync(content).then((nwdp) => {
+                    projectContent = nwdp;
+                    this.$store
+                        .dispatch("findSolution", { nwdp })
+                        .then(({ solution, info }) => {
+                            projectInfo = info;
+                            this.createOrLoad = "load";
+                            this.WindowOpen = true;
+                            this.solution = solution;
+                        })
+                        .catch(() => {
+                            ElMessage({
+                                showClose: true,
+                                message: this.$t("project.cannotfindsolution"),
+                                type: "error",
+                            });
+                        })
+                        .finally(() => {
+                            loading.close();
+                        });
+                });
             });
         },
         SettingCommand: function(command: string) {
@@ -306,6 +313,19 @@ export default defineComponent({
         },
         closeDevToolOneTime: function() {
             this.openNWDDevTool = "23333333333333";
+        },
+        choosedSolution: function(solution: string) {
+            this.WindowOpen = false;
+            this.$store
+                .dispatch("loadProject", {
+                    solution,
+                    content: projectContent,
+                    ...projectInfo,
+                })
+                .then(() => {
+                    this.page = "Project";
+                })
+                .catch(() => {});
         },
     },
 });
@@ -413,6 +433,17 @@ input,
 select {
     &:focus-visible {
         outline: none;
+    }
+}
+
+.solution-container {
+    .solution-title {
+        font-size: 30px;
+        font-weight: 700;
+    }
+
+    .solution-list {
+        margin-top: 10px;
     }
 }
 </style>

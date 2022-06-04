@@ -22,6 +22,10 @@
     --el-color-primary-dark-2: hsl(211, 0%, 50%);
 }
 
+.el-input {
+    --el-input-bg-color: var(--el-border-color-base);
+}
+
 .el-input__inner {
     box-shadow: unset;
 }

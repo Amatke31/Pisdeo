@@ -779,25 +779,25 @@ export default defineComponent({
                 )
             );
         },
-        addCSS: function(key: string) {
+        addCSS: function(key: number) {
             this.vC[key].content.push({ label: "new", value: "0" });
             this.setCSS();
         },
-        delCSS: function(key: string, key2: string) {
+        delCSS: function(key: number, key2: number) {
             this.vC[key].content = <Array<any>>arrRemove(Number(key2), this.vC[key].content);
             this.setCSS();
         },
-        setCSST: function(selector: string, key: string) {
+        setCSST: function(selector: string, key: number) {
             this.vC[key].class = this.vCT2[selector];
             this.vCFolder[this.vCT2[selector]] = "open";
             this.setCSS();
         },
-        setCSSTT: function(selector: string, key: string, key2: string, item: string) {
+        setCSSTT: function(selector: string, key: number, key2: number, item: string) {
             this.vC[key].content[key2].label = this.vCT[selector][item].change;
             this.setCSS();
         },
         // not style element
-        setCSS2: function(key: string) {
+        setCSS2: function(key: number) {
             const selector = this.vC[key];
             const selectorLayer = selector.layer.split("-");
             const file = this.$store.getters.currentFileContent;
@@ -814,7 +814,7 @@ export default defineComponent({
                 })
             );
         },
-        delCSS2: function(key: string, key2: string) {
+        delCSS2: function(key: number, key2: number) {
             this.vC[key].content = <Array<any>>arrRemove(Number(key2), this.vC[key].content);
             this.setCSS2(key);
         },
@@ -822,7 +822,7 @@ export default defineComponent({
             this.vC[key].class = this.vCT2[selector];
             this.vCFolder[this.vCT2[selector]] = "open";
         },
-        setCSSTT2: function(selector: string, key: string, key2: string, item: string) {
+        setCSSTT2: function(selector: string, key: number, key2: number, item: string) {
             this.vC[key].content[key2].label = this.vCT[selector][item].change;
             this.setCSS2(key);
         },

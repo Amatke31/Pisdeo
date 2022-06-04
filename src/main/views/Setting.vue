@@ -21,6 +21,7 @@
                     @click="option = value"
                     :title="$t(value)"
                     :prepend-icon="icon"
+                    height="60px"
                 ></v-list-item>
             </v-list>
             <div v-if="option == 'setting.general'" class="right scroll">
@@ -139,6 +140,7 @@
     </div>
 </template>
 <script lang="ts">
+import Version from "@/types/Version";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { defineComponent } from "vue";
 import { getVersion, setLocale } from "../utils/common";
@@ -151,7 +153,7 @@ export default defineComponent({
     data() {
         return {
             lang: "",
-            option: "setting.general",
+            option: "setting.general" as string,
             supportLang: [] as any,
             toolState: "development",
             toolStateList: [
@@ -184,7 +186,7 @@ export default defineComponent({
                 buildTime: "Manual Build",
                 version: "Manual Build",
                 channel: "Develop",
-            } as Object,
+            } as Version,
             platform: platform[0].toUpperCase() + platform.substr(1),
             resetDialog: false,
         };
