@@ -86,7 +86,18 @@ export default defineComponent({
             type: Function,
             default: () => {},
         },
-        html: {},
+        getEL: {
+            type: Function,
+            default: () => {},
+        },
+        addElement: {
+            type: Function,
+            default: (e: any) => {},
+        },
+        rmElement: {
+            type: Function,
+            default: () => {},
+        },
         chooseElement: {
             type: Function,
             default: (e: any) => {},
@@ -121,7 +132,7 @@ export default defineComponent({
     watch: {
         click: function(e) {
             this.chooseElement(e);
-            this.attribute = this.getAttribute();
+            this.refreshAttr();
         },
     },
     mounted: function() {
@@ -134,6 +145,9 @@ export default defineComponent({
         };
     },
     methods: {
+        refreshAttr: function() {
+            this.attribute = this.getAttribute();
+        },
         ObjToHtmlchooser: function(obj: any) {
             let out: HTMLElement = this.analysisObj(
                 obj,
@@ -151,6 +165,7 @@ export default defineComponent({
             root: string,
             ans: number
         ): HTMLElement {
+            console.log(obj);
             let out: HTMLElement = document.createElement("div");
             out.innerText = obj.elementName ? obj.elementName : this.elementToText(obj.element);
             out.className = `layer`;
@@ -196,16 +211,9 @@ export default defineComponent({
                         addElementInfo.text = "";
                         break;
                 }
-                let htmlChooser = this.click.split("-");
-                this.$store.dispatch(
-                    "refreshViewWithCode",
-                    addElement(
-                        this.$store.getters.currentFileContent,
-                        htmlChooser,
-                        2,
-                        addElementInfo
-                    )
-                );
+                this.addElement(element);
+                this.refreshAttr();
+                this.refreshChooser();
                 element = element === ".text" ? "text" : element;
                 if (!this.recent.includes(element)) {
                     this.recent.unshift(element);
@@ -219,7 +227,6 @@ export default defineComponent({
         },
         removeElement: function() {
             if (this.canRmElement) {
-                let htmlChooser = this.click.split("-");
                 this.htmlChoose({
                     target: {
                         id: this.click.slice(
@@ -228,14 +235,16 @@ export default defineComponent({
                         ),
                     },
                 });
-                this.$store.dispatch(
-                    "refreshViewWithCode",
-                    removeElement(toRaw(this.$store.getters.currentFileContent), htmlChooser, 2)
-                );
+                this.rmElement();
+                this.refreshAttr();
+                this.refreshChooser();
             }
         },
         refreshChooser: function() {
-            let html = this.ObjToHtmlchooser(this.html).innerHTML;
+            console.log(1);
+            console.log(this.getEL());
+            console.log(2);
+            let html = this.ObjToHtmlchooser(this.getEL()).innerHTML;
             document.getElementById("html-chooser")!.innerHTML = html;
         },
     },

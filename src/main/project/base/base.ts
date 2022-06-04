@@ -26,6 +26,9 @@ class Project {
     get currentOpenFile() {
         return this.openedFile[this._currentOpenFile];
     }
+    set currentOpenFile(v) {
+        this.openedFile[this._currentOpenFile] = v;
+    }
     set viewer(v) {
         this._viewer[this._currentOpenFile] = v;
     }

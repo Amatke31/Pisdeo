@@ -1,0 +1,18 @@
+.workspace {
+    height: 100%;
+}
+
+.above {
+    display: flex;
+    height: 100%;
+
+    .html-chooser {
+        width: 20vw;
+    }
+    .viewer {
+        width: 60vw;
+    }
+    .attr-set {
+        width: 20vw;
+    }
+}

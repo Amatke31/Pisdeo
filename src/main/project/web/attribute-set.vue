@@ -131,10 +131,10 @@
                                     @change="setAttr(item.name, v[item.name])"
                                 >
                                     <el-option
-                                        v-for="item in item.select"
-                                        :key="item.name"
-                                        :label="$t(item.id)"
-                                        :value="item.name"
+                                        v-for="i in item.select"
+                                        :key="i.name"
+                                        :label="$t(i.id)"
+                                        :value="i.name"
                                     />
                                 </el-select>
                                 <el-select
@@ -149,10 +149,10 @@
                                     @change="setAttr(item.name, v[item.name])"
                                 >
                                     <el-option
-                                        v-for="item in item.select"
-                                        :key="item.name"
-                                        :label="$t(item.id)"
-                                        :value="item.name"
+                                        v-for="i in item.select"
+                                        :key="i.name"
+                                        :label="$t(i.id)"
+                                        :value="i.name"
                                     />
                                 </el-select>
                                 <icon-close-small
@@ -452,12 +452,14 @@ const mustResolve = ["*"];
 
 export default defineComponent({
     props: {
-        attribute: {
-            type: Object,
+        getAttribute: {
+            type: Function,
+            default: () => {},
         },
     },
     data() {
         return {
+            attribute: {} as any,
             lock: false,
             text: "",
             frame: {
@@ -516,8 +518,8 @@ export default defineComponent({
             return `attrBar ${this.attrPage}`;
         },
         routine() {
-            let main = this.allRoutine[this.attribute!.element]
-                ? this.allRoutine[this.attribute!.element]
+            let main = this.allRoutine[this.attribute.element]
+                ? this.allRoutine[this.attribute.element]
                 : [];
             let other: Array<Object> = [];
             for (let i in this.v) {
