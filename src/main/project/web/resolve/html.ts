@@ -1,5 +1,5 @@
 import { ObjToCSS, clearCss } from "./css";
-import { arrRemove } from "../array";
+import { arrRemove } from "@/main/utils/array";
 const noChange = ["element", "children", "css", "script", "text", "elementName"];
 const singleElemenet = ["img", "input", "br"];
 

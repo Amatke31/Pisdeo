@@ -7,6 +7,7 @@
     </div>
 </template>
 <script lang="ts">
+import EventEmitter from "events";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -17,24 +18,27 @@ export default defineComponent({
     },
     props: {
         viewer: {
-            type: String,
+            type: Function,
+            default: () => {},
+        },
+        event: {
+            type: EventEmitter,
+            default: { on: () => {} },
         },
     },
     mounted: function() {
         this.$nextTick(() => {
             this.asyncView();
         });
-    },
-    watch: {
-        viewer: function() {
-            this.reload();
-        },
+        this.event!.on("re-render", () => {
+            this.asyncView();
+        });
     },
     methods: {
         asyncView: function() {
             let iframe = this.$refs.viewer;
             let iDoc: any = (<HTMLIFrameElement>iframe).contentDocument;
-            iDoc.children[0].innerHTML = this.viewer;
+            iDoc.children[0].innerHTML = this.viewer();
         },
         reload: function() {
             this.refreshing = true;

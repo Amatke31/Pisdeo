@@ -1,10 +1,11 @@
-import { ObjToElement } from "@/main/utils/resolve/html";
+import { ObjToElement } from "./resolve/html";
 import Project from "../base/base";
-import viewer from "./viewer.vue";
-import htmlChooser from "./html-chooser.vue";
-import attributeSet from "./attribute-set.vue";
+import viewer from "./view/viewer.vue";
+import htmlChooser from "./view/html-chooser.vue";
+import attributeSet from "./view/attribute-set.vue";
 import { arrRemove } from "@/main/utils/array";
 import "./workspace.scss";
+import EventEmitter from "events";
 
 class WebProject extends Project {
     static solutionName = "Website";
@@ -33,6 +34,7 @@ class WebProject extends Project {
             2,
             element
         );
+        this.event.emit("re-render");
     }
     private _addElement(obj: any, path: any, layer: number, element: any) {
         if (path.length == 2) {
@@ -43,7 +45,6 @@ class WebProject extends Project {
                 next.children = [];
             }
             next.children.push({ element });
-            console.log(next);
             return next;
         } else {
             let out = obj;
@@ -63,6 +64,7 @@ class WebProject extends Project {
             this.htmlChoose.split("-"),
             2
         );
+        this.event.emit("re-render");
     }
     private _removeElement(obj: any, path: any, layer: number) {
         if (path.length == 2) {
@@ -91,9 +93,36 @@ class WebProject extends Project {
             return this.analysisAttr(obj.children[Number(path[layer])], path, layer + 1);
         }
     }
+    private _setAttribute(obj: any, path: any, layer: number, changeAttr: any) {
+        if (path.length == 2) {
+            return obj;
+        } else if (path.length == layer) {
+            let next = obj;
+            next[changeAttr.changeAttr] = changeAttr.value;
+            return next;
+        } else {
+            let out = obj;
+            out.children[Number(path[layer])] = this._setAttribute(
+                obj.children[Number(path[layer])],
+                path,
+                layer + 1,
+                changeAttr
+            );
+            return out;
+        }
+    }
     get getAttribute() {
         const out = this.analysisAttr(this.currentOpenFile, this.htmlChoose.split("-"), 2);
         return out;
+    }
+    setAttribute(e: any) {
+        this.currentOpenFile = this._setAttribute(
+            this.currentOpenFile,
+            this.htmlChoose.split("-"),
+            2,
+            e
+        );
+        this.event.emit("re-render");
     }
     get viewerText(): HTMLElement {
         return this.viewer.innerHTML;
@@ -129,6 +158,8 @@ class WebProject extends Project {
         this.openFile("index.html");
     }
 
+    event = new EventEmitter();
+
     renderWorkspace(): any {
         return {
             element: "div",
@@ -159,13 +190,27 @@ class WebProject extends Project {
                                 addElement: (e: string) => {
                                     this.addElement(e);
                                 },
+                                event: this.event,
                             },
                         },
                         {
                             isComponent: true,
                             component: viewer,
                             props: {
-                                viewer: this.viewerText,
+                                viewer: () => {
+                                    return this.viewerText;
+                                },
+                                event: this.event,
+                            },
+                        },
+                        {
+                            isComponent: true,
+                            component: attributeSet,
+                            props: {
+                                getAttribute: () => {
+                                    return this.getAttribute;
+                                },
+                                event: this.event,
                             },
                         },
                     ],

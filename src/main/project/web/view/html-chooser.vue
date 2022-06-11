@@ -74,10 +74,9 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, toRaw } from "vue";
-import { addElement, removeElement } from "../../utils/resolve/html";
-import { canAddList, cantAdd } from "../../utils/lib/html";
-import elementCard from "../../components/elementCard.vue";
+import { defineComponent } from "vue";
+import { canAddList, cantAdd } from "../lib/html";
+import elementCard from "../../../components/elementCard.vue";
 const supportExt = ["html", "htm", "css", "js"];
 const disableAdd = [".text", "html", "style", "script", "img", "input", "br"];
 export default defineComponent({
@@ -165,7 +164,6 @@ export default defineComponent({
             root: string,
             ans: number
         ): HTMLElement {
-            console.log(obj);
             let out: HTMLElement = document.createElement("div");
             out.innerText = obj.elementName ? obj.elementName : this.elementToText(obj.element);
             out.className = `layer`;
@@ -241,9 +239,6 @@ export default defineComponent({
             }
         },
         refreshChooser: function() {
-            console.log(1);
-            console.log(this.getEL());
-            console.log(2);
             let html = this.ObjToHtmlchooser(this.getEL()).innerHTML;
             document.getElementById("html-chooser")!.innerHTML = html;
         },

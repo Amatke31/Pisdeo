@@ -436,15 +436,11 @@
 <script lang="ts">
 import { ElMessage } from "element-plus";
 import { defineComponent } from "vue";
-import {
-    setAttribute,
-    delAttribute,
-    setAttributeT,
-    getAttribute,
-} from "../../utils/resolve/attribute";
-import { cssList } from "../../utils/lib/css";
-import { canAddList, allRoutine } from "../../utils/lib/html";
+import { setAttribute, delAttribute, setAttributeT, getAttribute } from "../resolve/attribute";
+import { cssList } from "../lib/css";
+import { canAddList, allRoutine } from "../lib/html";
 import { arrRemove } from "@/main/utils/array";
+import { getAllCssSelector } from "../resolve/css";
 
 const noAttr = ["children", "element", "elementName", "class", "css"];
 
@@ -456,10 +452,14 @@ export default defineComponent({
             type: Function,
             default: () => {},
         },
+        setAttribute: {
+            type: Function,
+            default: (e: any) => {},
+        },
     },
     data() {
         return {
-            attribute: {} as any,
+            attribute: { element: "div" } as any,
             lock: false,
             text: "",
             frame: {
@@ -564,25 +564,17 @@ export default defineComponent({
         },
     },
     watch: {
-        attribute: function(n) {
-            this.refreshAttr(n);
-        },
         text: function(n) {
             if (!this.lock) {
-                this.$store.dispatch(
-                    "refreshViewWithCode",
-                    setAttribute(
-                        this.$store.getters.currentFileContent,
-                        this.$store.getters.getHTMLChooserLayer,
-                        2,
-                        {
-                            changeAttr: "text",
-                            value: n,
-                        }
-                    )
-                );
+                this.setAttribute({
+                    changeAttr: "text",
+                    value: n,
+                });
             }
         },
+    },
+    mounted: function() {
+        this.refreshAttr();
     },
     methods: {
         label: function(element: string) {
@@ -611,23 +603,15 @@ export default defineComponent({
         },
         newAttr: function() {
             this.setAttr("new", "");
-            this.refreshAttr(this.attribute);
+            this.refreshAttr();
             this.frame.attr.class = "open";
         },
         setAttr: function(attr: string, value: string | Boolean) {
             if (!this.lock) {
-                this.$store.dispatch(
-                    "refreshViewWithCode",
-                    setAttribute(
-                        this.$store.getters.currentFileContent,
-                        this.$store.getters.getHTMLChooserLayer,
-                        2,
-                        {
-                            changeAttr: attr,
-                            value: value,
-                        }
-                    )
-                );
+                this.setAttribute({
+                    changeAttr: attr,
+                    value: value,
+                });
             }
         },
         delAttr: function(attr: string) {
@@ -644,7 +628,7 @@ export default defineComponent({
                             }
                         )
                     );
-                    this.refreshAttr(this.attribute);
+                    this.refreshAttr();
                 }
             }
         },
@@ -659,14 +643,14 @@ export default defineComponent({
                     }) !== undefined ||
                     this.attribute![value] !== undefined
                 ) {
-                    this.refreshAttr(this.attribute);
+                    this.refreshAttr();
                     ElMessage({
                         showClose: true,
                         message: this.$t("attr.warning.repeat"),
                         type: "error",
                     });
                 } else if (value == "") {
-                    this.refreshAttr(this.attribute);
+                    this.refreshAttr();
                     ElMessage({
                         showClose: true,
                         message: this.$t("attr.warning.null"),
@@ -704,7 +688,9 @@ export default defineComponent({
                 return true;
             }
         },
-        refreshAttr: function(n: any) {
+        refreshAttr: function() {
+            const n = this.getAttribute();
+            this.attribute = n;
             this.lock = true;
             this.text = n.text ? n.text : "";
             setTimeout(() => {
@@ -746,7 +732,7 @@ export default defineComponent({
             //element css
 
             if (this.attribute!.element !== "style") {
-                const css = this.$store.state.project.workspace.css;
+                const css = getAllCssSelector();
                 let cssHave: Array<string> = [];
                 for (let i in css) {
                     cssHave.push(i);
@@ -768,18 +754,10 @@ export default defineComponent({
             }
         },
         setCSS: function() {
-            this.$store.dispatch(
-                "refreshViewWithCode",
-                setAttribute(
-                    this.$store.getters.currentFileContent,
-                    this.$store.getters.getHTMLChooserLayer,
-                    2,
-                    {
-                        changeAttr: "css",
-                        value: this.vC,
-                    }
-                )
-            );
+            this.setAttribute({
+                changeAttr: "css",
+                value: this.vC,
+            });
         },
         addCSS: function(key: number) {
             this.vC[key].content.push({ label: "new", value: "0" });
