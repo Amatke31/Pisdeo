@@ -12,15 +12,22 @@ import { install } from "@icon-park/vue-next/es/all";
 import "./assets/iconfont/iconfont.css";
 import "@icon-park/vue-next/styles/index.css";
 
-loadFonts();
+class NexWebDesigner {
+    app: any = null;
+    constructor(el: string) {
+        this.app = createApp(App);
+        loadFonts();
+        this.app.config.globalProperties.$axios = axios;
+        installElementPlus(this.app);
+        install(this.app);
+        this.app
+            .use(i18n)
+            .use(store)
+            .use(component)
+            .use(vuetify)
+            .component("msg", Msg)
+            .mount(el);
+    }
+}
 
-const app = createApp(App);
-app.config.globalProperties.$axios = axios;
-installElementPlus(app);
-install(app);
-app.use(i18n)
-    .use(store)
-    .use(component)
-    .use(vuetify)
-    .component("msg", Msg)
-    .mount("#_nexwebdesigner");
+new NexWebDesigner("#_nexwebdesigner");
