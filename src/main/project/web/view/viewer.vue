@@ -23,14 +23,14 @@ export default defineComponent({
         },
         event: {
             type: EventEmitter,
-            default: { on: () => {} },
+            default: () => {},
         },
     },
     mounted: function() {
         this.$nextTick(() => {
             this.asyncView();
         });
-        this.event!.on("re-render", () => {
+        this.event.on("refreshViewer", () => {
             this.asyncView();
         });
     },

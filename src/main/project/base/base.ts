@@ -101,14 +101,6 @@ class Project {
             : "Project not initialized";
     }
 
-    registerComponent(component: Object, props: any): void {
-        if (this.api.component) {
-            this.api.component(component, props);
-        } else {
-            console.error("component api not found");
-        }
-    }
-
     /**
      * Export JSZip Class
      * @returns JSZip

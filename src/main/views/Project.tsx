@@ -14,11 +14,6 @@ export default defineComponent({
     name: "workspace",
 
     setup(props: any, {}) {
-        const components = reactive([]) as Array<any>;
-        const addComponent = (component: any, props) => {
-            components.push({ component, props });
-        };
-
         let render: any = reactive({
             element: "div",
             attrs: { style: { height: "100vh" } },
@@ -28,9 +23,7 @@ export default defineComponent({
         const store = useStore();
         store.subscribeAction(async ({ type, payload }, state) => {
             if (type == "loadProject") {
-                let instance = new solution.allSolution[payload.solution]({
-                    component: addComponent,
-                });
+                let instance = new solution.allSolution[payload.solution]({});
                 instance
                     .loadProjectFromFile(payload.content)
                     .then(() => {

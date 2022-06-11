@@ -101,6 +101,10 @@ export default defineComponent({
             type: Function,
             default: (e: any) => {},
         },
+        event: {
+            type: Object,
+            default: () => {},
+        },
     },
     data() {
         return {
@@ -131,7 +135,6 @@ export default defineComponent({
     watch: {
         click: function(e) {
             this.chooseElement(e);
-            this.refreshAttr();
         },
     },
     mounted: function() {
@@ -142,6 +145,12 @@ export default defineComponent({
                 this.htmlChoose(e);
             }
         };
+        this.event.on("refreshAttr", () => {
+            this.refreshAttr();
+        });
+        this.event.on("refreshChooser", () => {
+            this.refreshChooser();
+        });
     },
     methods: {
         refreshAttr: function() {
@@ -210,8 +219,6 @@ export default defineComponent({
                         break;
                 }
                 this.addElement(element);
-                this.refreshAttr();
-                this.refreshChooser();
                 element = element === ".text" ? "text" : element;
                 if (!this.recent.includes(element)) {
                     this.recent.unshift(element);
@@ -234,8 +241,6 @@ export default defineComponent({
                     },
                 });
                 this.rmElement();
-                this.refreshAttr();
-                this.refreshChooser();
             }
         },
         refreshChooser: function() {

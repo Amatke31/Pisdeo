@@ -34,7 +34,8 @@ class WebProject extends Project {
             2,
             element
         );
-        this.event.emit("re-render");
+        this.refreshViewer();
+        this.refreshChooser();
     }
     private _addElement(obj: any, path: any, layer: number, element: any) {
         if (path.length == 2) {
@@ -64,7 +65,8 @@ class WebProject extends Project {
             this.htmlChoose.split("-"),
             2
         );
-        this.event.emit("re-render");
+        this.refreshViewer();
+        this.refreshChooser();
     }
     private _removeElement(obj: any, path: any, layer: number) {
         if (path.length == 2) {
@@ -122,7 +124,7 @@ class WebProject extends Project {
             2,
             e
         );
-        this.event.emit("re-render");
+        this.refreshViewer();
     }
     get viewerText(): HTMLElement {
         return this.viewer.innerHTML;
@@ -159,6 +161,16 @@ class WebProject extends Project {
     }
 
     event = new EventEmitter();
+    private refreshAttr() {
+        this.event.emit("refreshAttr");
+    }
+    private refreshChooser() {
+        this.event.emit("refreshChooser");
+    }
+    private refreshViewer() {
+        this.viewer = ObjToElement(this.currentOpenFile);
+        this.event.emit("refreshViewer");
+    }
 
     renderWorkspace(): any {
         return {
