@@ -14,7 +14,7 @@
         "baseUrl": ".",
         "noImplicitAny": false,
         "resolveJsonModule": true,
-        "types": ["webpack-env"],
+        "types": ["webpack-env", "naive-ui/volar", "element-plus/global"],
         "paths": {
             "@/*": ["src/*"]
         },

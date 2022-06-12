@@ -8,6 +8,7 @@ import component from "./components/NexUI";
 import vuetify from "./plugins/vuetify";
 import loadFonts from "./plugins/webfontloader";
 import installElementPlus from "./plugins/element";
+import naive from "naive-ui";
 import { install } from "@icon-park/vue-next/es/all";
 import "./assets/iconfont/iconfont.css";
 import "@icon-park/vue-next/styles/index.css";
@@ -25,6 +26,7 @@ class NexWebDesigner {
             .use(store)
             .use(component)
             .use(vuetify)
+            .use(naive)
             .component("msg", Msg)
             .mount(el);
     }

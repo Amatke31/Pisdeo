@@ -94,6 +94,34 @@ class WebProject extends Project {
         }
     }
 
+    delAttribute(e: any) {
+        this._delAttribute(this.currentOpenFile, this.htmlChoose.split("-"), 2, e);
+    }
+    private _delAttribute(obj: any, path: any, layer: number, changeAttr: any) {
+        if (path.length == 2) {
+        } else if (path.length == layer) {
+            let next = obj;
+            console.log(next)
+            delete next[changeAttr.changeAttr];
+        } else {
+            this._delAttribute(obj.children[Number(path[layer])], path, layer + 1, changeAttr);
+        }
+    }
+
+    setAttributeT(e: any) {
+        this._setAttributeT(this.currentOpenFile, this.htmlChoose.split("-"), 2, e);
+    }
+    private _setAttributeT(obj: any, path: any, layer: number, changeAttr: any) {
+        if (path.length == 2) {
+        } else if (path.length == layer) {
+            let next = obj;
+            next[changeAttr.value] = next[changeAttr.changeAttr];
+            delete next[changeAttr.changeAttr];
+        } else {
+            this._setAttributeT(obj.children[Number(path[layer])], path, layer + 1, changeAttr);
+        }
+    }
+
     get viewerText(): HTMLElement {
         return this.viewer.innerHTML;
     }
@@ -187,6 +215,12 @@ class WebProject extends Project {
                                 event: this.event,
                                 setAttribute: (e: any) => {
                                     this.setAttribute(e);
+                                },
+                                setAttributeT: (e: any) => {
+                                    this.setAttributeT(e);
+                                },
+                                delAttribute: (e: any) => {
+                                    this.delAttribute(e);
                                 },
                             },
                         },

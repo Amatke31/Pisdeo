@@ -1,5 +1,4 @@
 import { ObjToCSS, clearCss } from "./css";
-import { arrRemove } from "@/main/utils/array";
 const noChange = ["element", "children", "css", "script", "text", "elementName"];
 const singleElemenet = ["img", "input", "br"];
 
@@ -90,44 +89,4 @@ function analysisObjWithElement(obj: any): HTMLElement | string {
     }
 }
 
-function addElement(obj: any, path: any, layer: number, element: any) {
-    if (path.length == 2) {
-        return obj;
-    } else if (path.length == layer) {
-        let next = obj;
-        if (!next.children) {
-            next.children = [];
-        }
-        next.children.push(element);
-        return next;
-    } else {
-        let out = obj;
-        out.children[Number(path[layer])] = addElement(
-            obj.children[Number(path[layer])],
-            path,
-            layer + 1,
-            element
-        );
-        return out;
-    }
-}
-
-function removeElement(obj: any, path: any, layer: number) {
-    if (path.length == 2) {
-        return obj;
-    } else if (path.length == layer + 1) {
-        let next = obj;
-        next.children = arrRemove(path.pop(), next.children);
-        return next;
-    } else {
-        let out = obj;
-        out.children[Number(path[layer])] = removeElement(
-            obj.children[Number(path[layer])],
-            path,
-            layer + 1
-        );
-        return out;
-    }
-}
-
-export { ObjToHTML, analysisObj, ObjToElement, analysisObjWithElement, addElement, removeElement };
+export { ObjToHTML, analysisObj, ObjToElement, analysisObjWithElement };

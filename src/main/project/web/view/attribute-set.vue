@@ -33,22 +33,26 @@
                                 <div class="attrName">
                                     {{ $t("attr.elementName") + ":" }}
                                 </div>
-                                <el-input
+                                <n-input
+                                    type="text"
                                     size="small"
                                     class="attrInput"
-                                    v-model="vN['elementName']"
-                                    @change="setAttr('elementName', vN['elementName'])"
+                                    placeholder=" "
+                                    v-model:value="vN['elementName']"
+                                    :on-input="setAttr('elementName', vN['elementName'])"
                                 />
                             </div>
                             <div class="setDiv">
                                 <div class="attrName">
                                     {{ $t("attr.id") + ":" }}
                                 </div>
-                                <el-input
+                                <n-input
+                                    type="text"
                                     size="small"
                                     class="attrInput"
-                                    v-model="vN['id']"
-                                    @change="setAttr('id', vN['id'])"
+                                    placeholder=" "
+                                    v-model:value="vN['id']"
+                                    :on-input="setAttr('id', vN['id'])"
                                 />
                             </div>
                             <div class="setDiv">
@@ -92,28 +96,31 @@
                                 <div v-if="!item.custom" class="attrName">
                                     {{ $t(item.id) + ":" }}
                                 </div>
-                                <el-input
+                                <n-input
                                     v-else
-                                    class="attrName custom"
-                                    v-model="vT[item.name]"
+                                    type="text"
                                     size="small"
-                                    @change="setAttrT(item.name, vT[item.name])"
-                                >
-                                    {{ $t(item.id) + ":" }}
-                                </el-input>
-                                <el-input
-                                    v-if="item.type == 'text' && !item.custom"
-                                    size="small"
-                                    class="attrInput"
-                                    v-model="v[item.name]"
-                                    @change="setAttr(item.name, v[item.name])"
+                                    class="attrInput custom"
+                                    v-model:value="vT[item.name]"
+                                    placeholder=" "
                                 />
-                                <el-input
-                                    v-if="item.type == 'text' && item.custom"
+                                <n-input
+                                    v-if="item.type == 'text' && !item.custom"
+                                    type="text"
                                     size="small"
                                     class="attrInput"
-                                    v-model="v[item.name]"
-                                    @change="setAttr(vT[item.name], v[item.name])"
+                                    placeholder=" "
+                                    v-model:value="v[item.name]"
+                                    :on-input="setAttr(item.name, v[item.name])"
+                                />
+                                <n-input
+                                    v-if="item.type == 'text' && item.custom"
+                                    type="text"
+                                    size="small"
+                                    class="attrInput"
+                                    placeholder=" "
+                                    v-model:value="v[item.name]"
+                                    :on-input="setAttr(vT[item.name], v[item.name])"
                                 />
                                 <el-checkbox
                                     v-if="item.type == 'checkbox'"
@@ -436,7 +443,6 @@
 <script lang="ts">
 import { ElMessage } from "element-plus";
 import { defineComponent } from "vue";
-import { setAttribute, delAttribute, setAttributeT, getAttribute } from "../resolve/attribute";
 import { cssList } from "../lib/css";
 import { canAddList, allRoutine } from "../lib/html";
 import { arrRemove } from "@/main/utils/array";
@@ -450,6 +456,14 @@ const mustResolve = ["*"];
 export default defineComponent({
     props: {
         setAttribute: {
+            type: Function,
+            default: (e: any) => {},
+        },
+        setAttributeT: {
+            type: Function,
+            default: (e: any) => {},
+        },
+        delAttribute: {
             type: Function,
             default: (e: any) => {},
         },
@@ -619,17 +633,9 @@ export default defineComponent({
         delAttr: function(attr: string) {
             if (!this.lock) {
                 if (this.canDel(attr)) {
-                    this.$store.dispatch(
-                        "refreshViewWithCode",
-                        delAttribute(
-                            this.$store.getters.currentFileContent,
-                            this.$store.getters.getHTMLChooserLayer,
-                            2,
-                            {
-                                changeAttr: attr,
-                            }
-                        )
-                    );
+                    this.delAttribute({
+                        changeAttr: attr,
+                    });
                 }
             }
         },
@@ -656,18 +662,10 @@ export default defineComponent({
                         type: "error",
                     });
                 } else {
-                    this.$store.dispatch(
-                        "refreshViewWithCode",
-                        setAttributeT(
-                            this.$store.getters.currentFileContent,
-                            this.$store.getters.getHTMLChooserLayer,
-                            2,
-                            {
-                                changeAttr: attr,
-                                value: value,
-                            }
-                        )
-                    );
+                    this.setAttributeT({
+                        changeAttr: attr,
+                        value: value,
+                    });
                 }
             }
         },
@@ -776,21 +774,15 @@ export default defineComponent({
         },
         // not style element
         setCSS2: function(key: number) {
-            const selector = this.vC[key];
-            const selectorLayer = selector.layer.split("-");
-            const file = this.$store.getters.currentFileContent;
-            let style = getAttribute(file, selectorLayer, 2);
+            let style = this.attribute;
             const index = style.css.findIndex((i: any) => {
                 return i.class == this.vC[key].class;
             });
             style.css[index] = this.vC[key];
-            this.$store.dispatch(
-                "refreshViewWithCode",
-                setAttribute(file, selectorLayer, 2, {
-                    changeAttr: "css",
-                    value: style.css,
-                })
-            );
+            this.setAttribute({
+                changeAttr: "css",
+                value: style.css,
+            });
         },
         delCSS2: function(key: number, key2: number) {
             this.vC[key].content = <Array<any>>arrRemove(Number(key2), this.vC[key].content);

@@ -1,67 +1,71 @@
 <template>
-    <div>
-        <div
-            v-show="showVirtualTitleBar"
-            :class="showVirtualTitleBar ? 'titleBar desktop' : 'titleBar'"
-        >
-            <div class="window-title">
-                {{ title }}
+    <n-config-provider :theme="darkTheme" :theme-overrides="themeOverrides">
+        <div>
+            <div
+                v-show="showVirtualTitleBar"
+                :class="showVirtualTitleBar ? 'titleBar desktop' : 'titleBar'"
+            >
+                <div class="window-title">
+                    {{ title }}
+                </div>
             </div>
+            <Welcome v-if="page === 'Welcome'" @goStart="page = 'Start'" />
+            <Start
+                v-else-if="page === 'Start'"
+                :isInit="startIsInit"
+                :template="template"
+                :documentsPath="documentsPath"
+                :templateRequire="templateRequire"
+                @createProject="createProject"
+                @openSetting="page = 'Setting'"
+            />
+            <Setting
+                v-else-if="page === 'Setting'"
+                @goToStartPage="page = 'Start'"
+                @sendCommand="SettingCommand"
+                :menuOption="settingMenuOption"
+            />
+            <Project v-show="page === 'Project'" @goToStartPage="page = 'Start'" />
+            <div v-if="!startIsInit" class="console" v-html="consoleText"></div>
         </div>
-        <Welcome v-if="page === 'Welcome'" @goStart="page = 'Start'" />
-        <Start
-            v-else-if="page === 'Start'"
-            :isInit="startIsInit"
-            :template="template"
-            :documentsPath="documentsPath"
-            :templateRequire="templateRequire"
-            @createProject="createProject"
-            @openSetting="page = 'Setting'"
+        <Tool
+            v-if="openNWDDevTool == 'always' || (openNWDDevTool == 'development' && isDevelopment)"
+            :toolFunction="toolFunction"
         />
-        <Setting
-            v-else-if="page === 'Setting'"
-            @goToStartPage="page = 'Start'"
-            @sendCommand="SettingCommand"
-            :menuOption="settingMenuOption"
-        />
-        <Project v-show="page === 'Project'" @goToStartPage="page = 'Start'" />
-        <div v-if="!startIsInit" class="console" v-html="consoleText"></div>
-    </div>
-    <Tool
-        v-if="openNWDDevTool == 'always' || (openNWDDevTool == 'development' && isDevelopment)"
-        :toolFunction="toolFunction"
-    />
-    <el-dialog v-model="loadProjectWithDebugDialog" title="Tool" width="30%">
-        <span>Load Project</span>
-        <el-input v-model="loadProjectPath" placeholder="Project Path" />
-        <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="loadProjectWithDebugDialog = false">Cancel</el-button>
-                <el-button type="primary" @click="loadProjectWithDebug">Confirm</el-button>
-            </span>
-        </template>
-    </el-dialog>
-    <n-window :open="WindowOpen" @close="WindowOpen = false">
-        <div class="solution-container">
-            <div class="solution-title">{{ $t("start.choosesolution") }}</div>
-            <div class="solution-list">
-                <v-card
-                    v-for="item in solution"
-                    :key="item.solutionName"
-                    width="300"
-                    :title="item.solutionName"
-                    :text="item.solutionDescription"
-                    variant="contained-text"
-                >
-                    <v-card-actions>
-                        <v-btn @click="choosedSolution(item.solutionName)">
-                            {{ createOrLoad == "create" ? $t("start.create") : $t("start.load") }}
-                        </v-btn>
-                    </v-card-actions>
-                </v-card>
+        <el-dialog v-model="loadProjectWithDebugDialog" title="Tool" width="30%">
+            <span>Load Project</span>
+            <el-input v-model="loadProjectPath" placeholder="Project Path" />
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="loadProjectWithDebugDialog = false">Cancel</el-button>
+                    <el-button type="primary" @click="loadProjectWithDebug">Confirm</el-button>
+                </span>
+            </template>
+        </el-dialog>
+        <n-window :open="WindowOpen" @close="WindowOpen = false">
+            <div class="solution-container">
+                <div class="solution-title">{{ $t("start.choosesolution") }}</div>
+                <div class="solution-list">
+                    <v-card
+                        v-for="item in solution"
+                        :key="item.solutionName"
+                        width="300"
+                        :title="item.solutionName"
+                        :text="item.solutionDescription"
+                        variant="contained-text"
+                    >
+                        <v-card-actions>
+                            <v-btn @click="choosedSolution(item.solutionName)">
+                                {{
+                                    createOrLoad == "create" ? $t("start.create") : $t("start.load")
+                                }}
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </div>
             </div>
-        </div>
-    </n-window>
+        </n-window>
+    </n-config-provider>
 </template>
 
 <script lang="ts">
@@ -75,6 +79,7 @@ import Tool from "./components/developtool/tool.vue";
 import Setting from "./views/Setting.vue";
 import { getConfig } from "./utils/common";
 import { ElLoading, ElMessage } from "element-plus";
+import { darkTheme } from "naive-ui";
 import "./project/web/web";
 import JSZip from "jszip";
 
@@ -327,6 +332,17 @@ export default defineComponent({
                 })
                 .catch(() => {});
         },
+    },
+    setup() {
+        const themeOverrides = {
+            common: {
+                primaryColor: "#eee",
+            },
+        };
+        return {
+            darkTheme,
+            themeOverrides,
+        };
     },
 });
 </script>
