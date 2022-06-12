@@ -1,4 +1,4 @@
-import { defineComponent, h, isVNode, reactive } from "vue";
+import { defineComponent, h, shallowRef } from "vue";
 import { useStore } from "vuex";
 import { solution } from "../store/project";
 
@@ -14,7 +14,7 @@ export default defineComponent({
     name: "workspace",
 
     setup(props: any, {}) {
-        let render: any = reactive({
+        let render: any = shallowRef({
             element: "div",
             attrs: { style: { height: "100vh" } },
             children: [],
@@ -28,7 +28,11 @@ export default defineComponent({
                     .loadProjectFromFile(payload.content)
                     .then(() => {
                         const r = instance.renderWorkspace();
-                        render.children.push(r);
+                        render.value = {
+                            element: "div",
+                            attrs: { style: { height: "100vh" } },
+                            children: [r],
+                        };
                         project[payload.name] = instance;
                         currentProject = payload.name;
                     })
@@ -37,7 +41,7 @@ export default defineComponent({
         });
         return () => {
             const renderComponents: any = (render: any) => {
-                let out: any = analysisObjWithElement(render);
+                let out: any = analysisObjWithElement(render.value);
                 return out;
             };
 
@@ -51,7 +55,7 @@ export default defineComponent({
                 let out: any = h(
                     obj.isComponent ? obj.component : obj.element,
                     obj.isComponent ? obj.props : obj.attrs,
-                    children
+                    { default: () => children }
                 );
                 return out;
             };

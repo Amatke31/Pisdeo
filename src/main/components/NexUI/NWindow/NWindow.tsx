@@ -8,7 +8,7 @@ export default defineComponent({
 
     props: {
         open: Boolean,
-        style: String,
+        style: Object,
     },
 
     setup(props: any, { slots, emit }) {

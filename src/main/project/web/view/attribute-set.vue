@@ -441,6 +441,7 @@ import { cssList } from "../lib/css";
 import { canAddList, allRoutine } from "../lib/html";
 import { arrRemove } from "@/main/utils/array";
 import { getAllCssSelector } from "../resolve/css";
+import EventEmitter from "events";
 
 const noAttr = ["children", "element", "elementName", "class", "css"];
 
@@ -448,13 +449,13 @@ const mustResolve = ["*"];
 
 export default defineComponent({
     props: {
-        getAttribute: {
-            type: Function,
-            default: () => {},
-        },
         setAttribute: {
             type: Function,
             default: (e: any) => {},
+        },
+        event: {
+            type: EventEmitter,
+            default: new EventEmitter(),
         },
     },
     data() {
@@ -574,7 +575,9 @@ export default defineComponent({
         },
     },
     mounted: function() {
-        this.refreshAttr();
+        this.event.on("refreshAttr", (n) => {
+            this.refreshAttr(n);
+        });
     },
     methods: {
         label: function(element: string) {
@@ -603,7 +606,6 @@ export default defineComponent({
         },
         newAttr: function() {
             this.setAttr("new", "");
-            this.refreshAttr();
             this.frame.attr.class = "open";
         },
         setAttr: function(attr: string, value: string | Boolean) {
@@ -628,7 +630,6 @@ export default defineComponent({
                             }
                         )
                     );
-                    this.refreshAttr();
                 }
             }
         },
@@ -643,14 +644,12 @@ export default defineComponent({
                     }) !== undefined ||
                     this.attribute![value] !== undefined
                 ) {
-                    this.refreshAttr();
                     ElMessage({
                         showClose: true,
                         message: this.$t("attr.warning.repeat"),
                         type: "error",
                     });
                 } else if (value == "") {
-                    this.refreshAttr();
                     ElMessage({
                         showClose: true,
                         message: this.$t("attr.warning.null"),
@@ -688,8 +687,7 @@ export default defineComponent({
                 return true;
             }
         },
-        refreshAttr: function() {
-            const n = this.getAttribute();
+        refreshAttr: function(n: any) {
             this.attribute = n;
             this.lock = true;
             this.text = n.text ? n.text : "";

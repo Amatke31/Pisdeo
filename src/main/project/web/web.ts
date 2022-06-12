@@ -25,6 +25,7 @@ class WebProject extends Project {
     }
     set htmlChoose(v) {
         this._htmlChoose[this._currentOpenFile] = v;
+        this.refreshAttr();
     }
 
     addElement(element: string): void {
@@ -60,29 +61,21 @@ class WebProject extends Project {
     }
 
     removeElement(): void {
-        this.currentOpenFile = this._removeElement(
-            this.currentOpenFile,
-            this.htmlChoose.split("-"),
-            2
-        );
+        this._removeElement(this.currentOpenFile, this.htmlChoose.split("-"), 2);
         this.refreshViewer();
         this.refreshChooser();
     }
     private _removeElement(obj: any, path: any, layer: number) {
         if (path.length == 2) {
-            return obj;
         } else if (path.length == layer + 1) {
             let next = obj;
-            next.children = arrRemove(path.pop(), next.children);
-            return next;
+            const last = path.pop();
+            this.htmlChoose = this.htmlChoose.slice(0, this.htmlChoose.length - last.length - 1);
+            console.log(this.htmlChoose);
+            next.children = arrRemove(last, next.children);
+            obj = next;
         } else {
-            let out = obj;
-            out.children[Number(path[layer])] = this._removeElement(
-                obj.children[Number(path[layer])],
-                path,
-                layer + 1
-            );
-            return out;
+            this._removeElement(obj.children[Number(path[layer])], path, layer + 1);
         }
     }
 
@@ -162,7 +155,7 @@ class WebProject extends Project {
 
     event = new EventEmitter();
     private refreshAttr() {
-        this.event.emit("refreshAttr");
+        this.event.emit("refreshAttr", this.getAttribute, this.htmlChoose);
     }
     private refreshChooser() {
         this.event.emit("refreshChooser");
@@ -190,9 +183,6 @@ class WebProject extends Project {
                                 getEL: () => {
                                     return this.currentOpenFile;
                                 },
-                                getAttribute: () => {
-                                    return this.getAttribute;
-                                },
                                 chooseElement: (e: string) => {
                                     this.htmlChoose = e;
                                 },
@@ -219,9 +209,6 @@ class WebProject extends Project {
                             isComponent: true,
                             component: attributeSet,
                             props: {
-                                getAttribute: () => {
-                                    return this.getAttribute;
-                                },
                                 event: this.event,
                             },
                         },

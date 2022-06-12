@@ -1,7 +1,7 @@
 <template>
     <div class="html-chooser">
         <div class="elementBar">
-            <el-dropdown size="small" @command="addElement" :disabled="!canAddElement">
+            <el-dropdown size="small" @command="_addElement" :disabled="!canAddElement">
                 <icon-plus
                     :class="add"
                     size="16"
@@ -27,7 +27,9 @@
                 :fill="!canRmElement ? '#333' : '#eee'"
             />
         </div>
-        <div ref="htmlChooser" id="html-chooser" class="scroll" @click="htmlChoose"></div>
+        <div class="scroll">
+            <component :is="htmlChooser"></component>
+        </div>
         <n-window :open="openChooser" @close="openChooser = false" class="ew" style="padding:16px;">
             <el-tabs v-model="elementWindow" type="card">
                 <el-tab-pane :label="$t('common.recent')" name="recent">
@@ -36,7 +38,7 @@
                             v-for="item in recent"
                             :key="item"
                             :element="item"
-                            @click="addElement(item)"
+                            @click="_addElement(item)"
                         />
                     </div>
                 </el-tab-pane>
@@ -51,7 +53,7 @@
                             v-for="item in canAddList"
                             :key="item"
                             :element="item"
-                            @click="addElement(item)"
+                            @click="_addElement(item)"
                         />
                     </div>
                     <div v-else class="ewp scroll">
@@ -64,7 +66,7 @@
                             })"
                             :key="item"
                             :element="item"
-                            @click="addElement(item)"
+                            @click="_addElement(item)"
                         />
                     </div>
                 </el-tab-pane>
@@ -74,17 +76,13 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, h } from "vue";
 import { canAddList, cantAdd } from "../lib/html";
 import elementCard from "../../../components/elementCard.vue";
-const supportExt = ["html", "htm", "css", "js"];
+import EventEmitter from "events";
 const disableAdd = [".text", "html", "style", "script", "img", "input", "br"];
 export default defineComponent({
     props: {
-        getAttribute: {
-            type: Function,
-            default: () => {},
-        },
         getEL: {
             type: Function,
             default: () => {},
@@ -102,8 +100,8 @@ export default defineComponent({
             default: (e: any) => {},
         },
         event: {
-            type: Object,
-            default: () => {},
+            type: EventEmitter,
+            default: new EventEmitter(),
         },
     },
     data() {
@@ -115,6 +113,7 @@ export default defineComponent({
             canAddList,
             recent: ["div", "p", "a", "text", "style"] as Array<string>,
             search: "",
+            htmlChooser: h("div", null, { default: () => "" }),
         };
     },
     components: { "element-card": elementCard },
@@ -133,73 +132,59 @@ export default defineComponent({
         },
     },
     watch: {
-        click: function(e) {
+        click: function(e, p) {
+            try {
+                document.getElementById(p)!.className = `layer`;
+                document.getElementById(e)!.className = `layer choose`;
+            } catch (e) {}
             this.chooseElement(e);
         },
     },
     mounted: function() {
         this.refreshChooser();
-        this.htmlChoose({ target: { id: "layer-0" } });
-        document.onkeydown = (e: any) => {
-            if (e.code == "Space" && e.target.id.indexOf("layer") == 0) {
-                this.htmlChoose(e);
-            }
-        };
-        this.event.on("refreshAttr", () => {
-            this.refreshAttr();
+        this.click = "layer-0";
+        this.event.on("refreshAttr", (n: any, e: string) => {
+            this.refreshAttr(n);
+            this.click = e;
         });
         this.event.on("refreshChooser", () => {
             this.refreshChooser();
         });
     },
     methods: {
-        refreshAttr: function() {
-            this.attribute = this.getAttribute();
+        refreshAttr: function(n: any) {
+            this.attribute = n;
         },
         ObjToHtmlchooser: function(obj: any) {
-            let out: HTMLElement = this.analysisObj(
-                obj,
-                document.createElement("div"),
-                0,
-                "layer",
-                0
-            );
-            return out;
+            let out: any = this.analysisObj(obj, [], 0, "layer", 0);
+            return h("div", out);
         },
-        analysisObj: function(
-            obj: any,
-            element: HTMLElement,
-            i: number,
-            root: string,
-            ans: number
-        ): HTMLElement {
-            let out: HTMLElement = document.createElement("div");
-            out.innerText = obj.elementName ? obj.elementName : this.elementToText(obj.element);
-            out.className = `layer`;
-            out.id = `${root}-${ans}`;
-            out.style.paddingLeft = `${i * 8 + 4}px`;
-            out.setAttribute("tabindex", "0");
-            element.appendChild(out);
+        analysisObj: function(obj: any, array: any, i: number, root: string, ans: number): any {
+            let out: any = h("div", {
+                innerText: obj.elementName ? obj.elementName : this.elementToText(obj.element),
+                class: this.click == `${root}-${ans}` ? "layer choose" : "layer",
+                id: `${root}-${ans}`,
+                style: { paddingLeft: `${i * 8 + 4}px` },
+                tabIndex: 0,
+                onclick: (e: any) => {
+                    this.click = e.target.id;
+                },
+            });
+            array.push(out);
             let ansaz = 0;
             if (obj.children) {
                 for (let child in obj.children) {
-                    element = this.analysisObj(obj.children[child], element, i + 1, out.id, ansaz);
+                    array = this.analysisObj(
+                        obj.children[child],
+                        array,
+                        i + 1,
+                        `${root}-${ans}`,
+                        ansaz
+                    );
                     ansaz++;
                 }
             }
-            return element;
-        },
-        htmlChoose: function(e: any) {
-            let chooseId = e.target.id;
-            if (chooseId.indexOf("layer") == 0) {
-                if (this.click) {
-                    document.getElementById(this.click)!.className = `layer`;
-                }
-                document.getElementById(chooseId)!.className = `layer choose`;
-                this.click = chooseId;
-            } else {
-                document.getElementById(this.click)!.className = `layer`;
-            }
+            return array;
         },
         elementToText: function(element: string) {
             switch (element) {
@@ -209,7 +194,7 @@ export default defineComponent({
                     return this.$t(`element.${element}`);
             }
         },
-        addElement: function(element: string) {
+        _addElement: function(element: string) {
             if (this.canAddElement) {
                 element = element === "text" ? ".text" : element;
                 let addElementInfo: any = { element };
@@ -232,20 +217,11 @@ export default defineComponent({
         },
         removeElement: function() {
             if (this.canRmElement) {
-                this.htmlChoose({
-                    target: {
-                        id: this.click.slice(
-                            0,
-                            this.click.length - (this.click.split("-").pop()!.length + 1)
-                        ),
-                    },
-                });
                 this.rmElement();
             }
         },
         refreshChooser: function() {
-            let html = this.ObjToHtmlchooser(this.getEL()).innerHTML;
-            document.getElementById("html-chooser")!.innerHTML = html;
+            this.htmlChooser = this.ObjToHtmlchooser(this.getEL());
         },
     },
 });

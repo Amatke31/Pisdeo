@@ -23,7 +23,7 @@ export default defineComponent({
         },
         event: {
             type: EventEmitter,
-            default: () => {},
+            default: new EventEmitter(),
         },
     },
     mounted: function() {
