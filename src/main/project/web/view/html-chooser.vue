@@ -162,7 +162,7 @@ export default defineComponent({
         analysisObj: function(obj: any, array: any, i: number, root: string, ans: number): any {
             let out: any = h("div", {
                 innerText: obj.elementName ? obj.elementName : this.elementToText(obj.element),
-                class: this.click == `${root}-${ans}` ? "layer choose" : "layer",
+                class: "layer",
                 id: `${root}-${ans}`,
                 style: { paddingLeft: `${i * 8 + 4}px` },
                 tabIndex: 0,

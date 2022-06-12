@@ -29,34 +29,20 @@ class WebProject extends Project {
     }
 
     addElement(element: string): void {
-        this.currentOpenFile = this._addElement(
-            this.currentOpenFile,
-            this.htmlChoose.split("-"),
-            2,
-            element
-        );
+        this._addElement(this.currentOpenFile, this.htmlChoose.split("-"), 2, element);
         this.refreshViewer();
         this.refreshChooser();
     }
     private _addElement(obj: any, path: any, layer: number, element: any) {
         if (path.length == 2) {
-            return obj;
         } else if (path.length == layer) {
             let next = obj;
             if (!next.children) {
                 next.children = [];
             }
             next.children.push({ element });
-            return next;
         } else {
-            let out = obj;
-            out.children[Number(path[layer])] = this._addElement(
-                obj.children[Number(path[layer])],
-                path,
-                layer + 1,
-                element
-            );
-            return out;
+            this._addElement(obj.children[Number(path[layer])], path, layer + 1, element);
         }
     }
 
@@ -71,54 +57,43 @@ class WebProject extends Project {
             let next = obj;
             const last = path.pop();
             this.htmlChoose = this.htmlChoose.slice(0, this.htmlChoose.length - last.length - 1);
-            console.log(this.htmlChoose);
             next.children = arrRemove(last, next.children);
-            obj = next;
         } else {
             this._removeElement(obj.children[Number(path[layer])], path, layer + 1);
         }
     }
 
-    private analysisAttr(obj: any, path: any, layer: number) {
+    get getAttribute() {
+        const out = this._getAttribute(this.currentOpenFile, this.htmlChoose.split("-"), 2);
+        return out;
+    }
+    private _getAttribute(obj: any, path: any, layer: number) {
         if (path.length == 2) {
             return obj;
         } else if (path.length == layer) {
             return obj;
         } else {
-            return this.analysisAttr(obj.children[Number(path[layer])], path, layer + 1);
+            return this._getAttribute(obj.children[Number(path[layer])], path, layer + 1);
         }
+    }
+
+    setAttribute(e: any) {
+        this._setAttribute(this.currentOpenFile, this.htmlChoose.split("-"), 2, e);
+        this.refreshViewer();
     }
     private _setAttribute(obj: any, path: any, layer: number, changeAttr: any) {
         if (path.length == 2) {
-            return obj;
         } else if (path.length == layer) {
             let next = obj;
             next[changeAttr.changeAttr] = changeAttr.value;
-            return next;
+            if (changeAttr.changeAttr == "elementName") {
+                this.refreshChooser();
+            }
         } else {
-            let out = obj;
-            out.children[Number(path[layer])] = this._setAttribute(
-                obj.children[Number(path[layer])],
-                path,
-                layer + 1,
-                changeAttr
-            );
-            return out;
+            this._setAttribute(obj.children[Number(path[layer])], path, layer + 1, changeAttr);
         }
     }
-    get getAttribute() {
-        const out = this.analysisAttr(this.currentOpenFile, this.htmlChoose.split("-"), 2);
-        return out;
-    }
-    setAttribute(e: any) {
-        this.currentOpenFile = this._setAttribute(
-            this.currentOpenFile,
-            this.htmlChoose.split("-"),
-            2,
-            e
-        );
-        this.refreshViewer();
-    }
+
     get viewerText(): HTMLElement {
         return this.viewer.innerHTML;
     }
@@ -210,6 +185,9 @@ class WebProject extends Project {
                             component: attributeSet,
                             props: {
                                 event: this.event,
+                                setAttribute: (e: any) => {
+                                    this.setAttribute(e);
+                                },
                             },
                         },
                     ],
