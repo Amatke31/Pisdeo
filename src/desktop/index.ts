@@ -6,7 +6,7 @@ import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 const isDevelopment = process.env.NODE_ENV !== "production";
 const isMac = process.platform === "darwin";
 
-// app.setAsDefaultProtocolClient("nexwebdesigner");
+// app.setAsDefaultProtocolClient("pisdeo");
 
 protocol.registerSchemesAsPrivileged([
     { scheme: "app", privileges: { secure: true, standard: true } },
@@ -51,13 +51,13 @@ async function createWindow(title: string, path: string) {
                 {
                     label: "Learn NexWebDesigner",
                     click: async () => {
-                        await shell.openExternal("https://nexwebdesigner.org/docs");
+                        await shell.openExternal("https://pisdeo.org/docs");
                     },
                 },
                 {
                     label: "Issues",
                     click: async () => {
-                        await shell.openExternal("https://nexwebdesigner.org/issues");
+                        await shell.openExternal("https://pisdeo.org/issues");
                     },
                 },
                 {

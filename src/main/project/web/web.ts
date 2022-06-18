@@ -10,7 +10,6 @@ import EventEmitter from "events";
 class WebProject extends Project {
     static solutionName = "Website";
     static solutionDescription = `A solution for creating and editing web pages.`;
-    type: any = ["website"];
     static type: any = ["website"];
     supportExt: Array<string> = ["html", "htm", "css", "js"];
 

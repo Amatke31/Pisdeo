@@ -105,7 +105,7 @@ const extension = {
                 await axios({
                     method: "get",
                     url:
-                        "/extension/base/dist/org.nexwebdesigner.base@1.0.0.nwdx",
+                        "/extension/base/dist/org.pisdeo.base@1.0.0.nwdx",
                     responseType: "arraybuffer",
                 }).then(async (res) => {
                     dispatch("loadExtension", { zipFile: res.data, i18n });

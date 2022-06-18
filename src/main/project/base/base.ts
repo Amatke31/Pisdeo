@@ -6,10 +6,10 @@ class Project {
     author = "";
     files = {};
     mainfile = "";
+    type = "";
 
     // Solutioin
     static solutionName = "";
-    type: any = "";
     static type = "";
 
     // api
@@ -52,15 +52,6 @@ class Project {
     async loadProjectFromFile(content: JSZip): Promise<void> {
         return new Promise(async (resolve) => {
             let info = JSON.parse(await content.files["project.json"].async("text"));
-            if (
-                !(
-                    (this.type.includes(info.type) && Array.isArray(this.type)) ||
-                    (this.type == info.type && this.type == "string")
-                )
-            ) {
-                console.error("Project type not match");
-                return;
-            }
             this.name = info.name;
             this.author = info.author;
             this.files = info.files;
