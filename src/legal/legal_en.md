@@ -1,4 +1,4 @@
-# NexWebDesigner Terms of Use
+# Pisdeo Terms of Use
 
 ## h2
 

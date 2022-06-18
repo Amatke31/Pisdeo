@@ -13,7 +13,7 @@ import { install } from "@icon-park/vue-next/es/all";
 import "./assets/iconfont/iconfont.css";
 import "@icon-park/vue-next/styles/index.css";
 
-class NexWebDesigner {
+class Pisdeo {
     app: any = null;
     constructor(el: string) {
         this.app = createApp(App);
@@ -32,4 +32,4 @@ class NexWebDesigner {
     }
 }
 
-new NexWebDesigner("#_nexwebdesigner");
+new Pisdeo("#_pisdeo");

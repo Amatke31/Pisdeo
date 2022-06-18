@@ -111,7 +111,7 @@ export default defineComponent({
             page: "Blank" as string,
             errorCode: "",
             warningShow: false,
-            title: "NexWebDesigner",
+            title: "Pisdeo",
             platform,
             version: "Manual Build",
             isDevelopment: process.env.NODE_ENV === "development" ? true : false,

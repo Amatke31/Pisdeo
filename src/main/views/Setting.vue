@@ -88,7 +88,7 @@
                 </div>
             </div>
             <div v-else-if="option == 'setting.about'" class="right">
-                <h1>NexWebDesigner</h1>
+                <h1>Pisdeo</h1>
                 <p>{{ $t("about.introduce") }}</p>
                 <p>Version: {{ version.version }}</p>
                 <p>Channel: {{ version.channel }}</p>

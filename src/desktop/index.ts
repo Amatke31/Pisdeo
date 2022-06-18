@@ -49,7 +49,7 @@ async function createWindow(title: string, path: string) {
             label: "Help",
             submenu: [
                 {
-                    label: "Learn NexWebDesigner",
+                    label: "Learn Pisdeo",
                     click: async () => {
                         await shell.openExternal("https://pisdeo.org/docs");
                     },
@@ -98,7 +98,7 @@ app.on("window-all-closed", () => {
 });
 
 app.on("ready", async () => {
-    createWindow("NexWebDesigner", "./index.html");
+    createWindow("Pisdeo", "./index.html");
 });
 
 if (isDevelopment) {

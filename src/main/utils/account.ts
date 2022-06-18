@@ -1,7 +1,7 @@
 import { getFile } from "./platform/web/file";
 
 let accountCommunity = {
-  name: "NexWebDesigner Community",
+  name: "Pisdeo Community",
   homeUrl: "www.pisdeo.com"
 };
 

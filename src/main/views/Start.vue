@@ -203,7 +203,7 @@ export default defineComponent({
                 }
             );
             this.templateInfo = info;
-            this.ProjectForm.path = path.join(documentsPath, "NexWebDesigner");
+            this.ProjectForm.path = path.join(documentsPath, "Pisdeo");
             this.openNWD = true;
         },
         closeNPW: function() {
@@ -211,7 +211,7 @@ export default defineComponent({
         },
         openAboutWindow: function() {
             this.msgHTML = `
-                <h1>NexWebDesigner</h1>
+                <h1>Pisdeo</h1>
                 <p style="color:#ccc;">${this.$t("about.introduce")}</p>
                 <p style="color:#ccc;font-size:14px">Version: ${version}</p>
                 <p style="color:#ccc;font-size:14px">Environment: ${platform}</p><br>
