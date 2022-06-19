@@ -3,16 +3,7 @@
         <div class="stepW scroll" v-if="step == 1">
             <i class="img iconfont icon-earth"></i>
             <div class="title">{{ $t("welcome.lang.choose") }}</div>
-            <el-select v-model="lang" class="m-2 select" placeholder="Select" size="large">
-                <el-option
-                    v-for="item in supportLang"
-                    class="option"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                >
-                </el-option>
-            </el-select>
+            <n-select v-model:value="lang" class="m-2 select" placeholder="Select" size="large" :options="supportLang" />
             <n-btn @click="setLanguage()" class="nS">{{ $t("common.nextstep") }}</n-btn>
         </div>
         <div class="stepW" v-else-if="step == 2" style="height: 100%">
@@ -23,21 +14,6 @@
         <div class="stepW" v-else-if="step == 3" style="height: 100%">
             <div class="title">{{ $t("welcome.complete") }}</div>
             <n-btn @click="complete()" class="nS">{{ $t("common.enter") }}</n-btn>
-        </div>
-        <div class="stepW" v-if="false">
-            <i class="img iconfont icon-accountcircle"></i>
-            <div class="title">{{ $t("welcome.account.ask") }}</div>
-            <div
-                style="
-                    width: 60%;
-                    margin: 64px 20%;
-                    display: flex;
-                    justify-content: space-between;
-                "
-            >
-                <n-btn @click="step++">{{ $t("common.refuse") }}</n-btn>
-                <n-btn @click="login()">{{ $t("common.agree") }}</n-btn>
-            </div>
         </div>
     </n-window>
     <div class="mask"></div>
@@ -147,7 +123,6 @@ export default defineComponent({
 
 .select {
     width: 60%;
-    text-align: center;
     margin: 30px 20%;
 
     .option {

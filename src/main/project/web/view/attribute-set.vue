@@ -927,7 +927,7 @@ export default defineComponent({
         }
 
         .attrName {
-            width: 100px;
+            width: 50px;
 
             &.custom {
                 padding: 0 4px;
@@ -935,7 +935,7 @@ export default defineComponent({
         }
 
         .attrInput {
-            width: calc(20vw - 10px - 100px - 30px);
+            width: calc(20vw - 10px - 50px - 30px);
         }
 
         .attrDel {

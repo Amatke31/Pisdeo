@@ -14,145 +14,148 @@
             <div class="nav-right"></div>
         </div>
         <div class="main">
-            <v-list v-model="option" class="menu">
-                <v-list-item
-                    v-for="([value, icon], i) in menuOption"
-                    :key="i"
-                    @click="option = value"
-                    :title="$t(value)"
-                    :prepend-icon="icon"
-                    height="60px"
-                ></v-list-item>
-            </v-list>
-            <div v-if="option == 'setting.general'" class="right scroll">
-                <div class="title">{{ $t("setting.general") }}</div>
-                <div>
-                    <div>{{ $t("setting.language") }}:</div>
-                    <el-select v-model="lang" class="m-2 select" placeholder="Select" size="large">
-                        <el-option
-                            v-for="item in supportLang"
-                            class="option"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value"
-                        >
-                        </el-option>
-                    </el-select>
-                </div>
-                <div>
-                    <n-btn @click="reset">
-                        {{ $t("setting.reset") }}
-                    </n-btn>
-                </div>
-            </div>
-            <div v-else-if="option == 'setting.account'" class="right">
-                <div class="title">{{ $t("setting.account") }}</div>
-                <div></div>
-            </div>
-            <div v-else-if="option == 'setting.develop'" class="right">
-                <div class="title">{{ $t("setting.develop") }}</div>
-                <div style="display:block;max-width:300px">
-                    <el-select
-                        v-model="toolState"
-                        class="m-2 select"
-                        placeholder="Select"
-                        size="large"
+            <n-space vertical>
+                <n-layout has-sider>
+                    <n-layout-sider
+                        bordered
+                        collapse-mode="width"
+                        :collapsed-width="64"
+                        :width="150"
+                        show-trigger
                     >
-                        <el-option
-                            v-for="item in toolStateList"
-                            class="option"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value"
-                        >
-                        </el-option>
-                    </el-select>
-                    <el-select
-                        v-model="openTestProjectInAppLoad"
-                        class="m-2 select"
-                        placeholder="Select"
-                        size="large"
-                    >
-                        <el-option
-                            v-for="item in openTestProjectInAppLoadStateList"
-                            class="option"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value"
-                        >
-                        </el-option>
-                    </el-select>
-                    <n-btn @click="sendCommand('loadTestProject')">
-                        {{ $t("setting.loadTestProject") }}
-                    </n-btn>
-                </div>
-            </div>
-            <div v-else-if="option == 'setting.about'" class="right">
-                <h1>Pisdeo</h1>
-                <p>{{ $t("about.introduce") }}</p>
-                <p>Version: {{ version.version }}</p>
-                <p>Channel: {{ version.channel }}</p>
-                <p>Platform: {{ platform }}</p>
-                <br />
-                <p>Copyright © 2021-2022 Amatke31. All rights reserved.</p>
-                <p>
-                    Released under the
-                    <a
-                        style="color:#58a6ff"
-                        href="https://www.gnu.org/licenses/agpl-3.0.txt"
-                        target="_blank"
-                        >AGPL-3.0</a
-                    >
-                </p>
-                <div>
-                    <a
-                        style="color:#58a6ff"
-                        href="https://gitee.com/amatke31/pisdeo"
-                        target="_blank"
-                    >
-                        {{ $t("about.gitee") }}
-                    </a>
-                </div>
-            </div>
-            <div
-                v-for="[id, icon, child] in menuOption"
-                :key="id"
-                v-show="
-                    option == id &&
-                        option != 'setting.general' &&
-                        option != 'setting.account' &&
-                        option != 'setting.develop' &&
-                        option != 'setting.about'
-                "
-                class="right"
-            >
-                <div style="display: none">{{ `防报错${icon}` }}</div>
-                <div v-for="({ type, run }, i) in child" :key="i">
-                    <h1 v-if="type.type == 'title'">{{ $t(id) }}</h1>
-                    <p v-else-if="type.type == 'text'">{{ type.content }}</p>
-                    <p v-else-if="type.type == 'textAsync'" v-text="run()"></p>
-                    <n-btn v-else-if="type.type == 'btn'" @click="run()">{{ type.text }}</n-btn>
-                    <br v-else-if="type.type == 'br'" />
-                    <div v-if="type.type == 'select'">{{ type.name }}:</div>
-                </div>
-            </div>
+                        <n-menu
+                            v-model:value="option"
+                            :collapsed-width="64"
+                            :collapsed-icon-size="22"
+                            :options="menuOptions"
+                        />
+                    </n-layout-sider>
+                    <n-layout>
+                        <div v-if="option == 'setting.general'" class="right scroll">
+                            <div class="title">{{ $t("setting.general") }}</div>
+                            <n-space align="center">
+                                <div>{{ $t("setting.language") }}:</div>
+                                <n-select
+                                    v-model:value="lang"
+                                    class="m-2 select"
+                                    placeholder="Select"
+                                    size="medium"
+                                    :options="supportLang"
+                                />
+                            </n-space>
+                            <div>
+                                <n-btn @click="resetDialog = true">
+                                    {{ $t("setting.reset") }}
+                                </n-btn>
+                                <n-modal
+                                    v-model:show="resetDialog"
+                                    :mask-closable="false"
+                                    preset="dialog"
+                                    title="确认"
+                                    content="你确认"
+                                    positive-text="确认"
+                                    negative-text="算了"
+                                    @positive-click="reset"
+                                    @negative-click="resetDialog = false"
+                                />
+                            </div>
+                        </div>
+                        <div v-else-if="option == 'setting.account'" class="right">
+                            <div class="title">{{ $t("setting.account") }}</div>
+                            <div></div>
+                        </div>
+                        <div v-else-if="option == 'setting.develop'" class="right">
+                            <div class="title">{{ $t("setting.develop") }}</div>
+                            <div style="display:block;max-width:300px">
+                                <n-select
+                                    v-model:value="toolState"
+                                    class="m-2 select"
+                                    placeholder="Select"
+                                    size="large"
+                                    :options="toolStateList"
+                                />
+                                <n-select
+                                    v-model:value="openTestProjectInAppLoad"
+                                    class="m-2 select"
+                                    placeholder="Select"
+                                    size="large"
+                                    :options="openTestProjectInAppLoadStateList"
+                                />
+                                <n-btn @click="sendCommand('loadTestProject')">
+                                    {{ $t("setting.loadTestProject") }}
+                                </n-btn>
+                            </div>
+                        </div>
+                        <div v-else-if="option == 'setting.about'" class="right">
+                            <h1>Pisdeo</h1>
+                            <p>{{ $t("about.introduce") }}</p>
+                            <p>Version: {{ version.version }}</p>
+                            <p>Channel: {{ version.channel }}</p>
+                            <p>Platform: {{ platform }}</p>
+                            <br />
+                            <p>Copyright © 2021-2022 Amatke31. All rights reserved.</p>
+                            <p>
+                                Released under the
+                                <a
+                                    style="color:#58a6ff"
+                                    href="https://www.gnu.org/licenses/agpl-3.0.txt"
+                                    target="_blank"
+                                    >AGPL-3.0</a
+                                >
+                            </p>
+                            <div>
+                                <a
+                                    style="color:#58a6ff"
+                                    href="https://gitee.com/amatke31/pisdeo"
+                                    target="_blank"
+                                >
+                                    {{ $t("about.gitee") }}
+                                </a>
+                            </div>
+                        </div>
+                        <div
+                            v-for="{ key } in menuOptions"
+                            :key="key"
+                            v-show="
+                                option == key &&
+                                    option != 'setting.general' &&
+                                    option != 'setting.account' &&
+                                    option != 'setting.develop' &&
+                                    option != 'setting.about'
+                            "
+                            class="right"
+                        ></div>
+                    </n-layout>
+                </n-layout>
+            </n-space>
         </div>
     </div>
 </template>
 <script lang="ts">
+import { h, Component, ref } from "vue";
 import Version from "@/types/Version";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage } from "element-plus";
 import { defineComponent } from "vue";
 import { getVersion, setLocale } from "../utils/common";
 import platform from "../utils/platform/platform";
 import { recovery } from "../utils/platform/web/file";
+import { MenuOption, NIcon, useMessage } from "naive-ui";
+import {
+    SettingsOutline as SettingIcon,
+    PersonOutline as PersonIcon,
+    HammerOutline as HammerIcon,
+    InformationOutline as InfoIcon,
+} from "@vicons/ionicons5";
+import { useI18n } from "vue-i18n";
+
+function renderIcon(icon: Component) {
+    return () => h(NIcon, null, { default: () => h(icon) });
+}
 
 export default defineComponent({
     name: "Setting",
-    props: ["menuOption"],
     data() {
         return {
-            lang: "",
             option: "setting.general" as string,
             supportLang: [] as any,
             toolState: "development",
@@ -237,55 +240,62 @@ export default defineComponent({
             this.sendCommand(`setAutoOpenTestProject.${n}`);
         },
     },
-    methods: {
-        reset: function() {
-            ElMessageBox.confirm(this.$t("setting.reset.warning"), "Warning", {
-                confirmButtonText: this.$t("common.confirm"),
-                cancelButtonText: this.$t("common.cancel"),
-                type: "warning",
-                beforeClose: (action: any, instance: any, done: any) => {
-                    if (action === "confirm") {
-                        instance.confirmButtonLoading = true;
-                        instance.confirmButtonText = "Loading...";
-                        if (platform == "desktop") {
-                        } else if (platform == "web") {
-                            recovery((success: Boolean) => {
-                                if (success) {
-                                    instance.confirmButtonLoading = true;
-                                    done();
-                                } else {
-                                    ElMessage.error(this.$t("setting.reseterror"));
-                                    done();
-                                }
-                            });
-                        }
+    setup(_props, { emit }) {
+        const { t } = useI18n();
+        const message = useMessage();
+        let lang = ref("en_us");
+
+        const menuOptions: MenuOption[] = [
+            {
+                label: () => t("setting.general"),
+                key: "setting.general",
+                icon: renderIcon(SettingIcon),
+            },
+            {
+                label: () => t("setting.account"),
+                key: "setting.account",
+                icon: renderIcon(PersonIcon),
+            },
+            {
+                label: () => t("setting.develop"),
+                key: "setting.develop",
+                icon: renderIcon(HammerIcon),
+            },
+            {
+                label: () => t("setting.about"),
+                key: "setting.about",
+                icon: renderIcon(InfoIcon),
+            },
+        ];
+        function sendCommand(command: string) {
+            emit("sendCommand", command);
+        }
+        function reset() {
+            if (platform == "desktop") {
+            } else if (platform == "web") {
+                recovery((success: Boolean) => {
+                    if (success) {
+                        message.success(t("setting.reset.success"));
+                        setTimeout(() => {
+                            location.reload();
+                        }, 3000);
                     } else {
-                        done();
+                        message.error(t("setting.reseterror"));
                     }
-                },
-            })
-                .then(() => {
-                    ElMessage({
-                        type: "success",
-                        message: this.$t("setting.reset.success"),
-                    });
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1000);
-                })
-                .catch(() => {});
-        },
-        sendCommand: function(command: string) {
-            this.$emit("sendCommand", command);
-        },
+                });
+            }
+        }
+        return {
+            menuOptions,
+            sendCommand,
+            reset,
+            lang,
+        };
     },
 });
 </script>
 
 <style lang="scss" scoped>
-.n-btn {
-    margin: 4px;
-}
 .nav {
     padding: 12px;
     background-color: #222;
@@ -334,7 +344,7 @@ export default defineComponent({
         }
     }
     .right {
-        width: calc(100% - 205px);
+        width: 100%;
         height: 100%;
         padding: 8px 16px;
         overflow-y: scroll;
@@ -372,19 +382,5 @@ export default defineComponent({
     .right:hover {
         color: rgba(0, 0, 0, 0.3);
     }
-}
-
-.mask {
-    transition: 0.3s;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    opacity: 1;
-    overflow: hidden;
-    z-index: 2000;
-    backdrop-filter: blur(2px);
-    background-color: rgba(50, 50, 50, 0.7);
 }
 </style>

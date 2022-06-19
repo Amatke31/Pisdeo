@@ -1,18 +1,17 @@
 <template>
-    <el-card :body-style="{ padding: '0px' }" class="element">
-        <div class="itemChild">
-            <span class="info">{{
-                $t(`element.${element}`)[0].toUpperCase() +
-                    $t(`element.${element}`).substr(1) +
-                    (element !== "text" ? `<${element}>` : "")
-            }}</span>
+    <v-card
+        width="219"
+        :title="$t(`element.${element}`)[0].toUpperCase() + $t(`element.${element}`).substr(1)"
+        :text="element !== 'text' ? `<${element}>` : 'text'"
+        variant="contained-text"
+        class="element"
+    >
+        <v-card-actions>
             <div class="btn">
-                <el-button class="button" @click="addElement(element)">{{
-                    $t(`common.add`)
-                }}</el-button>
+                <v-btn class="button" @click="addElement(element)">{{ $t(`common.add`) }}</v-btn>
             </div>
-        </div>
-    </el-card>
+        </v-card-actions>
+    </v-card>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
