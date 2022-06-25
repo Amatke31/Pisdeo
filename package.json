@@ -31,6 +31,7 @@
 		"material-design-icons": "^3.0.1",
 		"naive-ui": "^2.30.4",
 		"path-browserify": "^1.0.1",
+		"pinia": "^2.0.14",
 		"roboto-fontface": "*",
 		"semver": "^7.3.7",
 		"stylus-loader": "3.0.2",

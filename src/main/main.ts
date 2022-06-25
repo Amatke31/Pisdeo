@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import store from "./store/index";
+import { createPinia } from "pinia";
 import App from "./App.vue";
 import i18n from "./plugins/i18n";
 import Msg from "./components/msg.vue";
@@ -23,7 +23,7 @@ class Pisdeo {
         install(this.app);
         this.app
             .use(i18n)
-            .use(store)
+            .use(createPinia())
             .use(component)
             .use(vuetify)
             .use(naive)

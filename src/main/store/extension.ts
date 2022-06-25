@@ -1,36 +1,33 @@
+import { defineStore } from "pinia";
 import { CommonApi, UIApi } from "../utils/extension/extension-api";
-import path from "path";
-import fs from "fs";
 import vm from "vm";
 import platform from "@/main/utils/platform/platform";
 import axios from "axios";
 import JSZip from "jszip";
 
-const extension = {
+const extension = defineStore("extension", {
     state() {
         return {
             extension: {},
             template: {},
         };
     },
-    mutations: {
-        async addTemplate(state: any, info: any) {
+    actions: {
+        async addTemplate(info: any) {
             let isAdd = false;
-            state.template.hasOwnProperty(info.id)
+            this.template.hasOwnProperty(info.id);
             if (!isAdd) {
                 let require = new Array();
                 if (info.require) {
                     info.require.forEach((parameter: any) => {
                         require.push(
-                            typeof parameter === "object"
-                                ? parameter
-                                : { name: parameter }
+                            typeof parameter === "object" ? parameter : { name: parameter }
                         );
                     });
                 }
-                let cover = await state.extension[info.extension.id].file[
-                    info.cover
-                ].async("base64");
+                let cover = await this.extension[info.extension.id].file[info.cover].async(
+                    "base64"
+                );
                 let ext = info.cover.split(".").pop();
                 switch (ext) {
                     case "svg":
@@ -42,20 +39,16 @@ const extension = {
                 }
                 cover = `data:image/${ext};base64,${cover}`;
                 info.cover = cover;
-                state.template[info.id] = info;
+                this.template[info.id] = info;
             }
         },
-    },
-    actions: {
-        loadExtension: async function(store, { zipFile, i18n }) {
+        loadExtension: async function({ zipFile, i18n }) {
             const zipData = await JSZip.loadAsync(zipFile);
             let info: any = {};
             if ("info.json" in zipData.files) {
-                info = JSON.parse(
-                    await zipData.files["info.json"].async("text")
-                );
+                info = JSON.parse(await zipData.files["info.json"].async("text"));
                 info.file = zipData.files;
-                store.state.extension[info.id] = info;
+                this.extension[info.id] = info;
 
                 //load locale
                 for (const fileName in zipData.files) {
@@ -65,22 +58,16 @@ const extension = {
                     if (result) {
                         i18n.mergeLocaleMessage(
                             result[1],
-                            JSON.parse(
-                                await zipData.files[fileName].async("text")
-                            )
+                            JSON.parse(await zipData.files[fileName].async("text"))
                         );
                     }
                 }
             } else {
-                throw new Error(
-                    `Cannot find 'info.json' in ${info.name}(${info.id}) extension`
-                );
+                throw new Error(`Cannot find 'info.json' in ${info.name}(${info.id}) extension`);
             }
 
             if ("main.js" in zipData.files) {
-                const script = new vm.Script(
-                    await zipData.files["main.js"].async("text")
-                );
+                const script = new vm.Script(await zipData.files["main.js"].async("text"));
                 const context = vm.createContext({
                     module: { exports: {} },
                     console,
@@ -88,31 +75,25 @@ const extension = {
                 script.runInContext(context);
                 const ExtensionPrototype = context.module.exports;
                 const instance = new Function(
-                    ExtensionPrototype(
-                        new CommonApi(info, store),
-                        new UIApi(info, store)
-                    )
+                    ExtensionPrototype(new CommonApi(info, this), new UIApi(info, this))
                 );
             } else {
-                throw new Error(
-                    `Cannot find 'main.js' in ${info.name}(${info.id}) extension`
-                );
+                throw new Error(`Cannot find 'main.js' in ${info.name}(${info.id}) extension`);
             }
         },
-        loadNWDExt: async function({ state, dispatch }, { i18n }) {
+        loadNWDExt: async function({ i18n }) {
             if (platform === "desktop") {
             } else {
                 await axios({
                     method: "get",
-                    url:
-                        "/extension/base/dist/org.pisdeo.base@1.0.0.nwdx",
+                    url: "/extension/base/dist/org.pisdeo.base@1.0.0.nwdx",
                     responseType: "arraybuffer",
                 }).then(async (res) => {
-                    dispatch("loadExtension", { zipFile: res.data, i18n });
+                    this.loadExtension({ zipFile: res.data, i18n });
                 });
             }
         },
     },
-};
+});
 
 export default extension;

@@ -1,3 +1,4 @@
+import { defineStore } from "pinia";
 import WebProject from "../project/web/web";
 
 class ProjectSolution {
@@ -34,16 +35,15 @@ class ProjectSolution {
 const solution = new ProjectSolution();
 solution.addSolution(WebProject);
 
-const project = {
-    state() {
+const project = defineStore("project", {
+    state: () => {
         return {
-            project: [],
+            project: [] as any,
         };
     },
     getters: {},
-    mutations: {},
     actions: {
-        async findSolution({}, payload: any): Promise<any> {
+        async findSolution(payload: any): Promise<any> {
             return new Promise(async (resolve) => {
                 const content = payload.nwdp;
                 let info = JSON.parse(await content.files["project.json"].async("text"));
@@ -54,18 +54,18 @@ const project = {
                         solutionDescription: project.instance.solutionDescription,
                     });
                 });
-                resolve({ solution: preSolution, info });
+                resolve({ allSolution: preSolution, info });
             });
         },
-        async loadProject({ state }, payload: any): Promise<void> {
+        async loadProject(payload: any): Promise<void> {
             let project = { ...payload };
-            state.project.push(project);
+            this.project.push(project);
             return new Promise((resolve) => {
                 resolve();
             });
         },
     },
-};
+});
 
 export default project;
 export { solution };

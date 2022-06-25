@@ -15,7 +15,7 @@ class CommonApi {
             framework: templateInfo.framework ? templateInfo.framework : "",
             extension: this.extensionInfo,
         };
-        this.store.commit('addTemplate', templateInfo)
+        this.store.addTemplate(templateInfo)
     }
 }
 

@@ -101,6 +101,12 @@ class Project {
         nwdp.file("project.json", JSON.stringify({ ...(<object>this.info), file: this.files }));
         return nwdp;
     }
+
+    /**
+     * Render Workspace
+     * @returns any
+     */
+    renderWorkspace(): any {}
 }
 
 export default Project;

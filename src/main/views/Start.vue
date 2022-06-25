@@ -64,7 +64,7 @@
                         <div>{{ $t("newproject.projectname") }}:</div>
                         <div v-if="platform !== 'web'">{{ $t("newproject.projectlocation") }}:</div>
                         <div
-                            v-for="templateRequire in templateRequire[templateInfo.extension.id]"
+                            v-for="templateRequire in templateRequires[templateInfo.extension.id]"
                             :key="templateRequire.name"
                         >
                             {{ $t(templateRequire.name) }}:
@@ -80,7 +80,7 @@
                         />
                         <input
                             spellcheck="false"
-                            v-for="templateRequire in templateRequire[templateInfo.extension.id]"
+                            v-for="templateRequire in templateRequires[templateInfo.extension.id]"
                             :key="templateRequire.name"
                             v-model="ProjectForm[templateRequire.name]"
                         />
@@ -134,8 +134,9 @@ export default defineComponent({
         errorThrow: {
             type: Function,
         },
-        templateRequire: {
+        templateRequires: {
             type: Object,
+            default: [],
         },
     },
     data() {
@@ -233,10 +234,6 @@ export default defineComponent({
         },
         createProject: function() {
             this.closeNPW();
-            this.$store.commit({
-                type: "beforeCreateProject",
-                name: this.ProjectForm.name,
-            });
             this.$emit("createProject");
         },
         openStore: function() {},

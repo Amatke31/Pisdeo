@@ -1,4 +1,5 @@
 import { defineComponent, h, shallowRef } from "vue";
+import projectStore from "../store/project";
 import { useStore } from "vuex";
 import { solution } from "../store/project";
 
@@ -20,12 +21,12 @@ export default defineComponent({
             children: [],
         });
 
-        const store = useStore();
-        store.subscribeAction(async ({ type, payload }, state) => {
-            if (type == "loadProject") {
-                let instance = new solution.allSolution[payload.solution]({});
+        const projectstore = projectStore();
+        const unsub = projectstore.$onAction(({ name, store, args, after, onError }) => {
+            if (name == "loadProject") {
+                let instance = new solution.allSolution[args[0].solution]({});
                 instance
-                    .loadProjectFromFile(payload.content)
+                    .loadProjectFromFile(args[0].content)
                     .then(() => {
                         const r = instance.renderWorkspace();
                         render.value = {
@@ -33,12 +34,13 @@ export default defineComponent({
                             attrs: { style: { height: "100vh" } },
                             children: [r],
                         };
-                        project[payload.name] = instance;
-                        currentProject = payload.name;
+                        project[args[0].name] = instance;
+                        currentProject = args[0].name;
                     })
                     .catch(() => {});
             }
         });
+
         return () => {
             const renderComponents: any = (render: any) => {
                 let out: any = analysisObjWithElement(render.value);

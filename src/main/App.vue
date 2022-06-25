@@ -16,7 +16,7 @@
                     :isInit="startIsInit"
                     :template="template"
                     :documentsPath="documentsPath"
-                    :templateRequire="templateRequire"
+                    :templateRequire="templateRequires"
                     @createProject="createProject"
                     @openSetting="page = 'Setting'"
                 />
@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive, Ref, ref } from "vue";
 import Start from "./views/Start.vue";
 import Project from "./views/Project";
 import Welcome from "./views/Welcome.vue";
@@ -87,6 +87,10 @@ import { ElLoading, ElMessage } from "element-plus";
 import { darkTheme } from "naive-ui";
 import "./project/web/web";
 import JSZip from "jszip";
+import extension from "./store/extension";
+import { useI18n } from "vue-i18n";
+import Axios from "axios";
+import project from "./store/project";
 
 interface RequireForm {
     [propName: string]: any;
@@ -108,12 +112,9 @@ export default defineComponent({
         return {
             showVirtualTitleBar: platform === "desktop",
             os: os.platform() ? os.platform() : "web",
-            template: new Array(),
             startIsInit: false,
             consoleText: "<p>loading...</p>",
             documentsPath: "",
-            templateRequire: new Object() as RequireForm,
-            page: "Blank" as string,
             errorCode: "",
             warningShow: false,
             title: "Pisdeo",
@@ -171,13 +172,9 @@ export default defineComponent({
                     },
                 },
             ],
-            loadProjectWithDebugDialog: false,
             loadProjectPath: "",
             openNWDDevTool: "development",
             loadTestProjectAuto: "close",
-            WindowOpen: false,
-            solution: [] as Array<any>,
-            createOrLoad: "create",
         };
     },
     components: {
@@ -217,15 +214,101 @@ export default defineComponent({
             localStorage.setItem("nwddevtool", "development");
             this.openNWDDevTool = "development";
         }
-
-        this.$store.subscribe((mutation, state) => {
-            if (mutation.type == "addTemplate") {
-                this.template = state.extension.template;
-                this.templateRequire[mutation.payload.id] = mutation.payload.require;
+        this.startIsInit = true;
+    },
+    setup() {
+        const loadProjectWithDebugDialog = ref(false);
+        const page: Ref<string> = ref("Blank");
+        const createOrLoad = ref("create");
+        const WindowOpen = ref(false);
+        const solution: Ref<any> = ref([]);
+        const i18n = useI18n();
+        const t = i18n.t;
+        const template = reactive({});
+        const templateRequires = reactive({}) as RequireForm;
+        const extstore = extension();
+        const projectstore = project();
+        extstore.loadNWDExt({ i18n });
+        const unsub = extstore.$onAction(({ name, store, args, after, onError }) => {
+            if (name == "addTemplate") {
+                template[args[0].id] = args[0];
+                templateRequires[args[0].id] = args[0].require;
             }
         });
-        this.$store.dispatch("loadNWDExt", { i18n: this.$i18n });
-        this.startIsInit = true;
+
+        function loadTestProject() {
+            loadProjectWithDebugDialog.value = false;
+            const loading = ElLoading.service({
+                lock: true,
+                text: "Loading",
+                background: "rgba(0, 0, 0, 0.7)",
+            });
+            Axios({
+                method: "get",
+                url: "/test/test.nwdp",
+                responseType: "arraybuffer",
+            }).then((res: any) => {
+                const content = res.data;
+                let nwdp = new JSZip();
+                nwdp.loadAsync(content).then((nwdp) => {
+                    projectContent = nwdp;
+                    projectstore
+                        .findSolution({ nwdp })
+                        .then(({ allSolution, info }) => {
+                            projectInfo = info;
+                            createOrLoad.value = "load";
+                            WindowOpen.value = true;
+                            solution.value = allSolution;
+                        })
+                        .catch(() => {
+                            ElMessage({
+                                showClose: true,
+                                message: t("project.cannotfindsolution"),
+                                type: "error",
+                            });
+                        })
+                        .finally(() => {
+                            loading.close();
+                        });
+                });
+            });
+        }
+        function choosedSolution(solution: string) {
+            WindowOpen.value = false;
+            projectstore
+                .loadProject({
+                    solution,
+                    content: projectContent,
+                    ...projectInfo,
+                })
+                .then(() => {
+                    page.value = "Project";
+                })
+                .catch(() => {});
+        }
+
+        const themeOverrides = {
+            common: {
+                bodyColor: "rgb(24, 24, 24)",
+                cardColor: "rgb(24, 24, 24)",
+            },
+            Menu: {
+                itemIconColorActive: "#63e2b7",
+            },
+        };
+        return {
+            darkTheme,
+            themeOverrides,
+            template,
+            templateRequires,
+            loadTestProject,
+            loadProjectWithDebugDialog,
+            createOrLoad,
+            WindowOpen,
+            solution,
+            choosedSolution,
+            page,
+        };
     },
     methods: {
         pushPage: function(page: string) {
@@ -247,43 +330,6 @@ export default defineComponent({
                 lock: true,
                 text: "Loading",
                 background: "rgba(0, 0, 0, 0.7)",
-            });
-        },
-        loadTestProject: function() {
-            this.loadProjectWithDebugDialog = false;
-            const loading = ElLoading.service({
-                lock: true,
-                text: "Loading",
-                background: "rgba(0, 0, 0, 0.7)",
-            });
-            this.$axios({
-                method: "get",
-                url: "/test/test.nwdp",
-                responseType: "arraybuffer",
-            }).then((res: any) => {
-                const content = res.data;
-                let nwdp = new JSZip();
-                nwdp.loadAsync(content).then((nwdp) => {
-                    projectContent = nwdp;
-                    this.$store
-                        .dispatch("findSolution", { nwdp })
-                        .then(({ solution, info }) => {
-                            projectInfo = info;
-                            this.createOrLoad = "load";
-                            this.WindowOpen = true;
-                            this.solution = solution;
-                        })
-                        .catch(() => {
-                            ElMessage({
-                                showClose: true,
-                                message: this.$t("project.cannotfindsolution"),
-                                type: "error",
-                            });
-                        })
-                        .finally(() => {
-                            loading.close();
-                        });
-                });
             });
         },
         SettingCommand: function(command: string) {
@@ -318,34 +364,6 @@ export default defineComponent({
         closeDevToolOneTime: function() {
             this.openNWDDevTool = "23333333333333";
         },
-        choosedSolution: function(solution: string) {
-            this.WindowOpen = false;
-            this.$store
-                .dispatch("loadProject", {
-                    solution,
-                    content: projectContent,
-                    ...projectInfo,
-                })
-                .then(() => {
-                    this.page = "Project";
-                })
-                .catch(() => {});
-        },
-    },
-    setup() {
-        const themeOverrides = {
-            common: {
-                bodyColor: "rgb(24, 24, 24)",
-                cardColor: "rgb(24, 24, 24)",
-            },
-            Menu: {
-                itemIconColorActive: "#63e2b7",
-            },
-        };
-        return {
-            darkTheme,
-            themeOverrides,
-        };
     },
 });
 </script>
