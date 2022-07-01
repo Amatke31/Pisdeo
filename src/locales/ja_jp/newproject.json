@@ -1,7 +1,0 @@
-{
-    "newproject.madeby": "このテンプレートは{author}によって開発された",
-    "newproject.title": "テンプレート{template}で{framework}プロジェクトを作成する",
-    "newproject.projectname": "プロジェクト名",
-    "newproject.projectlocation": "ストレージパス",
-    "newproject.create": "作成"
-}

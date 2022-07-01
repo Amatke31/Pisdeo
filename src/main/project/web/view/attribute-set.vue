@@ -6,7 +6,7 @@
                     $t(`element.${attribute.element.split(".").pop()}`).substr(1)
             }}
         </h2>
-        <div v-if="attribute.element !== '.text'" style="height:100%">
+        <div v-if="attribute.element !== '.text'" style="height: 100%">
             <div :class="attrBar">
                 <div class="btn set" @click="attrPage = 'set'">
                     {{ $t("attr.set") }}
@@ -59,21 +59,15 @@
                                 <div class="attrName">
                                     {{ $t("attr.element") + ":" }}
                                 </div>
-                                <el-select
+                                <n-select
                                     size="small"
                                     class="attrInput"
                                     placeholder=" "
-                                    v-model="vN['element']"
-                                    @change="setAttr('element', vN['element'])"
+                                    v-model:value="vN['element']"
+                                    @update:value="setAttr('element', vN['element'])"
                                     :disabled="['html', 'head', 'body'].includes(vN['element'])"
-                                >
-                                    <el-option
-                                        v-for="item in canAddList"
-                                        :key="item"
-                                        :label="label(item)"
-                                        :value="item"
-                                    />
-                                </el-select>
+                                    :options="chooseList"
+                                />
                             </div>
                         </div>
                     </el-collapse-transition>
@@ -219,11 +213,13 @@
                                             "
                                         />
                                         <icon-plus class="addAttr" size="16" @click="addCSS(key)" />
-                                        <el-input
+                                        <n-input
+                                            type="text"
                                             size="small"
                                             class="attrInput"
-                                            v-model="vCT2[selector.class]"
-                                            @change="setCSST(selector.class, key)"
+                                            placeholder=" "
+                                            v-model:value="vCT2[selector.class]"
+                                            :on-input="setCSST(selector.class, key)"
                                         />
                                     </div>
                                     <el-collapse-transition>
@@ -259,11 +255,13 @@
                                                         :value="item.value"
                                                     /> </el-select
                                                 >:
-                                                <el-input
+                                                <n-input
+                                                    type="text"
                                                     size="small"
                                                     class="attrInput"
-                                                    v-model="vC[key].content[key2].value"
-                                                    @change="setCSS()"
+                                                    placeholder=" "
+                                                    v-model:value="vC[key].content[key2].value"
+                                                    :on-input="setCSS()"
                                                 />
                                                 <icon-close-small
                                                     class="addAttr"
@@ -276,16 +274,18 @@
                                     </el-collapse-transition>
                                 </div>
                             </div>
-                            <div style="display:flex;flex-direction:column" v-else>
+                            <div style="display: flex; flex-direction: column" v-else>
                                 <div class="setDiv">
                                     <div class="attrName">
                                         {{ $t("attr.class") + ":" }}
                                     </div>
-                                    <el-input
+                                    <n-input
+                                        type="text"
                                         size="small"
                                         class="attrInput"
-                                        v-model="vN['class']"
-                                        @change="setAttr('class', vN['class'])"
+                                        placeholder=" "
+                                        v-model:value="vN['class']"
+                                        :on-input="setAttr('class', vN['class'])"
                                     />
                                 </div>
                                 <div
@@ -343,11 +343,13 @@
                                                     />
                                                 </el-select>
                                                 :
-                                                <el-input
+                                                <n-input
+                                                    type="text"
                                                     size="small"
                                                     class="attrInput"
-                                                    v-model="vC[key].content[key2].value"
-                                                    @change="setCSS2(key)"
+                                                    placeholder=" "
+                                                    v-model:value="vC[key].content[key2].value"
+                                                    :on-input="setCSS2(key)"
                                                 />
                                                 <icon-close-small
                                                     class="addAttr"
@@ -384,30 +386,18 @@
                                     <div class="borderNum">0</div>
                                     <div class="paddingFrame">
                                         <div class="flexItemTop">
-                                            <div class="paddingTip">
-                                                padding
-                                            </div>
-                                            <div class="paddingNum">
-                                                0
-                                            </div>
+                                            <div class="paddingTip">padding</div>
+                                            <div class="paddingNum">0</div>
                                             <div class="paddingTip"></div>
                                         </div>
                                         <div class="flexItemMiddle">
-                                            <div class="paddingNum">
-                                                0
-                                            </div>
-                                            <div class="contentFrame">
-                                                1x1
-                                            </div>
-                                            <div class="paddingNum">
-                                                0
-                                            </div>
+                                            <div class="paddingNum">0</div>
+                                            <div class="contentFrame">1x1</div>
+                                            <div class="paddingNum">0</div>
                                         </div>
                                         <div class="flexItemBottom">
                                             <div class="paddingTip"></div>
-                                            <div class="paddingNum">
-                                                0
-                                            </div>
+                                            <div class="paddingNum">0</div>
                                             <div class="paddingTip"></div>
                                         </div>
                                     </div>
@@ -445,7 +435,7 @@ import { ElMessage } from "element-plus";
 import { defineComponent } from "vue";
 import { cssList } from "../lib/css";
 import { canAddList, allRoutine } from "../lib/html";
-import { arrRemove } from "@/main/utils/array";
+import { arrRemove } from "../../../utils/array";
 import { getAllCssSelector } from "../resolve/css";
 import EventEmitter from "events";
 
@@ -469,7 +459,7 @@ export default defineComponent({
         },
         event: {
             type: EventEmitter,
-            default: new EventEmitter(),
+            default: () => {},
         },
     },
     data() {
@@ -573,6 +563,16 @@ export default defineComponent({
                         value: j.label,
                         change: this.$t(`css.${j.label}`),
                     };
+                });
+            });
+            return out;
+        },
+        chooseList() {
+            const out: any = [];
+            this.canAddList.forEach((item) => {
+                out.push({
+                    label: this.label(item),
+                    value: item,
                 });
             });
             return out;
@@ -686,12 +686,9 @@ export default defineComponent({
             }
         },
         refreshAttr: function(n: any) {
-            this.attribute = n;
             this.lock = true;
+            this.attribute = n;
             this.text = n.text ? n.text : "";
-            setTimeout(() => {
-                this.lock = false;
-            }, 100);
             this.v = {};
             (this.allRoutine[this.attribute!.element]
                 ? this.allRoutine[this.attribute!.element]
@@ -748,12 +745,17 @@ export default defineComponent({
                     }
                 });
             }
+            setTimeout(() => {
+                this.lock = false;
+            }, 100);
         },
         setCSS: function() {
-            this.setAttribute({
-                changeAttr: "css",
-                value: this.vC,
-            });
+            if (!this.lock) {
+                this.setAttribute({
+                    changeAttr: "css",
+                    value: this.vC,
+                });
+            }
         },
         addCSS: function(key: number) {
             this.vC[key].content.push({ label: "new", value: "0" });
@@ -779,10 +781,12 @@ export default defineComponent({
                 return i.class == this.vC[key].class;
             });
             style.css[index] = this.vC[key];
-            this.setAttribute({
-                changeAttr: "css",
-                value: style.css,
-            });
+            if (!this.lock) {
+                this.setAttribute({
+                    changeAttr: "css",
+                    value: style.css,
+                });
+            }
         },
         delCSS2: function(key: number, key2: number) {
             this.vC[key].content = <Array<any>>arrRemove(Number(key2), this.vC[key].content);
