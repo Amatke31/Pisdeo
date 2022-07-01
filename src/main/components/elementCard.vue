@@ -30,7 +30,6 @@ export default defineComponent({
 .element {
     background-color: #444;
     width: 219px;
-    margin: 10px;
     display: inline-block;
 
     .itemChild {

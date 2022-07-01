@@ -1,7 +1,14 @@
 <template>
     <div class="html-chooser">
         <div class="elementBar">
-            <el-dropdown size="small" @command="_addElement" :disabled="!canAddElement">
+            <n-dropdown
+                trigger="hover"
+                placement="bottom-start"
+                :options="recentList"
+                :disabled="!canAddElement"
+                @select="_addElement"
+                size="small"
+            >
                 <icon-plus
                     :class="add"
                     size="16"
@@ -12,14 +19,7 @@
                     "
                     :fill="!canAddElement ? '#333' : '#eee'"
                 />
-                <template #dropdown>
-                    <el-dropdown-menu>
-                        <el-dropdown-item v-for="item in recent" :key="item" :command="item">{{
-                            $t(`element.${item}`)[0].toUpperCase() + $t(`element.${item}`).substr(1)
-                        }}</el-dropdown-item>
-                    </el-dropdown-menu>
-                </template>
-            </el-dropdown>
+            </n-dropdown>
             <icon-minus
                 :class="rm"
                 size="16"
@@ -31,47 +31,57 @@
             <component :is="htmlChooser"></component>
         </div>
         <n-window :open="openChooser" @close="openChooser = false" class="ew" style="padding:16px;">
-            <el-tabs v-model="elementWindow" type="card">
-                <el-tab-pane :label="$t('common.recent')" name="recent">
-                    <div class="ewp scroll">
-                        <element-card
-                            v-for="item in recent"
-                            :key="item"
-                            :element="item"
-                            @click="_addElement(item)"
-                        />
-                    </div>
-                </el-tab-pane>
-                <el-tab-pane :label="$t('common.basic')" name="basic">
+            <n-tabs v-model:value="elementWindow" type="card" animated>
+                <n-tab-pane name="recent" :tab="$t('common.recent')">
+                    <n-grid
+                        class="ewp scroll"
+                        responsive="screen"
+                        :x-gap="10"
+                        :y-gap="10"
+                    >
+                        <n-grid-item v-for="item in recent">
+                            <element-card :key="item" :element="item" @click="_addElement(item)" />
+                        </n-grid-item>
+                    </n-grid>
+                </n-tab-pane>
+                <n-tab-pane name="basic" :tab="$t('common.basic')">
                     <v-text-field
                         :label="$t('common.search')"
                         variant="underlined"
                         v-model="search"
-                    ></v-text-field>
-                    <div v-if="search == ''" class="ewp scroll">
-                        <element-card
-                            v-for="item in canAddList"
-                            :key="item"
-                            :element="item"
-                            @click="_addElement(item)"
-                        />
-                    </div>
-                    <div v-else class="ewp scroll">
-                        <element-card
+                    />
+                    <n-grid
+                        v-if="search == ''"
+                        responsive="screen"
+                        class="ewp scroll"
+                        :x-gap="10"
+                        :y-gap="10"
+                    >
+                        <n-grid-item v-for="item in canAddList">
+                            <element-card :key="item" :element="item" @click="_addElement(item)" />
+                        </n-grid-item>
+                    </n-grid>
+                    <n-grid
+                        v-else
+                        responsive="screen"
+                        class="ewp scroll"
+                        :x-gap="10"
+                        :y-gap="10"
+                    >
+                        <n-grid-item
                             v-for="item in canAddList.filter((e) => {
                                 return (
                                     e.indexOf(search.toLowerCase()) != -1 ||
                                     $t(`element.${e}`).indexOf(search.toLowerCase()) != -1
                                 );
                             })"
-                            :key="item"
-                            :element="item"
-                            @click="_addElement(item)"
-                        />
-                    </div>
-                </el-tab-pane>
-                <el-tab-pane :label="$t('common.component')" name="component"></el-tab-pane>
-            </el-tabs>
+                        >
+                            <element-card :key="item" :element="item" @click="_addElement(item)" />
+                        </n-grid-item>
+                    </n-grid>
+                </n-tab-pane>
+                <n-tab-pane name="component" :tab="$t('common.component')"></n-tab-pane>
+            </n-tabs>
         </n-window>
     </div>
 </template>
@@ -129,6 +139,14 @@ export default defineComponent({
         },
         rm() {
             return this.canRmElement ? "addElement" : "addElement disable";
+        },
+        recentList() {
+            return this.recent.map((e) => {
+                return {
+                    key: e,
+                    label: this.$t(`element.${e}`),
+                };
+            });
         },
     },
     watch: {

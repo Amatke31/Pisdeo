@@ -568,14 +568,12 @@ export default defineComponent({
             return out;
         },
         chooseList() {
-            const out: any = [];
-            this.canAddList.forEach((item) => {
-                out.push({
+            return this.canAddList.map((item) => {
+                return {
                     label: this.label(item),
                     value: item,
-                });
+                };
             });
-            return out;
         },
     },
     watch: {

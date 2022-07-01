@@ -1,9 +1,10 @@
-import path from 'path'
+import path from "path";
 
 export default class PathUtils {
-    public static startPath = path.join(__dirname, "..");
-
-    public static resolvePath = (dirPath) => {
-        return path.join(PathUtils.startPath, dirPath || ".");
-    };
+    static startPath(): string {
+        return path.join(__dirname, "..");
+    }
+    static resolvePath(dirPath: string): string {
+        return path.join(this.startPath(), dirPath || ".");
+    }
 }

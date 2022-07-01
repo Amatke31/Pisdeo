@@ -1,6 +1,5 @@
 import { defineComponent, h, shallowRef } from "vue";
 import projectStore from "../store/project";
-import { useStore } from "vuex";
 import { solution } from "../store/project";
 
 const project = {};
