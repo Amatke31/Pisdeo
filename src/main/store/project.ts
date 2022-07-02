@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import WebProject from "../project/web/web";
+import WebProject from "../lib/project/web/web";
 
 class ProjectSolution {
     allSolution: Object = {};

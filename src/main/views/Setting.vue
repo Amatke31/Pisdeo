@@ -89,8 +89,8 @@
                         <div v-else-if="option == 'setting.about'" class="right">
                             <h1>Pisdeo</h1>
                             <p>{{ $t("about.introduce") }}</p>
-                            <p>Version: {{ version.appVersion }}</p>
-                            <p>Compile Time: {{ version.compileTime }}</p>
+                            <p>Version: {{ appVersionFull }}</p>
+                            <p>Compile Time: {{ compileTime }}</p>
                             <p>Platform: {{ platform }}</p>
                             <br />
                             <p>Copyright © 2021-2022 Amatke31. All rights reserved.</p>
@@ -133,11 +133,11 @@
 </template>
 <script lang="ts">
 import { Component } from "vue";
-import Version from "@/types/Version";
+import { appVersion, appVersionFull, compileTime, commitHash } from "@/main/lib/app-info";
 import { ElMessage } from "element-plus";
-import { version, setLocale } from "../utils/common";
-import platform from "../utils/platform/platform";
-import { recovery } from "../utils/platform/web/file";
+import { setLocale } from "../lib/common";
+import platform from "../lib/platform/platform";
+import { recovery } from "../lib/platform/web/file";
 import { MenuOption, NIcon, useMessage } from "naive-ui";
 import {
     SettingsOutline as SettingIcon,
@@ -183,7 +183,6 @@ export default defineComponent({
                     value: "close",
                 },
             ],
-            version,
             platform: platform[0].toUpperCase() + platform.substr(1),
             resetDialog: false,
         };
@@ -233,7 +232,7 @@ export default defineComponent({
             this.sendCommand(`setAutoOpenTestProject.${n}`);
         },
     },
-    setup(_props, { emit }) {
+    setup(props, { emit }) {
         const { t } = useI18n();
         const message = useMessage();
         let lang = ref("en_us");
@@ -283,6 +282,9 @@ export default defineComponent({
             sendCommand,
             reset,
             lang,
+            appVersionFull,
+            compileTime,
+            commitHash,
         };
     },
 });

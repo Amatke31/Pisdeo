@@ -1,5 +1,5 @@
 import localforage from "localforage";
-import { stringToUint8Array, Uint8ArrayToString } from "../../unit8array";
+import { stringToUint8Array, Uint8ArrayToString } from "../../../utils/unit8array";
 
 let NWD_DB = localforage.createInstance({
     name: "NWD_DB",

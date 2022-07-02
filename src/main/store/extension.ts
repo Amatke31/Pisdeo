@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
-import { CommonApi, UIApi } from "../utils/extension/extension-api";
+import { CommonApi, UIApi } from "../lib/extension/extension-api";
 import vm from "vm";
-import platform from "@/main/utils/platform/platform";
+import platform from "@/main/lib/platform/platform";
 import axios from "axios";
 import JSZip from "jszip";
 

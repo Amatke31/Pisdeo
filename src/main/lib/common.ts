@@ -1,17 +1,7 @@
 import Config from "@/types/Config";
-import Version from "@/types/Version";
 import ipc from "./platform/desktop/ipc";
 import platform from "./platform/platform";
 import { getFile, setFile } from "./platform/web/file";
-import { appVersion, appVersionFull, compileTime, isProd, commitHash } from "@/main/lib/app-info";
-
-let version: Version = {
-    isProd,
-    appVersion,
-    appVersionFull,
-    compileTime,
-    commitHash,
-};
 
 let userConfig: any = {};
 
@@ -75,4 +65,4 @@ async function getSystemLocale() {
     return reback;
 }
 
-export { version, getConfig, getSystemLocale, setLocale, inited };
+export { getConfig, getSystemLocale, setLocale, inited };

@@ -105,9 +105,9 @@
 </template>
 <script lang="ts">
 import path from "path";
-import ipc from "../utils/platform/desktop/ipc";
-import platform from "../utils/platform/platform";
-import getRecentList from "../utils/getRecentList";
+import ipc from "../lib/platform/desktop/ipc";
+import platform from "../lib/platform/platform";
+import getRecentList from "../lib/getRecentList";
 
 let documentsPath: string = "";
 

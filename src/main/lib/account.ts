@@ -1,15 +1,15 @@
 import { getFile } from "./platform/web/file";
 
 let accountCommunity = {
-  name: "Pisdeo Community",
-  homeUrl: "www.pisdeo.com"
+    name: "Pisdeo Community",
+    homeUrl: "www.pisdeo.com",
 };
 
 let account = {
-    nick: null
-}
+    nick: null,
+};
 
 let loginState = {
     isLogin: false,
-    token: null
-}
+    token: null,
+};

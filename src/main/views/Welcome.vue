@@ -21,9 +21,9 @@
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
-import { setLocale, getSystemLocale, inited } from "../utils/common";
+import { setLocale, getSystemLocale, inited } from "../lib/common";
 import Legal from "../components/legal.vue";
-import platform from "../utils/platform/platform";
+import platform from "../lib/platform/platform";
 
 export default defineComponent({
     name: "Welcome",

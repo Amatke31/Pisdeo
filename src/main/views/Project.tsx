@@ -19,12 +19,14 @@ export default defineComponent({
         const VRow: any = resolveComponent("v-row");
         const VContainer: any = resolveComponent("v-container");
 
-        const workspace: Ref<WorkSpace> = ref({ grid_y: 1, components: [] });
+        const workspace: Ref<WorkSpace> = shallowRef({ grid_y: 1, components: [] });
         const components: Ref<Components> = shallowRef([]);
 
         const projectstore = projectStore();
         const unsub = projectstore.$onAction(({ name, store, args, after, onError }) => {
             if (name == "loadProject") {
+                workspace.value = { grid_y: 1, components: [] };
+                components.value = [];
                 let instance = new solution.allSolution[args[0].solution]({});
                 instance
                     .loadProjectFromFile(args[0].content)

@@ -29,19 +29,10 @@ export default defineComponent({
     background-color: #444;
     width: 219px;
     display: inline-block;
-
-    .itemChild {
-        padding: 14px;
-        display: flex;
-        flex-direction: column;
-
-        .info {
-            text-align: left;
-        }
-
-        .btn {
-            text-align: right;
-        }
+    margin: 10px;
+    
+    .btn {
+        text-align: right;
     }
 }
 </style>

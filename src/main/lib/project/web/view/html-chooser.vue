@@ -33,52 +33,42 @@
         <n-window :open="openChooser" @close="openChooser = false" class="ew" style="padding:16px;">
             <n-tabs v-model:value="elementWindow" type="card" animated>
                 <n-tab-pane name="recent" :tab="$t('common.recent')">
-                    <n-grid
-                        class="ewp scroll"
-                        responsive="screen"
-                        :x-gap="10"
-                        :y-gap="10"
-                    >
-                        <n-grid-item v-for="item in recent">
-                            <element-card :key="item" :element="item" @click="_addElement(item)" />
-                        </n-grid-item>
-                    </n-grid>
+                    <div class="ewp scroll">
+                        <element-card
+                            v-for="item in recent"
+                            :key="item"
+                            :element="item"
+                            @click="_addElement(item)"
+                        />
+                    </div>
                 </n-tab-pane>
                 <n-tab-pane name="basic" :tab="$t('common.basic')">
                     <v-text-field
                         :label="$t('common.search')"
                         variant="underlined"
                         v-model="search"
-                    />
-                    <n-grid
-                        v-if="search == ''"
-                        responsive="screen"
-                        class="ewp scroll"
-                        :x-gap="10"
-                        :y-gap="10"
-                    >
-                        <n-grid-item v-for="item in canAddList">
-                            <element-card :key="item" :element="item" @click="_addElement(item)" />
-                        </n-grid-item>
-                    </n-grid>
-                    <n-grid
-                        v-else
-                        responsive="screen"
-                        class="ewp scroll"
-                        :x-gap="10"
-                        :y-gap="10"
-                    >
-                        <n-grid-item
+                    ></v-text-field>
+                    <div v-if="search == ''" class="ewp scroll">
+                        <element-card
+                            v-for="item in canAddList"
+                            :key="item"
+                            :element="item"
+                            @click="_addElement(item)"
+                        />
+                    </div>
+                    <div v-else class="ewp scroll">
+                        <element-card
                             v-for="item in canAddList.filter((e) => {
                                 return (
                                     e.indexOf(search.toLowerCase()) != -1 ||
                                     $t(`element.${e}`).indexOf(search.toLowerCase()) != -1
                                 );
                             })"
-                        >
-                            <element-card :key="item" :element="item" @click="_addElement(item)" />
-                        </n-grid-item>
-                    </n-grid>
+                            :key="item"
+                            :element="item"
+                            @click="_addElement(item)"
+                        />
+                    </div>
                 </n-tab-pane>
                 <n-tab-pane name="component" :tab="$t('common.component')"></n-tab-pane>
             </n-tabs>
@@ -87,7 +77,7 @@
 </template>
 <script lang="ts">
 import { canAddList, cantAdd } from "../lib/html";
-import elementCard from "../../../components/elementCard.vue";
+import elementCard from "../../../../components/elementCard.vue";
 import EventEmitter from "events";
 const disableAdd = [".text", "html", "style", "script", "img", "input", "br"];
 export default defineComponent({
@@ -320,7 +310,7 @@ export default defineComponent({
 
     .ewp {
         height: 440px;
-        overflow: overlay;
+        overflow: auto;
     }
 }
 </style>

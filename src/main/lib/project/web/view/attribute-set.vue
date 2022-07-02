@@ -449,7 +449,7 @@
 import { ElMessage } from "element-plus";
 import { cssList } from "../lib/css";
 import { canAddList, allRoutine } from "../lib/html";
-import { arrRemove } from "../../../utils/array";
+import { arrRemove } from "../../../../utils/array";
 import { getAllCssSelector } from "../resolve/css";
 import EventEmitter from "events";
 
