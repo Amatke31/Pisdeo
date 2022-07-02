@@ -2,9 +2,7 @@ import { ipcMain } from "electron";
 import { app } from "electron";
 
 import { getConfig, saveConfigFile } from "../utils/configManager";
-import version from "../utils/version";
 
-ipcMain.handle("getVersion", () => JSON.stringify(version));
 ipcMain.handle("getConfig", () => getConfig());
 ipcMain.handle("inited", async () => {
     try {

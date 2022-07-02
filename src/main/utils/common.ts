@@ -3,13 +3,16 @@ import Version from "@/types/Version";
 import ipc from "./platform/desktop/ipc";
 import platform from "./platform/platform";
 import { getFile, setFile } from "./platform/web/file";
+import { appVersion, appVersionFull, compileTime, isProd, commitHash } from "@/main/lib/app-info";
 
 let version: Version = {
-    isProduction: false,
-    buildTime: "Manual Build",
-    version: "Manual Build",
-    channel: "Develop",
+    isProd,
+    appVersion,
+    appVersionFull,
+    compileTime,
+    commitHash,
 };
+
 let userConfig: any = {};
 
 const defaultConfig: Config = {
@@ -19,15 +22,6 @@ const defaultConfig: Config = {
     theme: "auto",
     updateCheck: "ask",
 };
-
-async function getVersion() {
-    if (platform === "desktop") {
-        version = JSON.parse(await ipc.getVersion());
-    } else if (platform === "web") {
-        version = require("../../../static/version.json");
-    }
-    return version;
-}
 
 async function getConfig(callback: any) {
     if (platform === "desktop") {
@@ -81,4 +75,4 @@ async function getSystemLocale() {
     return reback;
 }
 
-export { getVersion, getConfig, getSystemLocale, setLocale, inited };
+export { version, getConfig, getSystemLocale, setLocale, inited };

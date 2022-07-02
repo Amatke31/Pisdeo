@@ -86,7 +86,6 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, h } from "vue";
 import { canAddList, cantAdd } from "../lib/html";
 import elementCard from "../../../components/elementCard.vue";
 import EventEmitter from "events";

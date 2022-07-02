@@ -89,8 +89,8 @@
                         <div v-else-if="option == 'setting.about'" class="right">
                             <h1>Pisdeo</h1>
                             <p>{{ $t("about.introduce") }}</p>
-                            <p>Version: {{ version.version }}</p>
-                            <p>Channel: {{ version.channel }}</p>
+                            <p>Version: {{ version.appVersion }}</p>
+                            <p>Compile Time: {{ version.compileTime }}</p>
                             <p>Platform: {{ platform }}</p>
                             <br />
                             <p>Copyright © 2021-2022 Amatke31. All rights reserved.</p>
@@ -132,11 +132,10 @@
     </div>
 </template>
 <script lang="ts">
-import { h, Component, ref } from "vue";
+import { Component } from "vue";
 import Version from "@/types/Version";
 import { ElMessage } from "element-plus";
-import { defineComponent } from "vue";
-import { getVersion, setLocale } from "../utils/common";
+import { version, setLocale } from "../utils/common";
 import platform from "../utils/platform/platform";
 import { recovery } from "../utils/platform/web/file";
 import { MenuOption, NIcon, useMessage } from "naive-ui";
@@ -184,18 +183,12 @@ export default defineComponent({
                     value: "close",
                 },
             ],
-            version: {
-                isProduction: false,
-                buildTime: "Manual Build",
-                version: "Manual Build",
-                channel: "Develop",
-            } as Version,
+            version,
             platform: platform[0].toUpperCase() + platform.substr(1),
             resetDialog: false,
         };
     },
     async created() {
-        this.version = await getVersion();
         this.toolState = localStorage.getItem("nwddevtool") as string;
         this.openTestProjectInAppLoad = localStorage.getItem("ltpwal") as string;
     },

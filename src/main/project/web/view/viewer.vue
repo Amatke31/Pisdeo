@@ -7,17 +7,12 @@
     </div>
 </template>
 <script lang="ts">
+import { Ref } from "vue";
 import EventEmitter from "events";
-import { defineComponent } from "vue";
 
 export default defineComponent({
-    data() {
-        return {
-            refreshing: false,
-        };
-    },
     props: {
-        viewer: {
+        getViewer: {
             type: Function,
             default: () => {},
         },
@@ -26,29 +21,33 @@ export default defineComponent({
             default: new EventEmitter(),
         },
     },
-    mounted: function() {
-        this.$nextTick(() => {
-            this.asyncView();
-        });
-        this.event.on("refreshViewer", () => {
-            this.asyncView();
-        });
-    },
-    methods: {
-        asyncView: function() {
-            let iframe = this.$refs.viewer;
-            let iDoc: any = (<HTMLIFrameElement>iframe).contentDocument;
-            iDoc.children[0].innerHTML = this.viewer();
-        },
-        reload: function() {
-            this.refreshing = true;
-            this.$nextTick(() => {
-                this.refreshing = false;
-                this.$nextTick(() => {
-                    this.asyncView();
+    setup(props, {}) {
+        const refreshing = ref(false);
+        const viewer: Ref<HTMLIFrameElement | null> = ref(null);
+        const asyncView = function() {
+            let iDoc: any = (<HTMLIFrameElement>viewer.value).contentDocument;
+            if (iDoc && iDoc.children) {
+                iDoc.children[0].innerHTML = props.getViewer();
+            }
+        };
+        const reload = function() {
+            refreshing.value = true;
+            nextTick(() => {
+                refreshing.value = false;
+                nextTick(() => {
+                    setTimeout(() => {
+                        asyncView();
+                    }, 1);
                 });
             });
-        },
+        };
+        nextTick(() => {
+            reload();
+        });
+        props.event.on("refreshViewer", () => {
+            asyncView();
+        });
+        return { refreshing, asyncView, viewer, reload };
     },
 });
 </script>

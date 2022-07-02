@@ -1,4 +1,5 @@
 import { createApp } from "vue";
+import "vue-global-api";
 import { createPinia } from "pinia";
 import App from "./App.vue";
 import i18n from "./plugins/i18n";

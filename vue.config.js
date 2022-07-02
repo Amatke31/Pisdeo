@@ -23,12 +23,7 @@ module.exports = {
             builderOptions: {
                 asar: false,
                 appId: "org.nexwebdeisgner.nexwebdeisgner",
-                extraResources: [
-                    {
-                        from: "./static/",
-                        to: "./static/",
-                    },
-                ],
+                extraResources: [],
             },
         },
         transpileDependencies: ["vuetify"],

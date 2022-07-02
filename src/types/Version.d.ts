@@ -1,7 +1,8 @@
 type Version = {
-    isProduction: Boolean;
-    buildTime: string;
-    version: string;
-    channel: string;
+    isProd: Boolean;
+    appVersion: string;
+    appVersionFull: string;
+    compileTime: string;
+    commitHash: string;
 };
 export default Version

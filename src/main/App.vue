@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, Ref, ref } from "vue";
+import { Ref } from "vue";
 import Start from "./views/Start.vue";
 import Project from "./views/Project";
 import Welcome from "./views/Welcome.vue";

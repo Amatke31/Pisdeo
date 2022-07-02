@@ -39,7 +39,7 @@
                                     class="attrInput"
                                     placeholder=" "
                                     v-model:value="vN['elementName']"
-                                    :on-input="setAttr('elementName', vN['elementName'])"
+                                    @update:value="setAttr('elementName', vN['elementName'])"
                                 />
                             </div>
                             <div class="setDiv">
@@ -52,7 +52,7 @@
                                     class="attrInput"
                                     placeholder=" "
                                     v-model:value="vN['id']"
-                                    :on-input="setAttr('id', vN['id'])"
+                                    @update:value="setAttr('id', vN['id'])"
                                 />
                             </div>
                             <div class="setDiv">
@@ -105,7 +105,7 @@
                                     class="attrInput"
                                     placeholder=" "
                                     v-model:value="v[item.name]"
-                                    :on-input="setAttr(item.name, v[item.name])"
+                                    @update:value="setAttr(item.name, v[item.name])"
                                 />
                                 <n-input
                                     v-if="item.type == 'text' && item.custom"
@@ -114,7 +114,7 @@
                                     class="attrInput"
                                     placeholder=" "
                                     v-model:value="v[item.name]"
-                                    :on-input="setAttr(vT[item.name], v[item.name])"
+                                    @update:value="setAttr(vT[item.name], v[item.name])"
                                 />
                                 <el-checkbox
                                     v-if="item.type == 'checkbox'"
@@ -122,6 +122,21 @@
                                     v-model="v[item.name]"
                                     size="small"
                                     @change="setAttrC(item.name, v[item.name])"
+                                />
+                                <n-select
+                                    v-if="item.type == 'select'"
+                                    size="small"
+                                    class="attrInput"
+                                    placeholder=" "
+                                    v-model:value="v[item.name]"
+                                    @update:value="setAttr(item.name, v[item.name])"
+                                    :options="item.select"
+                                    :render-label="
+                                        (item:any) => {
+                                            return $t(item.id);
+                                        }
+                                    "
+                                    value-field="name"
                                 />
                                 <el-select
                                     v-if="item.type == 'select'"
@@ -219,7 +234,7 @@
                                             class="attrInput"
                                             placeholder=" "
                                             v-model:value="vCT2[selector.class]"
-                                            :on-input="setCSST(selector.class, key)"
+                                            @update:value="setCSST(selector.class, key)"
                                         />
                                     </div>
                                     <el-collapse-transition>
@@ -261,7 +276,7 @@
                                                     class="attrInput"
                                                     placeholder=" "
                                                     v-model:value="vC[key].content[key2].value"
-                                                    :on-input="setCSS()"
+                                                    @update:value="setCSS()"
                                                 />
                                                 <icon-close-small
                                                     class="addAttr"
@@ -285,7 +300,7 @@
                                         class="attrInput"
                                         placeholder=" "
                                         v-model:value="vN['class']"
-                                        :on-input="setAttr('class', vN['class'])"
+                                        @update:value="setAttr('class', vN['class'])"
                                     />
                                 </div>
                                 <div
@@ -349,7 +364,7 @@
                                                     class="attrInput"
                                                     placeholder=" "
                                                     v-model:value="vC[key].content[key2].value"
-                                                    :on-input="setCSS2(key)"
+                                                    @update:value="setCSS2(key)"
                                                 />
                                                 <icon-close-small
                                                     class="addAttr"
@@ -432,7 +447,6 @@
 </template>
 <script lang="ts">
 import { ElMessage } from "element-plus";
-import { defineComponent } from "vue";
 import { cssList } from "../lib/css";
 import { canAddList, allRoutine } from "../lib/html";
 import { arrRemove } from "../../../utils/array";
@@ -797,6 +811,9 @@ export default defineComponent({
         setCSSTT2: function(selector: string, key: number, key2: number, item: string) {
             this.vC[key].content[key2].label = this.vCT[selector][item].change;
             this.setCSS2(key);
+        },
+        renderSelectLabel: function(item: any) {
+            return this.$t(item);
         },
     },
 });

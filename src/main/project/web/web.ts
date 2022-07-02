@@ -100,7 +100,7 @@ class WebProject extends Project {
         if (path.length == 2) {
         } else if (path.length == layer) {
             let next = obj;
-            console.log(next)
+            console.log(next);
             delete next[changeAttr.changeAttr];
         } else {
             this._delAttribute(obj.children[Number(path[layer])], path, layer + 1, changeAttr);
@@ -169,61 +169,57 @@ class WebProject extends Project {
 
     renderWorkspace(): any {
         return {
-            element: "div",
-            attrs: { class: "workspace" },
-            isComponent: false,
-            children: [
+            grid_y: 1,
+            components: [
                 {
-                    element: "div",
-                    attrs: { class: "above" },
-                    isComponent: false,
-                    children: [
-                        {
-                            isComponent: true,
-                            component: htmlChooser,
-                            props: {
-                                getEL: () => {
-                                    return this.currentOpenFile;
-                                },
-                                chooseElement: (e: string) => {
-                                    this.htmlChoose = e;
-                                },
-                                rmElement: () => {
-                                    this.removeElement();
-                                },
-                                addElement: (e: string) => {
-                                    this.addElement(e);
-                                },
-                                event: this.event,
-                            },
+                    component: htmlChooser,
+                    props: {
+                        getEL: () => {
+                            return this.currentOpenFile;
                         },
-                        {
-                            isComponent: true,
-                            component: viewer,
-                            props: {
-                                viewer: () => {
-                                    return this.viewerText;
-                                },
-                                event: this.event,
-                            },
+                        chooseElement: (e: string) => {
+                            this.htmlChoose = e;
                         },
-                        {
-                            isComponent: true,
-                            component: attributeSet,
-                            props: {
-                                event: this.event,
-                                setAttribute: (e: any) => {
-                                    this.setAttribute(e);
-                                },
-                                setAttributeT: (e: any) => {
-                                    this.setAttributeT(e);
-                                },
-                                delAttribute: (e: any) => {
-                                    this.delAttribute(e);
-                                },
-                            },
+                        rmElement: () => {
+                            this.removeElement();
                         },
-                    ],
+                        addElement: (e: string) => {
+                            this.addElement(e);
+                        },
+                        event: this.event,
+                    },
+                    position_x: 1,
+                    position_y: 1,
+                },
+                {
+                    component: viewer,
+                    props: {
+                        getViewer: () => {
+                            return this.viewerText;
+                        },
+                        event: this.event,
+                    },
+                    position_x: 2,
+                    position_y: 1,
+                    cols: 7,
+                },
+                {
+                    component: attributeSet,
+                    props: {
+                        event: this.event,
+                        setAttribute: (e: any) => {
+                            this.setAttribute(e);
+                        },
+                        setAttributeT: (e: any) => {
+                            this.setAttributeT(e);
+                        },
+                        delAttribute: (e: any) => {
+                            this.delAttribute(e);
+                        },
+                    },
+                    position_x: 3,
+                    position_y: 1,
+                    cols: 3,
                 },
             ],
         };

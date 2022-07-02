@@ -1,4 +1,3 @@
-import { defineComponent, reactive, watch } from "vue";
 import "./NWindow.scss";
 
 export default defineComponent({

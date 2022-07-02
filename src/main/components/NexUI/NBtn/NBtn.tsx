@@ -1,4 +1,3 @@
-import { defineComponent } from "vue";
 import "./NBtn.scss";
 
 export default defineComponent({

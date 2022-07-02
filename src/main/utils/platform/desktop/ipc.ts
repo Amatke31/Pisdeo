@@ -14,9 +14,6 @@ if (platform === 'desktop') {
 }
 
 const ipc = {
-    async getVersion(): Promise<string> {
-        return await ipcRenderer.invoke('getVersion')
-    },
     async getDocumentsPath(): Promise<string> {
         return await ipcRenderer.invoke('getDocumentsPath')
     },
