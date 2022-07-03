@@ -27,50 +27,48 @@
                         />
                         <div>{{ $t("attr.general") }}</div>
                     </div>
-                    <el-collapse-transition>
-                        <div class="content" v-show="frame.general.class == 'open'">
-                            <div class="setDiv">
-                                <div class="attrName">
-                                    {{ $t("attr.elementName") + ":" }}
-                                </div>
-                                <n-input
-                                    type="text"
-                                    size="small"
-                                    class="attrInput"
-                                    placeholder=" "
-                                    v-model:value="vN['elementName']"
-                                    @update:value="setAttr('elementName', vN['elementName'])"
-                                />
+                    <n-collapse-transition class="content" v-show="frame.general.class == 'open'">
+                        <div class="setDiv">
+                            <div class="attrName">
+                                {{ $t("attr.elementName") + ":" }}
                             </div>
-                            <div class="setDiv">
-                                <div class="attrName">
-                                    {{ $t("attr.id") + ":" }}
-                                </div>
-                                <n-input
-                                    type="text"
-                                    size="small"
-                                    class="attrInput"
-                                    placeholder=" "
-                                    v-model:value="vN['id']"
-                                    @update:value="setAttr('id', vN['id'])"
-                                />
-                            </div>
-                            <div class="setDiv">
-                                <div class="attrName">
-                                    {{ $t("attr.element") + ":" }}
-                                </div>
-                                <n-select
-                                    size="small"
-                                    class="attrInput"
-                                    placeholder=" "
-                                    v-model:value="vN['element']"
-                                    @update:value="setAttr('element', vN['element'])"
-                                    :disabled="['html', 'head', 'body'].includes(vN['element'])"
-                                    :options="chooseList"
-                                />
-                            </div>
+                            <n-input
+                                type="text"
+                                size="small"
+                                class="attrInput"
+                                placeholder=" "
+                                v-model:value="vN['elementName']"
+                                @update:value="setAttr('elementName', vN['elementName'], true)"
+                            />
                         </div>
-                    </el-collapse-transition>
+                        <div class="setDiv">
+                            <div class="attrName">
+                                {{ $t("attr.id") + ":" }}
+                            </div>
+                            <n-input
+                                type="text"
+                                size="small"
+                                class="attrInput"
+                                placeholder=" "
+                                v-model:value="vN['id']"
+                                @update:value="setAttr('id', vN['id'])"
+                            />
+                        </div>
+                        <div class="setDiv">
+                            <div class="attrName">
+                                {{ $t("attr.element") + ":" }}
+                            </div>
+                            <n-select
+                                size="small"
+                                class="attrInput"
+                                placeholder=" "
+                                v-model:value="vN['element']"
+                                @update:value="setAttr('element', vN['element'])"
+                                :disabled="['html', 'head', 'body'].includes(vN['element'])"
+                                :options="chooseList"
+                            />
+                        </div>
+                    </n-collapse-transition>
                 </div>
                 <div id="attrFrame" :class="frame.attr.class">
                     <div class="folder">
@@ -84,112 +82,90 @@
                         <div>{{ $t("attr.attr") }}</div>
                         <icon-plus class="addAttr" size="16" @click="newAttr" />
                     </div>
-                    <el-collapse-transition>
-                        <div class="content" v-show="frame.attr.class == 'open'">
-                            <div v-for="item in routine" :key="item.name" class="setDiv">
-                                <div v-if="!item.custom" class="attrName">
-                                    {{ $t(item.id) + ":" }}
-                                </div>
-                                <n-input
-                                    v-else
-                                    type="text"
-                                    size="small"
-                                    class="attrInput custom"
-                                    v-model:value="vT[item.name]"
-                                    placeholder=" "
-                                />
-                                <n-input
-                                    v-if="item.type == 'text' && !item.custom"
-                                    type="text"
-                                    size="small"
-                                    class="attrInput"
-                                    placeholder=" "
-                                    v-model:value="v[item.name]"
-                                    @update:value="setAttr(item.name, v[item.name])"
-                                />
-                                <n-input
-                                    v-if="item.type == 'text' && item.custom"
-                                    type="text"
-                                    size="small"
-                                    class="attrInput"
-                                    placeholder=" "
-                                    v-model:value="v[item.name]"
-                                    @update:value="setAttr(vT[item.name], v[item.name])"
-                                />
-                                <el-checkbox
-                                    v-if="item.type == 'checkbox'"
-                                    class="attrInput"
-                                    v-model="v[item.name]"
-                                    size="small"
-                                    @change="setAttrC(item.name, v[item.name])"
-                                />
-                                <n-select
-                                    v-if="item.type == 'select'"
-                                    size="small"
-                                    class="attrInput"
-                                    placeholder=" "
-                                    v-model:value="v[item.name]"
-                                    @update:value="setAttr(item.name, v[item.name])"
-                                    :options="item.select"
-                                    :render-label="
-                                        (item:any) => {
-                                            return $t(item.id);
-                                        }
-                                    "
-                                    value-field="name"
-                                />
-                                <el-select
-                                    v-if="item.type == 'select'"
-                                    size="small"
-                                    class="attrInput"
-                                    placeholder=" "
-                                    v-model="v[item.name]"
-                                    @change="setAttr(item.name, v[item.name])"
-                                >
-                                    <el-option
-                                        v-for="i in item.select"
-                                        :key="i.name"
-                                        :label="$t(i.id)"
-                                        :value="i.name"
-                                    />
-                                </el-select>
-                                <el-select
-                                    v-if="item.type == 'multiple'"
-                                    size="small"
-                                    class="attrInput"
-                                    placeholder=" "
-                                    multiple
-                                    collapse-tags
-                                    collapse-tags-tooltip
-                                    v-model="v[item.name]"
-                                    @change="setAttr(item.name, v[item.name])"
-                                >
-                                    <el-option
-                                        v-for="i in item.select"
-                                        :key="i.name"
-                                        :label="$t(i.id)"
-                                        :value="i.name"
-                                    />
-                                </el-select>
-                                <icon-close-small
-                                    :class="
-                                        'attrDel' +
-                                            (canDel(!item.custom ? item.name : vT[item.name])
-                                                ? ''
-                                                : ' disable')
-                                    "
-                                    theme="outline"
-                                    size="16"
-                                    @click="delAttr(!item.custom ? item.name : vT[item.name])"
-                                    :fill="
-                                        canDel(!item.custom ? item.name : vT[item.name])
-                                            ? '#eee'
-                                            : '#333'
-                                    "
-                                />
+                    <n-collapse-transition class="content" v-show="frame.attr.class == 'open'">
+                        <div v-for="item in routine" :key="item.name" class="setDiv">
+                            <n-tooltip v-if="item.tip" trigger="hover">
+                                <template #trigger>
+                                    <div v-if="!item.custom" class="attrName">
+                                        {{ $t(item.id) + ":" }}
+                                    </div>
+                                </template>
+                                {{ $t(item.tip) }}
+                            </n-tooltip>
+                            <div v-if="!item.tip && !item.custom" class="attrName">
+                                {{ $t(item.id) + ":" }}
                             </div>
+                            <n-input
+                                v-if="item.custom"
+                                type="text"
+                                size="small"
+                                class="attrInput custom"
+                                v-model:value="vT[item.name]"
+                                placeholder=" "
+                            />
+                            <n-input
+                                v-if="item.type == 'text' && !item.custom"
+                                type="text"
+                                size="small"
+                                class="attrInput"
+                                placeholder=" "
+                                v-model:value="v[item.name]"
+                                @update:value="setAttr(item.name, v[item.name])"
+                            />
+                            <n-input
+                                v-if="item.type == 'text' && item.custom"
+                                type="text"
+                                size="small"
+                                class="attrInput"
+                                placeholder=" "
+                                v-model:value="v[item.name]"
+                                @update:value="setAttr(vT[item.name], v[item.name])"
+                            />
+                            <n-checkbox
+                                v-if="item.type == 'checkbox'"
+                                class="attrInput"
+                                size="small"
+                                v-model:checked="v[item.name]"
+                                @update:checked="setAttrC(item.name, v[item.name])"
+                            />
+                            <n-select
+                                v-if="item.type == 'select'"
+                                size="small"
+                                class="attrInput"
+                                placeholder=" "
+                                v-model:value="v[item.name]"
+                                @update:value="setAttr(item.name, v[item.name])"
+                                :options="genSelectOption(item.select)"
+                            />
+                            <n-select
+                                v-if="item.type == 'multiple'"
+                                size="small"
+                                class="attrInput"
+                                placeholder=" "
+                                multiple
+                                clearable
+                                v-model:value="v[item.name]"
+                                @update:value="setAttr(item.name, v[item.name])"
+                                :options="genSelectOption(item.select)"
+                            />
+                            <icon-close-small
+                                :class="
+                                    'attrDel' +
+                                        (canDel(!item.custom ? item.name : vT[item.name])
+                                            ? ''
+                                            : ' disable')
+                                "
+                                theme="outline"
+                                size="16"
+                                @click="delAttr(!item.custom ? item.name : vT[item.name])"
+                                :fill="
+                                    canDel(!item.custom ? item.name : vT[item.name])
+                                        ? '#eee'
+                                        : '#333'
+                                "
+                            />
                         </div>
-                    </el-collapse-transition>
+                    </n-collapse-transition>
                 </div>
                 <div
                     id="styleFrame"
@@ -206,179 +182,156 @@
                         />
                         <div>{{ $t("attr.style") }}</div>
                     </div>
-                    <el-collapse-transition>
-                        <div class="content" v-show="frame.style.class == 'open'">
-                            <div v-if="attribute.element == 'style'">
-                                <div
-                                    v-for="(selector, key) in vC"
-                                    :key="selector"
-                                    :class="'cssSelector ' + vCFolder[selector.class]"
-                                >
-                                    <div class="cssName">
-                                        <icon-down
-                                            class="arrow"
-                                            theme="outline"
-                                            size="16"
-                                            fill="#aaa"
-                                            @click="
-                                                vCFolder[selector.class] =
-                                                    vCFolder[selector.class] == 'fold'
-                                                        ? 'open'
-                                                        : 'fold'
-                                            "
-                                        />
-                                        <icon-plus class="addAttr" size="16" @click="addCSS(key)" />
-                                        <n-input
-                                            type="text"
-                                            size="small"
-                                            class="attrInput"
-                                            placeholder=" "
-                                            v-model:value="vCT2[selector.class]"
-                                            @update:value="setCSST(selector.class, key)"
-                                        />
-                                    </div>
-                                    <el-collapse-transition>
-                                        <div
-                                            v-show="vCFolder[selector.class] == 'open'"
-                                            class="cssFolder"
-                                        >
-                                            <div
-                                                v-for="(item, key2) in css[selector.class]"
-                                                :key="item.label"
-                                                class="setDiv"
-                                            >
-                                                <el-select
-                                                    size="small"
-                                                    class="attrInput custom"
-                                                    filterable
-                                                    remote
-                                                    v-model="vCT[selector.class][item.label].change"
-                                                    :remote-method="queryCss"
-                                                    @change="
-                                                        setCSSTT(
-                                                            selector.class,
-                                                            key,
-                                                            key2,
-                                                            item.label
-                                                        )
-                                                    "
-                                                >
-                                                    <el-option
-                                                        v-for="item in cssOption"
-                                                        :key="item.value"
-                                                        :label="item.transl"
-                                                        :value="item.value"
-                                                    /> </el-select
-                                                >:
-                                                <n-input
-                                                    type="text"
-                                                    size="small"
-                                                    class="attrInput"
-                                                    placeholder=" "
-                                                    v-model:value="vC[key].content[key2].value"
-                                                    @update:value="setCSS()"
-                                                />
-                                                <icon-close-small
-                                                    class="addAttr"
-                                                    theme="outline"
-                                                    size="16"
-                                                    @click="delCSS(key, key2)"
-                                                />
-                                            </div>
-                                        </div>
-                                    </el-collapse-transition>
-                                </div>
-                            </div>
-                            <div style="display: flex; flex-direction: column" v-else>
-                                <div class="setDiv">
-                                    <div class="attrName">
-                                        {{ $t("attr.class") + ":" }}
-                                    </div>
+                    <n-collapse-transition class="content" v-show="frame.style.class == 'open'">
+                        <div v-if="attribute.element == 'style'">
+                            <div
+                                v-for="(selector, key) in vC"
+                                :key="selector"
+                                :class="'cssSelector ' + vCFolder[selector.class]"
+                            >
+                                <div class="cssName">
+                                    <icon-down
+                                        class="arrow"
+                                        theme="outline"
+                                        size="16"
+                                        fill="#aaa"
+                                        @click="
+                                            vCFolder[selector.class] =
+                                                vCFolder[selector.class] == 'fold' ? 'open' : 'fold'
+                                        "
+                                    />
+                                    <icon-plus class="addAttr" size="16" @click="addCSS(key)" />
                                     <n-input
                                         type="text"
                                         size="small"
                                         class="attrInput"
                                         placeholder=" "
-                                        v-model:value="vN['class']"
-                                        @update:value="setAttr('class', vN['class'])"
+                                        v-model:value="vCT2[selector.class]"
+                                        @update:value="setCSST(selector.class, key)"
                                     />
                                 </div>
-                                <div
-                                    v-for="(selector, key) in vC"
-                                    :key="selector"
-                                    :class="'cssSelector ' + vCFolder[selector.class]"
+                                <n-collapse-transition
+                                    v-show="vCFolder[selector.class] == 'open'"
+                                    class="cssFolder"
                                 >
-                                    <div class="cssName">
-                                        <icon-down
-                                            class="arrow"
+                                    <div
+                                        v-for="(item, key2) in css[selector.class]"
+                                        :key="item.label"
+                                        class="setDiv"
+                                    >
+                                        <n-select
+                                            size="small"
+                                            class="attrInput custom"
+                                            placeholder=" "
+                                            filterable
+                                            remote
+                                            v-model:value="vCT[selector.class][item.label].change"
+                                            @update:value="
+                                                setCSSTT(selector.class, key, key2, item.label)
+                                            "
+                                            :options="cssOption"
+                                            @search="queryCss"
+                                            value-field="value"
+                                            label-field="transl"
+                                        />:
+                                        <n-input
+                                            type="text"
+                                            size="small"
+                                            class="attrInput"
+                                            placeholder=" "
+                                            v-model:value="vC[key].content[key2].value"
+                                            @update:value="setCSS()"
+                                        />
+                                        <icon-close-small
+                                            class="addAttr"
                                             theme="outline"
                                             size="16"
-                                            fill="#aaa"
-                                            @click="
-                                                vCFolder[selector.class] =
-                                                    vCFolder[selector.class] == 'fold'
-                                                        ? 'open'
-                                                        : 'fold'
-                                            "
+                                            @click="delCSS(key, key2)"
                                         />
-                                        <icon-plus class="addAttr" size="16" @click="addCSS(key)" />
-                                        {{ vCT2[selector.class] }}
                                     </div>
-                                    <el-collapse-transition>
-                                        <div
-                                            v-show="vCFolder[selector.class] == 'open'"
-                                            class="cssFolder"
-                                        >
-                                            <div
-                                                v-for="(item, key2) in css[selector.class]"
-                                                :key="item.label"
-                                                class="setDiv"
-                                            >
-                                                <el-select
-                                                    size="small"
-                                                    class="attrInput custom"
-                                                    filterable
-                                                    remote
-                                                    v-model="vCT[selector.class][item.label].change"
-                                                    :remote-method="queryCss"
-                                                    @change="
-                                                        setCSSTT2(
-                                                            selector.class,
-                                                            key,
-                                                            key2,
-                                                            item.label
-                                                        )
-                                                    "
-                                                >
-                                                    <el-option
-                                                        v-for="item in cssOption"
-                                                        :key="item.value"
-                                                        :label="item.transl"
-                                                        :value="item.value"
-                                                    />
-                                                </el-select>
-                                                :
-                                                <n-input
-                                                    type="text"
-                                                    size="small"
-                                                    class="attrInput"
-                                                    placeholder=" "
-                                                    v-model:value="vC[key].content[key2].value"
-                                                    @update:value="setCSS2(key)"
-                                                />
-                                                <icon-close-small
-                                                    class="addAttr"
-                                                    theme="outline"
-                                                    size="16"
-                                                    @click="delCSS2(key, key2)"
-                                                />
-                                            </div>
-                                        </div>
-                                    </el-collapse-transition>
-                                </div>
+                                </n-collapse-transition>
                             </div>
                         </div>
-                    </el-collapse-transition>
+                        <div style="display: flex; flex-direction: column" v-else>
+                            <div class="setDiv">
+                                <div class="attrName">
+                                    {{ $t("attr.class") + ":" }}
+                                </div>
+                                <n-input
+                                    type="text"
+                                    size="small"
+                                    class="attrInput"
+                                    placeholder=" "
+                                    v-model:value="vN['class']"
+                                    @update:value="setAttr('class', vN['class'])"
+                                />
+                            </div>
+                            <div
+                                v-for="(selector, key) in vC"
+                                :key="selector"
+                                :class="'cssSelector ' + vCFolder[selector.class]"
+                            >
+                                <div class="cssName">
+                                    <icon-down
+                                        class="arrow"
+                                        theme="outline"
+                                        size="16"
+                                        fill="#aaa"
+                                        @click="
+                                            vCFolder[selector.class] =
+                                                vCFolder[selector.class] == 'fold' ? 'open' : 'fold'
+                                        "
+                                    />
+                                    <icon-plus class="addAttr" size="16" @click="addCSS(key)" />
+                                    {{ vCT2[selector.class] }}
+                                </div>
+                                <n-collapse-transition
+                                    v-show="vCFolder[selector.class] == 'open'"
+                                    class="cssFolder"
+                                >
+                                    <div
+                                        v-for="(item, key2) in css[selector.class]"
+                                        :key="item.label"
+                                        class="setDiv"
+                                    >
+                                        <el-select
+                                            size="small"
+                                            class="attrInput custom"
+                                            filterable
+                                            remote
+                                            v-model="vCT[selector.class][item.label].change"
+                                            :remote-method="queryCss"
+                                            @change="
+                                                setCSSTT2(selector.class, key, key2, item.label)
+                                            "
+                                        >
+                                            <el-option
+                                                v-for="item in cssOption"
+                                                :key="item.value"
+                                                :label="item.transl"
+                                                :value="item.value"
+                                            />
+                                        </el-select>
+                                        :
+                                        <n-input
+                                            type="text"
+                                            size="small"
+                                            class="attrInput"
+                                            placeholder=" "
+                                            v-model:value="vC[key].content[key2].value"
+                                            @update:value="setCSS2(key)"
+                                        />
+                                        <icon-close-small
+                                            class="addAttr"
+                                            theme="outline"
+                                            size="16"
+                                            @click="delCSS2(key, key2)"
+                                        />
+                                    </div>
+                                </n-collapse-transition>
+                            </div>
+                        </div>
+                    </n-collapse-transition>
                 </div>
             </div>
             <div class="frame scroll" v-if="attrPage == 'computed'">
@@ -446,12 +399,14 @@
     </div>
 </template>
 <script lang="ts">
+import { Ref } from "vue";
 import { ElMessage } from "element-plus";
-import { cssList } from "../lib/css";
+import { allCSS } from "../lib/css";
 import { canAddList, allRoutine } from "../lib/html";
 import { arrRemove } from "../../../../utils/array";
 import { getAllCssSelector } from "../resolve/css";
 import EventEmitter from "events";
+import { useI18n } from "vue-i18n";
 
 const noAttr = ["children", "element", "elementName", "class", "css"];
 
@@ -461,7 +416,7 @@ export default defineComponent({
     props: {
         setAttribute: {
             type: Function,
-            default: (e: any) => {},
+            default: (e: any, noRefresh: boolean = false) => {},
         },
         setAttributeT: {
             type: Function,
@@ -515,7 +470,6 @@ export default defineComponent({
                 },
             ],
             remoteCss: [] as any,
-            cssOption: [] as any,
             v: {} as any,
             vT: {},
             vN: {
@@ -530,6 +484,7 @@ export default defineComponent({
             vCFolder: {},
             canAddList,
             allRoutine,
+            allCSS,
         };
     },
     computed: {
@@ -613,20 +568,6 @@ export default defineComponent({
                 (element !== "text" ? `<${element}>` : "")
             );
         },
-        queryCss: function(queryString: string, cb: any) {
-            const createFilter = (queryString: string) => {
-                return (cssList: any) => {
-                    return (
-                        cssList.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0 ||
-                        cssList.transl.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-                    );
-                };
-            };
-            const results = queryString
-                ? cssList.value.filter(createFilter(queryString))
-                : cssList.value;
-            this.cssOption = results;
-        },
         fold: function(which: string) {
             this.frame[which].class = this.frame[which].class == "fold" ? "open" : "fold";
         },
@@ -634,12 +575,15 @@ export default defineComponent({
             this.setAttr("new", "");
             this.frame.attr.class = "open";
         },
-        setAttr: function(attr: string, value: string | Boolean) {
+        setAttr: function(attr: string, value: string | Boolean, noRefresh: boolean = false) {
             if (!this.lock) {
-                this.setAttribute({
-                    changeAttr: attr,
-                    value: value,
-                });
+                this.setAttribute(
+                    {
+                        changeAttr: attr,
+                        value: value,
+                    },
+                    noRefresh
+                );
             }
         },
         delAttr: function(attr: string) {
@@ -708,7 +652,7 @@ export default defineComponent({
             ).forEach((attr: any) => {
                 this.v[attr.name] = attr.default
                     ? attr.default
-                    : attr.type !== "checkout"
+                    : attr.type !== "checkbox"
                     ? ""
                     : false;
             });
@@ -812,9 +756,42 @@ export default defineComponent({
             this.vC[key].content[key2].label = this.vCT[selector][item].change;
             this.setCSS2(key);
         },
-        renderSelectLabel: function(item: any) {
-            return this.$t(item);
+        genSelectOption: function(item: any) {
+            return item.map((i: any) => {
+                return {
+                    label: this.$t(i.id),
+                    value: i.name,
+                };
+            });
         },
+    },
+    setup() {
+        const { t } = useI18n();
+
+        let cssList: any = [];
+        const cssOption: Ref<any> = shallowRef([]);
+
+        function translCss(transl: any) {
+            cssList = allCSS.map((item) => {
+                return { value: item, transl: transl(`css.${item}`) };
+            });
+        }
+
+        translCss(t);
+
+        function queryCss(queryString: string) {
+            const results = queryString
+                ? cssList.filter(({ value, transl }) => {
+                      return (
+                          value.toLowerCase().indexOf(queryString.toLowerCase()) === 0 ||
+                          transl.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+                      );
+                  })
+                : cssList;
+            cssOption.value = results;
+        }
+
+        return { cssList, cssOption, queryCss };
     },
 });
 </script>
@@ -938,7 +915,7 @@ export default defineComponent({
 
     .setDiv {
         display: flex;
-        margin: 7px auto;
+        margin: 7px 4px;
         align-items: center;
 
         * {
@@ -946,21 +923,21 @@ export default defineComponent({
         }
 
         .attrName {
-            width: 50px;
-
-            &.custom {
-                padding: 0 4px;
-            }
+            width: 10%;
+            min-width: 50px;
         }
 
         .attrInput {
-            width: calc(20vw - 10px - 50px - 30px);
+            width: 80%;
+
+            &.custom {
+                width: 20%;
+            }
         }
 
         .attrDel {
             width: 16px;
             margin: 4px;
-            margin-right: 28px;
             transition: 0.3s;
             border-radius: 4px;
             cursor: pointer;

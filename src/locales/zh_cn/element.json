@@ -47,7 +47,8 @@
     "element.video": "视频",
     "element.img": "图像",
     "element.source": "源文件",
-    "a.download": "URL(直接下载)",
+    "a.download": "文件名",
+    "a.download.tip": "如果填写此值，将直接下载",
     "a.href": "URL",
     "a.rel": "与目标对象的关系",
     "a.target": "显示方法",
@@ -60,6 +61,7 @@
     "input.autocomplete": "自动完成表单",
     "input.autocomplete.on": "自动",
     "input.autocomplete.off": "禁止",
+    "input.type": "类型",
     "linktype.alternate": "可替换",
     "linktype.archives": "文档",
     "linktype.author": "作者信息",
@@ -89,5 +91,6 @@
     "linktype.search": "搜索",
     "linktype.shortlink": "短链接",
     "linktype.stylesheet": "假定为css",
-    "linktype.tag": "标签"
+    "linktype.tag": "标签",
+    "img.src": "图像的URL"
 }

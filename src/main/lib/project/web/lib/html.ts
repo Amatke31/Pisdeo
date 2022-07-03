@@ -91,7 +91,7 @@ const linktype = [
 const allRoutine = {
     a: build(
         [
-            { name: "download", type: "text" },
+            { name: "download", type: "text", tip: "a.download.tip" },
             { name: "href", type: "text" },
             {
                 name: "target",
@@ -155,7 +155,11 @@ const allRoutine = {
                 name: "autocomplete",
                 type: "select",
                 default: "on",
-                select: build(["on", "off"], "input.autocomplate"),
+                select: build(["on", "off"], "input.autocomplete"),
+            },
+            {
+                name: "value",
+                type: "text",
             },
         ],
         "input"
@@ -192,6 +196,47 @@ const allRoutine = {
             { name: "src", type: "text" },
         ],
         "audio"
+    ),
+    img: build(
+        [
+            { name: "alt", type: "text" },
+            { name: "src", type: "text" },
+            {
+                name: "crossorigin",
+                type: "select",
+                select: build(["anonymous", "use-credentials"], "img.crossorigin"),
+            },
+            {
+                name: "decoding",
+                type: "select",
+                select: build(["async", "sync", "auto"], "img.decoding"),
+            },
+            {
+                name: "importance",
+                type: "select",
+                select: build(["low", "high"], "img.importance"),
+            },
+            { name: "ismap", type: "checkbox" },
+            { name: "loading", type: "select", select: build(["eager", "lazy"], "img.loading") },
+            {
+                name: "refererpolicy",
+                type: "select",
+                select: build(
+                    [
+                        "no-referrer",
+                        "no-referrer-when-downgrade",
+                        "origin",
+                        "origin-when-cross-origin",
+                        "unsafe-url",
+                    ],
+                    "img.refererpolicy"
+                ),
+            },
+            { name: "sizes", type: "text" },
+            { name: "srcset", type: "text" },
+            { name: "usemap", type: "text" },
+        ],
+        "img"
     ),
 };
 

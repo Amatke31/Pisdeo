@@ -23,10 +23,17 @@ class ProjectSolution {
             if (this._solution.hasOwnProperty(type)) {
                 this._solution[type].push({
                     solutionName: project.solutionName,
+                    solutionId: project.solutionId,
                     instance: project,
                 });
             } else {
-                this._solution[type] = [{ solutionName: project.solutionName, instance: project }];
+                this._solution[type] = [
+                    {
+                        solutionName: project.solutionName,
+                        solutionId: project.solutionId,
+                        instance: project,
+                    },
+                ];
             }
         });
     }
@@ -51,6 +58,7 @@ const project = defineStore("project", {
                 solution.getSolution(info.type).forEach((project: any) => {
                     preSolution.push({
                         solutionName: project.solutionName,
+                        solutionId: project.solutionId,
                         solutionDescription: project.instance.solutionDescription,
                     });
                 });

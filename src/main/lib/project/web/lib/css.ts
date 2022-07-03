@@ -210,12 +210,4 @@ const allCSS = [
     "flex-direction",
 ];
 
-let cssList: any = [];
-
-function translCss(transl: any) {
-    cssList.value = allCSS.map((item) => {
-        return { value: item, transl: transl(`css.${item}`) };
-    });
-}
-
-export { allCSS, cssList, translCss };
+export { allCSS };

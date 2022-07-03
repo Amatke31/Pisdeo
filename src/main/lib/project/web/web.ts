@@ -9,6 +9,7 @@ import EventEmitter from "events";
 
 class WebProject extends Project {
     static solutionName = "Website";
+    static solutionId = "org.pisdeo.website";
     static solutionDescription = `A solution for creating and editing web pages.`;
     static type: any = ["website"];
     supportExt: Array<string> = ["html", "htm", "css", "js"];
@@ -49,6 +50,7 @@ class WebProject extends Project {
         this._removeElement(this.currentOpenFile, this.htmlChoose.split("-"), 2);
         this.refreshViewer();
         this.refreshChooser();
+        this.refreshAttr();
     }
     private _removeElement(obj: any, path: any, layer: number) {
         if (path.length == 2) {
@@ -76,9 +78,11 @@ class WebProject extends Project {
         }
     }
 
-    setAttribute(e: any) {
+    setAttribute(e: any, noRefresh: boolean = false) {
         this._setAttribute(this.currentOpenFile, this.htmlChoose.split("-"), 2, e);
-        this.refreshViewer();
+        if (!noRefresh) {
+            this.refreshViewer();
+        }
     }
     private _setAttribute(obj: any, path: any, layer: number, changeAttr: any) {
         if (path.length == 2) {
@@ -88,20 +92,24 @@ class WebProject extends Project {
             if (changeAttr.changeAttr == "elementName") {
                 this.refreshChooser();
             }
+            this.refreshAttr();
         } else {
             this._setAttribute(obj.children[Number(path[layer])], path, layer + 1, changeAttr);
         }
     }
 
-    delAttribute(e: any) {
+    delAttribute(e: any, noRefresh: boolean = false) {
         this._delAttribute(this.currentOpenFile, this.htmlChoose.split("-"), 2, e);
+        if (!noRefresh) {
+            this.refreshViewer();
+        }
     }
     private _delAttribute(obj: any, path: any, layer: number, changeAttr: any) {
         if (path.length == 2) {
         } else if (path.length == layer) {
             let next = obj;
-            console.log(next);
             delete next[changeAttr.changeAttr];
+            this.refreshAttr();
         } else {
             this._delAttribute(obj.children[Number(path[layer])], path, layer + 1, changeAttr);
         }
@@ -109,6 +117,7 @@ class WebProject extends Project {
 
     setAttributeT(e: any) {
         this._setAttributeT(this.currentOpenFile, this.htmlChoose.split("-"), 2, e);
+        this.refreshViewer();
     }
     private _setAttributeT(obj: any, path: any, layer: number, changeAttr: any) {
         if (path.length == 2) {
@@ -116,6 +125,7 @@ class WebProject extends Project {
             let next = obj;
             next[changeAttr.value] = next[changeAttr.changeAttr];
             delete next[changeAttr.changeAttr];
+            this.refreshAttr();
         } else {
             this._setAttributeT(obj.children[Number(path[layer])], path, layer + 1, changeAttr);
         }
@@ -207,8 +217,8 @@ class WebProject extends Project {
                     component: attributeSet,
                     props: {
                         event: this.event,
-                        setAttribute: (e: any) => {
-                            this.setAttribute(e);
+                        setAttribute: (e: any, noRefresh: boolean = false) => {
+                            this.setAttribute(e, noRefresh);
                         },
                         setAttributeT: (e: any) => {
                             this.setAttributeT(e);
