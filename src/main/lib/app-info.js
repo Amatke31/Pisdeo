@@ -3,9 +3,9 @@ const appName = 'Pisdeo';
 
 const isProd = false;
 const appVersion = '0.0.2';
-const appVersionFull = '0.0.2-e1973a7-b202207030826';
-const compileTime = '2022/07/03 08:26:42';
-const commitHash = 'e1973a7';
+const appVersionFull = '0.0.2-5076e31-b202207050658';
+const compileTime = '2022/07/05 06:58:27';
+const commitHash = '5076e31';
 
 export {
     isProd, appVersion, appVersionFull, compileTime, commitHash

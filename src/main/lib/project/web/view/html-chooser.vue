@@ -77,8 +77,11 @@
 </template>
 <script lang="ts">
 import { canAddList, cantAdd } from "../lib/html";
-import elementCard from "../../../../components/elementCard.vue";
+import elementCard from "../components/elementCard.vue";
 import EventEmitter from "events";
+import { useI18n } from "vue-i18n";
+import { ChevronForward, ChevronDown } from "@vicons/ionicons5";
+import { NIcon } from "naive-ui";
 const disableAdd = [".text", "html", "style", "script", "img", "input", "br"];
 export default defineComponent({
     props: {
@@ -106,16 +109,93 @@ export default defineComponent({
     data() {
         return {
             attribute: {} as any,
-            click: "",
             openChooser: false,
             elementWindow: "recent",
             canAddList,
             recent: ["div", "p", "a", "text", "style"] as Array<string>,
             search: "",
-            htmlChooser: h("div", null, { default: () => "" }),
         };
     },
     components: { "element-card": elementCard },
+    setup(props) {
+        const { t } = useI18n();
+        const click = ref("");
+        const fold = ref({});
+        const htmlChooser = shallowRef(h("div", null, { default: () => "" }));
+        const elementToText = (element: string) => {
+            switch (element) {
+                case ".text":
+                    return t("element.text");
+                default:
+                    return t(`element.${element}`);
+            }
+        };
+        const ObjToHtmlchooser = (obj: any) => {
+            return analysisObj(obj, 0, "layer", 0);
+        };
+        const analysisObj = (obj: any, i: number, root: string, ans: number): any => {
+            const id = `${root}-${ans}`;
+            if (typeof fold.value[id] == "undefined") {
+                fold.value[id] = false;
+            }
+            return h("div", {}, [
+                h(
+                    "div",
+                    {
+                        class: "layer",
+                        id,
+                        style: { paddingLeft: `${i * 8 + 4}px` },
+                        tabIndex: 0,
+                        onclick: () => {
+                            click.value = id;
+                        },
+                    },
+                    [
+                        obj.children
+                            ? fold.value[id]
+                                ? h(NIcon, {
+                                      size: 16,
+                                      component: ChevronForward,
+                                      onClick: () => {
+                                          fold.value[id] = !fold.value[id];
+                                      },
+                                  })
+                                : h(NIcon, {
+                                      size: 16,
+                                      component: ChevronDown,
+                                      onClick: () => {
+                                          fold.value[id] = !fold.value[id];
+                                      },
+                                  })
+                            : null,
+                        obj.elementName ? obj.elementName : elementToText(obj.element),
+                    ]
+                ),
+                !fold.value[id]
+                    ? h(
+                          "div",
+                          null,
+                          obj.children
+                              ? obj.children.map((item: any, key: number) => {
+                                    return analysisObj(item, i + 1, id, key);
+                                })
+                              : []
+                      )
+                    : null,
+            ]);
+        };
+
+        const refreshChooser = () => {
+            htmlChooser.value = ObjToHtmlchooser(props.getEL());
+        };
+        return {
+            click,
+            ObjToHtmlchooser,
+            fold,
+            refreshChooser,
+            htmlChooser,
+        };
+    },
     computed: {
         canAddElement() {
             return !disableAdd.includes(this.attribute.element);
@@ -162,45 +242,6 @@ export default defineComponent({
         refreshAttr: function(n: any) {
             this.attribute = n;
         },
-        ObjToHtmlchooser: function(obj: any) {
-            let out: any = this.analysisObj(obj, [], 0, "layer", 0);
-            return h("div", out);
-        },
-        analysisObj: function(obj: any, array: any, i: number, root: string, ans: number): any {
-            let out: any = h("div", {
-                innerText: obj.elementName ? obj.elementName : this.elementToText(obj.element),
-                class: "layer",
-                id: `${root}-${ans}`,
-                style: { paddingLeft: `${i * 8 + 4}px` },
-                tabIndex: 0,
-                onclick: (e: any) => {
-                    this.click = e.target.id;
-                },
-            });
-            array.push(out);
-            let ansaz = 0;
-            if (obj.children) {
-                for (let child in obj.children) {
-                    array = this.analysisObj(
-                        obj.children[child],
-                        array,
-                        i + 1,
-                        `${root}-${ans}`,
-                        ansaz
-                    );
-                    ansaz++;
-                }
-            }
-            return array;
-        },
-        elementToText: function(element: string) {
-            switch (element) {
-                case ".text":
-                    return this.$t("element.text");
-                default:
-                    return this.$t(`element.${element}`);
-            }
-        },
         _addElement: function(element: string) {
             if (this.canAddElement) {
                 element = element === "text" ? ".text" : element;
@@ -226,9 +267,6 @@ export default defineComponent({
             if (this.canRmElement) {
                 this.rmElement();
             }
-        },
-        refreshChooser: function() {
-            this.htmlChooser = this.ObjToHtmlchooser(this.getEL());
         },
     },
 });
@@ -280,6 +318,7 @@ export default defineComponent({
     border: unset;
     cursor: pointer;
     outline: none;
+    display: flex;
 
     &:hover {
         background-color: #292929;

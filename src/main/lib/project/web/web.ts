@@ -30,8 +30,6 @@ class WebProject extends Project {
 
     addElement(element: string): void {
         this._addElement(this.currentOpenFile, this.htmlChoose.split("-"), 2, element);
-        this.refreshViewer();
-        this.refreshChooser();
     }
     private _addElement(obj: any, path: any, layer: number, element: any) {
         if (path.length == 2) {
@@ -41,6 +39,9 @@ class WebProject extends Project {
                 next.children = [];
             }
             next.children.push({ element });
+            this.refreshChooser();
+            this.htmlChoose = `${this.htmlChoose}-${next.children.length.toString() - 1}`;
+            this.refreshViewer();
         } else {
             this._addElement(obj.children[Number(path[layer])], path, layer + 1, element);
         }
@@ -48,9 +49,6 @@ class WebProject extends Project {
 
     removeElement(): void {
         this._removeElement(this.currentOpenFile, this.htmlChoose.split("-"), 2);
-        this.refreshViewer();
-        this.refreshChooser();
-        this.refreshAttr();
     }
     private _removeElement(obj: any, path: any, layer: number) {
         if (path.length == 2) {
@@ -59,6 +57,9 @@ class WebProject extends Project {
             const last = path.pop();
             this.htmlChoose = this.htmlChoose.slice(0, this.htmlChoose.length - last.length - 1);
             next.children = arrRemove(last, next.children);
+            this.refreshViewer();
+            this.refreshChooser();
+            this.refreshAttr();
         } else {
             this._removeElement(obj.children[Number(path[layer])], path, layer + 1);
         }
@@ -79,45 +80,56 @@ class WebProject extends Project {
     }
 
     setAttribute(e: any, noRefresh: boolean = false) {
-        this._setAttribute(this.currentOpenFile, this.htmlChoose.split("-"), 2, e);
-        if (!noRefresh) {
-            this.refreshViewer();
-        }
+        this._setAttribute(this.currentOpenFile, this.htmlChoose.split("-"), 2, e, noRefresh);
     }
-    private _setAttribute(obj: any, path: any, layer: number, changeAttr: any) {
+    private _setAttribute(obj: any, path: any, layer: number, changeAttr: any, noRefresh: boolean) {
         if (path.length == 2) {
         } else if (path.length == layer) {
             let next = obj;
             next[changeAttr.changeAttr] = changeAttr.value;
-            if (changeAttr.changeAttr == "elementName") {
+            if (changeAttr.changeAttr == "elementName" || changeAttr.changeAttr == "element") {
                 this.refreshChooser();
             }
             this.refreshAttr();
+            if (!noRefresh) {
+                this.refreshViewer();
+            }
         } else {
-            this._setAttribute(obj.children[Number(path[layer])], path, layer + 1, changeAttr);
+            this._setAttribute(
+                obj.children[Number(path[layer])],
+                path,
+                layer + 1,
+                changeAttr,
+                noRefresh
+            );
         }
     }
 
     delAttribute(e: any, noRefresh: boolean = false) {
-        this._delAttribute(this.currentOpenFile, this.htmlChoose.split("-"), 2, e);
-        if (!noRefresh) {
-            this.refreshViewer();
-        }
+        this._delAttribute(this.currentOpenFile, this.htmlChoose.split("-"), 2, e, noRefresh);
     }
-    private _delAttribute(obj: any, path: any, layer: number, changeAttr: any) {
+    private _delAttribute(obj: any, path: any, layer: number, changeAttr: any, noRefresh: boolean) {
         if (path.length == 2) {
         } else if (path.length == layer) {
             let next = obj;
             delete next[changeAttr.changeAttr];
             this.refreshAttr();
+            if (!noRefresh) {
+                this.refreshViewer();
+            }
         } else {
-            this._delAttribute(obj.children[Number(path[layer])], path, layer + 1, changeAttr);
+            this._delAttribute(
+                obj.children[Number(path[layer])],
+                path,
+                layer + 1,
+                changeAttr,
+                noRefresh
+            );
         }
     }
 
     setAttributeT(e: any) {
         this._setAttributeT(this.currentOpenFile, this.htmlChoose.split("-"), 2, e);
-        this.refreshViewer();
     }
     private _setAttributeT(obj: any, path: any, layer: number, changeAttr: any) {
         if (path.length == 2) {
@@ -126,6 +138,7 @@ class WebProject extends Project {
             next[changeAttr.value] = next[changeAttr.changeAttr];
             delete next[changeAttr.changeAttr];
             this.refreshAttr();
+            this.refreshViewer();
         } else {
             this._setAttributeT(obj.children[Number(path[layer])], path, layer + 1, changeAttr);
         }
