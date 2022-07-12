@@ -131,7 +131,8 @@ export default defineComponent({
             }
         };
         const ObjToHtmlchooser = (obj: any) => {
-            return analysisObj(obj, 0, "layer", 0);
+            const out = analysisObj(obj, 0, "layer", 0);
+            return out;
         };
         const analysisObj = (obj: any, i: number, root: string, ans: number): any => {
             const id = `${root}-${ans}`;
@@ -158,6 +159,7 @@ export default defineComponent({
                                       component: ChevronForward,
                                       onClick: () => {
                                           fold.value[id] = !fold.value[id];
+                                          refreshChooser();
                                       },
                                   })
                                 : h(NIcon, {
@@ -165,6 +167,7 @@ export default defineComponent({
                                       component: ChevronDown,
                                       onClick: () => {
                                           fold.value[id] = !fold.value[id];
+                                          refreshChooser();
                                       },
                                   })
                             : null,
@@ -179,15 +182,16 @@ export default defineComponent({
                               ? obj.children.map((item: any, key: number) => {
                                     return analysisObj(item, i + 1, id, key);
                                 })
-                              : []
+                              : null
                       )
-                    : null,
+                    : h("div"),
             ]);
         };
 
         const refreshChooser = () => {
             htmlChooser.value = ObjToHtmlchooser(props.getEL());
         };
+
         return {
             click,
             ObjToHtmlchooser,

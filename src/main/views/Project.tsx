@@ -2,6 +2,7 @@ import { Ref, resolveComponent, VNode } from "vue";
 import { Components, Component, WorkSpace } from "@/types/Workspace";
 import projectStore from "../store/project";
 import { solution } from "../store/project";
+import "./workspace.scss";
 
 const project = {};
 let currentProject = "";
