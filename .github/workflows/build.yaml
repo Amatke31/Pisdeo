@@ -16,6 +16,13 @@ jobs:
       - name: Install dependencies
         run: |
           yarn
+
+      - name: Build Extension
+        run: |
+          cd src/extension/base
+          yarn
+          yarn build
+          cd ../../..
           
       - name: Build
         run: |
