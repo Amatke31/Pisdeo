@@ -1,7 +1,0 @@
-{
-    "newproject.madeby": "这个模板由{author}开发",
-    "newproject.title": "用模板{template}来创建{framework}项目",
-    "newproject.projectname": "项目名称",
-    "newproject.projectlocation": "储存路径",
-    "newproject.create": "创建"
-}
