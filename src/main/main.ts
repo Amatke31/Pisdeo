@@ -38,4 +38,4 @@ class Pisdeo {
     }
 }
 
-new Pisdeo("#_pisdeo");
+coney pisdeo = new Pisdeo("#_pisdeo");
