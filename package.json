@@ -23,7 +23,6 @@
         "core-js": "^3.23.3",
         "default-passive-events": "^2.0.0",
         "element-plus": "^2.2.8",
-        "element-plus-dark": "^2.0.2",
         "jszip": "^3.10.0",
         "localforage": "^1.10.0",
         "markdown-it": "^12.3.2",
