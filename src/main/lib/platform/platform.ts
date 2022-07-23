@@ -1,9 +1,9 @@
-let platform = 'web'
+let platform = "web";
 
-const ua = navigator.userAgent
+const ua = navigator.userAgent;
 
-if (Boolean(window && window.process && window.process.versions && window.process.versions['electron'])) {
-    platform = 'desktop'
+if (window.isDesktop) {
+    platform = "desktop";
 }
 
-export default platform
+export default platform;

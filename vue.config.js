@@ -25,6 +25,7 @@ module.exports = {
                 appId: "org.nexwebdeisgner.nexwebdeisgner",
                 extraResources: [],
             },
+            preload: "src/desktop/preload.js",
         },
         transpileDependencies: ["vuetify"],
     },

@@ -1,46 +1,45 @@
-import platform from '../platform'
+import platform from "../platform";
 
 let ipcRenderer: any = {
     invoke: async function(msg: string) {
-        return 'Not desktop environment'
+        return "Not desktop environment";
     },
     send: function(msg: string, msg2: string) {
-        return 'Not desktop environment'
-    }
-}
+        return "Not desktop environment";
+    },
+};
 
-if (platform === 'desktop') {
-    ipcRenderer = require('electron').ipcRenderer
+if (platform === "desktop") {
+    ipcRenderer = window.ipc;
+    console.log(window);
 }
 
 const ipc = {
     async getDocumentsPath(): Promise<string> {
-        return await ipcRenderer.invoke('getDocumentsPath')
+        return await ipcRenderer.invoke("getDocumentsPath");
     },
     async getStorePath(): Promise<string> {
-        return await ipcRenderer.invoke('getStorePath')
+        return await ipcRenderer.invoke("getStorePath");
     },
     async getConfig(): Promise<string> {
-        return await ipcRenderer.invoke('getConfig')
+        return await ipcRenderer.invoke("getConfig");
     },
     async getLocale(): Promise<string> {
-        return await ipcRenderer.invoke('getLocale')
+        return await ipcRenderer.invoke("getLocale");
     },
     async setLocale(lang: string): Promise<string> {
-        return await ipcRenderer.invoke('setLocale', lang)
+        return await ipcRenderer.invoke("setLocale", lang);
     },
     async inited(): Promise<string> {
-        return await ipcRenderer.invoke('inited')
+        return await ipcRenderer.invoke("inited");
     },
     async chooseProjectPath() {
-        let cppath: string = ''
-        await ipcRenderer.invoke('chooseProjectPath').then((path: any) => {
-            if (path != ('cancel' || 'error'))
-                cppath = path
-        })
-        return cppath
-    }
-}
+        let cppath: string = "";
+        await ipcRenderer.invoke("chooseProjectPath").then((path: any) => {
+            if (path != ("cancel" || "error")) cppath = path;
+        });
+        return cppath;
+    },
+};
 
-export default ipc
-export { ipc }
+export default ipc;

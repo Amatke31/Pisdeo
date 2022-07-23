@@ -18,7 +18,7 @@ export default defineComponent({
     },
     setup(props, { expose }) {
         const fold = ref(true);
-        if (default == 'open'){
+        if (props.default == "open") {
             fold.value = false;
         }
         const close = () => (fold.value = false);

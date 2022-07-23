@@ -2,6 +2,7 @@
 
 import { app, protocol, BrowserWindow, Menu, ipcMain, shell } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
+import path from "path";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 const isMac = process.platform === "darwin";
@@ -12,7 +13,7 @@ protocol.registerSchemesAsPrivileged([
     { scheme: "app", privileges: { secure: true, standard: true } },
 ]);
 
-async function createWindow(title: string, path: string) {
+async function createWindow(title: string, url: string = "./index.html") {
     const win = new BrowserWindow({
         width: 1366,
         height: 768,
@@ -21,8 +22,9 @@ async function createWindow(title: string, path: string) {
         titleBarStyle: "hidden",
         title,
         webPreferences: {
-            nodeIntegration: Boolean(process.env.ELECTRON_NODE_INTEGRATION),
-            contextIsolation: Boolean(!process.env.ELECTRON_NODE_INTEGRATION),
+            nodeIntegration: true,
+            contextIsolation: false,
+            preload: path.resolve(path.join(__dirname, "preload.js")),
         },
     });
     win.setMenuBarVisibility(false);
@@ -71,9 +73,9 @@ async function createWindow(title: string, path: string) {
                     label: "Refresh Page",
                     click: async () => {
                         if (isDevelopment) {
-                            await win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}${path}`);
+                            await win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}${url}`);
                         } else {
-                            await win.loadURL(`app://${path}`);
+                            await win.loadURL(`app://${url}`);
                         }
                     },
                 },
@@ -84,10 +86,10 @@ async function createWindow(title: string, path: string) {
     Menu.setApplicationMenu(menu);
 
     if (isDevelopment) {
-        await win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}${path}`);
+        await win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}${url}`);
     } else {
         createProtocol("app");
-        await win.loadURL(`app://${path}`);
+        await win.loadURL(`app://${url}`);
     }
 }
 
