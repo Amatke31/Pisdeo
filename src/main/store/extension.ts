@@ -82,16 +82,13 @@ const extension = defineStore("extension", {
             }
         },
         loadNWDExt: async function({ i18n }) {
-            if (platform === "desktop") {
-            } else {
-                await axios({
-                    method: "get",
-                    url: "/extension/base/dist/org.pisdeo.base@1.0.0.nwdx",
-                    responseType: "arraybuffer",
-                }).then(async (res) => {
-                    this.loadExtension({ zipFile: res.data, i18n });
-                });
-            }
+            await axios({
+                method: "get",
+                url: "/extension/base/dist/org.pisdeo.base@1.0.0.pisx",
+                responseType: "arraybuffer",
+            }).then(async (res) => {
+                this.loadExtension({ zipFile: res.data, i18n });
+            });
         },
     },
 });

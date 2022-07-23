@@ -39,7 +39,7 @@ const config = {
         new ZipWebpackPlugin({
             path: path.join(__dirname, 'dist'),
             filename: `${info.id}@${info.version}`,
-            extension: 'nwdx'
+            extension: 'pisx'
         })
     ]
 };
