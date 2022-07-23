@@ -16,18 +16,8 @@
                 </div>
             </div>
             <div class="frame scroll" v-if="attrPage == 'set'">
-                <div id="generalFrame" :class="frame.general.class">
-                    <div class="folder">
-                        <icon-down
-                            class="arrow"
-                            theme="outline"
-                            size="16"
-                            fill="#aaa"
-                            @click="fold('general')"
-                        />
-                        <div>{{ $t("attr.general") }}</div>
-                    </div>
-                    <n-collapse-transition class="content" v-show="frame.general.class == 'open'">
+                <folder :title="$t('attr.general')" default="open">
+                    <template #default>
                         <div class="setDiv">
                             <div class="attrName">
                                 {{ $t("attr.elementName") + ":" }}
@@ -68,21 +58,13 @@
                                 :options="chooseList"
                             />
                         </div>
-                    </n-collapse-transition>
-                </div>
-                <div id="attrFrame" :class="frame.attr.class">
-                    <div class="folder">
-                        <icon-down
-                            class="arrow"
-                            theme="outline"
-                            size="16"
-                            fill="#aaa"
-                            @click="fold('attr')"
-                        />
-                        <div>{{ $t("attr.attr") }}</div>
+                    </template>
+                </folder>
+                <folder id="attrFrame" :title="$t('attr.attr')">
+                    <template #bar>
                         <icon-plus class="addAttr" size="16" @click="newAttr" />
-                    </div>
-                    <n-collapse-transition class="content" v-show="frame.attr.class == 'open'">
+                    </template>
+                    <template #default>
                         <div v-for="item in routine" :key="item.name" class="setDiv">
                             <n-tooltip v-if="item.tip" trigger="hover">
                                 <template #trigger>
@@ -165,8 +147,8 @@
                                 "
                             />
                         </div>
-                    </n-collapse-transition>
-                </div>
+                    </template>
+                </folder>
                 <div
                     id="styleFrame"
                     :class="frame.style.class"
@@ -407,6 +389,7 @@ import { arrRemove } from "../../../../utils/array";
 import { getAllCssSelector } from "../resolve/css";
 import EventEmitter from "events";
 import { useI18n } from "vue-i18n";
+import folder from "../components/folder.vue";
 
 const noAttr = ["children", "element", "elementName", "class", "css"];
 
@@ -486,6 +469,9 @@ export default defineComponent({
             allRoutine,
             allCSS,
         };
+    },
+    components: {
+        folder,
     },
     computed: {
         attrBar() {

@@ -120,7 +120,7 @@ export default defineComponent({
     setup(props) {
         const { t } = useI18n();
         const click = ref("");
-        const fold = ref({});
+        const fold = {};
         const htmlChooser = shallowRef(h("div", null, { default: () => "" }));
         const elementToText = (element: string) => {
             switch (element) {
@@ -136,8 +136,8 @@ export default defineComponent({
         };
         const analysisObj = (obj: any, i: number, root: string, ans: number): any => {
             const id = `${root}-${ans}`;
-            if (typeof fold.value[id] == "undefined") {
-                fold.value[id] = false;
+            if (typeof fold[id] == "undefined") {
+                fold[id] = false;
             }
             return h("div", {}, [
                 h(
@@ -153,28 +153,19 @@ export default defineComponent({
                     },
                     [
                         obj.children
-                            ? fold.value[id]
-                                ? h(NIcon, {
-                                      size: 16,
-                                      component: ChevronForward,
-                                      onClick: () => {
-                                          fold.value[id] = !fold.value[id];
-                                          refreshChooser();
-                                      },
-                                  })
-                                : h(NIcon, {
-                                      size: 16,
-                                      component: ChevronDown,
-                                      onClick: () => {
-                                          fold.value[id] = !fold.value[id];
-                                          refreshChooser();
-                                      },
-                                  })
+                            ? h(NIcon, {
+                                  size: 16,
+                                  component: fold[id] ? ChevronForward : ChevronDown,
+                                  onClick: () => {
+                                      fold[id] = !fold[id];
+                                      refreshChooser();
+                                  },
+                              })
                             : null,
                         obj.elementName ? obj.elementName : elementToText(obj.element),
                     ]
                 ),
-                !fold.value[id]
+                !fold[id]
                     ? h(
                           "div",
                           null,
@@ -195,7 +186,6 @@ export default defineComponent({
         return {
             click,
             ObjToHtmlchooser,
-            fold,
             refreshChooser,
             htmlChooser,
         };
