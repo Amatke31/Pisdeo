@@ -216,6 +216,8 @@ export default defineComponent({
         click: function(e, p) {
             try {
                 document.getElementById(p)!.className = `layer`;
+            } catch (e) {}
+            try {
                 document.getElementById(e)!.className = `layer choose`;
             } catch (e) {}
             this.chooseElement(e);

@@ -4,7 +4,6 @@ import viewer from "./view/viewer.vue";
 import htmlChooser from "./view/html-chooser.vue";
 import attributeSet from "./view/attribute-set.vue";
 import { arrRemove } from "@/main/utils/array";
-import "./workspace.scss";
 import EventEmitter from "events";
 
 class WebProject extends Project {
