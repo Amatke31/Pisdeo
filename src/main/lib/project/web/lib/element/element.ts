@@ -105,12 +105,13 @@ const allRoutine = {
     ),
     button: build(
         [
-            { name: "autofocus", type: "checkbox" },
-            { name: "disabled", type: "checkbox" },
+            { name: "autofocus", type: "switch" },
+            { name: "disabled", type: "switch" },
             { name: "name", type: "text" },
             {
                 name: "type",
                 type: "select",
+                default: "button",
                 select: build(["submit", "reset", "button", "menu"], "button.type"),
             },
             { name: "value", type: "text" },
@@ -126,7 +127,7 @@ const allRoutine = {
                 select: build(
                     [
                         "button",
-                        "checkbox",
+                        "switch",
                         "color",
                         "date",
                         "datetime-local",
@@ -166,8 +167,8 @@ const allRoutine = {
     ),
     audio: build(
         [
-            { name: "autoplay", type: "checkbox" },
-            { name: "controls", type: "checkbox" },
+            { name: "autoplay", type: "switch" },
+            { name: "controls", type: "switch" },
             {
                 name: "crossorigin",
                 type: "select",
@@ -180,7 +181,7 @@ const allRoutine = {
                 default: "false",
                 select: build(["true", "false"], "audio.disableRemotePlayback"),
             },
-            { name: "loop", type: "checkbox", id: "audio.loop" },
+            { name: "loop", type: "switch", id: "audio.loop" },
             {
                 name: "muted",
                 type: "select",
@@ -209,32 +210,11 @@ const allRoutine = {
             {
                 name: "decoding",
                 type: "select",
+                default: "auto",
                 select: build(["async", "sync", "auto"], "img.decoding"),
             },
-            {
-                name: "importance",
-                type: "select",
-                select: build(["low", "high"], "img.importance"),
-            },
-            { name: "ismap", type: "checkbox" },
             { name: "loading", type: "select", select: build(["eager", "lazy"], "img.loading") },
-            {
-                name: "refererpolicy",
-                type: "select",
-                select: build(
-                    [
-                        "no-referrer",
-                        "no-referrer-when-downgrade",
-                        "origin",
-                        "origin-when-cross-origin",
-                        "unsafe-url",
-                    ],
-                    "img.refererpolicy"
-                ),
-            },
-            { name: "sizes", type: "text" },
             { name: "srcset", type: "text" },
-            { name: "usemap", type: "text" },
         ],
         "img"
     ),

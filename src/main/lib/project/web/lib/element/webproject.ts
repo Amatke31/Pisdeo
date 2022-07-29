@@ -1,13 +1,13 @@
-import { ObjToCSS, clearCss } from "./css";
+import { ObjToCSS, clearCss } from "../css/selector";
 const noChange = ["element", "children", "css", "script", "text", "elementName"];
 const singleElemenet = ["img", "input", "br"];
 
 function ObjToElement(obj: any) {
-    let out: HTMLElement = <HTMLElement>analysisObjWithElement(obj);
+    let out: HTMLElement = <HTMLElement>analysisObj(obj);
     return out;
 }
 
-function analysisObjWithElement(obj: any): HTMLElement | string {
+function analysisObj(obj: any): HTMLElement | string {
     clearCss();
     if (obj.element == ".text") {
         return obj.text;
@@ -30,12 +30,12 @@ function analysisObjWithElement(obj: any): HTMLElement | string {
         if (!singleElemenet.includes(obj.element)) {
             for (let child in obj.children) {
                 obj.children[child].element !== ".text"
-                    ? out.appendChild(<HTMLElement>analysisObjWithElement(obj.children[child]))
-                    : (out.innerText = <string>analysisObjWithElement(obj.children[child]));
+                    ? out.appendChild(<HTMLElement>analysisObj(obj.children[child]))
+                    : (out.innerText = <string>analysisObj(obj.children[child]));
             }
         }
         return out;
     }
 }
 
-export { ObjToElement, analysisObjWithElement };
+export { ObjToElement };

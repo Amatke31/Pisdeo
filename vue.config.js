@@ -22,7 +22,7 @@ module.exports = {
             nodeIntegration: true,
             builderOptions: {
                 asar: false,
-                appId: "org.nexwebdeisgner.nexwebdeisgner",
+                appId: "org.pisdeo.pisdeo",
                 extraResources: [],
             },
             preload: "src/desktop/preload.js",

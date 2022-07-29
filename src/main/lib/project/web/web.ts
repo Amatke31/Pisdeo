@@ -1,4 +1,4 @@
-import { ObjToElement } from "./resolve/html";
+import { ObjToElement } from "./lib/element/webproject";
 import Project from "../base/base";
 import viewer from "./view/viewer.vue";
 import htmlChooser from "./view/html-chooser.vue";
@@ -37,9 +37,11 @@ class WebProject extends Project {
             if (!next.children) {
                 next.children = [];
             }
-            next.children.push({ element });
+            next.children.push(element);
             this.refreshChooser();
-            this.htmlChoose = `${this.htmlChoose}-${next.children.length.toString() - 1}`;
+            setTimeout(() => {
+                this.htmlChoose = `${this.htmlChoose}-${next.children.length.toString() - 1}`;
+            }, 1);
             this.refreshViewer();
         } else {
             this._addElement(obj.children[Number(path[layer])], path, layer + 1, element);
@@ -57,8 +59,7 @@ class WebProject extends Project {
             this.htmlChoose = this.htmlChoose.slice(0, this.htmlChoose.length - last.length - 1);
             next.children = arrRemove(last, next.children);
             this.refreshViewer();
-            this.refreshChooser();
-            this.refreshAttr();
+            setTimeout(() => this.refreshChooser(), 1);
         } else {
             this._removeElement(obj.children[Number(path[layer])], path, layer + 1);
         }

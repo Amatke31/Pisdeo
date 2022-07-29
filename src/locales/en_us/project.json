@@ -16,5 +16,6 @@
     "attr.computed": "Computed",
     "attr.style": "Style",
     "attr.warning.repeat": "Property already exists",
-    "attr.warning.null": "Cannot be set to null"
+    "attr.warning.null": "Cannot be set to null",
+    "elementName.tip": "Just a hint, it hasn't practical effect"
 }

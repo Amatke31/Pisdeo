@@ -16,5 +16,6 @@
     "attr.computed": "计算",
     "attr.style": "样式",
     "attr.warning.repeat": "属性已存在",
-    "attr.warning.null": "不能设置为空"
+    "attr.warning.null": "不能设置为空",
+    "elementName.tip": "仅作为名称，无实际作用"
 }

@@ -66,7 +66,6 @@
                         {
                             "element": "div",
                             "class": "menu-bar",
-                            "heiheihei": "233",
                             "elementName": "Menu Bar",
                             "children": [
                                 {
@@ -128,7 +127,6 @@
                             "element": "button",
                             "elementName": "嗯妞",
                             "disabled": true,
-                            "test": "1",
                             "children": [
                                 {
                                     "element": ".text",

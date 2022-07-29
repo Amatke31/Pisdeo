@@ -2,8 +2,15 @@
     <div class="viewer">
         <div id="viewerMenu">
             <icon-refresh class="btn" theme="outline" size="16" fill="#eee" @click="reload" />
+            <icon-plus class="btn" theme="outline" size="16" fill="#eee" @click="size++" />
+            <icon-minus class="btn" theme="outline" size="16" fill="#eee" @click="size--" />
         </div>
-        <iframe v-if="!refreshing" ref="viewer" id="viewer"></iframe>
+        <iframe
+            v-if="!refreshing"
+            ref="viewer"
+            id="viewer"
+            :style="`transform:scale(${size / 100});`"
+        ></iframe>
     </div>
 </template>
 <script lang="ts">
@@ -23,6 +30,7 @@ export default defineComponent({
     },
     setup(props, {}) {
         const refreshing = ref(false);
+        const size = ref(100);
         const viewer: Ref<HTMLIFrameElement | null> = ref(null);
         const asyncView = function() {
             let iDoc: any = (<HTMLIFrameElement>viewer.value).contentDocument;
@@ -47,7 +55,7 @@ export default defineComponent({
         props.event.on("refreshViewer", () => {
             asyncView();
         });
-        return { refreshing, asyncView, viewer, reload };
+        return { refreshing, asyncView, viewer, reload, size };
     },
 });
 </script>

@@ -48,15 +48,15 @@
                         variant="underlined"
                         v-model="search"
                     ></v-text-field>
-                    <div v-if="search == ''" class="ewp scroll">
+                    <n-scrollbar v-if="search == ''" class="ewp">
                         <element-card
                             v-for="item in canAddList"
                             :key="item"
                             :element="item"
                             @click="_addElement(item)"
                         />
-                    </div>
-                    <div v-else class="ewp scroll">
+                    </n-scrollbar>
+                    <n-scrollbar v-else class="ewp">
                         <element-card
                             v-for="item in canAddList.filter((e) => {
                                 return (
@@ -68,7 +68,7 @@
                             :element="item"
                             @click="_addElement(item)"
                         />
-                    </div>
+                    </n-scrollbar>
                 </n-tab-pane>
                 <n-tab-pane name="component" :tab="$t('common.component')"></n-tab-pane>
             </n-tabs>
@@ -76,7 +76,7 @@
     </div>
 </template>
 <script lang="ts">
-import { canAddList, cantAdd } from "../lib/html";
+import { canAddList, cantAdd } from "../lib/element/element";
 import elementCard from "../components/elementCard.vue";
 import EventEmitter from "events";
 import { useI18n } from "vue-i18n";
@@ -247,7 +247,7 @@ export default defineComponent({
                         addElementInfo.text = "";
                         break;
                 }
-                this.addElement(element);
+                this.addElement(addElementInfo);
                 element = element === ".text" ? "text" : element;
                 if (!this.recent.includes(element)) {
                     this.recent.unshift(element);

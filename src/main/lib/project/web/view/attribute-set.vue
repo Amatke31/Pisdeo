@@ -18,19 +18,26 @@
             <div class="frame scroll" v-if="attrPage == 'set'">
                 <folder :title="$t('attr.general')" default="open">
                     <template #default>
-                        <div class="setDiv">
-                            <div class="attrName">
-                                {{ $t("attr.elementName") + ":" }}
-                            </div>
-                            <n-input
-                                type="text"
-                                size="small"
-                                class="attrInput"
-                                placeholder=" "
-                                v-model:value="vN['elementName']"
-                                @update:value="setAttr('elementName', vN['elementName'], true)"
-                            />
-                        </div>
+                        <n-tooltip trigger="hover">
+                            <template #trigger>
+                                <div class="setDiv">
+                                    <div class="attrName">
+                                        {{ $t("attr.elementName") + ":" }}
+                                    </div>
+                                    <n-input
+                                        type="text"
+                                        size="small"
+                                        class="attrInput"
+                                        placeholder=" "
+                                        v-model:value="vN['elementName']"
+                                        @update:value="
+                                            setAttr('elementName', vN['elementName'], true)
+                                        "
+                                    />
+                                </div>
+                            </template>
+                            {{ $t('elementName.tip') }}
+                        </n-tooltip>
                         <div class="setDiv">
                             <div class="attrName">
                                 {{ $t("attr.id") + ":" }}
@@ -61,9 +68,6 @@
                     </template>
                 </folder>
                 <folder id="attrFrame" :title="$t('attr.attr')">
-                    <template #bar>
-                        <icon-plus class="addAttr" size="16" @click="newAttr" />
-                    </template>
                     <template #default>
                         <div v-for="item in routine" :key="item.name" class="setDiv">
                             <n-tooltip v-if="item.tip" trigger="hover">
@@ -103,12 +107,12 @@
                                 v-model:value="v[item.name]"
                                 @update:value="setAttr(vT[item.name], v[item.name])"
                             />
-                            <n-checkbox
-                                v-if="item.type == 'checkbox'"
+                            <n-switch
+                                v-if="item.type == 'switch'"
                                 class="attrInput"
                                 size="small"
-                                v-model:checked="v[item.name]"
-                                @update:checked="setAttrC(item.name, v[item.name])"
+                                v-model:value="v[item.name]"
+                                @update:value="setAttrC(item.name, v[item.name])"
                             />
                             <n-select
                                 v-if="item.type == 'select'"
@@ -383,10 +387,10 @@
 <script lang="ts">
 import { Ref } from "vue";
 import { ElMessage } from "element-plus";
-import { allCSS } from "../lib/css";
-import { canAddList, allRoutine } from "../lib/html";
+import { allCSS } from "../lib/css/css";
+import { canAddList, allRoutine } from "../lib/element/element";
 import { arrRemove } from "../../../../utils/array";
-import { getAllCssSelector } from "../resolve/css";
+import { getAllCssSelector } from "../lib/css/selector";
 import EventEmitter from "events";
 import { useI18n } from "vue-i18n";
 import folder from "../components/folder.vue";
@@ -638,7 +642,7 @@ export default defineComponent({
             ).forEach((attr: any) => {
                 this.v[attr.name] = attr.default
                     ? attr.default
-                    : attr.type !== "checkbox"
+                    : attr.type !== "switch"
                     ? ""
                     : false;
             });
