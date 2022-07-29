@@ -1,9 +1,17 @@
 <template>
     <n-window class="window" :open="true">
-        <div class="stepW scroll" v-if="step == 1">
-            <i class="img iconfont icon-earth"></i>
-            <div class="title">{{ $t("welcome.lang.choose") }}</div>
-            <n-select v-model:value="lang" class="m-2 select" placeholder="Select" size="large" :options="supportLang" />
+        <div class="stepW scroll s1" v-if="step == 1">
+            <div>
+                <n-icon class="img"><Language /></n-icon>
+                <div class="title">{{ $t("welcome.lang.choose") }}</div>
+            </div>
+            <n-select
+                v-model:value="lang"
+                class="m-2 select"
+                placeholder="Select"
+                size="large"
+                :options="supportLang"
+            />
             <n-btn @click="setLanguage()" class="nS">{{ $t("common.nextstep") }}</n-btn>
         </div>
         <div class="stepW" v-else-if="step == 2" style="height: 100%">
@@ -16,7 +24,6 @@
             <n-btn @click="complete()" class="nS">{{ $t("common.enter") }}</n-btn>
         </div>
     </n-window>
-    <div class="mask"></div>
 </template>
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
@@ -24,11 +31,12 @@ import { ElMessage } from "element-plus";
 import { setLocale, getSystemLocale, inited } from "../lib/common";
 import Legal from "../components/legal.vue";
 import platform from "../lib/platform/platform";
+import { Language } from "@vicons/ionicons5";
 
 export default defineComponent({
     name: "Welcome",
     emits: ["goStart"],
-    components: { Legal },
+    components: { Legal, Language },
     data() {
         return {
             step: 1,
@@ -99,6 +107,10 @@ export default defineComponent({
         flex-direction: column;
         overflow: auto;
         height: 100%;
+
+        &.s1 {
+            justify-content: space-around;
+        }
     }
 }
 

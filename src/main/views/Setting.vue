@@ -87,38 +87,7 @@
                             </div>
                         </div>
                         <div v-else-if="option == 'setting.about'" class="right">
-                            <h1>Pisdeo</h1>
-                            <p>{{ $t("about.introduce") }}</p>
-                            <p>Version: {{ appVersionFull }}</p>
-                            <p>Compile Time: {{ compileTime }}</p>
-                            <p>Platform: {{ platform }}</p>
-                            <br />
-                            <p>Copyright © 2021-2022 Amatke31. All rights reserved.</p>
-                            <p>
-                                Released under the
-                                <a
-                                    style="color:#58a6ff"
-                                    href="https://www.gnu.org/licenses/agpl-3.0.txt"
-                                    target="_blank"
-                                    >AGPL-3.0</a
-                                >
-                            </p>
-                            <div>
-                                <a
-                                    style="color:#58a6ff"
-                                    href="https://github.com/amatke31/pisdeo"
-                                    target="_blank"
-                                >
-                                    {{ $t("about.github") }}
-                                </a>
-                                <a
-                                    style="color:#58a6ff"
-                                    href="https://gitee.com/amatke31/pisdeo"
-                                    target="_blank"
-                                >
-                                    {{ $t("about.gitee") }}
-                                </a>
-                            </div>
+                            <About />
                         </div>
                         <div
                             v-for="{ key } in menuOptions"
@@ -140,7 +109,6 @@
 </template>
 <script lang="ts">
 import { Component } from "vue";
-import { appVersion, appVersionFull, compileTime, commitHash } from "@/main/lib/app-info";
 import { ElMessage } from "element-plus";
 import { setLocale } from "../lib/common";
 import platform from "../lib/platform/platform";
@@ -153,6 +121,7 @@ import {
     InformationOutline as InfoIcon,
 } from "@vicons/ionicons5";
 import { useI18n } from "vue-i18n";
+import About from "./about.vue";
 
 function renderIcon(icon: Component) {
     return () => h(NIcon, null, { default: () => h(icon) });
@@ -243,7 +212,6 @@ export default defineComponent({
         const { t } = useI18n();
         const message = useMessage();
         let lang = ref("en_us");
-
         const menuOptions: MenuOption[] = [
             {
                 label: () => t("setting.general"),
@@ -289,11 +257,9 @@ export default defineComponent({
             sendCommand,
             reset,
             lang,
-            appVersionFull,
-            compileTime,
-            commitHash,
         };
     },
+    components: { About },
 });
 </script>
 

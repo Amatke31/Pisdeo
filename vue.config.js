@@ -42,10 +42,6 @@ module.exports = {
             new CopyWebpackPlugin({
                 patterns: [
                     {
-                        from: "src/extension/base/dist",
-                        to: "extension/base/dist",
-                    },
-                    {
                         from: "test/testProgram",
                         to: "test",
                     },

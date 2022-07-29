@@ -14,7 +14,6 @@
     },
     "main": "index.js",
     "dependencies": {
-        "@icon-park/vue-next": "^1.4.1",
         "@mdi/font": "5.9.55",
         "@types/semver": "^7.3.10",
         "@vicons/ionicons5": "^0.12.0",

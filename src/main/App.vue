@@ -89,7 +89,7 @@ import "./lib/project/web/web";
 import JSZip from "jszip";
 import extension from "./store/extension";
 import { useI18n } from "vue-i18n";
-import Axios from "axios";
+import axios from "axios";
 import project from "./store/project";
 
 interface RequireForm {
@@ -228,7 +228,6 @@ export default defineComponent({
         const templateRequires = reactive({}) as RequireForm;
         const extstore = extension();
         const projectstore = project();
-        extstore.loadNWDExt({ i18n });
         const unsub = extstore.$onAction(({ name, store, args, after, onError }) => {
             if (name == "addTemplate") {
                 template[args[0].id] = args[0];
@@ -243,7 +242,7 @@ export default defineComponent({
                 text: "Loading",
                 background: "rgba(0, 0, 0, 0.7)",
             });
-            Axios({
+            axios({
                 method: "get",
                 url: "/test/test.pisp",
                 responseType: "arraybuffer",

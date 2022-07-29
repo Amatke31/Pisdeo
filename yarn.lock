@@ -1256,11 +1256,6 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@icon-park/vue-next@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.npmmirror.com/@icon-park/vue-next/-/vue-next-1.4.1.tgz#e52e65aa752bd618e11704bb3d818ec0dc04c9c0"
-  integrity sha512-9Nhw9oSlQT9wCIMcixNTVAbtOfk4kkyR+0AfjW1WEZiIT0J5tE/gFksmgkENZWomjEzWCofhiF4w7dcLRhtLMw==
-
 "@intlify/bundle-utils@^2.2.2":
   version "2.2.2"
   resolved "https://registry.npmmirror.com/@intlify/bundle-utils/-/bundle-utils-2.2.2.tgz#fe65ce2549a73b99b75f3e66209d741b4f4d61fd"

@@ -74,21 +74,14 @@ const extension = defineStore("extension", {
                 });
                 script.runInContext(context);
                 const ExtensionPrototype = context.module.exports;
-                const instance = new Function(
-                    ExtensionPrototype(new CommonApi(info, this), new UIApi(info, this))
+                const instance = new ExtensionPrototype(
+                    new CommonApi(info, this),
+                    new UIApi(info, this)
                 );
+                this.extension[info.id].instance = instance;
             } else {
                 throw new Error(`Cannot find 'main.js' in ${info.name}(${info.id}) extension`);
             }
-        },
-        loadNWDExt: async function({ i18n }) {
-            await axios({
-                method: "get",
-                url: "/extension/base/dist/org.pisdeo.base@1.0.0.pisx",
-                responseType: "arraybuffer",
-            }).then(async (res) => {
-                this.loadExtension({ zipFile: res.data, i18n });
-            });
         },
     },
 });
