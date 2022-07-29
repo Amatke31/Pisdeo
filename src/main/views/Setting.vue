@@ -2,13 +2,9 @@
     <div class="start">
         <div class="nav">
             <div class="nav-left">
-                <icon-arrow-left
-                    theme="outline"
-                    size="24"
-                    fill="#eee"
-                    class="back"
-                    @click="$emit('goToStartPage')"
-                />
+                <n-icon size="24" class="back" @click="$emit('goToStartPage')">
+                    <BackIcon />
+                </n-icon>
                 <h1>{{ $t("setting.title") }}</h1>
             </div>
             <div class="nav-right"></div>
@@ -44,20 +40,9 @@
                                 />
                             </n-space>
                             <div>
-                                <n-btn @click="resetDialog = true">
+                                <n-btn @click="reset">
                                     {{ $t("setting.reset") }}
                                 </n-btn>
-                                <n-modal
-                                    v-model:show="resetDialog"
-                                    :mask-closable="false"
-                                    preset="dialog"
-                                    title="确认"
-                                    content="你确认"
-                                    positive-text="确认"
-                                    negative-text="算了"
-                                    @positive-click="reset"
-                                    @negative-click="resetDialog = false"
-                                />
                             </div>
                         </div>
                         <div v-else-if="option == 'setting.account'" class="right">
@@ -109,16 +94,17 @@
 </template>
 <script lang="ts">
 import { Component } from "vue";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import { setLocale } from "../lib/common";
 import platform from "../lib/platform/platform";
 import { recovery } from "../lib/platform/web/file";
-import { MenuOption, NIcon, useMessage } from "naive-ui";
+import { MenuOption, NIcon } from "naive-ui";
 import {
     SettingsOutline as SettingIcon,
     PersonOutline as PersonIcon,
     HammerOutline as HammerIcon,
     InformationOutline as InfoIcon,
+    ArrowBack as BackIcon,
 } from "@vicons/ionicons5";
 import { useI18n } from "vue-i18n";
 import About from "./about.vue";
@@ -160,7 +146,6 @@ export default defineComponent({
                 },
             ],
             platform: platform[0].toUpperCase() + platform.substr(1),
-            resetDialog: false,
         };
     },
     async created() {
@@ -210,7 +195,6 @@ export default defineComponent({
     },
     setup(props, { emit }) {
         const { t } = useI18n();
-        const message = useMessage();
         let lang = ref("en_us");
         const menuOptions: MenuOption[] = [
             {
@@ -238,19 +222,42 @@ export default defineComponent({
             emit("sendCommand", command);
         }
         function reset() {
-            if (platform == "desktop") {
-            } else if (platform == "web") {
-                recovery((success: Boolean) => {
-                    if (success) {
-                        message.success(t("setting.reset.success"));
-                        setTimeout(() => {
-                            location.reload();
-                        }, 3000);
+            ElMessageBox.confirm(t("setting.reset.warning"), "Warning", {
+                confirmButtonText: t("common.confirm"),
+                cancelButtonText: t("common.cancel"),
+                type: "warning",
+                beforeClose: (action: any, instance: any, done: any) => {
+                    if (action === "confirm") {
+                        instance.confirmButtonLoading = true;
+                        instance.confirmButtonText = "Loading...";
+
+                        if (platform == "desktop") {
+                        } else if (platform == "web") {
+                            recovery((success: Boolean) => {
+                                if (success) {
+                                    instance.confirmButtonLoading = true;
+                                    done();
+                                } else {
+                                    ElMessage.error(t("setting.reseterror"));
+                                    done();
+                                }
+                            });
+                        }
                     } else {
-                        message.error(t("setting.reseterror"));
+                        done();
                     }
-                });
-            }
+                },
+            })
+                .then(() => {
+                    ElMessage({
+                        type: "success",
+                        message: t("setting.reset.success"),
+                    });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                })
+                .catch(() => {});
         }
         return {
             menuOptions,
@@ -259,7 +266,7 @@ export default defineComponent({
             lang,
         };
     },
-    components: { About },
+    components: { About, BackIcon },
 });
 </script>
 
@@ -276,7 +283,7 @@ export default defineComponent({
         transition: 0.5s;
         width: 50px;
         height: 50px;
-        padding: 13px;
+        padding: 13px 0;
         border-radius: 50%;
 
         &:hover {

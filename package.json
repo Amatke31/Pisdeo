@@ -14,8 +14,10 @@
     },
     "main": "index.js",
     "dependencies": {
+        "@icon-park/vue-next": "^1.4.2",
         "@mdi/font": "5.9.55",
         "@types/semver": "^7.3.10",
+        "@vicons/fa": "^0.12.0",
         "@vicons/ionicons5": "^0.12.0",
         "babel-runtime": "^6.26.0",
         "copy-webpack-plugin": "^9.0.1",
