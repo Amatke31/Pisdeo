@@ -52,8 +52,8 @@ const project = defineStore("project", {
     actions: {
         async findSolution(payload: any): Promise<any> {
             return new Promise(async (resolve) => {
-                const content = payload.nwdp;
-                let info = JSON.parse(await content.files["project.json"].async("text"));
+                const content = payload.pisp;
+                let info = JSON.parse(await content.files["info.json"].async("text"));
                 let preSolution: Array<any> = [];
                 solution.getSolution(info.type).forEach((project: any) => {
                     preSolution.push({

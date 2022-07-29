@@ -1,8 +1,4 @@
 {
-    "name": "Test",
-    "author": "Amatke31",
-    "type": "website",
-    "mainfile": "index.html",
     "files": {
         "index.html": {
             "element": "html",
@@ -86,6 +82,18 @@
                             "children": [
                                 {
                                     "element": "a",
+                                    "elementName": "Github Link",
+                                    "href": "https://github.com/amatke31/pisdeo",
+                                    "target": "_blank",
+                                    "children": [
+                                        {
+                                            "element": ".text",
+                                            "text": "全球最大同性恋交友网站仓库"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "element": "a",
                                     "elementName": "Gitee Link",
                                     "href": "https://gitee.com/amatke31/pisdeo",
                                     "target": "_blank",
@@ -93,16 +101,6 @@
                                         {
                                             "element": ".text",
                                             "text": "Gitee Repositorie"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "element": "a",
-                                    "elementName": "Github Link",
-                                    "children": [
-                                        {
-                                            "element": ".text",
-                                            "text": "全球最大同性恋交友网站仓库"
                                         }
                                     ]
                                 },

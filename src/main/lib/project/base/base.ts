@@ -51,10 +51,11 @@ class Project {
      */
     async loadProjectFromFile(content: JSZip): Promise<void> {
         return new Promise(async (resolve) => {
-            let info = JSON.parse(await content.files["project.json"].async("text"));
+            let info = JSON.parse(await content.files["info.json"].async("text"));
+            let project = JSON.parse(await content.files["project.json"].async("text"));
             this.name = info.name;
             this.author = info.author;
-            this.files = info.files;
+            this.files = project.files;
             this.mainfile = info.mainfile;
             this.openFile(info.mainfile);
             resolve();
@@ -97,16 +98,19 @@ class Project {
      * @returns JSZip
      */
     get save(): JSZip {
-        let nwdp = new JSZip();
-        nwdp.file("project.json", JSON.stringify({ ...(<object>this.info), file: this.files }));
-        return nwdp;
+        let pisp = new JSZip();
+        pisp.file("info.json", JSON.stringify({ ...(<object>this.info) }));
+        pisp.file("project.json", JSON.stringify({ files: this.files }));
+        return pisp;
     }
 
     /**
      * Render Workspace
      * @returns any
      */
-    renderWorkspace(): any {}
+    renderWorkspace(): any {
+        return [];
+    }
 }
 
 export default Project;

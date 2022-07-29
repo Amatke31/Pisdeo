@@ -12,7 +12,7 @@ declare module '*.vue' {
   export default component
 }
 
-declare module '*.nwdp'
+declare module '*.pisp'
 
 declare module 'vuetify'
 declare module 'vuetify/lib/components'

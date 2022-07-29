@@ -245,15 +245,15 @@ export default defineComponent({
             });
             Axios({
                 method: "get",
-                url: "/test/test.nwdp",
+                url: "/test/test.pisp",
                 responseType: "arraybuffer",
             }).then((res: any) => {
                 const content = res.data;
-                let nwdp = new JSZip();
-                nwdp.loadAsync(content).then((nwdp) => {
-                    projectContent = nwdp;
+                let pisp = new JSZip();
+                pisp.loadAsync(content).then((pisp) => {
+                    projectContent = pisp;
                     projectstore
-                        .findSolution({ nwdp })
+                        .findSolution({ pisp })
                         .then(({ allSolution, info }) => {
                             projectInfo = info;
                             createOrLoad.value = "load";
