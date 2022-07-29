@@ -11,7 +11,6 @@ let ipcRenderer: any = {
 
 if (platform === "desktop") {
     ipcRenderer = window.ipc;
-    console.log(window);
 }
 
 const ipc = {
