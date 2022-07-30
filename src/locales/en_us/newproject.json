@@ -1,6 +1,6 @@
 {
     "newproject.madeby": "This template made by {author}",
-    "newproject.title": "Create {framework} Project with Template {template}",
+    "newproject.title": "Create {solution} Project with Template {template}",
     "newproject.projectname": "Project Name",
     "newproject.projectlocation": "Location",
     "newproject.create": "Create"

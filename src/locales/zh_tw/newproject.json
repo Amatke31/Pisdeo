@@ -1,6 +1,6 @@
 {
     "newproject.madeby": "這個範本由{author}開發",
-    "newproject.title": "用範本{template}來創建{framework}項目",
+    "newproject.title": "用範本{template}來創建{solution}項目",
     "newproject.projectname": "項目名稱",
     "newproject.projectlocation": "儲存路徑",
     "newproject.create": "創建"

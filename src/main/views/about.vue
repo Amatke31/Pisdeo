@@ -1,5 +1,5 @@
 <template>
-    <h1>Pisdeo</h1>
+    <h1 style="display: flex;"><img style="width: 46px;" :src="img" />Pisdeo</h1>
     <p>{{ $t("about.introduce") }}</p>
     <p>Version: {{ appVersionFull }}</p>
     <p>Compile Time: {{ compileTime }}</p>
@@ -47,6 +47,7 @@ export default defineComponent({
             compileTime,
             commitHash,
             platform: platform[0].toUpperCase() + platform.substr(1),
+            img: require("../../../public/assets/img/logo_transparent_dark.png"),
         };
     },
     components: { Github, Discord, Qq },
@@ -55,7 +56,7 @@ export default defineComponent({
 <style lang="scss">
 .link {
     padding: 10px 0;
-    
+
     a {
         margin: 10px;
     }

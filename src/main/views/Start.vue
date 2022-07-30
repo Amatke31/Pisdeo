@@ -1,5 +1,5 @@
 <template>
-    <div class="start">
+    <div style="height: 100%;">
         <div class="nav">
             <div class="nav-left">
                 <h1>{{ $t("start.title") }}</h1>
@@ -15,7 +15,12 @@
             <div v-if="isInit" class="newProject">
                 <h2 class="npt">{{ $t("start.pageNewproject") }}</h2>
                 <div class="npc scroll">
-                    <div @click="newProject('project.website')" class="card">
+                    <div
+                        @click="
+                            newProject({ name: 'project.website', solution: 'org.pisdeo.website' })
+                        "
+                        class="card"
+                    >
                         <div class="img" :style="cardImg('assets/blankproject.svg')"></div>
                         <div class="title">{{ $t("project.website") }}</div>
                     </div>
@@ -46,7 +51,7 @@
                     <h1>
                         {{
                             $t("newproject.title", {
-                                framework: templateInfo.framework,
+                                solution: templateInfo.solution,
                                 template: templateInfo.name,
                             })
                         }}
@@ -54,7 +59,9 @@
                     <h5 style="color: #aaa">
                         {{
                             $t("newproject.madeby", {
-                                author: templateInfo.extension.author,
+                                author: templateInfo.extension
+                                    ? templateInfo.extension.author
+                                    : "Pisdeo",
                             })
                         }}
                     </h5>
@@ -90,16 +97,6 @@
                     {{ $t("newproject.create") }}
                 </n-btn>
             </n-window>
-        </div>
-        <div :class="warningCss" id="_warning">
-            <div class="warning" :style="'width:500px;margin-left:-250px;'">
-                <div>
-                    The application has crashed and may need to be repaired. If you need help, you
-                    can view the
-                    <a @click="openDoc(`problem/${errorCode}`)">documentation</a>
-                </div>
-                <div>Error Code: {{ errorCode }}</div>
-            </div>
         </div>
     </div>
 </template>
@@ -139,7 +136,6 @@ export default defineComponent({
     data() {
         return {
             msgIsShow: false,
-            warningShow: false,
             errorCode: "",
             msgHTML: "",
             newProjectWCss: "hide none",
@@ -148,7 +144,7 @@ export default defineComponent({
             consoleText: "<p>loading...</p>",
             templateInfo: {
                 name: "",
-                framework: "",
+                solution: "",
                 extension: {
                     author: "",
                     id: "",
@@ -156,28 +152,12 @@ export default defineComponent({
             } as RequireForm,
             ProjectForm: {
                 name: "WebApp1",
-                framework: "",
+                solution: "",
                 path: "",
             } as RequireForm,
-            warningCss: "hide none",
             platform,
             recentList: [] as Array<object>,
         };
-    },
-    watch: {
-        warningShow() {
-            if (this.warningShow == true) {
-                this.warningCss = "hide";
-                setTimeout(() => {
-                    this.warningCss = "";
-                }, 50);
-            } else {
-                this.warningCss = "hide";
-                setTimeout(() => {
-                    this.warningCss = "hide none";
-                }, 300);
-            }
-        },
     },
     async created() {
         if (platform === "desktop") {
@@ -190,15 +170,17 @@ export default defineComponent({
     methods: {
         newProject: function(info: {
             name: string;
-            framework: string;
-            extension: { author: string; id: string };
-            require: any;
+            solution: string;
+            extension?: { author: string; id: string };
+            require?: any;
         }) {
-            info.require.forEach(
-                (parameter: { name: string; default: any; [propName: string]: any }) => {
-                    this.ProjectForm[parameter.name] = parameter.default;
-                }
-            );
+            if (info.require) {
+                info.require.forEach(
+                    (parameter: { name: string; default: any; [propName: string]: any }) => {
+                        this.ProjectForm[parameter.name] = parameter.default;
+                    }
+                );
+            }
             this.templateInfo = info;
             this.ProjectForm.path = path.join(documentsPath, "Pisdeo");
             this.openNWD = true;
@@ -330,6 +312,7 @@ export default defineComponent({
 }
 .main {
     padding: 24px;
+    height: 100%;
     .newProject {
         display: flex;
         flex-direction: column;
@@ -374,54 +357,5 @@ export default defineComponent({
             }
         }
     }
-}
-
-#_warning {
-    display: unset;
-
-    .warning {
-        width: 500px;
-        height: auto;
-        min-height: 200px;
-        position: fixed;
-        left: 50%;
-        top: 10%;
-        margin-left: -250px;
-        background-color: #fff;
-        border-radius: 15px;
-        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.05);
-        z-index: 3000;
-        display: flex;
-        flex-direction: column;
-        background-color: rgba(50, 50, 50, 0.7);
-        padding: 36px;
-        transition: 0.3s;
-        max-height: 90vh !important;
-        opacity: 1;
-        max-width: 90vw;
-        min-width: 500px;
-
-        a:link {
-            color: rgb(10, 95, 252);
-        }
-
-        a:visited {
-            color: rgb(10, 95, 252);
-        }
-    }
-}
-
-#_warning.hide .warning {
-    transform: scale(0.8);
-    opacity: 0;
-}
-
-#_warning.none {
-    display: none;
-}
-
-.desktop .mask {
-    top: 28px;
-    height: calc(100% - 28px);
 }
 </style>

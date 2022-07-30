@@ -1,5 +1,5 @@
 <template>
-    <div class="start">
+    <div style="height: 100%;">
         <div class="nav">
             <div class="nav-left">
                 <n-icon size="24" class="back" @click="$emit('goToStartPage')">
@@ -10,85 +10,83 @@
             <div class="nav-right"></div>
         </div>
         <div class="main">
-            <n-space vertical>
-                <n-layout has-sider>
-                    <n-layout-sider
-                        bordered
-                        collapse-mode="width"
+            <n-layout has-sider style="height: 100%;">
+                <n-layout-sider
+                    bordered
+                    collapse-mode="width"
+                    :collapsed-width="64"
+                    :width="150"
+                    show-trigger
+                >
+                    <n-menu
+                        v-model:value="option"
                         :collapsed-width="64"
-                        :width="150"
-                        show-trigger
-                    >
-                        <n-menu
-                            v-model:value="option"
-                            :collapsed-width="64"
-                            :collapsed-icon-size="22"
-                            :options="menuOptions"
-                        />
-                    </n-layout-sider>
-                    <n-layout>
-                        <div v-if="option == 'setting.general'" class="right scroll">
-                            <div class="title">{{ $t("setting.general") }}</div>
-                            <n-space align="center">
-                                <div>{{ $t("setting.language") }}:</div>
-                                <n-select
-                                    v-model:value="lang"
-                                    class="m-2 select"
-                                    placeholder="Select"
-                                    size="medium"
-                                    :options="supportLang"
-                                />
-                            </n-space>
-                            <div>
-                                <n-btn @click="reset">
-                                    {{ $t("setting.reset") }}
-                                </n-btn>
-                            </div>
+                        :collapsed-icon-size="22"
+                        :options="menuOptions"
+                    />
+                </n-layout-sider>
+                <n-layout>
+                    <div v-if="option == 'setting.general'" class="right scroll">
+                        <div class="title">{{ $t("setting.general") }}</div>
+                        <n-space align="center">
+                            <div>{{ $t("setting.language") }}:</div>
+                            <n-select
+                                v-model:value="lang"
+                                class="m-2 select"
+                                placeholder="Select"
+                                size="medium"
+                                :options="supportLang"
+                            />
+                        </n-space>
+                        <div>
+                            <n-btn @click="reset">
+                                {{ $t("setting.reset") }}
+                            </n-btn>
                         </div>
-                        <div v-else-if="option == 'setting.account'" class="right">
-                            <div class="title">{{ $t("setting.account") }}</div>
-                            <div></div>
+                    </div>
+                    <div v-else-if="option == 'setting.account'" class="right">
+                        <div class="title">{{ $t("setting.account") }}</div>
+                        <div></div>
+                    </div>
+                    <div v-else-if="option == 'setting.develop'" class="right">
+                        <div class="title">{{ $t("setting.develop") }}</div>
+                        <div style="display:block;max-width:300px">
+                            <n-select
+                                v-model:value="toolState"
+                                class="m-2 select"
+                                placeholder="Select"
+                                size="large"
+                                :options="toolStateList"
+                            />
+                            <n-select
+                                v-model:value="openTestProjectInAppLoad"
+                                class="m-2 select"
+                                placeholder="Select"
+                                size="large"
+                                :options="openTestProjectInAppLoadStateList"
+                            />
+                            <n-btn @click="sendCommand('loadTestProject')">
+                                {{ $t("setting.loadTestProject") }}
+                            </n-btn>
                         </div>
-                        <div v-else-if="option == 'setting.develop'" class="right">
-                            <div class="title">{{ $t("setting.develop") }}</div>
-                            <div style="display:block;max-width:300px">
-                                <n-select
-                                    v-model:value="toolState"
-                                    class="m-2 select"
-                                    placeholder="Select"
-                                    size="large"
-                                    :options="toolStateList"
-                                />
-                                <n-select
-                                    v-model:value="openTestProjectInAppLoad"
-                                    class="m-2 select"
-                                    placeholder="Select"
-                                    size="large"
-                                    :options="openTestProjectInAppLoadStateList"
-                                />
-                                <n-btn @click="sendCommand('loadTestProject')">
-                                    {{ $t("setting.loadTestProject") }}
-                                </n-btn>
-                            </div>
-                        </div>
-                        <div v-else-if="option == 'setting.about'" class="right">
-                            <About />
-                        </div>
-                        <div
-                            v-for="{ key } in menuOptions"
-                            :key="key"
-                            v-show="
-                                option == key &&
-                                    option != 'setting.general' &&
-                                    option != 'setting.account' &&
-                                    option != 'setting.develop' &&
-                                    option != 'setting.about'
-                            "
-                            class="right"
-                        ></div>
-                    </n-layout>
+                    </div>
+                    <div v-else-if="option == 'setting.about'" class="right">
+                        <About />
+                    </div>
+                    <div
+                        v-for="{ key } in menuOptions"
+                        :key="key"
+                        v-show="
+                            option == key &&
+                                option != 'setting.general' &&
+                                option != 'setting.account' &&
+                                option != 'setting.develop' &&
+                                option != 'setting.about'
+                        "
+                        class="right"
+                    ></div>
                 </n-layout>
-            </n-space>
+            </n-layout>
         </div>
     </div>
 </template>
@@ -309,7 +307,8 @@ export default defineComponent({
     }
 }
 .main {
-    display: flex;
+    height: 100%;
+
     .menu {
         padding: 0;
         width: 205px;
@@ -318,6 +317,7 @@ export default defineComponent({
             width: 70px;
         }
     }
+
     .right {
         width: 100%;
         height: 100%;

@@ -12,7 +12,7 @@ class CommonApi {
             id: templateInfo.id,
             cover: templateInfo.cover,
             require: templateInfo.require ? templateInfo.require : [],
-            framework: templateInfo.framework ? templateInfo.framework : "",
+            solution: templateInfo.solution ? templateInfo.solution : "",
             extension: this.extensionInfo,
         };
         this.store.addTemplate(templateInfo)

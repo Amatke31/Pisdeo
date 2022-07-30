@@ -146,7 +146,7 @@
                         },
                         {
                             "element": "img",
-                            "src": "/favicon.ico"
+                            "src": "/assets/img/logo_transparent_dark.png"
                         }
                     ]
                 }
