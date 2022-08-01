@@ -4,6 +4,13 @@
             <icon-refresh class="btn" theme="outline" size="16" fill="#eee" @click="reload" />
             <icon-plus class="btn" theme="outline" size="16" fill="#eee" @click="size++" />
             <icon-minus class="btn" theme="outline" size="16" fill="#eee" @click="size--" />
+            <icon-one-to-one
+                class="btn"
+                theme="outline"
+                size="16"
+                fill="#eee"
+                @click="size = 100"
+            />
         </div>
         <iframe
             v-if="!refreshing"
@@ -67,10 +74,13 @@ export default defineComponent({
     overflow: hidden;
 
     #viewerMenu {
+        width: 100%;
         height: 26px;
         padding: 0;
         background-color: #333;
         display: flex;
+        position: absolute;
+        z-index: 10;
 
         .btn {
             margin: 3px;
@@ -85,6 +95,7 @@ export default defineComponent({
     }
 
     #viewer {
+        margin-top: 26px;
         width: 100%;
         height: 100%;
         border: unset;

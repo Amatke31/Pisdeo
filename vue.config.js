@@ -45,6 +45,10 @@ module.exports = {
                         from: "test/testProgram",
                         to: "test",
                     },
+                    {
+                        from: "src/assets",
+                        to: "assets",
+                    },
                 ],
             }),
         ],

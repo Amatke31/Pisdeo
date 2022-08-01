@@ -10,7 +10,6 @@ import loadFonts from "./plugins/webfontloader";
 import installElementPlus from "./plugins/element";
 import naive from "naive-ui";
 import { install } from "@icon-park/vue-next/es/all";
-import "./assets/iconfont/iconfont.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
 import "@icon-park/vue-next/styles/index.css";
 

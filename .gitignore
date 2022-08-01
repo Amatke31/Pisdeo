@@ -1,4 +1,3 @@
-.DS_Store
 node_modules
 /dist
 src/main/lib/app-info.js
@@ -22,5 +21,9 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-#Electron-builder output
+# Electron-builder output
 /dist_electron
+
+# macOS
+.DS_Store
+icon?
