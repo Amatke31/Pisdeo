@@ -12,7 +12,7 @@
         "postuninstall": "electron-builder install-app-deps",
         "genmeta": "node gen-meta.js"
     },
-    "main": "index.js",
+    "main": "background.js",
     "dependencies": {
         "@icon-park/vue-next": "^1.4.2",
         "@mdi/font": "5.9.55",

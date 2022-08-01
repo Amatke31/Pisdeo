@@ -7,10 +7,10 @@ import path from "path";
 const isDevelopment = process.env.NODE_ENV !== "production";
 const isMac = process.platform === "darwin";
 
-// app.setAsDefaultProtocolClient("pisdeo");
+app.setAsDefaultProtocolClient("pisdeo");
 
 protocol.registerSchemesAsPrivileged([
-    { scheme: "app", privileges: { secure: true, standard: true } },
+    { scheme: "pisdeo", privileges: { secure: true, standard: true } },
 ]);
 
 async function createWindow(title: string, url: string = "./index.html") {
@@ -19,7 +19,7 @@ async function createWindow(title: string, url: string = "./index.html") {
         height: 768,
         // minWidth: 1366,
         // minHeight: 768,
-        titleBarStyle: "hidden",
+        // titleBarStyle: "hidden",
         title,
         webPreferences: {
             nodeIntegration: true,
@@ -27,7 +27,7 @@ async function createWindow(title: string, url: string = "./index.html") {
             preload: path.resolve(path.join(__dirname, "preload.js")),
         },
     });
-    win.setMenuBarVisibility(false);
+    // win.setMenuBarVisibility(false);
     const baseMenu: any = [
         ...(isMac
             ? [
@@ -88,8 +88,8 @@ async function createWindow(title: string, url: string = "./index.html") {
     if (isDevelopment) {
         await win.loadURL(`${process.env.WEBPACK_DEV_SERVER_URL}${url}`);
     } else {
-        createProtocol("app");
-        await win.loadURL(`app://${url}`);
+        createProtocol("pisdeo");
+        await win.loadURL(`pisdeo://${url}`);
     }
 }
 

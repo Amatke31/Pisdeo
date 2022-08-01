@@ -19,9 +19,10 @@ module.exports = {
         },
         electronBuilder: {
             mainProcessFile: "src/desktop/index.ts",
+            customFileProtocol: "pisdeo://./",
             nodeIntegration: true,
             builderOptions: {
-                asar: false,
+                asar: true,
                 appId: "org.pisdeo.pisdeo",
                 extraResources: [],
             },
